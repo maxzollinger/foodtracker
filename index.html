@@ -81,7 +81,9 @@ a{color:inherit}
 .mcard .v small{font-size:13px;color:var(--muted);font-weight:600}
 .mcard .l{font-size:12.5px;color:var(--muted);margin:2px 0 12px;font-weight:500}
 .mcard .ring{margin:0 auto}
-.burned{font-size:13px;color:var(--muted);text-align:center;margin:6px 0 0}
+.burncard{display:flex;align-items:center;gap:14px;margin-top:4px}
+.burncard .ic{width:48px;height:48px;border-radius:14px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:24px;flex:none}
+.quick{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}
 
 /* Entries */
 .entry{display:flex;gap:12px;background:var(--card);border-radius:20px;padding:10px;box-shadow:var(--shadow);margin-bottom:10px;cursor:pointer;text-align:left;width:100%}
@@ -269,12 +271,13 @@ const LS = {
   set(k, v) { try { localStorage.setItem(k, v); return true; } catch { return false; } },
   del(k) { try { localStorage.removeItem(k); } catch {} }
 };
-const EMPTY = () => ({ profile: null, overrides: {}, meals: [], weights: [], exercises: [], settings: { addBurned: false } });
+const EMPTY = () => ({ profile: null, overrides: {}, meals: [], weights: [], exercises: [], settings: { addBurned: true, burnV2: true } });
 let db;
 try { db = JSON.parse(LS.get('ft_data', '{}')) || {}; } catch { db = {}; }
 db = migrate(Object.assign(EMPTY(), db));
 function migrate(d) {
   d.settings = Object.assign({ addBurned: false }, d.settings);
+  if (!d.settings.burnV2) { d.settings.addBurned = true; d.settings.burnV2 = true; }
   d.exercises = d.exercises || [];
   d.meals.forEach(m => { if (!m.servings) m.servings = 1; });
   const p = d.profile;
@@ -387,6 +390,12 @@ function dayTotals(date) {
   return t;
 }
 const dayBurned = date => db.exercises.filter(e => e.date === date).reduce((a, e) => a + num(e.kcal), 0);
+// The goals for one day: base targets plus the calories burned that day (when "Add burned calories" is on).
+// Extra energy is given back mostly as carbs (75%) and some fat (25%); protein stays the same.
+function dayGoals(date) {
+  const t = targets(), burned = r0(dayBurned(date)), extra = db.settings.addBurned ? burned : 0;
+  return { ...t, kcal: t.kcal + extra, carbs: t.carbs + r0(extra * 0.75 / 4), fat: t.fat + r0(extra * 0.25 / 9), burned, extra };
+}
 function streak() {
   const has = new Set(db.meals.map(m => m.date));
   let d = iso(), n = 0;
@@ -412,14 +421,14 @@ $('#fab').onclick = openAddMenu;
 
 /* ================= Home ================= */
 function renderHome() {
-  const t = targets(), tot = dayTotals(sel), burned = dayBurned(sel);
-  const goalK = t.kcal + (db.settings.addBurned ? burned : 0);
+  const t = dayGoals(sel), tot = dayTotals(sel), burned = t.burned;
+  const goalK = t.kcal;
   const today = iso(), st = streak();
   // Week strip (Mon–Sun)
   const dow = (new Date().getDay() + 6) % 7, mon = addDays(today, -dow + weekOff * 7);
   const days = [...Array(7)].map((_, i) => addDays(mon, i));
   const week = days.map(d => {
-    const dtot = dayTotals(d), cls = dtot.count ? (dtot.kcal > t.kcal * 1.1 ? 'over' : 'logged') : '';
+    const dtot = dayTotals(d), cls = dtot.count ? (dtot.kcal > dayGoals(d).kcal * 1.1 ? 'over' : 'logged') : '';
     return `<button class="day ${d === sel ? 'sel' : ''} ${d > today ? 'future' : ''}" data-d="${d}">
       <span class="dl">${dt(d).toLocaleDateString(LOC, { weekday: 'short' }).slice(0, 3)}</span><span class="dn ${cls}">${dt(d).getDate()}</span></button>`;
   }).join('');
@@ -473,11 +482,15 @@ function renderHome() {
     ${!hasAI() ? `<button class="card" style="width:100%;text-align:left;display:flex;gap:12px;align-items:center" onclick="go('settings')"><span style="font-size:26px">✨</span><span class="grow"><b>Turn on AI food scanning</b><br><span class="small muted">Add your free Google AI key in Settings</span></span><span class="muted">›</span></button>` : ''}
     <button class="card calcard" data-toggle style="width:100%;text-align:left"><div>${calBig}</div>${ring(104, 9, tot.kcal / goalK, left < 0 ? 'var(--bad)' : 'var(--ink)', '<span style="font-size:28px">🔥</span>')}</button>
     <div class="macros">${macros}</div>
-    ${burned ? `<div class="burned">🏋️ ${r0(burned)} kcal burned${db.settings.addBurned ? ' · added to your goal' : ''}</div>` : ''}
+    <div class="card burncard"><div class="ic">🏃</div><div class="grow"><div class="small muted" style="font-weight:600">Calories burned</div>
+      <div style="font-size:24px;font-weight:800;letter-spacing:-.02em">${burned}<small class="muted" style="font-size:14px;font-weight:600"> kcal</small></div>
+      <div class="small muted">${burned ? (db.settings.addBurned ? `+${burned} kcal added to ${sel === today ? "today's" : "this day's"} goal` : 'Not added to your goal (see Settings)') : 'Did you exercise? Add it to eat a bit more.'}</div></div>
+      <button class="btn sm" id="burnAdd">＋ Add</button></div>
     <div class="h2">${sel === today ? 'Recently uploaded' : fmtDate(sel, { weekday: 'long', day: 'numeric', month: 'long' })}</div>
     ${list}`;
   document.querySelectorAll('.day').forEach(b => b.onclick = () => { sel = b.dataset.d; renderHome(); });
   document.querySelectorAll('[data-toggle]').forEach(b => b.onclick = () => { calMode = calMode === 'left' ? 'eaten' : 'left'; renderHome(); });
+  $('#burnAdd').onclick = openBurnSheet;
   $('#wPrev').onclick = () => { weekOff--; renderHome(); };
   $('#wNext').onclick = () => { if (weekOff < 0) { weekOff++; renderHome(); } };
   hydratePhotos($('#view'));
@@ -772,6 +785,29 @@ async function lookupBarcode(code) {
 }
 
 /* ================= Exercise ================= */
+// Quick entry from the Home screen: "how many calories did I burn?"
+function openBurnSheet() {
+  const already = r0(dayBurned(sel)), dayTxt = sel === iso() ? 'today' : fmtDate(sel, { weekday: 'long', day: 'numeric', month: 'short' });
+  sheet(`<h3>Calories burned</h3><p class="muted" style="margin-top:4px">From your watch, the gym machine or a fitness app. ${db.settings.addBurned ? `It's added to your goal for ${dayTxt}.` : ''}</p>
+    ${already ? `<p class="small" style="margin:0">Already logged ${dayTxt}: <b>${already} kcal</b>. This adds on top.</p>` : ''}
+    <div class="row" style="margin:16px 0 0"><input id="bKcal" inputmode="numeric" placeholder="0" style="text-align:center;font-size:32px;font-weight:800"><span class="muted" style="font-weight:600">kcal</span></div>
+    <div class="quick">${[100, 200, 300, 500].map(v => `<button class="chipbtn" data-q="${v}">+${v}</button>`).join('')}</div>
+    <label class="lbl">What did you do? (optional)</label><input id="bName" placeholder="e.g. Running, Gym, Steps">
+    <button class="btn" id="bSave" style="margin-top:18px">Add to ${sel === iso() ? 'today' : 'this day'}</button>
+    <button class="btn outline" id="bAi" style="margin-top:10px">✨ Not sure? Let AI estimate it</button>`, s => {
+    const inp = s.querySelector('#bKcal'); inp.focus();
+    s.querySelectorAll('[data-q]').forEach(b => b.onclick = () => { inp.value = r0(num(inp.value) + +b.dataset.q); });
+    s.querySelector('#bAi').onclick = () => openExercise(null);
+    s.querySelector('#bSave').onclick = () => {
+      const kcal = r0(num(inp.value));
+      if (kcal <= 0 || kcal > 5000) return toast('Enter the calories you burned');
+      db.exercises.push({ id: uid(), date: sel, time: nowTime(), name: s.querySelector('#bName').value.trim() || 'Exercise', kcal, minutes: 0 });
+      save(); closeSheet(); renderHome();
+      const g = dayGoals(sel);
+      toast(db.settings.addBurned ? `✓ +${kcal} kcal · new goal ${g.kcal} kcal` : `✓ ${kcal} kcal burned saved`);
+    };
+  });
+}
 function openExercise(id) {
   const ex = id ? db.exercises.find(e => e.id === id) : null;
   sheet(`<h3>${ex ? 'Exercise' : 'Log exercise'}</h3>
@@ -1034,7 +1070,7 @@ function md(text) {
 }
 
 function coachSystem() {
-  const p = db.profile, t = targets(), today = iso(), tot = dayTotals(today), burned = dayBurned(today);
+  const p = db.profile, today = iso(), t = dayGoals(today), tot = dayTotals(today), burned = t.burned;
   const now = new Date();
   const meals = db.meals.filter(m => m.date === today).map(m => { const x = mealTotals(m); return `- ${m.time || ''} ${m.name}: ${r0(x.kcal)} kcal, ${r0(x.protein)} g protein, ${r0(x.carbs)} g carbs, ${r0(x.fat)} g fat`; });
   const week = [...Array(7)].map((_, i) => addDays(today, i - 7)).map(d => { const x = dayTotals(d); return `- ${fmtDate(d, { weekday: 'short', day: 'numeric', month: 'short' })}: ${x.count ? `${r0(x.kcal)} kcal, ${r0(x.protein)} g protein` : 'nothing logged'}`; });
@@ -1046,9 +1082,9 @@ You are not a doctor. For medical conditions, medication, pregnancy or signs of 
 
 Now: ${now.toLocaleString(LOC, { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}
 Profile: ${p ? `${{ m: 'male', f: 'female', o: 'other' }[p.sex]}, ${age(p)} years, ${p.height} cm, ${currentWeight()} kg, ${p.workouts} workouts per week. Goal: ${goalTxt}.` : 'not set up yet'}
-Daily targets: ${t.kcal} kcal, ${t.protein} g protein, ${t.carbs} g carbs, ${t.fat} g fat.
+Today's targets${t.extra ? ` (base ${t.kcal - t.extra} kcal + ${t.extra} kcal burned)` : ''}: ${t.kcal} kcal, ${t.protein} g protein, ${t.carbs} g carbs, ${t.fat} g fat.
 Today so far: ${r0(tot.kcal)} kcal, ${r0(tot.protein)} g protein, ${r0(tot.carbs)} g carbs, ${r0(tot.fat)} g fat${burned ? `; burned ${r0(burned)} kcal with exercise${db.settings.addBurned ? ' (added to the goal)' : ''}` : ''}.
-Remaining today: ${r0(t.kcal + (db.settings.addBurned ? burned : 0) - tot.kcal)} kcal, ${r0(t.protein - tot.protein)} g protein, ${r0(t.carbs - tot.carbs)} g carbs, ${r0(t.fat - tot.fat)} g fat.
+Remaining today: ${r0(t.kcal - tot.kcal)} kcal, ${r0(t.protein - tot.protein)} g protein, ${r0(t.carbs - tot.carbs)} g carbs, ${r0(t.fat - tot.fat)} g fat.
 Today's meals:
 ${meals.join('\n') || '- nothing logged yet'}
 Previous 7 days:
@@ -1186,30 +1222,73 @@ $('#fileImport').onchange = async e => {
     db = migrate(Object.assign(EMPTY(), d)); save(); toast('✓ Backup restored'); go('home');
   } catch { toast('This is not a valid backup file'); }
 };
-function profileFields(p) {
+function profileFields(p, w) {
   const opt = (arr, v) => arr.map(([k, l]) => `<option value="${k}" ${String(v) === String(k) ? 'selected' : ''}>${l}</option>`).join('');
+  // Every speed the setup slider can produce, plus the user's current one
+  const paces = [...new Set([0.1, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.75, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, num(p.pace) || 0.5])].sort((a, b) => a - b);
   return `<div class="row"><div class="grow"><label class="lbl">Gender</label><select id="pSex">${opt([['m', 'Male'], ['f', 'Female'], ['o', 'Other']], p.sex)}</select></div>
     <div class="grow"><label class="lbl">Birthday</label><input id="pBirth" type="date" value="${p.birth}"></div></div>
     <div class="row"><div class="grow"><label class="lbl">Height (cm)</label><input id="pH" inputmode="numeric" value="${p.height}"></div>
-    <div class="grow"><label class="lbl">Workouts / week</label><select id="pW">${opt([['0-2', '0–2'], ['3-5', '3–5'], ['6+', '6+']], p.workouts)}</select></div></div>
-    <label class="lbl">Goal</label><select id="pGoal">${opt([['lose', 'Lose weight'], ['maintain', 'Maintain'], ['gain', 'Gain weight']], p.goal)}</select>
-    <div class="row"><div class="grow"><label class="lbl">Goal weight (kg)</label><input id="pT" inputmode="decimal" value="${p.targetWeight || ''}"></div>
-    <div class="grow"><label class="lbl">Speed (kg / week)</label><select id="pPace">${opt([[0.25, '0.25'], [0.5, '0.5'], [0.75, '0.75'], [1, '1.0']], p.pace)}</select></div></div>`;
+    <div class="grow"><label class="lbl">Current weight (kg)</label><input id="pWt" inputmode="decimal" value="${w}"></div></div>
+    <label class="lbl">Workouts / week</label><select id="pW">${opt([['0-2', '0–2 · now and then'], ['3-5', '3–5 · a few per week'], ['6+', '6+ · dedicated athlete']], p.workouts)}</select>
+    <div class="row"><div class="grow"><label class="lbl">Goal weight (kg)</label><input id="pT" inputmode="decimal" value="${p.targetWeight || w}"></div>
+    <div class="grow"><label class="lbl">Speed (kg / week)</label><select id="pPace" ${p.goal === 'maintain' ? 'disabled' : ''}>${opt(paces.map(v => [v, v + ' kg']), num(p.pace) || 0.5)}</select></div></div>
+    <label class="lbl">Goal</label><select id="pGoal">${opt([['lose', 'Lose weight'], ['maintain', 'Maintain'], ['gain', 'Gain weight']], p.goal)}</select>`;
 }
 function openPersonalSheet() {
   if (!db.profile) return startOnboarding();
-  sheet(`<h3>Personal details</h3>${profileFields(db.profile)}<button class="btn" id="pSave" style="margin-top:20px">Save</button>`, s => {
+  const custom = Object.keys(db.overrides).length > 0;
+  sheet(`<h3>Personal details</h3>${profileFields(db.profile, currentWeight())}
+    <div class="tip" id="pPrev"></div>
+    <button class="btn" id="pSave" style="margin-top:16px">Save & update goals</button>`, s => {
+    const read = () => {
+      const w = r1(num(s.querySelector('#pWt').value)), tw = r1(num(s.querySelector('#pT').value));
+      return { ...db.profile, sex: s.querySelector('#pSex').value, birth: s.querySelector('#pBirth').value || db.profile.birth,
+        height: num(s.querySelector('#pH').value) || db.profile.height, workouts: s.querySelector('#pW').value,
+        goal: s.querySelector('#pGoal').value, targetWeight: tw || w, pace: num(s.querySelector('#pPace').value) || 0.5, _w: w || currentWeight() };
+    };
+    const preview = () => {
+      const p = read(), t = calcTargets(p, p._w);
+      let when = '';
+      if (p.goal !== 'maintain' && Math.abs(p.targetWeight - p._w) >= 0.1) {
+        const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(p.targetWeight - p._w) / p.pace * 7));
+        when = `<br>Goal weight around <b>${d.toLocaleDateString(LOC, { day: 'numeric', month: 'short', year: 'numeric' })}</b>`;
+      }
+      s.querySelector('#pPrev').innerHTML = `New daily goals: <b>${t.kcal} kcal</b> · ${t.protein} g protein · ${t.carbs} g carbs · ${t.fat} g fat${when}
+        ${custom ? '<br><span class="muted">Your custom macro numbers will be replaced by these.</span>' : ''}`;
+    };
+    // Goal follows the goal weight automatically (and the other way round for "Maintain")
+    const syncGoal = () => {
+      const w = num(s.querySelector('#pWt').value), tw = num(s.querySelector('#pT').value), g = s.querySelector('#pGoal');
+      if (w && tw) g.value = tw < w - 0.4 ? 'lose' : tw > w + 0.4 ? 'gain' : 'maintain';
+      s.querySelector('#pPace').disabled = g.value === 'maintain';
+    };
+    s.querySelector('#pT').addEventListener('input', syncGoal);
+    s.querySelector('#pWt').addEventListener('input', syncGoal);
+    s.querySelector('#pGoal').addEventListener('change', e => {
+      const w = num(s.querySelector('#pWt').value), t = s.querySelector('#pT');
+      if (e.target.value === 'maintain') t.value = w;
+      else if (e.target.value === 'lose' && num(t.value) >= w) t.value = r1(w - 5);
+      else if (e.target.value === 'gain' && num(t.value) <= w) t.value = r1(w + 5);
+      s.querySelector('#pPace').disabled = e.target.value === 'maintain';
+    });
+    s.querySelectorAll('input,select').forEach(el => { el.addEventListener('input', preview); el.addEventListener('change', preview); });
+    preview();
     s.querySelector('#pSave').onclick = () => {
-      const p = db.profile;
-      Object.assign(p, { sex: $('#pSex').value, birth: $('#pBirth').value || p.birth, height: num($('#pH').value) || p.height, workouts: $('#pW').value,
-        goal: $('#pGoal').value, targetWeight: r1(num($('#pT').value)) || p.targetWeight, pace: num($('#pPace').value) });
-      save(); closeSheet(); toast('✓ Saved'); renderSettings();
+      const p = read();
+      if (p.height < 120 || p.height > 230 || p._w < 30 || p._w > 300) return toast('Please check height and weight');
+      if (Math.abs(p._w - currentWeight()) >= 0.05) { db.weights = db.weights.filter(x => x.date !== iso()); db.weights.push({ date: iso(), kg: p._w }); }
+      delete p._w;
+      if (p.goal === 'maintain') p.targetWeight = currentWeight();
+      db.profile = p; db.overrides = {};   // goals follow the new details
+      save(); closeSheet();
+      const t = targets(); toast(`✓ Updated: ${t.kcal} kcal · ${t.protein} g protein`); renderSettings();
     };
   });
 }
 function openGoalsSheet() {
   const t = targets();
-  sheet(`<h3>Adjust macronutrients</h3><p class="muted" style="margin-top:4px">Leave a field empty to use the calculated value.</p>
+  sheet(`<h3>Adjust macronutrients</h3><p class="muted" style="margin-top:4px">Leave a field empty to use the value calculated from your personal details. Numbers you type here stay fixed until you change your personal details or tap Auto-generate.</p>
     ${[['kcal', '🔥 Calorie goal', 'kcal'], ['protein', '🍗 Protein goal', 'g'], ['carbs', '🌾 Carb goal', 'g'], ['fat', '🥑 Fat goal', 'g']].map(([k, l, u]) =>
       `<label class="lbl">${l} (${u})</label><input data-ov="${k}" inputmode="numeric" value="${db.overrides[k] || ''}" placeholder="${t.auto[k] ?? ''} (auto)">`).join('')}
     <button class="btn" id="gSave" style="margin-top:20px">Save</button>
@@ -1321,7 +1400,7 @@ function finishOnboarding() {
   const p = ob.p;
   if (p.goal === 'maintain') p.targetWeight = p.weight;
   p.pace = num(p.pace) || 0.5; p.height = num(p.height); p.weight = num(p.weight);
-  db.profile = p;
+  db.profile = p; db.overrides = {};
   if (!db.weights.length || currentWeight() !== p.weight) { db.weights = db.weights.filter(w => w.date !== iso()); db.weights.push({ date: iso(), kg: p.weight }); }
   save(); ob = null; $('#onb')?.remove(); go('home'); toast('🎉 Your plan is ready');
 }
