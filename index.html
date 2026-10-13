@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 <title>FoodTracker</title>
-<meta name="theme-color" content="#2f9e5b">
+<meta name="theme-color" content="#f7f7f9">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -14,133 +14,219 @@
 <link rel="manifest" href="manifest.json">
 <style>
 :root{
-  --bg:#f6f7f4;--card:#fff;--text:#1c2321;--muted:#6b7570;--line:#e3e7e2;
-  --accent:#2f9e5b;--accent-soft:#e3f4ea;--warn:#d9822b;--danger:#d64545;
-  --protein:#3b7dd8;--carbs:#d9a21b;--fat:#c2569b;--shadow:0 1px 3px rgba(0,0,0,.06);
+  --bg:#f7f7f9;--card:#fff;--text:#111113;--muted:#8e8e93;--line:#ececf0;--track:#efeff3;
+  --ink:#111113;--on-ink:#fff;--chip:#f2f2f5;
+  --protein:#e3605b;--carbs:#ef9f45;--fat:#4b8cf5;--flame:#ff9500;--good:#34c759;--bad:#ff3b30;
+  --shadow:0 2px 14px rgba(0,0,0,.05);
 }
 @media (prefers-color-scheme:dark){
-  :root{--bg:#101412;--card:#1a201d;--text:#e8ede9;--muted:#94a09a;--line:#2a322e;
-    --accent:#45c27a;--accent-soft:#183626;--protein:#6aa0ee;--carbs:#e8b83a;--fat:#e07cbd;--shadow:none}
+  :root{--bg:#000;--card:#1c1c1e;--text:#f5f5f7;--muted:#98989f;--line:#2c2c2e;--track:#2c2c2e;
+    --ink:#f5f5f7;--on-ink:#000;--chip:#2c2c2e;--shadow:none}
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--text);
-  font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif}
-body{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
-header.top{position:sticky;top:0;z-index:5;background:var(--bg);
-  padding:calc(10px + env(safe-area-inset-top)) 16px 8px;display:flex;align-items:center;justify-content:space-between}
-header.top h1{font-size:28px;margin:0;font-weight:750;letter-spacing:-.02em}
-main{max-width:560px;margin:0 auto;padding:0 16px}
-.view[hidden]{display:none}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:0 0 14px;box-shadow:var(--shadow)}
-.card h2{font-size:17px;margin:0 0 10px}
+  font:16px/1.35 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+body{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0}
+input,select,textarea{font:inherit;font-size:16px;color:var(--text);width:100%;padding:14px 16px;border-radius:14px;
+  border:0;background:var(--chip);outline:none}
+textarea{resize:none;min-height:96px}
+a{color:inherit}
+.wrap{max-width:560px;margin:0 auto;padding:0 18px}
 .muted{color:var(--muted)}
-a{color:var(--accent)}
 .small{font-size:13px}
-.row{display:flex;gap:10px;align-items:center}
-.row.wrap{flex-wrap:wrap}
+.row{display:flex;gap:12px;align-items:center}
 .spread{display:flex;justify-content:space-between;align-items:center;gap:10px}
 .grow{flex:1;min-width:0}
-button,.btn{font:inherit;border:0;border-radius:12px;padding:12px 16px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer;
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none}
-button.secondary,.btn.secondary{background:var(--accent-soft);color:var(--accent)}
-button.ghost{background:transparent;color:var(--muted);padding:8px}
-button.danger{background:transparent;color:var(--danger);border:1px solid var(--danger)}
-button:disabled{opacity:.5}
-button.block{width:100%}
-label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
-input,select,textarea{font:inherit;font-size:16px;width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);
-  background:var(--bg);color:var(--text)}
-textarea{resize:vertical;min-height:70px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.grid4 input{padding:9px 6px;text-align:center}
-.grid4 label{margin:6px 0 2px;text-align:center;font-size:11px}
+.card{background:var(--card);border-radius:22px;padding:18px;box-shadow:var(--shadow);margin-bottom:14px}
+.h2{font-size:19px;font-weight:700;letter-spacing:-.01em;margin:22px 0 12px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:var(--ink);color:var(--on-ink);
+  border-radius:999px;padding:17px;font-weight:600;font-size:17px}
+.btn:disabled{opacity:.3}
+.btn.outline{background:var(--card);color:var(--text);box-shadow:inset 0 0 0 1.5px var(--line)}
+.btn.sm{width:auto;padding:10px 18px;font-size:15px}
+.chipbtn{background:var(--chip);border-radius:999px;padding:8px 14px;font-weight:600;font-size:14px}
+.lbl{display:block;font-size:13px;color:var(--muted);margin:14px 0 6px;font-weight:500}
 
-/* Today */
-.datenav{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.datenav strong{font-size:17px}
-.ringwrap{display:flex;align-items:center;gap:18px}
-.ring{position:relative;width:132px;height:132px;flex:none}
-.ring svg{transform:rotate(-90deg)}
-.ring .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.ring .big{font-size:26px;font-weight:750;line-height:1}
-.macro{margin:8px 0}
-.macro .bar{height:8px;border-radius:5px;background:var(--line);overflow:hidden;margin-top:4px}
-.macro .bar i{display:block;height:100%;border-radius:5px}
-.meal{display:flex;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
-.meal:first-of-type{border-top:0}
-.meal .name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tag{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:14px 0 2px}
-.banner{background:var(--accent-soft);color:var(--text);border:0}
+/* Rings */
+.ring{position:relative;flex:none}
+.ring svg{transform:rotate(-90deg);display:block}
+.ring circle{transition:stroke-dashoffset .6s ease}
+.ring-in{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:20px}
 
-/* Add */
-.addgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.addbtn{flex-direction:column;padding:18px 10px;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:16px;font-weight:600;box-shadow:var(--shadow)}
-.addbtn .ic{font-size:30px}
-.addbtn.primary{grid-column:1/-1;background:var(--accent);color:#fff;border-color:var(--accent);padding:24px}
-.preview{width:100%;max-height:260px;object-fit:cover;border-radius:12px;margin-bottom:10px}
-.loading{display:flex;flex-direction:column;align-items:center;gap:12px;padding:20px 0}
-.spinner{width:34px;height:34px;border:4px solid var(--accent-soft);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
+/* Header + week */
+.top{padding:calc(8px + env(safe-area-inset-top)) 0 4px;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;font-size:24px;letter-spacing:-.03em}
+.brand img{width:30px;height:30px;border-radius:8px}
+.streak{display:flex;align-items:center;gap:4px;background:var(--card);border-radius:999px;padding:7px 12px;font-weight:700;box-shadow:var(--shadow)}
+.week{display:flex;align-items:center;margin:12px -6px 14px}
+.week .nav{width:22px;color:var(--muted);font-size:20px}
+.days{flex:1;display:flex;justify-content:space-between}
+.day{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 5px;border-radius:16px;min-width:42px}
+.day.sel{background:var(--card);box-shadow:var(--shadow)}
+.day.future{opacity:.35;pointer-events:none}
+.day .dl{font-size:12px;color:var(--muted);font-weight:600}
+.day .dn{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;
+  border:2px dashed var(--line)}
+.day .dn.logged{border:2px solid var(--text)}
+.day .dn.over{border:2px solid var(--bad)}
 
-/* Review */
-.item{border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:10px}
-.item .row input:first-child{font-weight:600}
-.item .grams{width:92px;flex:none;text-align:right}
-.totals{display:flex;justify-content:space-between;font-weight:600;padding:8px 2px}
-.totals span{text-align:center}
-.totals small{display:block;font-weight:400;color:var(--muted);font-size:11px}
-.conf{display:inline-block;padding:2px 8px;border-radius:20px;font-size:12px;font-weight:600;background:var(--accent-soft);color:var(--accent)}
-.conf.low{background:#f9e6d3;color:#9a5a17}
+/* Home cards */
+.calcard{display:flex;justify-content:space-between;align-items:center;padding:24px 22px}
+.bignum{font-size:44px;font-weight:800;letter-spacing:-.04em;line-height:1}
+.bignum small{font-size:20px;color:var(--muted);font-weight:600;letter-spacing:0}
+.macros{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}
+.mcard{background:var(--card);border-radius:20px;padding:16px 12px 14px;box-shadow:var(--shadow);text-align:left}
+.mcard .v{font-size:21px;font-weight:800;letter-spacing:-.02em}
+.mcard .v small{font-size:13px;color:var(--muted);font-weight:600}
+.mcard .l{font-size:12.5px;color:var(--muted);margin:2px 0 12px;font-weight:500}
+.mcard .ring{margin:0 auto}
+.burned{font-size:13px;color:var(--muted);text-align:center;margin:6px 0 0}
+
+/* Entries */
+.entry{display:flex;gap:12px;background:var(--card);border-radius:20px;padding:10px;box-shadow:var(--shadow);margin-bottom:10px;cursor:pointer;text-align:left;width:100%}
+.thumb{width:92px;height:92px;border-radius:14px;flex:none;background:var(--chip);overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;font-size:38px}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .ov{position:absolute;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:15px}
+.einfo{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:6px;padding-right:4px}
+.ename{font-weight:650;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.etime{font-size:12px;color:var(--muted);background:var(--chip);padding:3px 8px;border-radius:999px;flex:none}
+.ecal{font-weight:700;font-size:15px}
+.emac{display:flex;gap:12px;font-size:13px;color:var(--muted);font-weight:500}
+.skel{height:10px;border-radius:6px;background:var(--chip);animation:pulse 1.2s infinite}
+@keyframes pulse{50%{opacity:.4}}
+.empty{text-align:center;padding:30px 20px;background:var(--card);border-radius:22px;box-shadow:var(--shadow)}
+.empty b{display:block;font-size:17px;margin-bottom:6px}
+
+/* Tab bar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:color-mix(in srgb,var(--card) 88%,transparent);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--line);
+  padding:8px 18px calc(8px + env(safe-area-inset-bottom))}
+.tabbar .in{max-width:560px;margin:0 auto;display:flex;align-items:center}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;font-weight:600;color:var(--muted);padding:4px 0}
+.tab svg{width:25px;height:25px}
+.tab.on{color:var(--text)}
+.fab{width:60px;height:60px;border-radius:50%;background:var(--ink);color:var(--on-ink);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);margin:-26px 0 0 18px;flex:none}
+.fab svg{width:28px;height:28px}
+
+/* Sheets & pages */
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:50;display:flex;align-items:flex-end;animation:fade .2s}
+.sheet{background:var(--card);width:100%;max-width:560px;margin:0 auto;border-radius:28px 28px 0 0;
+  padding:8px 20px calc(22px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto;animation:up .28s cubic-bezier(.2,.9,.3,1)}
+.grab{width:38px;height:5px;border-radius:3px;background:var(--line);margin:4px auto 14px}
+.sheet h3{font-size:21px;margin:0 0 4px;letter-spacing:-.02em}
+@keyframes up{from{transform:translateY(100%)}}
+@keyframes fade{from{opacity:0}}
+.page{position:fixed;inset:0;z-index:30;background:var(--bg);overflow-y:auto;animation:slide .25s ease}
+@keyframes slide{from{transform:translateX(30px);opacity:0}}
+.addgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.addtile{background:var(--chip);border-radius:20px;padding:20px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:600}
+.addtile span{font-size:30px}
+
+/* Detail */
+.hero{height:330px;background:var(--chip);position:relative;display:flex;align-items:center;justify-content:center;font-size:90px}
+.hero img{width:100%;height:100%;object-fit:cover}
+.hero.short{height:calc(130px + env(safe-area-inset-top))}
+.herobar{position:absolute;left:0;right:0;top:0;padding:calc(10px + env(safe-area-inset-top)) 16px;display:flex;justify-content:space-between}
+.circ{width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.35);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.dbody{background:var(--bg);border-radius:28px 28px 0 0;margin-top:-30px;position:relative;padding:22px 18px calc(110px + env(safe-area-inset-bottom))}
+.tinput{font-size:24px;font-weight:800;letter-spacing:-.02em;background:none;padding:4px 0;border-radius:0}
+.stepper{display:flex;align-items:center;gap:4px;background:var(--card);border-radius:999px;padding:4px;box-shadow:inset 0 0 0 1.5px var(--line);flex:none}
+.stepper button{width:32px;height:32px;border-radius:50%;font-size:20px;font-weight:600}
+.stepper b{min-width:28px;text-align:center}
+.bigcal{display:flex;align-items:center;gap:14px;padding:16px 18px;width:100%;text-align:left}
+.bigcal .ic{width:48px;height:48px;border-radius:14px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:24px}
+.dmac{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.dm{background:var(--card);border-radius:18px;padding:12px;box-shadow:var(--shadow);text-align:left}
+.dm .t{font-size:12.5px;color:var(--muted);font-weight:500;display:flex;gap:4px;align-items:center}
+.dm b{font-size:19px;display:block;margin-top:4px}
+.hbar{height:8px;border-radius:5px;background:var(--track);overflow:hidden;margin-top:10px}
+.hbar i{display:block;height:100%;border-radius:5px;background:var(--good)}
+.ing{background:var(--card);border-radius:18px;box-shadow:var(--shadow);margin-bottom:8px;overflow:hidden}
+.ing-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;width:100%;text-align:left}
+.ing-edit{padding:0 16px 16px}
+.ing-edit .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.ing-edit .g4 input{padding:11px 4px;text-align:center}
+.ing-edit .g4 .lbl{text-align:center;margin:8px 0 4px;font-size:11px}
+.dfoot{position:fixed;left:0;right:0;bottom:0;z-index:31;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  padding:12px 18px calc(12px + env(safe-area-inset-bottom))}
+.dfoot .in{max-width:560px;margin:0 auto;display:flex;gap:10px}
+
+/* Onboarding */
+.onb{display:flex;flex-direction:column;min-height:100%;padding:calc(10px + env(safe-area-inset-top)) 22px calc(22px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto}
+.onb-top{display:flex;align-items:center;gap:14px;height:44px}
+.onb-back{width:40px;height:40px;border-radius:50%;background:var(--chip);font-size:18px;flex:none}
+.prog{flex:1;height:4px;border-radius:2px;background:var(--track);overflow:hidden}
+.prog i{display:block;height:100%;background:var(--ink);transition:width .3s}
+.onb h1{font-size:31px;line-height:1.12;letter-spacing:-.03em;margin:26px 0 8px}
+.onb .sub{color:var(--muted);margin:0 0 28px}
+.onb-body{flex:1}
+.opt{display:block;width:100%;text-align:left;background:var(--chip);border-radius:18px;padding:19px 20px;font-weight:600;font-size:17px;margin-bottom:12px;transition:.15s}
+.opt small{display:block;font-weight:400;font-size:14px;color:var(--muted);margin-top:2px}
+.opt.on{background:var(--ink);color:var(--on-ink)}
+.opt.on small{color:inherit;opacity:.7}
+.speedv{text-align:center;font-size:44px;font-weight:800;letter-spacing:-.03em;margin:10px 0}
+.animals{display:flex;justify-content:space-between;font-size:30px;padding:0 4px}
+input[type=range]{-webkit-appearance:none;appearance:none;background:transparent;padding:16px 0}
+input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--track)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--ink);margin-top:-11px;border:3px solid var(--card);box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.tip{background:var(--chip);border-radius:16px;padding:14px 16px;font-size:14px;margin-top:16px}
+.plan4{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.plan4 .card{margin:0;display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 10px}
 
 /* Progress */
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.stat{background:var(--bg);border-radius:12px;padding:10px 12px}
-.stat b{display:block;font-size:20px}
-.bars{display:flex;align-items:flex-end;gap:8px;height:130px;position:relative;margin-top:8px}
-.bars .col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:4px}
-.bars .col i{width:100%;border-radius:6px 6px 3px 3px;background:var(--accent);min-height:2px}
-.bars .col i.over{background:var(--warn)}
-.bars .col span{font-size:11px;color:var(--muted)}
-.bars .goal{position:absolute;left:0;right:0;border-top:2px dashed var(--muted);opacity:.5}
+.pills{display:flex;gap:6px;background:var(--chip);border-radius:999px;padding:4px}
+.pills button{flex:1;padding:7px 10px;border-radius:999px;font-size:13px;font-weight:600;color:var(--muted)}
+.pills button.on{background:var(--card);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.two .card{margin:0}
+.wdots{display:flex;justify-content:space-between;margin-top:12px}
+.wdots div{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--muted);font-weight:600}
+.wdots i{width:14px;height:14px;border-radius:50%;background:var(--track)}
+.wdots i.on{background:var(--flame)}
+.bmi-bar{height:10px;border-radius:5px;background:linear-gradient(90deg,#5aa9f2 0%,#5aa9f2 14%,#34c759 14%,#34c759 40%,#f5b83d 40%,#f5b83d 60%,#ff5a4f 60%);position:relative;margin:18px 0 10px}
+.bmi-bar b{position:absolute;top:-6px;width:4px;height:22px;border-radius:2px;background:var(--text);transform:translateX(-50%)}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend span::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c);margin-right:5px}
+.nbars{display:flex;align-items:flex-end;gap:10px;height:150px;position:relative;margin-top:14px}
+.nbars .col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:6px}
+.nbars .stack{width:100%;max-width:26px;display:flex;flex-direction:column-reverse;border-radius:7px;overflow:hidden;background:var(--track);min-height:4px}
+.nbars .col span{font-size:11px;color:var(--muted);font-weight:600}
+.nbars .goal{position:absolute;left:0;right:0;border-top:1.5px dashed var(--muted);opacity:.6}
 .chart{width:100%;height:auto;display:block}
-.wlist div{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-top:1px solid var(--line)}
 
-/* Tabs */
-nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--card);border-top:1px solid var(--line);
-  display:flex;justify-content:space-around;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
-nav.tabs button{background:none;color:var(--muted);flex-direction:column;gap:2px;padding:6px 10px;font-size:11px;font-weight:600;flex:1}
-nav.tabs button svg{width:24px;height:24px}
-nav.tabs button.active{color:var(--accent)}
-nav.tabs .plus{background:var(--accent);color:#fff;width:52px;height:52px;flex:none;border-radius:50%;padding:0;margin-top:-18px;box-shadow:0 4px 12px rgba(47,158,91,.35)}
-nav.tabs .plus.active{color:#fff}
-nav.tabs .plus svg{width:28px;height:28px}
-#toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);
-  background:var(--text);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:.25s;pointer-events:none;
-  max-width:calc(100% - 32px);z-index:20}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+/* Settings */
+.list{background:var(--card);border-radius:22px;box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden}
+.li{display:flex;align-items:center;gap:12px;padding:16px 18px;width:100%;text-align:left;border-top:1px solid var(--line)}
+.li:first-child{border-top:0}
+.li .ic{font-size:20px;width:26px;text-align:center}
+.li .chev{color:var(--muted)}
+.switch{width:51px;height:31px;border-radius:999px;background:var(--line);position:relative;flex:none;transition:.2s}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:.2s}
+.switch.on{background:var(--good)}
+.switch.on::after{left:22px}
+.stats3{display:flex;justify-content:space-around;text-align:center}
+.stats3 b{display:block;font-size:20px}
+
+#toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translate(-50%,-20px);background:var(--ink);color:var(--on-ink);
+  padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:.25s;pointer-events:none;z-index:99;max-width:calc(100% - 32px);text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
 .hiddenfile{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.spin{width:18px;height:18px;border:2.5px solid currentColor;border-right-color:transparent;border-radius:50%;animation:rot .8s linear infinite;display:inline-block}
+@keyframes rot{to{transform:rotate(360deg)}}
 </style>
 </head>
 <body>
 
-<header class="top"><h1 id="title">Today</h1><span id="headerExtra"></span></header>
+<div class="wrap" id="view"></div>
 
-<main>
-  <section class="view" id="v-today"></section>
-  <section class="view" id="v-add" hidden></section>
-  <section class="view" id="v-review" hidden></section>
-  <section class="view" id="v-progress" hidden></section>
-  <section class="view" id="v-goals" hidden></section>
-</main>
-
-<nav class="tabs">
-  <button data-tab="today" class="active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Today</button>
-  <button data-tab="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>Progress</button>
-  <button data-tab="add" class="plus" aria-label="Add food"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
-  <button data-tab="goals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>Goals</button>
-  <button data-tab="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</button>
-</nav>
+<nav class="tabbar"><div class="in">
+  <button class="tab on" data-tab="home"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2 2.8 11h2.7v9h5v-6h3v6h5v-9h2.7z"/></svg>Home</button>
+  <button class="tab" data-tab="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20V12M12 20V5M19 20v-9"/></svg>Progress</button>
+  <button class="tab" data-tab="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</button>
+  <button class="fab" id="fab" aria-label="Add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+</div></nav>
 
 <input type="file" accept="image/*" capture="environment" id="fileCam" class="hiddenfile">
 <input type="file" accept="image/*" id="fileLib" class="hiddenfile">
@@ -150,277 +236,856 @@ nav.tabs .plus svg{width:28px;height:28px}
 <div id="toast"></div>
 
 <script>
-/* ---------- Storage ---------- */
+/* ================= Storage ================= */
 const LS = {
   get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch { return d; } },
   set(k, v) { try { localStorage.setItem(k, v); return true; } catch { return false; } },
   del(k) { try { localStorage.removeItem(k); } catch {} }
 };
+const EMPTY = () => ({ profile: null, overrides: {}, meals: [], weights: [], exercises: [], settings: { addBurned: false } });
 let db;
 try { db = JSON.parse(LS.get('ft_data', '{}')) || {}; } catch { db = {}; }
-db = Object.assign({ profile: null, overrides: {}, meals: [], weights: [] }, db);
-function save() { if (!LS.set('ft_data', JSON.stringify(db))) toast('Could not save – phone storage full?'); }
+db = migrate(Object.assign(EMPTY(), db));
+function migrate(d) {
+  d.settings = Object.assign({ addBurned: false }, d.settings);
+  d.exercises = d.exercises || [];
+  d.meals.forEach(m => { if (!m.servings) m.servings = 1; });
+  const p = d.profile;
+  if (p && !p.birth) {
+    p.birth = `${new Date().getFullYear() - (p.age || 30)}-06-15`;
+    p.workouts = p.activity >= 1.7 ? '6+' : p.activity >= 1.5 ? '3-5' : '0-2';
+  }
+  return d;
+}
+function save() { if (!LS.set('ft_data', JSON.stringify(db))) toast('Could not save – storage full?'); }
 const getKey = () => LS.get('ft_key', '');
 const getModel = () => LS.get('ft_model', '') || 'gemini-2.5-flash';
 
-/* ---------- Helpers ---------- */
+// Food photos live in IndexedDB (more space than localStorage)
+const idb = (() => {
+  let conn;
+  const open = () => conn || (conn = new Promise((res, rej) => {
+    const r = indexedDB.open('foodtracker', 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('photos');
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  }));
+  const run = async (mode, fn) => {
+    const d = await open();
+    return new Promise((res, rej) => {
+      const t = d.transaction('photos', mode), req = fn(t.objectStore('photos'));
+      t.oncomplete = () => res(req && req.result); t.onerror = () => rej(t.error);
+    });
+  };
+  return {
+    get: k => run('readonly', s => s.get(k)).catch(() => null),
+    set: (k, v) => run('readwrite', s => s.put(v, k)).catch(() => {}),
+    del: k => run('readwrite', s => s.delete(k)).catch(() => {}),
+    clear: () => run('readwrite', s => s.clear()).catch(() => {})
+  };
+})();
+const photoCache = {};
+async function hydratePhotos(root = document) {
+  for (const img of root.querySelectorAll('img[data-photo]')) {
+    const id = img.dataset.photo;
+    if (!(id in photoCache)) photoCache[id] = await idb.get(id);
+    if (photoCache[id]) img.src = photoCache[id];
+    else img.replaceWith(Object.assign(document.createElement('span'), { textContent: '🍽️' }));
+  }
+}
+
+/* ================= Helpers ================= */
 const $ = s => document.querySelector(s);
+const LOC = 'en-GB';
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const num = v => { const n = parseFloat(String(v ?? '').replace(',', '.')); return isFinite(n) ? n : 0; };
-const r0 = n => Math.round(n);
-const r1 = n => Math.round(n * 10) / 10;
+const r0 = n => Math.round(n), r1 = n => Math.round(n * 10) / 10;
+const clamp = (n, a, b) => Math.min(b, Math.max(a, n));
 const iso = (d = new Date()) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 const addDays = (s, n) => { const d = new Date(s + 'T12:00'); d.setDate(d.getDate() + n); return iso(d); };
+const dt = s => new Date(s + 'T12:00');
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-const fmtDate = s => new Date(s + 'T12:00').toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
-const MEAL_TYPES = ['breakfast', 'lunch', 'dinner', 'snack'];
-const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
-function guessType() { const h = new Date().getHours() + new Date().getMinutes() / 60; return h < 10.5 ? 'breakfast' : h < 15 ? 'lunch' : h < 17.5 ? 'snack' : h < 22 ? 'dinner' : 'snack'; }
+const nowTime = () => new Date().toTimeString().slice(0, 5);
+const fmtDate = (s, o = { day: 'numeric', month: 'short' }) => dt(s).toLocaleDateString(LOC, o);
+const clone = o => JSON.parse(JSON.stringify(o));
 let toastT;
-function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 3200); }
+function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
 
-/* ---------- Targets ---------- */
+function ring(size, stroke, pct, color, inner = '') {
+  const r = (size - stroke) / 2, C = 2 * Math.PI * r;
+  return `<div class="ring" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="var(--track)" stroke-width="${stroke}"/>
+    <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round"
+      stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - clamp(pct || 0, 0, 1))}"/></svg><div class="ring-in">${inner}</div></div>`;
+}
+const MAC = [
+  { k: 'protein', label: 'Protein', ic: '🍗', c: 'var(--protein)' },
+  { k: 'carbs', label: 'Carbs', ic: '🌾', c: 'var(--carbs)' },
+  { k: 'fat', label: 'Fats', ic: '🥑', c: 'var(--fat)' }
+];
+
+/* ================= Calculations ================= */
+const ACT = { '0-2': 1.375, '3-5': 1.55, '6+': 1.725 };
+function age(p) { const b = new Date(p.birth), n = new Date(); let a = n.getFullYear() - b.getFullYear(); if (n < new Date(n.getFullYear(), b.getMonth(), b.getDate())) a--; return a || 30; }
 function currentWeight() {
   if (db.weights.length) return [...db.weights].sort((a, b) => a.date.localeCompare(b.date)).at(-1).kg;
   return db.profile ? db.profile.weight : 0;
 }
-function targets() {
-  const p = db.profile; if (!p) return null;
-  const w = currentWeight();
-  const bmr = 10 * w + 6.25 * p.height - 5 * p.age + (p.sex === 'm' ? 5 : -161);
-  const tdee = bmr * p.activity;
+function calcTargets(p, w) {
+  const bmr = 10 * w + 6.25 * p.height - 5 * age(p) + (p.sex === 'm' ? 5 : p.sex === 'f' ? -161 : -78);
+  const tdee = bmr * (ACT[p.workouts] || 1.375);
   let kcal = tdee;
-  if (p.goal === 'lose') kcal = tdee - p.pace * 7700 / 7;
-  if (p.goal === 'gain') kcal = tdee + p.pace * 7700 / 7;
+  if (p.goal === 'lose') kcal -= p.pace * 7700 / 7;
+  if (p.goal === 'gain') kcal += p.pace * 7700 / 7;
   kcal = Math.max(kcal, p.sex === 'm' ? 1500 : 1200);
   const protein = w * (p.goal === 'lose' ? 2.0 : p.goal === 'gain' ? 1.8 : 1.6);
-  const fat = kcal * 0.25 / 9;
+  const fat = kcal * 0.27 / 9;
   const carbs = Math.max(0, (kcal - protein * 4 - fat * 9) / 4);
-  const t = { kcal: r0(kcal), protein: r0(protein), carbs: r0(carbs), fat: r0(fat), bmr: r0(bmr), tdee: r0(tdee) };
+  return { kcal: r0(kcal), protein: r0(protein), carbs: r0(carbs), fat: r0(fat), tdee: r0(tdee) };
+}
+function targets() {
+  if (!db.profile) return { kcal: 2000, protein: 150, carbs: 200, fat: 60, auto: {} };
+  const t = calcTargets(db.profile, currentWeight());
   t.auto = { ...t };
   for (const k of ['kcal', 'protein', 'carbs', 'fat']) if (num(db.overrides[k]) > 0) t[k] = r0(num(db.overrides[k]));
   return t;
 }
-function dayTotals(date) {
-  const t = { kcal: 0, protein: 0, carbs: 0, fat: 0, count: 0 };
-  for (const m of db.meals) if (m.date === date) { t.count++; for (const it of m.items) for (const k of ['kcal', 'protein', 'carbs', 'fat']) t[k] += num(it[k]); }
+function mealTotals(m) {
+  const s = m.servings || 1, t = { kcal: 0, protein: 0, carbs: 0, fat: 0 };
+  for (const it of m.items) for (const k in t) t[k] += num(it[k]) * s;
   return t;
 }
-const mealTotals = m => m.items.reduce((a, it) => ({ kcal: a.kcal + num(it.kcal), protein: a.protein + num(it.protein) }), { kcal: 0, protein: 0 });
+function dayTotals(date) {
+  const t = { kcal: 0, protein: 0, carbs: 0, fat: 0, count: 0 };
+  for (const m of db.meals) if (m.date === date) { t.count++; const mt = mealTotals(m); for (const k in mt) t[k] += mt[k]; }
+  return t;
+}
+const dayBurned = date => db.exercises.filter(e => e.date === date).reduce((a, e) => a + num(e.kcal), 0);
+function streak() {
+  const has = new Set(db.meals.map(m => m.date));
+  let d = iso(), n = 0;
+  if (!has.has(d)) d = addDays(d, -1);
+  while (has.has(d)) { n++; d = addDays(d, -1); }
+  return n;
+}
 
-/* ---------- Navigation ---------- */
-let curDate = iso();
-let draft = null;
-let addState = { mode: null, busy: false, preview: null, error: null };
-const TITLES = { today: 'Today', add: 'Add food', review: 'Check & save', progress: 'Progress', goals: 'Goals', settings: 'Settings' };
-function show(tab) {
-  const view = tab === 'settings' ? 'goals' : tab;
-  document.querySelectorAll('.view').forEach(v => v.hidden = v.id !== 'v-' + view);
-  document.querySelectorAll('nav.tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-  $('#title').textContent = TITLES[tab];
+/* ================= Navigation ================= */
+let tab = 'home', sel = iso(), weekOff = 0, calMode = 'left', pending = [];
+let progRange = 90, nutWeek = 0;
+function go(t) {
+  tab = t;
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
   window.scrollTo(0, 0);
-  ({ today: renderToday, add: renderAdd, review: renderReview, progress: renderProgress, goals: () => renderGoals(false), settings: () => renderGoals(true) })[tab]();
+  render();
 }
-document.querySelectorAll('nav.tabs button').forEach(b => b.onclick = () => {
-  if (b.dataset.tab === 'add') addState = { mode: null, busy: false, preview: null, error: null };
-  show(b.dataset.tab);
-});
+function render() { ({ home: renderHome, progress: renderProgress, settings: renderSettings })[tab](); }
+document.querySelectorAll('.tab').forEach(b => b.onclick = () => go(b.dataset.tab));
+$('#fab').onclick = openAddMenu;
 
-/* ---------- Today ---------- */
-function renderToday() {
-  const t = targets(), d = dayTotals(curDate);
-  const isToday = curDate === iso();
-  let h = `<div class="datenav">
-    <button class="ghost" id="prevDay" aria-label="Previous day">‹ Prev</button>
-    <strong>${isToday ? 'Today' : curDate === addDays(iso(), -1) ? 'Yesterday' : fmtDate(curDate)}</strong>
-    <button class="ghost" id="nextDay" ${isToday ? 'disabled' : ''} aria-label="Next day">Next ›</button></div>`;
-  if (!t) h += `<div class="card banner"><h2>👋 Welcome!</h2><p>Set your body data and goal first, so the app can calculate your daily calories and protein.</p>
-    <button class="block" onclick="show('goals')">Set my goals</button></div>`;
-  if (!getKey()) h += `<div class="card banner"><b>AI photo analysis is off.</b> <span class="muted">Add your free Google AI key in Settings.</span>
-    <div style="margin-top:10px"><button class="secondary" onclick="show('settings')">Open Settings</button></div></div>`;
-  const goal = t ? t.kcal : 2000;
-  const left = goal - d.kcal, pct = Math.min(d.kcal / goal, 1), C = 2 * Math.PI * 56;
-  h += `<div class="card"><div class="ringwrap">
-    <div class="ring"><svg width="132" height="132" viewBox="0 0 132 132">
-      <circle cx="66" cy="66" r="56" fill="none" stroke="var(--line)" stroke-width="12"/>
-      <circle cx="66" cy="66" r="56" fill="none" stroke="${left < 0 ? 'var(--warn)' : 'var(--accent)'}" stroke-width="12" stroke-linecap="round"
-        stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - pct)}"/></svg>
-      <div class="center"><span class="big">${Math.abs(r0(left))}</span><span class="small muted">${left < 0 ? 'kcal over' : 'kcal left'}</span></div></div>
-    <div class="grow">
-      <div class="small muted">Eaten</div><div style="font-size:20px;font-weight:700">${r0(d.kcal)} <span class="small muted">/ ${goal} kcal</span></div>
-      ${macroBar('Protein', d.protein, t?.protein, 'var(--protein)')}
-    </div></div>
-    ${macroBar('Carbs', d.carbs, t?.carbs, 'var(--carbs)')}
-    ${macroBar('Fat', d.fat, t?.fat, 'var(--fat)')}
-  </div>`;
-  const meals = db.meals.filter(m => m.date === curDate);
-  h += `<div class="card"><div class="spread"><h2 style="margin:0">Meals</h2><button class="secondary" onclick="startAdd()">＋ Add</button></div>`;
-  if (!meals.length) h += `<p class="muted">Nothing logged ${isToday ? 'yet today' : 'this day'}. Tap ＋ to snap a photo of your food.</p>`;
-  for (const type of MEAL_TYPES) {
-    const list = meals.filter(m => m.type === type).sort((a, b) => (a.time || '').localeCompare(b.time || ''));
-    if (!list.length) continue;
-    const tot = list.reduce((a, m) => a + mealTotals(m).kcal, 0);
-    h += `<div class="tag">${cap(type)} · ${r0(tot)} kcal</div>`;
-    for (const m of list) {
-      const mt = mealTotals(m);
-      h += `<div class="meal"><div class="grow" onclick="editMeal('${m.id}')" style="cursor:pointer">
-        <div class="name">${esc(m.name)}</div>
-        <div class="small muted">${r0(mt.kcal)} kcal · ${r0(mt.protein)} g protein${m.time ? ' · ' + esc(m.time) : ''}</div></div>
-        <button class="ghost" onclick="editMeal('${m.id}')" aria-label="Edit">✎</button>
-        <button class="ghost" onclick="deleteMeal('${m.id}')" aria-label="Delete">🗑</button></div>`;
+/* ================= Home ================= */
+function renderHome() {
+  const t = targets(), tot = dayTotals(sel), burned = dayBurned(sel);
+  const goalK = t.kcal + (db.settings.addBurned ? burned : 0);
+  const today = iso(), st = streak();
+  // Week strip (Mon–Sun)
+  const dow = (new Date().getDay() + 6) % 7, mon = addDays(today, -dow + weekOff * 7);
+  const days = [...Array(7)].map((_, i) => addDays(mon, i));
+  const week = days.map(d => {
+    const dtot = dayTotals(d), cls = dtot.count ? (dtot.kcal > t.kcal * 1.1 ? 'over' : 'logged') : '';
+    return `<button class="day ${d === sel ? 'sel' : ''} ${d > today ? 'future' : ''}" data-d="${d}">
+      <span class="dl">${dt(d).toLocaleDateString(LOC, { weekday: 'short' }).slice(0, 3)}</span><span class="dn ${cls}">${dt(d).getDate()}</span></button>`;
+  }).join('');
+  const left = goalK - tot.kcal;
+  const calBig = calMode === 'left'
+    ? `<div class="bignum">${Math.abs(r0(left))}</div><div class="muted" style="margin-top:6px;font-weight:500">Calories ${left < 0 ? 'over' : 'left'}</div>`
+    : `<div class="bignum">${r0(tot.kcal)}<small> /${goalK}</small></div><div class="muted" style="margin-top:6px;font-weight:500">Calories eaten</div>`;
+  const macros = MAC.map(m => {
+    const v = tot[m.k], g = t[m.k], l = g - v;
+    const top = calMode === 'left' ? `${Math.abs(r0(l))}g` : `${r0(v)}<small> /${g}g</small>`;
+    const lab = calMode === 'left' ? `${m.label} ${l < 0 ? 'over' : 'left'}` : `${m.label} eaten`;
+    return `<button class="mcard" data-toggle><div class="v">${top}</div><div class="l">${lab}</div>${ring(62, 6, v / g, m.c, `<span style="font-size:20px">${m.ic}</span>`)}</button>`;
+  }).join('');
+
+  // Entries for selected day
+  const entries = [
+    ...pending.filter(p => p.date === sel).map(p => ({ kind: 'pending', time: p.time, p })),
+    ...db.meals.filter(m => m.date === sel).map(m => ({ kind: 'meal', time: m.time, m })),
+    ...db.exercises.filter(e => e.date === sel).map(e => ({ kind: 'ex', time: e.time, e }))
+  ].sort((a, b) => (b.kind === 'pending') - (a.kind === 'pending') || (b.time || '').localeCompare(a.time || ''));
+
+  let list = entries.map(en => {
+    if (en.kind === 'pending') {
+      const p = en.p;
+      return `<div class="entry"><div class="thumb">${p.preview ? `<img src="${p.preview}" alt="">` : '💬'}
+        ${p.status === 'analyzing' ? `<div class="ov" data-pct="${p.id}">${r0(p.pct)}%</div>` : ''}</div>
+        <div class="einfo">${p.status === 'analyzing'
+          ? `<div class="ename">Analyzing food…</div><div class="skel" style="width:80%"></div><div class="skel" style="width:55%"></div><div class="small muted">We'll notify you when done</div>`
+          : `<div class="ename" style="color:var(--bad)">Couldn't analyze</div><div class="small muted">${esc(p.error)}</div>
+             <div class="row"><button class="chipbtn" onclick="retryPending('${p.id}')">Try again</button><button class="chipbtn" onclick="removePending('${p.id}')">Remove</button></div>`}
+        </div></div>`;
     }
-  }
-  h += `</div>`;
-  $('#v-today').innerHTML = h;
-  $('#prevDay').onclick = () => { curDate = addDays(curDate, -1); renderToday(); };
-  $('#nextDay').onclick = () => { if (curDate < iso()) { curDate = addDays(curDate, 1); renderToday(); } };
-}
-function macroBar(label, val, goal, color) {
-  const pct = goal ? Math.min(val / goal * 100, 100) : 0;
-  return `<div class="macro"><div class="spread small"><span>${label}</span><span class="muted">${r0(val)}${goal ? ' / ' + goal : ''} g</span></div>
-    <div class="bar"><i style="width:${pct}%;background:${color}"></i></div></div>`;
-}
-function deleteMeal(id) {
-  const m = db.meals.find(x => x.id === id);
-  if (!m || !confirm(`Delete "${m.name}"?`)) return;
-  db.meals = db.meals.filter(x => x.id !== id); save(); renderToday(); toast('Meal deleted');
-}
-function editMeal(id) {
-  const m = db.meals.find(x => x.id === id); if (!m) return;
-  draft = JSON.parse(JSON.stringify(m)); draft.items.forEach(setBase); show('review');
-}
-function startAdd() { addState = { mode: null, busy: false, preview: null, error: null }; show('add'); }
+    if (en.kind === 'ex') {
+      const e = en.e;
+      return `<button class="entry" onclick="openExercise('${e.id}')"><div class="thumb">🏋️</div><div class="einfo">
+        <div class="spread"><span class="ename">${esc(e.name)}</span><span class="etime">${esc(e.time || '')}</span></div>
+        <div class="ecal">🔥 ${r0(e.kcal)} calories burned</div>${e.minutes ? `<div class="emac"><span>⏱ ${e.minutes} min</span></div>` : ''}</div></button>`;
+    }
+    const m = en.m, mt = mealTotals(m);
+    return `<button class="entry" onclick="openMeal('${m.id}')"><div class="thumb">${m.photo ? `<img data-photo="${m.id}" alt="">` : (m.source === 'barcode' ? '🏷️' : '🍽️')}</div>
+      <div class="einfo"><div class="spread"><span class="ename">${esc(m.name)}</span><span class="etime">${esc(m.time || '')}</span></div>
+      <div class="ecal">🔥 ${r0(mt.kcal)} calories</div>
+      <div class="emac"><span>🍗 ${r0(mt.protein)}g</span><span>🌾 ${r0(mt.carbs)}g</span><span>🥑 ${r0(mt.fat)}g</span></div></div></button>`;
+  }).join('');
+  if (!entries.length) list = `<div class="empty"><b>You haven't uploaded any food</b><span class="muted">Start tracking ${sel === today ? "today's" : 'this day\'s'} meals by taking a quick picture</span>
+    <div style="margin-top:16px"><button class="btn sm" style="margin:0 auto" onclick="openAddMenu()">＋ Add food</button></div></div>`;
 
-/* ---------- Add ---------- */
-function renderAdd() {
-  const s = addState;
-  let h = '';
-  if (s.busy) {
-    h += `<div class="card">${s.preview ? `<img class="preview" src="${s.preview}" alt="">` : ''}
-      <div class="loading"><div class="spinner"></div><div>${esc(s.busy)}</div></div></div>`;
-    $('#v-add').innerHTML = h; return;
-  }
-  if (s.error) h += `<div class="card" style="border-color:var(--danger)"><b style="color:var(--danger)">Something went wrong</b><p>${esc(s.error)}</p></div>`;
-  if (!getKey()) h += `<div class="card banner"><b>Photo AI needs a free key.</b> <span class="muted">Barcode and manual entry work without it.</span>
-    <div style="margin-top:10px"><button class="secondary" onclick="show('settings')">Add key in Settings</button></div></div>`;
-  h += `<div class="addgrid">
-    <button class="addbtn primary" id="bCam"><span class="ic">📷</span>Take a photo of your food</button>
-    <button class="addbtn" id="bLib"><span class="ic">🖼️</span>Choose photo</button>
-    <button class="addbtn" id="bBar"><span class="ic">🏷️</span>Scan barcode</button>
-    <button class="addbtn" id="bText"><span class="ic">💬</span>Describe it</button>
-    <button class="addbtn" id="bMan"><span class="ic">✏️</span>Enter manually</button>
-  </div>
-  <div class="card" style="margin-top:14px">
-    <label for="hint" style="margin-top:0">Optional note for the AI</label>
-    <input id="hint" placeholder="e.g. cooked in butter, large portion, 2 eggs" value="${esc(s.hint || '')}">
-  </div>`;
-  if (s.mode === 'text') h += `<div class="card"><h2>What did you eat?</h2>
-    <textarea id="descr" placeholder="e.g. 2 scrambled eggs, 1 slice whole-grain toast with butter, a cappuccino">${esc(s.descr || '')}</textarea>
-    <button class="block" id="bAnalyzeText" style="margin-top:10px">Analyze with AI</button></div>`;
-  if (s.mode === 'barcode') h += `<div class="card"><h2>Barcode</h2>
-    <p class="small muted">Couldn't read it from the photo? Type the number under the barcode.</p>
-    <div class="row"><input id="code" inputmode="numeric" placeholder="e.g. 4008400402222" value="${esc(s.code || '')}"><button id="bLookup">Look up</button></div></div>`;
-  h += `<p class="small muted" style="text-align:center">AI values are estimates. Always check portion sizes before saving.</p>`;
-  $('#v-add').innerHTML = h;
-  const hint = () => (addState.hint = $('#hint').value.trim());
-  $('#bCam').onclick = () => { hint(); $('#fileCam').click(); };
-  $('#bLib').onclick = () => { hint(); $('#fileLib').click(); };
-  $('#bBar').onclick = () => { hint(); addState.mode = 'barcode'; $('#fileBar').click(); renderAdd(); };
-  $('#bText').onclick = () => { hint(); addState.mode = 'text'; addState.error = null; renderAdd(); $('#descr').focus(); };
-  $('#bMan').onclick = () => { draft = newDraft('manual'); draft.items.push(setBase({ name: '', grams: 100, kcal: 0, protein: 0, carbs: 0, fat: 0 })); show('review'); };
-  if ($('#bAnalyzeText')) $('#bAnalyzeText').onclick = () => { hint(); addState.descr = $('#descr').value.trim(); if (addState.descr) analyzeText(addState.descr); };
-  if ($('#bLookup')) $('#bLookup').onclick = () => { addState.code = $('#code').value.replace(/\D/g, ''); if (addState.code) lookupBarcode(addState.code); };
+  $('#view').innerHTML = `
+    <div class="top"><div class="brand"><img src="icon-180.png" alt="">FoodTracker</div><div class="streak">🔥 ${st}</div></div>
+    <div class="week"><button class="nav" id="wPrev">‹</button><div class="days">${week}</div><button class="nav" id="wNext" ${weekOff >= 0 ? 'style="visibility:hidden"' : ''}>›</button></div>
+    ${!getKey() ? `<button class="card" style="width:100%;text-align:left;display:flex;gap:12px;align-items:center" onclick="go('settings')"><span style="font-size:26px">✨</span><span class="grow"><b>Turn on AI food scanning</b><br><span class="small muted">Add your free Google AI key in Settings</span></span><span class="muted">›</span></button>` : ''}
+    <button class="card calcard" data-toggle style="width:100%;text-align:left"><div>${calBig}</div>${ring(104, 9, tot.kcal / goalK, left < 0 ? 'var(--bad)' : 'var(--ink)', '<span style="font-size:28px">🔥</span>')}</button>
+    <div class="macros">${macros}</div>
+    ${burned ? `<div class="burned">🏋️ ${r0(burned)} kcal burned${db.settings.addBurned ? ' · added to your goal' : ''}</div>` : ''}
+    <div class="h2">${sel === today ? 'Recently uploaded' : fmtDate(sel, { weekday: 'long', day: 'numeric', month: 'long' })}</div>
+    ${list}`;
+  document.querySelectorAll('.day').forEach(b => b.onclick = () => { sel = b.dataset.d; renderHome(); });
+  document.querySelectorAll('[data-toggle]').forEach(b => b.onclick = () => { calMode = calMode === 'left' ? 'eaten' : 'left'; renderHome(); });
+  $('#wPrev').onclick = () => { weekOff--; renderHome(); };
+  $('#wNext').onclick = () => { if (weekOff < 0) { weekOff++; renderHome(); } };
+  hydratePhotos($('#view'));
 }
-function newDraft(source) { return { id: null, date: curDate, type: guessType(), name: '', items: [], source, notes: '', confidence: '' }; }
-function setBase(it) { it.base = { grams: num(it.grams), kcal: num(it.kcal), protein: num(it.protein), carbs: num(it.carbs), fat: num(it.fat) }; return it; }
 
-async function onPhoto(file) {
-  if (!file) return;
-  addState.error = null;
+/* ================= Sheets ================= */
+function sheet(html, mount) {
+  closeSheet();
+  const b = document.createElement('div');
+  b.className = 'backdrop';
+  b.innerHTML = `<div class="sheet"><div class="grab"></div>${html}</div>`;
+  b.onclick = e => { if (e.target === b) closeSheet(); };
+  document.body.appendChild(b);
+  if (mount) mount(b.querySelector('.sheet'));
+}
+function closeSheet() { document.querySelectorAll('.backdrop').forEach(x => x.remove()); }
+
+function openAddMenu() {
+  sheet(`<h3>Add</h3><div class="addgrid">
+    <button class="addtile" id="aScan"><span>📷</span>Scan food</button>
+    <button class="addtile" id="aBar"><span>🏷️</span>Barcode</button>
+    <button class="addtile" id="aLib"><span>🖼️</span>Upload photo</button>
+    <button class="addtile" id="aText"><span>💬</span>Describe food</button>
+    <button class="addtile" id="aEx"><span>🏋️</span>Log exercise</button>
+    <button class="addtile" id="aMan"><span>✏️</span>Manual entry</button></div>`, s => {
+    s.querySelector('#aScan').onclick = () => { closeSheet(); $('#fileCam').click(); };
+    s.querySelector('#aLib').onclick = () => { closeSheet(); $('#fileLib').click(); };
+    s.querySelector('#aBar').onclick = openBarcodeSheet;
+    s.querySelector('#aText').onclick = openDescribeSheet;
+    s.querySelector('#aEx').onclick = () => openExercise(null);
+    s.querySelector('#aMan').onclick = () => {
+      closeSheet();
+      openNewMeal({ id: uid(), date: sel, time: nowTime(), name: '', items: [{ name: '', grams: 100, kcal: 0, protein: 0, carbs: 0, fat: 0 }], servings: 1, health: null, source: 'manual', photo: false }, 0);
+    };
+  });
+}
+
+function numberSheet(title, value, unit, cb, step = 1) {
+  sheet(`<h3>${esc(title)}</h3><div class="row" style="margin:18px 0">
+    <button class="onb-back" id="nMinus">−</button>
+    <input id="nVal" inputmode="decimal" value="${value}" style="text-align:center;font-size:30px;font-weight:800">
+    <button class="onb-back" id="nPlus">＋</button><span class="muted">${esc(unit)}</span></div>
+    <button class="btn" id="nSave">Save</button>`, s => {
+    const inp = s.querySelector('#nVal');
+    const bump = d => inp.value = r1(Math.max(0, num(inp.value) + d));
+    s.querySelector('#nMinus').onclick = () => bump(-step);
+    s.querySelector('#nPlus').onclick = () => bump(step);
+    s.querySelector('#nSave').onclick = () => { closeSheet(); cb(num(inp.value)); };
+    inp.focus(); inp.select();
+  });
+}
+
+/* ================= AI analysis ================= */
+const FOOD_PROMPT = `You are an expert nutritionist powering a calorie tracking app.
+Identify every food and drink in the meal. Estimate each portion in grams using visual cues (plate size, cutlery, hands, packaging). Include cooking oils, sauces and dressings.
+Return ONLY JSON in this exact shape:
+{"name": "short appetising meal name", "items": [{"name": "ingredient", "grams": 0, "kcal": 0, "protein": 0, "carbs": 0, "fat": 0}], "health_score": 7, "notes": "short"}
+Numbers are for the whole portion (not per 100 g); macros in grams. health_score is an integer 1-10 (10 = very healthy: whole foods, high protein and fibre, low sugar). If there is no food, return "items": [] and explain in notes.`;
+
+async function askGemini(parts) {
+  const key = getKey(); if (!key) throw new Error('NOKEY');
+  const call = model => fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+    body: JSON.stringify({ contents: [{ parts }], generationConfig: { responseMimeType: 'application/json', temperature: 0.2 } })
+  });
+  let res;
   try {
-    const dataUrl = await fileToJpeg(file, 1024);
-    addState.preview = dataUrl; addState.busy = 'Looking at your food…'; renderAdd();
-    const prompt = FOOD_PROMPT + (addState.hint ? `\nExtra info from the user: ${addState.hint}` : '');
-    const res = await askGemini([{ text: prompt }, { inlineData: { mimeType: 'image/jpeg', data: dataUrl.split(',')[1] } }]);
-    toDraft(res, 'photo');
-  } catch (e) { fail(e); }
+    const model = getModel();
+    res = await call(model);
+    if (res.status === 404 && model !== 'gemini-flash-latest') res = await call('gemini-flash-latest');
+  } catch { throw new Error('No connection to the AI. Check your internet.'); }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const msg = data.error?.message || 'HTTP ' + res.status;
+    if (res.status === 429) throw new Error('Free AI limit reached for now. Wait a minute and try again.');
+    if (/api key|API_KEY|permission/i.test(msg)) throw new Error('Your AI key was rejected. Check it in Settings.');
+    if (res.status === 404) throw new Error('AI model not found. Change the model in Settings.');
+    throw new Error('AI error: ' + msg);
+  }
+  const text = (data.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('').replace(/^```(json)?|```$/gm, '').trim();
+  try { return JSON.parse(text); } catch { throw new Error('The AI gave an unreadable answer. Please try again.'); }
 }
-async function analyzeText(text) {
-  addState.error = null; addState.busy = 'Calculating nutrition…'; addState.preview = null; renderAdd();
+const normItems = items => (items || []).map(it => ({
+  name: String(it.name || 'Food'), grams: r0(num(it.grams)), kcal: r0(num(it.kcal)),
+  protein: r1(num(it.protein)), carbs: r1(num(it.carbs)), fat: r1(num(it.fat))
+}));
+const healthOf = v => { const n = r0(num(v)); return n >= 1 && n <= 10 ? n : null; };
+
+function addPending(preview, parts) {
+  const p = { id: uid(), date: sel, time: nowTime(), preview, parts, pct: 2, status: 'analyzing' };
+  pending.unshift(p);
+  if (tab !== 'home') go('home'); else renderHome();
+  runAnalysis(p);
+}
+async function runAnalysis(p) {
+  p.status = 'analyzing'; p.pct = 2;
+  clearInterval(p.timer);
+  p.timer = setInterval(() => {
+    p.pct += (95 - p.pct) * 0.045;
+    const el = document.querySelector(`[data-pct="${p.id}"]`); if (el) el.textContent = r0(p.pct) + '%';
+  }, 200);
+  if (tab === 'home') renderHome();
   try {
-    const res = await askGemini([{ text: FOOD_PROMPT + `\nThere is no photo. The user describes the meal: ${text}` + (addState.hint ? `\nExtra info: ${addState.hint}` : '') }]);
-    toDraft(res, 'text');
-  } catch (e) { fail(e); }
+    const res = await askGemini(p.parts);
+    const items = normItems(res.items);
+    if (!items.length) throw new Error(res.notes || 'No food recognised. Try a clearer photo.');
+    const m = { id: p.id, date: p.date, time: p.time, name: res.name || items.map(i => i.name).join(', '), items, servings: 1,
+      health: healthOf(res.health_score), source: p.preview ? 'photo' : 'text', photo: !!p.preview };
+    if (p.preview) { await idb.set(m.id, p.preview); photoCache[m.id] = p.preview; }
+    db.meals.push(m); save();
+    clearInterval(p.timer); pending = pending.filter(x => x !== p);
+    toast('✓ ' + m.name + ' logged');
+  } catch (e) {
+    clearInterval(p.timer); p.status = 'error';
+    p.error = e.message === 'NOKEY' ? 'Add your free AI key in Settings first.' : e.message;
+  }
+  if (tab === 'home') renderHome();
 }
-function fail(e) {
-  addState.busy = false;
-  addState.error = e.message === 'NOKEY' ? 'Add your free Google AI key in Settings first.' : e.message;
-  renderAdd();
+function retryPending(id) { const p = pending.find(x => x.id === id); if (p) runAnalysis(p); }
+function removePending(id) { pending = pending.filter(x => x.id !== id); renderHome(); }
+
+async function onFoodPhoto(file) {
+  if (!file) return;
+  try {
+    const full = await scaleImage(file, 1024), thumb = await scaleImage(full, 480);
+    addPending(thumb, [{ text: FOOD_PROMPT }, { inlineData: { mimeType: 'image/jpeg', data: full.split(',')[1] } }]);
+  } catch (e) { toast(e.message); }
 }
-function toDraft(res, source) {
-  addState.busy = false;
-  const items = (res.items || []).map(it => setBase({
-    name: String(it.name || 'Food'), grams: r0(num(it.grams)), kcal: r0(num(it.kcal)),
-    protein: r1(num(it.protein)), carbs: r1(num(it.carbs)), fat: r1(num(it.fat))
-  }));
-  if (!items.length) { addState.error = res.notes || 'No food recognised. Try another photo with better light, or describe it in words.'; renderAdd(); return; }
-  draft = newDraft(source);
-  draft.name = res.meal_name || items.map(i => i.name).join(', ');
-  draft.items = items; draft.notes = res.notes || ''; draft.confidence = res.confidence || '';
-  show('review');
+$('#fileCam').onchange = e => { onFoodPhoto(e.target.files[0]); e.target.value = ''; };
+$('#fileLib').onchange = e => { onFoodPhoto(e.target.files[0]); e.target.value = ''; };
+
+function openDescribeSheet() {
+  sheet(`<h3>Describe your food</h3><p class="muted" style="margin-top:4px">The AI calculates the nutrition for you.</p>
+    <textarea id="dTxt" placeholder="e.g. 2 scrambled eggs, 1 slice of toast with butter and a cappuccino"></textarea>
+    <button class="btn" id="dGo" style="margin-top:14px">Analyze</button>`, s => {
+    const ta = s.querySelector('#dTxt'); ta.focus();
+    s.querySelector('#dGo').onclick = () => {
+      const t = ta.value.trim(); if (!t) return;
+      closeSheet();
+      addPending(null, [{ text: FOOD_PROMPT + `\nThere is no photo. The user describes the meal: ${t}` }]);
+    };
+  });
 }
 
-async function onBarcodePhoto(file) {
-  if (!file) return;
-  addState.error = null; addState.busy = 'Reading barcode…';
-  addState.preview = await fileToJpeg(file, 600).catch(() => null); renderAdd();
+/* ================= Barcode ================= */
+function openBarcodeSheet() {
+  sheet(`<h3>Scan barcode</h3><p class="muted" style="margin-top:4px">Take a sharp, close photo of the barcode on the package.</p>
+    <button class="btn" id="bShot">📷 Take photo of barcode</button>
+    <div class="lbl" style="text-align:center;margin:16px 0 8px">or type the number</div>
+    <div class="row"><input id="bCode" inputmode="numeric" placeholder="e.g. 4008400402222"><button class="btn sm" id="bLook">Find</button></div>
+    <p class="small" id="bMsg" style="min-height:20px;margin:12px 0 0;text-align:center"></p>`, s => {
+    s.querySelector('#bShot').onclick = () => $('#fileBar').click();
+    s.querySelector('#bLook').onclick = () => { const c = s.querySelector('#bCode').value.replace(/\D/g, ''); if (c) lookupBarcode(c); };
+  });
+}
+const bMsg = (t, err) => { const el = $('#bMsg'); if (el) { el.innerHTML = t; el.style.color = err ? 'var(--bad)' : ''; } };
+$('#fileBar').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  bMsg('<span class="spin"></span> Reading barcode…');
   try {
     await loadScript('https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js');
-    const scanner = new Html5Qrcode('qr-hidden');
-    let code;
-    try { code = await scanner.scanFile(file, false); } finally { try { scanner.clear(); } catch {} }
-    addState.code = String(code).replace(/\D/g, '');
-    await lookupBarcode(addState.code);
-  } catch (e) {
-    addState.busy = false; addState.mode = 'barcode';
-    addState.error = 'Could not read the barcode from the photo. Hold the phone closer and keep it sharp, or type the number below.';
-    renderAdd();
-  }
-}
+    const sc = new Html5Qrcode('qr-hidden');
+    let code; try { code = await sc.scanFile(f, false); } finally { try { sc.clear(); } catch {} }
+    code = String(code).replace(/\D/g, '');
+    if ($('#bCode')) $('#bCode').value = code;
+    lookupBarcode(code);
+  } catch { bMsg("Couldn't read the barcode. Try closer and sharper, or type the number.", true); }
+};
 async function lookupBarcode(code) {
-  addState.error = null; addState.busy = 'Looking up product…'; renderAdd();
+  bMsg('<span class="spin"></span> Looking up product…');
   try {
-    const r = await fetch(`https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(code)}.json?fields=product_name,brands,nutriments,serving_quantity`);
+    const r = await fetch(`https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(code)}.json?fields=product_name,brands,nutriments,serving_quantity,nutriscore_grade`);
     const d = await r.json();
-    if (d.status !== 1 || !d.product) throw new Error(`Product ${code} was not found in the Open Food Facts database. Try a photo or enter it manually.`);
+    if (d.status !== 1 || !d.product) return bMsg(`Product ${esc(code)} not found. Try a photo instead.`, true);
     const p = d.product, n = p.nutriments || {};
     const kcal100 = num(n['energy-kcal_100g']) || num(n['energy_100g']) / 4.184;
     const g = num(p.serving_quantity) || 100, f = g / 100;
     const brand = p.brands ? p.brands.split(',')[0].trim() : '';
     const name = (p.product_name || 'Product ' + code) + (brand && !(p.product_name || '').toLowerCase().includes(brand.toLowerCase()) ? ' – ' + brand : '');
-    addState.busy = false;
-    draft = newDraft('barcode');
-    draft.name = p.product_name || name;
-    draft.notes = 'Values from Open Food Facts (per 100 g: ' + r0(kcal100) + ' kcal). Set the grams you actually ate.';
-    draft.items = [setBase({ name, grams: r0(g), kcal: r0(kcal100 * f), protein: r1(num(n.proteins_100g) * f), carbs: r1(num(n.carbohydrates_100g) * f), fat: r1(num(n.fat_100g) * f) })];
-    show('review');
-  } catch (e) { addState.busy = false; addState.mode = 'barcode'; addState.error = e.message.includes('fetch') ? 'No internet connection?' : e.message; renderAdd(); }
+    const ns = { a: 9, b: 7, c: 5, d: 3, e: 2 }[p.nutriscore_grade] || null;
+    closeSheet();
+    openNewMeal({ id: uid(), date: sel, time: nowTime(), name, servings: 1, health: ns, source: 'barcode', photo: false,
+      items: [{ name, grams: r0(g), kcal: r0(kcal100 * f), protein: r1(num(n.proteins_100g) * f), carbs: r1(num(n.carbohydrates_100g) * f), fat: r1(num(n.fat_100g) * f) }] });
+  } catch { bMsg('No internet connection?', true); }
 }
 
-$('#fileCam').onchange = e => { onPhoto(e.target.files[0]); e.target.value = ''; };
-$('#fileLib').onchange = e => { onPhoto(e.target.files[0]); e.target.value = ''; };
-$('#fileBar').onchange = e => { onBarcodePhoto(e.target.files[0]); e.target.value = ''; };
-
-function fileToJpeg(file, max) {
-  return new Promise((res, rej) => {
-    const img = new Image(), url = URL.createObjectURL(file);
-    img.onload = () => {
-      const s = Math.min(1, max / Math.max(img.width, img.height));
-      const c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-      URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg', 0.82));
+/* ================= Exercise ================= */
+function openExercise(id) {
+  const ex = id ? db.exercises.find(e => e.id === id) : null;
+  sheet(`<h3>${ex ? 'Exercise' : 'Log exercise'}</h3>
+    <label class="lbl">Describe it (AI estimates calories)</label>
+    <div class="row"><input id="eTxt" placeholder="e.g. 45 min weight training, intense"><button class="btn sm" id="eAi">✨</button></div>
+    <div class="row"><div class="grow"><label class="lbl">Name</label><input id="eName" value="${esc(ex?.name || '')}" placeholder="Running"></div>
+      <div style="width:90px"><label class="lbl">Minutes</label><input id="eMin" inputmode="numeric" value="${ex?.minutes || ''}"></div>
+      <div style="width:100px"><label class="lbl">Calories</label><input id="eKcal" inputmode="numeric" value="${ex ? r0(ex.kcal) : ''}"></div></div>
+    <button class="btn" id="eSave" style="margin-top:18px">Save</button>
+    ${ex ? '<button class="btn outline" id="eDel" style="margin-top:10px;color:var(--bad)">Delete</button>' : ''}`, s => {
+    s.querySelector('#eAi').onclick = async () => {
+      const t = s.querySelector('#eTxt').value.trim(); if (!t) return;
+      const b = s.querySelector('#eAi'); b.innerHTML = '<span class="spin"></span>';
+      try {
+        const p = db.profile || {};
+        const r = await askGemini([{ text: `Estimate calories burned. Person: ${currentWeight() || 75} kg, ${p.sex === 'f' ? 'female' : 'male'}. Activity: "${t}". Return ONLY JSON {"name": "short activity name", "minutes": 0, "kcal": 0}` }]);
+        s.querySelector('#eName').value = r.name || t; s.querySelector('#eMin').value = r0(num(r.minutes)) || ''; s.querySelector('#eKcal').value = r0(num(r.kcal));
+      } catch (e) { toast(e.message === 'NOKEY' ? 'Add your AI key in Settings' : e.message); }
+      b.textContent = '✨';
     };
-    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error('Could not open this image.')); };
+    s.querySelector('#eSave').onclick = () => {
+      const name = s.querySelector('#eName').value.trim() || 'Exercise', kcal = r0(num(s.querySelector('#eKcal').value));
+      if (!kcal) return toast('Enter the calories burned');
+      const e = { id: ex?.id || uid(), date: ex?.date || sel, time: ex?.time || nowTime(), name, kcal, minutes: r0(num(s.querySelector('#eMin').value)) };
+      db.exercises = db.exercises.filter(x => x.id !== e.id); db.exercises.push(e); save();
+      closeSheet(); toast('✓ Exercise saved'); if (tab === 'home') renderHome(); else go('home');
+    };
+    if (ex) s.querySelector('#eDel').onclick = () => { db.exercises = db.exercises.filter(x => x.id !== ex.id); save(); closeSheet(); renderHome(); };
+  });
+}
+
+/* ================= Food detail ================= */
+let det = null;
+function setBase(it) { it.base = { grams: num(it.grams), kcal: num(it.kcal), protein: num(it.protein), carbs: num(it.carbs), fat: num(it.fat) }; return it; }
+function openMeal(id) { const m = db.meals.find(x => x.id === id); if (m) { det = { m: clone(m), isNew: false, open: -1 }; det.m.items.forEach(setBase); renderDetail(); } }
+function openNewMeal(m, openIdx = -1) { det = { m, isNew: true, open: openIdx }; m.items.forEach(setBase); renderDetail(); }
+function renderDetail() {
+  const m = det.m;
+  let pg = $('#detail');
+  if (!pg) { pg = document.createElement('div'); pg.id = 'detail'; pg.className = 'page'; document.body.appendChild(pg); document.body.style.overflow = 'hidden'; }
+  pg.innerHTML = `
+    <div class="hero ${m.photo ? '' : 'short'}">${m.photo ? `<img data-photo="${m.id}" alt="">` : ''}
+      <div class="herobar"><button class="circ" id="dBack">‹</button>${det.isNew ? '' : '<button class="circ" id="dDel">🗑</button>'}</div></div>
+    <div class="dbody">
+      <div class="spread"><span class="etime">${esc(fmtDate(m.date, { weekday: 'short', day: 'numeric', month: 'short' }))} · ${esc(m.time || '')}</span></div>
+      <div class="spread" style="margin:8px 0 14px"><input class="tinput grow" id="dName" value="${esc(m.name)}" placeholder="Meal name">
+        <div class="stepper"><button id="sMinus">−</button><b id="sVal">${m.servings}</b><button id="sPlus">+</button></div></div>
+      <div id="dTot"></div>
+      <div class="spread"><div class="h2">Ingredients</div><button class="chipbtn" id="iAdd">＋ Add</button></div>
+      <div id="dIng"></div>
+    </div>
+    <div class="dfoot"><div class="in">
+      <button class="btn outline" id="dFix">✨ Fix results</button><button class="btn" id="dDone">Done</button></div></div>`;
+  renderDetTotals(); renderIngredients();
+  pg.querySelector('#dBack').onclick = () => closeDetail(!det.isNew);
+  if (pg.querySelector('#dDel')) pg.querySelector('#dDel').onclick = deleteMeal;
+  pg.querySelector('#dName').oninput = e => m.name = e.target.value;
+  const stepS = d => { m.servings = Math.max(0.5, r1(m.servings + d)); pg.querySelector('#sVal').textContent = m.servings; renderDetTotals(); };
+  pg.querySelector('#sMinus').onclick = () => stepS(-0.5);
+  pg.querySelector('#sPlus').onclick = () => stepS(0.5);
+  pg.querySelector('#iAdd').onclick = () => { m.items.push(setBase({ name: '', grams: 100, kcal: 0, protein: 0, carbs: 0, fat: 0 })); det.open = m.items.length - 1; renderIngredients(); renderDetTotals(); };
+  pg.querySelector('#dFix').onclick = openFixSheet;
+  pg.querySelector('#dDone').onclick = () => closeDetail(true);
+  hydratePhotos(pg);
+}
+function renderDetTotals() {
+  const m = det.m, t = mealTotals(m);
+  $('#dTot').innerHTML = `
+    <button class="card bigcal" data-edit="kcal"><div class="ic">🔥</div><div><div class="small muted">Calories</div><div style="font-size:30px;font-weight:800;letter-spacing:-.03em">${r0(t.kcal)}</div></div></button>
+    <div class="dmac">${MAC.map(x => `<button class="dm" data-edit="${x.k}"><div class="t">${x.ic} ${x.label}</div><b>${r0(t[x.k])}g</b></button>`).join('')}</div>
+    ${m.health ? `<div class="card" style="margin-top:14px"><div class="spread"><span style="font-weight:600">💚 Health score</span><b>${m.health}/10</b></div>
+      <div class="hbar"><i style="width:${m.health * 10}%;background:${m.health >= 7 ? 'var(--good)' : m.health >= 4 ? 'var(--carbs)' : 'var(--bad)'}"></i></div></div>` : ''}`;
+  $('#dTot').querySelectorAll('[data-edit]').forEach(b => b.onclick = () => {
+    const f = b.dataset.edit, label = f === 'kcal' ? 'Calories' : MAC.find(x => x.k === f).label + ' (g)';
+    numberSheet(label, r0(mealTotals(det.m)[f]), f === 'kcal' ? 'kcal' : 'g', v => setTotal(f, v), f === 'kcal' ? 10 : 1);
+  });
+}
+function setTotal(f, v) {
+  const m = det.m, cur = mealTotals(m)[f];
+  if (!m.items.length) m.items.push({ name: m.name || 'Food', grams: 100, kcal: 0, protein: 0, carbs: 0, fat: 0 });
+  if (cur > 0) { const k = v / cur; m.items.forEach(it => it[f] = f === 'kcal' ? r0(it[f] * k) : r1(it[f] * k)); }
+  else m.items[0][f] = f === 'kcal' ? r0(v / m.servings) : r1(v / m.servings);
+  m.items.forEach(setBase); renderDetTotals(); renderIngredients();
+}
+function renderIngredients() {
+  const box = $('#dIng'), m = det.m;
+  box.innerHTML = m.items.map((it, i) => `<div class="ing" data-i="${i}">
+    <button class="ing-head"><span><b data-h="name">${esc(it.name || 'New ingredient')}</b><br><span class="small muted" data-h="grams">${it.grams} g</span></span>
+      <span style="font-weight:600"><span data-h="kcal">${r0(it.kcal)}</span> cal <span class="muted">${det.open === i ? '⌃' : '›'}</span></span></button>
+    ${det.open === i ? `<div class="ing-edit">
+      <div class="row"><input data-f="name" value="${esc(it.name)}" placeholder="Ingredient" class="grow"><input data-f="grams" inputmode="decimal" value="${it.grams}" style="width:90px;text-align:right"><span class="muted">g</span></div>
+      <div class="g4">${['kcal', 'protein', 'carbs', 'fat'].map(f => `<div><label class="lbl">${f === 'kcal' ? 'Calories' : f === 'fat' ? 'Fats' : f[0].toUpperCase() + f.slice(1)}</label><input data-f="${f}" inputmode="decimal" value="${it[f]}"></div>`).join('')}</div>
+      <button class="chipbtn" data-rm style="margin-top:12px;color:var(--bad)">Remove ingredient</button></div>` : ''}</div>`).join('')
+    || '<p class="muted">No ingredients yet.</p>';
+  box.querySelectorAll('.ing-head').forEach(h => h.onclick = () => { const i = +h.parentNode.dataset.i; det.open = det.open === i ? -1 : i; renderIngredients(); });
+  box.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { m.items.splice(+b.closest('.ing').dataset.i, 1); det.open = -1; renderIngredients(); renderDetTotals(); });
+  box.querySelectorAll('[data-f]').forEach(inp => inp.oninput = e => {
+    const card = e.target.closest('.ing'), it = m.items[+card.dataset.i], f = e.target.dataset.f;
+    if (f === 'name') { it.name = e.target.value; card.querySelector('[data-h=name]').textContent = it.name || 'New ingredient'; return; }
+    it[f] = num(e.target.value);
+    if (f === 'grams' && it.base.grams > 0) {
+      const k = it.grams / it.base.grams;   // scale nutrition with portion size
+      for (const x of ['kcal', 'protein', 'carbs', 'fat']) { it[x] = x === 'kcal' ? r0(it.base[x] * k) : r1(it.base[x] * k); card.querySelector(`[data-f="${x}"]`).value = it[x]; }
+    } else setBase(it);
+    card.querySelector('[data-h=grams]').textContent = it.grams + ' g';
+    card.querySelector('[data-h=kcal]').textContent = r0(it.kcal);
+    renderDetTotals();
+  });
+}
+function openFixSheet() {
+  sheet(`<h3>Fix results</h3><p class="muted" style="margin-top:4px">Tell the AI what's wrong and it will recalculate.</p>
+    <textarea id="fTxt" placeholder="e.g. It was brown rice, about 200 g. The chicken was fried in oil."></textarea>
+    <button class="btn" id="fGo" style="margin-top:14px">Update</button>`, s => {
+    s.querySelector('#fTxt').focus();
+    s.querySelector('#fGo').onclick = async () => {
+      const t = s.querySelector('#fTxt').value.trim(); if (!t) return;
+      const b = s.querySelector('#fGo'); b.disabled = true; b.innerHTML = '<span class="spin"></span> Updating…';
+      try {
+        const m = det.m, cur = { name: m.name, items: m.items.map(({ base, ...x }) => x), health_score: m.health };
+        const parts = [{ text: FOOD_PROMPT + `\nCurrent analysis (for ${m.servings} serving): ${JSON.stringify(cur)}\nThe user corrects it: "${t}"\nApply the correction and return the complete corrected JSON.` }];
+        if (m.photo) { const ph = photoCache[m.id] || await idb.get(m.id); if (ph) parts.push({ inlineData: { mimeType: 'image/jpeg', data: ph.split(',')[1] } }); }
+        const r = await askGemini(parts), items = normItems(r.items);
+        if (!items.length) throw new Error(r.notes || 'The AI could not update this meal.');
+        m.items = items.map(setBase); m.name = r.name || m.name; m.health = healthOf(r.health_score) || m.health;
+        closeSheet(); renderDetail(); toast('✓ Updated');
+      } catch (e) { b.disabled = false; b.textContent = 'Update'; toast(e.message === 'NOKEY' ? 'Add your AI key in Settings' : e.message); }
+    };
+  });
+}
+function closeDetail(commit) {
+  if (commit) {
+    const m = det.m;
+    m.items = m.items.filter(it => it.name.trim() || num(it.kcal) > 0).map(({ base, ...it }) => ({ ...it, name: it.name.trim() || 'Food' }));
+    if (!m.items.length) { if (det.isNew) return toast('Add at least one ingredient'); }
+    if (!m.name.trim()) m.name = m.items.map(i => i.name).join(', ') || 'Meal';
+    const i = db.meals.findIndex(x => x.id === m.id);
+    if (i >= 0) db.meals[i] = m; else db.meals.push(m);
+    save(); if (det.isNew) toast('✓ ' + m.name + ' logged');
+  }
+  $('#detail')?.remove(); document.body.style.overflow = ''; det = null;
+  if (tab === 'home') renderHome(); else go('home');
+}
+function deleteMeal() {
+  if (!confirm('Delete this meal?')) return;
+  const id = det.m.id;
+  db.meals = db.meals.filter(x => x.id !== id); save(); idb.del(id); delete photoCache[id];
+  $('#detail')?.remove(); document.body.style.overflow = ''; det = null; renderHome(); toast('Meal deleted');
+}
+
+/* ================= Progress ================= */
+function renderProgress() {
+  const p = db.profile, t = targets(), ws = [...db.weights].sort((a, b) => a.date.localeCompare(b.date));
+  const cur = currentWeight(), st = streak(), today = iso();
+  const dow = (new Date().getDay() + 6) % 7, mon = addDays(today, -dow);
+  const has = new Set(db.meals.map(m => m.date));
+  const dots = [...Array(7)].map((_, i) => { const d = addDays(mon, i); return `<div><i class="${has.has(d) ? 'on' : ''}"></i>${dt(d).toLocaleDateString(LOC, { weekday: 'narrow' })}</div>`; }).join('');
+
+  // Goal progress
+  let pct = 0;
+  if (p && p.goal !== 'maintain' && ws.length) { const s = ws[0].kg; pct = s === p.targetWeight ? 100 : clamp((s - cur) / (s - p.targetWeight) * 100, 0, 100); }
+  const since = progRange ? addDays(today, -progRange) : '0000';
+  const wsR = ws.filter(w => w.date >= since);
+
+  // Nutrition week
+  const nMon = addDays(mon, nutWeek * 7), nDays = [...Array(7)].map((_, i) => addDays(nMon, i)), nTot = nDays.map(dayTotals);
+  const maxK = Math.max(t.kcal * 1.2, ...nTot.map(x => x.kcal)), H = 120;
+  const logged = nTot.filter(x => x.count), avg = logged.length ? r0(logged.reduce((a, x) => a + x.kcal, 0) / logged.length) : 0;
+  const bars = nTot.map((x, i) => `<div class="col"><div class="stack" style="height:${Math.max(4, x.kcal / maxK * H)}px">
+      ${x.kcal ? `<i style="height:${x.protein * 4 / x.kcal * 100}%;background:var(--protein)"></i><i style="height:${x.carbs * 4 / x.kcal * 100}%;background:var(--carbs)"></i><i style="height:${x.fat * 9 / x.kcal * 100}%;background:var(--fat)"></i>` : ''}
+    </div><span>${dt(nDays[i]).toLocaleDateString(LOC, { weekday: 'narrow' })}</span></div>`).join('');
+
+  // BMI
+  const bmi = p ? cur / Math.pow(p.height / 100, 2) : 0;
+  const bcat = bmi < 18.5 ? ['Underweight', '#5aa9f2'] : bmi < 25 ? ['Healthy', 'var(--good)'] : bmi < 30 ? ['Overweight', '#f5b83d'] : ['Obese', '#ff5a4f'];
+
+  $('#view').innerHTML = `
+    <div class="top"><div class="brand">Progress</div></div>
+    <div class="two" style="margin-top:12px">
+      <div class="card"><div class="small muted">Current weight</div><div style="font-size:30px;font-weight:800;letter-spacing:-.03em;margin:4px 0">${cur || '–'}<small style="font-size:16px"> kg</small></div>
+        <div class="small muted">${p && p.goal !== 'maintain' ? `Goal <b style="color:var(--text)">${p.targetWeight} kg</b>` : 'Goal: maintain'}</div>
+        <button class="btn sm" id="logW" style="margin-top:12px;width:100%">Log weight</button></div>
+      <div class="card" style="text-align:center"><div style="font-size:40px">🔥</div><div style="font-size:30px;font-weight:800;color:var(--flame)">${st}</div><div class="small muted" style="font-weight:600">Day streak</div><div class="wdots">${dots}</div></div>
+    </div>
+    <div class="card"><div class="spread"><b style="font-size:17px">Goal progress</b>${p && p.goal !== 'maintain' ? `<span class="etime">🚩 ${r0(pct)}% of goal</span>` : ''}</div>
+      ${p && p.goal !== 'maintain' ? `<div class="hbar" style="margin:12px 0 16px"><i style="width:${pct}%;background:var(--ink)"></i></div>` : '<div style="height:12px"></div>'}
+      ${wsR.length >= 2 ? weightChart(wsR, p && p.goal !== 'maintain' ? p.targetWeight : null) : `<p class="muted small" style="text-align:center;padding:24px 0">Log your weight a few times to see your chart.</p>`}
+      <div class="pills" style="margin-top:12px">${[[90, '90 D'], [180, '6 M'], [365, '1 Y'], [0, 'All']].map(([v, l]) => `<button data-r="${v}" class="${progRange === v ? 'on' : ''}">${l}</button>`).join('')}</div>
+      ${expectedText(p, cur)}
+    </div>
+    <div class="card"><div class="spread"><b style="font-size:17px">Nutrition</b>
+      <div class="pills" style="width:190px"><button data-w="0" class="${nutWeek === 0 ? 'on' : ''}">This week</button><button data-w="-1" class="${nutWeek === -1 ? 'on' : ''}">Last week</button></div></div>
+      <div style="margin-top:12px"><span style="font-size:26px;font-weight:800">${avg}</span> <span class="muted small">avg. calories / day</span></div>
+      <div class="nbars"><div class="goal" style="bottom:${t.kcal / maxK * H + 22}px"></div>${bars}</div>
+      <div class="legend" style="margin-top:12px"><span style="--c:var(--protein)">Protein</span><span style="--c:var(--carbs)">Carbs</span><span style="--c:var(--fat)">Fats</span><span class="muted">- - goal ${t.kcal}</span></div></div>
+    ${p ? `<div class="card"><div class="spread"><b style="font-size:17px">Your BMI</b><span class="etime" style="color:${bcat[1]};font-weight:700">${bcat[0]}</span></div>
+      <div style="font-size:30px;font-weight:800;margin-top:6px">${r1(bmi)}</div>
+      <div class="bmi-bar"><b style="left:${clamp((bmi - 15) / 25 * 100, 0, 100)}%"></b></div>
+      <div class="legend"><span style="--c:#5aa9f2">Underweight &lt;18.5</span><span style="--c:var(--good)">Healthy 18.5–24.9</span><span style="--c:#f5b83d">Overweight 25–29.9</span><span style="--c:#ff5a4f">Obese 30+</span></div></div>` : ''}
+    ${ws.length ? `<div class="h2">Weight history</div><div class="list">${ws.slice(-8).reverse().map(w => `<div class="li"><span class="grow">${fmtDate(w.date, { weekday: 'short', day: 'numeric', month: 'short' })}</span><b>${w.kg} kg</b><button class="muted" onclick="delWeight('${w.date}')" style="padding:0 4px">✕</button></div>`).join('')}</div>` : ''}`;
+  $('#logW').onclick = () => numberSheet('Log weight', cur || 75, 'kg', v => {
+    if (v < 25 || v > 350) return toast('Please enter a valid weight');
+    db.weights = db.weights.filter(w => w.date !== iso()); db.weights.push({ date: iso(), kg: r1(v) }); save(); toast('✓ Weight saved'); renderProgress();
+  }, 0.1);
+  document.querySelectorAll('[data-r]').forEach(b => b.onclick = () => { progRange = +b.dataset.r; renderProgress(); });
+  document.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { nutWeek = +b.dataset.w; renderProgress(); });
+}
+function expectedText(p, cur) {
+  if (!p || p.goal === 'maintain' || !cur) return '';
+  const rem = p.targetWeight - cur;
+  if ((p.goal === 'lose' && rem >= 0) || (p.goal === 'gain' && rem <= 0)) return `<div class="tip">🎉 You reached your goal weight! Update your goal in Settings.</div>`;
+  const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(rem) / p.pace * 7));
+  return `<div class="tip">At your pace you'll reach <b>${p.targetWeight} kg</b> around <b>${d.toLocaleDateString(LOC, { day: 'numeric', month: 'long', year: 'numeric' })}</b>.</div>`;
+}
+function delWeight(date) { if (!confirm('Delete this weight entry?')) return; db.weights = db.weights.filter(w => w.date !== date); save(); renderProgress(); }
+function weightChart(ws, target) {
+  const W = 340, H = 170, P = { l: 30, r: 8, t: 12, b: 20 };
+  const vals = ws.map(w => w.kg).concat(target ? [target] : []);
+  let lo = Math.min(...vals), hi = Math.max(...vals); if (hi - lo < 2) { lo -= 1; hi += 1; }
+  const t0 = dt(ws[0].date).getTime(), t1 = Math.max(dt(ws.at(-1).date).getTime(), t0 + 864e5);
+  const x = d => P.l + (dt(d).getTime() - t0) / (t1 - t0) * (W - P.l - P.r);
+  const y = v => P.t + (hi - v) / (hi - lo) * (H - P.t - P.b);
+  const pts = ws.map(w => [x(w.date), y(w.kg)]);
+  const line = pts.map((q, i) => (i ? 'L' : 'M') + q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' ');
+  const area = line + ` L${pts.at(-1)[0].toFixed(1)},${H - P.b} L${pts[0][0].toFixed(1)},${H - P.b} Z`;
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Weight chart">
+    <defs><linearGradient id="wg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--ink)" stop-opacity=".14"/><stop offset="1" stop-color="var(--ink)" stop-opacity="0"/></linearGradient></defs>
+    ${[hi, (hi + lo) / 2, lo].map(v => `<line x1="${P.l}" x2="${W - P.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${P.l - 6}" y="${y(v) + 4}" font-size="10" text-anchor="end" fill="var(--muted)">${r1(v)}</text>`).join('')}
+    ${target ? `<line x1="${P.l}" x2="${W - P.r}" y1="${y(target)}" y2="${y(target)}" stroke="var(--good)" stroke-dasharray="5 4" stroke-width="1.5"/><text x="${W - P.r}" y="${y(target) - 5}" font-size="10" text-anchor="end" fill="var(--good)" font-weight="600">Goal</text>` : ''}
+    <path d="${area}" fill="url(#wg)"/>
+    <path d="${line}" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    ${pts.length <= 40 ? pts.map(q => `<circle cx="${q[0]}" cy="${q[1]}" r="3.5" fill="var(--card)" stroke="var(--ink)" stroke-width="2"/>`).join('') : ''}
+    <text x="${P.l}" y="${H - 4}" font-size="10" fill="var(--muted)">${fmtDate(ws[0].date)}</text>
+    <text x="${W - P.r}" y="${H - 4}" font-size="10" text-anchor="end" fill="var(--muted)">${fmtDate(ws.at(-1).date)}</text></svg>`;
+}
+
+/* ================= Settings ================= */
+function renderSettings() {
+  const p = db.profile, t = targets(), key = getKey();
+  $('#view').innerHTML = `
+    <div class="top"><div class="brand">Settings</div></div>
+    ${p ? `<div class="card" style="margin-top:12px"><div class="stats3">
+      <div><b>${age(p)}</b><span class="small muted">Age</span></div><div><b>${p.height} cm</b><span class="small muted">Height</span></div><div><b>${currentWeight()} kg</b><span class="small muted">Weight</span></div></div></div>` : ''}
+    <div class="h2">Customization</div>
+    <div class="list">
+      <button class="li" id="sPers"><span class="ic">👤</span><span class="grow">Personal details</span><span class="chev">›</span></button>
+      <button class="li" id="sGoals"><span class="ic">🎯</span><span class="grow">Adjust macronutrients<br><span class="small muted">${t.kcal} kcal · ${t.protein}g P · ${t.carbs}g C · ${t.fat}g F</span></span><span class="chev">›</span></button>
+      <button class="li" id="sRedo"><span class="ic">🔁</span><span class="grow">Redo setup questions</span><span class="chev">›</span></button>
+    </div>
+    <div class="h2">Preferences</div>
+    <div class="list"><button class="li" id="sBurn"><span class="grow">Add burned calories<br><span class="small muted">Add exercise calories back to your daily goal</span></span><span class="switch ${db.settings.addBurned ? 'on' : ''}"></span></button></div>
+    <div class="h2">AI food scanning</div>
+    <div class="card">
+      <p class="small muted" style="margin:0 0 6px">1. Open <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener"><b>aistudio.google.com/apikey</b></a> and sign in with Google<br>2. Tap <b>Create API key</b> and copy it<br>3. Paste it below. It stays only on this phone.</p>
+      <label class="lbl">Google AI key (free)</label><input id="kKey" type="password" autocomplete="off" placeholder="AIza…" value="${esc(key)}">
+      <label class="lbl">Model (optional)</label><input id="kModel" value="${esc(LS.get('ft_model', ''))}" placeholder="gemini-2.5-flash">
+      <div class="row" style="margin-top:14px"><button class="btn" id="kSave">Save</button><button class="btn outline" id="kTest">Test</button></div>
+      <p class="small" id="kMsg" style="margin:10px 0 0;text-align:center">${key ? '✓ Key saved' : 'No key yet'}</p></div>
+    <div class="h2">Your data</div>
+    <div class="list">
+      <button class="li" id="dExp"><span class="ic">⬇️</span><span class="grow">Backup data</span><span class="chev">›</span></button>
+      <button class="li" id="dImp"><span class="ic">⬆️</span><span class="grow">Restore backup</span><span class="chev">›</span></button>
+      <button class="li" id="dDel" style="color:var(--bad)"><span class="ic">🗑</span><span class="grow">Delete all data</span></button>
+    </div>
+    <p class="small muted" style="text-align:center;margin:20px 10px 10px">Your data is saved only on this phone. Nutrition values are estimates, not medical advice.</p>`;
+  $('#sPers').onclick = openPersonalSheet;
+  $('#sGoals').onclick = openGoalsSheet;
+  $('#sRedo').onclick = startOnboarding;
+  $('#sBurn').onclick = () => { db.settings.addBurned = !db.settings.addBurned; save(); renderSettings(); };
+  $('#kSave').onclick = () => {
+    const k = $('#kKey').value.trim(), m = $('#kModel').value.trim();
+    k ? LS.set('ft_key', k) : LS.del('ft_key'); m ? LS.set('ft_model', m) : LS.del('ft_model');
+    $('#kMsg').textContent = k ? '✓ Key saved' : 'Key removed'; toast('Saved');
+  };
+  $('#kTest').onclick = async () => {
+    $('#kSave').click(); $('#kMsg').innerHTML = '<span class="spin"></span> Testing…';
+    try { await askGemini([{ text: 'Return JSON {"ok": true}' }]); $('#kMsg').textContent = '✓ Key works! AI scanning is on.'; }
+    catch (e) { $('#kMsg').textContent = '✕ ' + (e.message === 'NOKEY' ? 'Enter a key first' : e.message); }
+  };
+  $('#dExp').onclick = () => {
+    const blob = new Blob([JSON.stringify(db)], { type: 'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `foodtracker-backup-${iso()}.json`;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+  };
+  $('#dImp').onclick = () => $('#fileImport').click();
+  $('#dDel').onclick = async () => {
+    if (!confirm('Delete ALL meals, weights and goals? This cannot be undone.')) return;
+    db = EMPTY(); save(); await idb.clear(); toast('All data deleted'); startOnboarding();
+  };
+}
+$('#fileImport').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  try {
+    const d = JSON.parse(await f.text());
+    if (!Array.isArray(d.meals) || !Array.isArray(d.weights)) throw 0;
+    if (!confirm(`Restore backup with ${d.meals.length} meals and ${d.weights.length} weights? Current data will be replaced.`)) return;
+    db = migrate(Object.assign(EMPTY(), d)); save(); toast('✓ Backup restored'); go('home');
+  } catch { toast('This is not a valid backup file'); }
+};
+function profileFields(p) {
+  const opt = (arr, v) => arr.map(([k, l]) => `<option value="${k}" ${String(v) === String(k) ? 'selected' : ''}>${l}</option>`).join('');
+  return `<div class="row"><div class="grow"><label class="lbl">Gender</label><select id="pSex">${opt([['m', 'Male'], ['f', 'Female'], ['o', 'Other']], p.sex)}</select></div>
+    <div class="grow"><label class="lbl">Birthday</label><input id="pBirth" type="date" value="${p.birth}"></div></div>
+    <div class="row"><div class="grow"><label class="lbl">Height (cm)</label><input id="pH" inputmode="numeric" value="${p.height}"></div>
+    <div class="grow"><label class="lbl">Workouts / week</label><select id="pW">${opt([['0-2', '0–2'], ['3-5', '3–5'], ['6+', '6+']], p.workouts)}</select></div></div>
+    <label class="lbl">Goal</label><select id="pGoal">${opt([['lose', 'Lose weight'], ['maintain', 'Maintain'], ['gain', 'Gain weight']], p.goal)}</select>
+    <div class="row"><div class="grow"><label class="lbl">Goal weight (kg)</label><input id="pT" inputmode="decimal" value="${p.targetWeight || ''}"></div>
+    <div class="grow"><label class="lbl">Speed (kg / week)</label><select id="pPace">${opt([[0.25, '0.25'], [0.5, '0.5'], [0.75, '0.75'], [1, '1.0']], p.pace)}</select></div></div>`;
+}
+function openPersonalSheet() {
+  if (!db.profile) return startOnboarding();
+  sheet(`<h3>Personal details</h3>${profileFields(db.profile)}<button class="btn" id="pSave" style="margin-top:20px">Save</button>`, s => {
+    s.querySelector('#pSave').onclick = () => {
+      const p = db.profile;
+      Object.assign(p, { sex: $('#pSex').value, birth: $('#pBirth').value || p.birth, height: num($('#pH').value) || p.height, workouts: $('#pW').value,
+        goal: $('#pGoal').value, targetWeight: r1(num($('#pT').value)) || p.targetWeight, pace: num($('#pPace').value) });
+      save(); closeSheet(); toast('✓ Saved'); renderSettings();
+    };
+  });
+}
+function openGoalsSheet() {
+  const t = targets();
+  sheet(`<h3>Adjust macronutrients</h3><p class="muted" style="margin-top:4px">Leave a field empty to use the calculated value.</p>
+    ${[['kcal', '🔥 Calorie goal', 'kcal'], ['protein', '🍗 Protein goal', 'g'], ['carbs', '🌾 Carb goal', 'g'], ['fat', '🥑 Fat goal', 'g']].map(([k, l, u]) =>
+      `<label class="lbl">${l} (${u})</label><input data-ov="${k}" inputmode="numeric" value="${db.overrides[k] || ''}" placeholder="${t.auto[k] ?? ''} (auto)">`).join('')}
+    <button class="btn" id="gSave" style="margin-top:20px">Save</button>
+    <button class="btn outline" id="gAuto" style="margin-top:10px">✨ Auto-generate goals</button>`, s => {
+    s.querySelector('#gSave').onclick = () => {
+      s.querySelectorAll('[data-ov]').forEach(i => { const v = num(i.value); if (v > 0) db.overrides[i.dataset.ov] = v; else delete db.overrides[i.dataset.ov]; });
+      save(); closeSheet(); toast('✓ Goals updated'); renderSettings();
+    };
+    s.querySelector('#gAuto').onclick = () => { db.overrides = {}; save(); closeSheet(); toast('✓ Goals recalculated'); renderSettings(); };
+  });
+}
+
+/* ================= Onboarding ================= */
+let ob = null;
+const OB = ['intro', 'gender', 'workouts', 'body', 'birth', 'goal', 'target', 'speed', 'ai', 'plan'];
+function startOnboarding() {
+  const base = db.profile ? clone(db.profile) : {};
+  ob = { step: 0, p: Object.assign({ sex: '', workouts: '', height: 175, weight: 75, birth: '', goal: '', targetWeight: null, pace: 0.5 }, base) };
+  if (db.profile) ob.p.weight = currentWeight();
+  closeSheet(); renderOb();
+}
+const obSkip = i => ob.p.goal === 'maintain' && (OB[i] === 'target' || OB[i] === 'speed');
+function obMove(d) { let i = ob.step + d; while (i > 0 && i < OB.length - 1 && obSkip(i)) i += d; ob.step = clamp(i, 0, OB.length - 1); renderOb(); }
+function renderOb() {
+  let pg = $('#onb');
+  if (!pg) { pg = document.createElement('div'); pg.id = 'onb'; pg.className = 'page'; pg.style.zIndex = 45; document.body.appendChild(pg); }
+  const p = ob.p, s = OB[ob.step];
+  const opts = (field, list) => list.map(([v, l, sub]) => `<button class="opt ${p[field] === v ? 'on' : ''}" data-set="${field}" data-v="${v}">${l}${sub ? `<small>${sub}</small>` : ''}</button>`).join('');
+  const kgOpts = (v, from, to) => { let o = ''; for (let k = from; k <= to; k += 0.5) o += `<option value="${k}" ${Math.abs(k - v) < 0.01 ? 'selected' : ''}>${k} kg</option>`; return o; };
+  let title = '', sub = '', body = '', ok = true, cta = 'Continue';
+  if (s === 'intro') {
+    pg.innerHTML = `<div class="onb" style="justify-content:center;text-align:center">
+      <div class="onb-body" style="display:flex;flex-direction:column;justify-content:center;align-items:center">
+        <img src="icon-512.png" alt="" style="width:110px;height:110px;border-radius:28px;box-shadow:var(--shadow)">
+        <h1 style="margin-top:30px">Calorie tracking<br>made easy</h1>
+        <p class="muted" style="max-width:300px">Just snap a photo of your meal and let AI do the rest.</p></div>
+      <button class="btn" id="obNext">Get started</button></div>`;
+    pg.querySelector('#obNext').onclick = () => obMove(1);
+    return;
+  }
+  if (s === 'gender') { title = 'Choose your gender'; sub = 'This will be used to calibrate your custom plan.'; body = opts('sex', [['m', 'Male'], ['f', 'Female'], ['o', 'Other']]); ok = !!p.sex; }
+  if (s === 'workouts') { title = 'How many workouts do you do per week?'; sub = 'This will be used to calibrate your custom plan.';
+    body = opts('workouts', [['0-2', '0–2', 'Workouts now and then'], ['3-5', '3–5', 'A few workouts per week'], ['6+', '6+', 'Dedicated athlete']]); ok = !!p.workouts; }
+  if (s === 'body') { title = 'Height & weight'; sub = 'This will be used to calibrate your custom plan.';
+    let h = ''; for (let c = 120; c <= 230; c++) h += `<option value="${c}" ${c === r0(p.height) ? 'selected' : ''}>${c} cm</option>`;
+    body = `<div class="row"><div class="grow"><label class="lbl">Height</label><select id="obH">${h}</select></div><div class="grow"><label class="lbl">Weight</label><select id="obW">${kgOpts(Math.round(p.weight * 2) / 2, 35, 250)}</select></div></div>`; }
+  if (s === 'birth') { title = 'When were you born?'; sub = 'This will be used to calibrate your custom plan.';
+    body = `<input type="date" id="obB" value="${p.birth}" max="${addDays(iso(), -365 * 12)}" min="1920-01-01" style="font-size:20px;text-align:center;padding:18px">`; ok = !!p.birth; }
+  if (s === 'goal') { title = 'What is your goal?'; sub = 'This helps us generate a plan for your calorie intake.';
+    body = opts('goal', [['lose', 'Lose weight'], ['maintain', 'Maintain'], ['gain', 'Gain weight']]); ok = !!p.goal; }
+  if (s === 'target') {
+    if (!p.targetWeight) p.targetWeight = Math.round((p.goal === 'lose' ? p.weight - 5 : p.weight + 5) * 2) / 2;
+    title = 'What is your desired weight?';
+    const diff = r1(p.targetWeight - p.weight);
+    ok = p.goal === 'lose' ? diff < 0 : diff > 0;
+    body = `<div style="text-align:center"><div class="muted" style="font-weight:600">${p.goal === 'lose' ? 'Lose weight' : 'Gain weight'}</div>
+      <div class="speedv">${p.targetWeight} kg</div><div class="small ${ok ? 'muted' : ''}" style="${ok ? '' : 'color:var(--bad)'}">${ok ? `${diff > 0 ? '+' : ''}${diff} kg from now` : `Must be ${p.goal === 'lose' ? 'below' : 'above'} your current ${p.weight} kg`}</div></div>
+      <select id="obT" style="margin-top:22px">${kgOpts(p.targetWeight, 35, 250)}</select>`;
+  }
+  if (s === 'speed') {
+    title = 'How fast do you want to reach your goal?';
+    body = `<div style="text-align:center"><div class="muted" style="font-weight:600">${p.goal === 'lose' ? 'Loss' : 'Gain'} speed per week</div><div class="speedv" id="obSv">${p.pace} kg</div></div>
+      <div class="animals"><span>🦥</span><span>🐇</span><span>🐆</span></div>
+      <input type="range" id="obS" min="0.1" max="1.5" step="0.1" value="${p.pace}"><div class="spread small muted"><span>0.1 kg</span><span>0.8 kg</span><span>1.5 kg</span></div>
+      <div class="tip" id="obTip"></div>`;
+  }
+  if (s === 'ai') {
+    title = 'Turn on AI food scanning'; sub = 'Free with a Google account. It takes 1 minute.';
+    body = `<div class="tip" style="margin-top:0">1. Open <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener"><b>aistudio.google.com/apikey</b></a><br>2. Sign in with Google and tap <b>Create API key</b><br>3. Copy it and paste it here</div>
+      <input id="obK" type="password" autocomplete="off" placeholder="Paste your key (AIza…)" value="${esc(getKey())}" style="margin-top:16px">
+      <p class="small muted">The key stays only on this phone. You can also add it later in Settings.</p>`;
+    cta = getKey() ? 'Continue' : 'Save & continue';
+  }
+  if (s === 'plan') {
+    const t = calcTargets(p, p.weight);
+    let reach = '';
+    if (p.goal !== 'maintain') { const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(p.targetWeight - p.weight) / p.pace * 7));
+      reach = `<div class="tip" style="text-align:center;margin:0 0 18px">You should ${p.goal === 'lose' ? 'lose' : 'gain'}:<br><b style="font-size:18px">${r1(Math.abs(p.targetWeight - p.weight))} kg by ${d.toLocaleDateString(LOC, { day: 'numeric', month: 'long', year: 'numeric' })}</b></div>`; }
+    title = 'Congratulations, your custom plan is ready!';
+    body = `${reach}<b>Daily recommendation</b><p class="small muted" style="margin:2px 0 12px">You can edit this any time in Settings.</p>
+      <div class="plan4">${[['🔥', 'Calories', t.kcal, '', 'var(--ink)'], ['🌾', 'Carbs', t.carbs, 'g', 'var(--carbs)'], ['🍗', 'Protein', t.protein, 'g', 'var(--protein)'], ['🥑', 'Fats', t.fat, 'g', 'var(--fat)']]
+        .map(([ic, l, v, u, c]) => `<div class="card"><span class="small" style="font-weight:600">${ic} ${l}</span>${ring(80, 7, 0.75, c, `<b style="font-size:17px">${v}${u}</b>`)}</div>`).join('')}</div>
+      <div class="tip"><b>How to reach your goals</b><br>📷 Snap every meal, even snacks<br>🍗 Hit your protein goal every day<br>⚖️ Weigh yourself in the morning a few times a week</div>`;
+    cta = "Let's get started!";
+  }
+  const pct = ob.step / (OB.length - 1) * 100;
+  pg.innerHTML = `<div class="onb"><div class="onb-top"><button class="onb-back" id="obBack">←</button><div class="prog"><i style="width:${pct}%"></i></div></div>
+    <h1>${title}</h1>${sub ? `<p class="sub">${sub}</p>` : '<div style="height:20px"></div>'}
+    <div class="onb-body">${body}</div>
+    <button class="btn" id="obNext" ${ok ? '' : 'disabled'} style="margin-top:20px">${cta}</button></div>`;
+  pg.scrollTo(0, 0);
+  pg.querySelector('#obBack').onclick = () => obMove(-1);
+  pg.querySelectorAll('[data-set]').forEach(b => b.onclick = () => { p[b.dataset.set] = b.dataset.v; if (b.dataset.set === 'goal') p.targetWeight = null; renderOb(); });
+  const bind = (id, fn) => { const el = pg.querySelector(id); if (el) el.onchange = el.oninput = () => fn(el); };
+  bind('#obH', el => p.height = +el.value);
+  bind('#obW', el => p.weight = +el.value);
+  bind('#obB', el => { p.birth = el.value; pg.querySelector('#obNext').disabled = !p.birth; });
+  bind('#obT', el => { p.targetWeight = +el.value; renderOb(); });
+  const tip = () => { const t = pg.querySelector('#obTip'); if (t) t.innerHTML = p.pace <= 0.3 ? '🐢 Slow and steady. Very easy to keep up.' : p.pace <= 0.8 ? '✅ <b>Recommended.</b> The best balance of speed and comfort.' : '⚡ Fast. You may feel very tired. Make sure to eat enough protein.'; };
+  bind('#obS', el => { p.pace = +el.value; pg.querySelector('#obSv').textContent = p.pace + ' kg'; tip(); });
+  tip();
+  pg.querySelector('#obNext').onclick = () => {
+    if (s === 'ai') { const k = pg.querySelector('#obK').value.trim(); if (k) LS.set('ft_key', k); }
+    if (s === 'plan') return finishOnboarding();
+    obMove(1);
+  };
+}
+function finishOnboarding() {
+  const p = ob.p;
+  if (p.goal === 'maintain') p.targetWeight = p.weight;
+  p.pace = num(p.pace) || 0.5; p.height = num(p.height); p.weight = num(p.weight);
+  db.profile = p;
+  if (!db.weights.length || currentWeight() !== p.weight) { db.weights = db.weights.filter(w => w.date !== iso()); db.weights.push({ date: iso(), kg: p.weight }); }
+  save(); ob = null; $('#onb')?.remove(); go('home'); toast('🎉 Your plan is ready');
+}
+
+/* ================= Utils ================= */
+function scaleImage(src, max) {
+  return new Promise((res, rej) => {
+    const img = new Image(), isFile = src instanceof Blob, url = isFile ? URL.createObjectURL(src) : src;
+    img.onload = () => {
+      const k = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      if (isFile) URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg', 0.82));
+    };
+    img.onerror = () => { if (isFile) URL.revokeObjectURL(url); rej(new Error('Could not open this image.')); };
     img.src = url;
   });
 }
@@ -431,295 +1096,9 @@ function loadScript(src) {
   });
 }
 
-/* ---------- AI (Google Gemini, free tier) ---------- */
-const FOOD_PROMPT = `You are an expert nutritionist. Identify every food and drink in the meal.
-Estimate each portion's weight in grams using visual cues (plate size, cutlery, hands, packaging). Include visible oils, sauces and dressings.
-Return ONLY JSON in this exact shape:
-{"meal_name": "short name of the meal", "items": [{"name": "food", "grams": 0, "kcal": 0, "protein": 0, "carbs": 0, "fat": 0}], "confidence": "low|medium|high", "notes": "one short sentence about assumptions"}
-All numbers are for the estimated portion (not per 100 g); macros in grams. If no food is visible, return "items": [] and explain in notes.`;
-
-async function askGemini(parts, modelOverride) {
-  const key = getKey(); if (!key) throw new Error('NOKEY');
-  const call = model => fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-    body: JSON.stringify({ contents: [{ parts }], generationConfig: { responseMimeType: 'application/json', temperature: 0.2 } })
-  });
-  let res;
-  try {
-    const model = modelOverride || getModel();
-    res = await call(model);
-    if (res.status === 404 && model !== 'gemini-flash-latest') res = await call('gemini-flash-latest');
-  } catch { throw new Error('No connection to the AI. Check your internet.'); }
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) {
-    const msg = data.error?.message || 'HTTP ' + res.status;
-    if (res.status === 429) throw new Error('Free AI limit reached for now. Wait a minute and try again (daily limits reset every day).');
-    if (/api key|API_KEY|permission/i.test(msg)) throw new Error('Your AI key was rejected. Check it in Settings.');
-    if (res.status === 404) throw new Error('AI model not found. Change the model name in Settings (e.g. gemini-2.5-flash).');
-    throw new Error('AI error: ' + msg);
-  }
-  const text = (data.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('').replace(/^```(json)?|```$/gm, '').trim();
-  try { return JSON.parse(text); } catch { throw new Error('The AI gave an unreadable answer. Please try again.'); }
-}
-
-/* ---------- Review / edit ---------- */
-function renderReview() {
-  if (!draft) return show('today');
-  const d = draft;
-  let h = `<div class="card">
-    ${d.confidence ? `<div class="spread" style="margin-bottom:6px"><span class="small muted">AI confidence</span><span class="conf ${d.confidence === 'low' ? 'low' : ''}">${esc(d.confidence)}</span></div>` : ''}
-    ${d.notes ? `<p class="small muted" style="margin-top:0">${esc(d.notes)}</p>` : ''}
-    <label for="mName" style="margin-top:0">Meal name</label><input id="mName" value="${esc(d.name)}" placeholder="e.g. Chicken bowl">
-    <div class="grid2"><div><label for="mType">Meal</label><select id="mType">${MEAL_TYPES.map(t => `<option value="${t}" ${t === d.type ? 'selected' : ''}>${cap(t)}</option>`).join('')}</select></div>
-    <div><label for="mDate">Date</label><input id="mDate" type="date" value="${d.date}" max="${iso()}"></div></div></div>
-  <div class="card"><h2>Foods</h2><div id="items"></div>
-    <button class="secondary block" id="addItem">＋ Add another food</button></div>
-  <div class="card"><div class="totals" id="totals"></div></div>
-  <div class="row" style="margin-bottom:20px"><button class="secondary grow" id="cancel">Cancel</button><button class="grow" id="saveMeal">${d.id ? 'Save changes' : 'Save meal'}</button></div>`;
-  $('#v-review').innerHTML = h;
-  renderItems();
-  $('#mName').oninput = e => d.name = e.target.value;
-  $('#mType').onchange = e => d.type = e.target.value;
-  $('#mDate').onchange = e => d.date = e.target.value || iso();
-  $('#addItem').onclick = () => { d.items.push(setBase({ name: '', grams: 100, kcal: 0, protein: 0, carbs: 0, fat: 0 })); renderItems(); };
-  $('#cancel').onclick = () => { draft = null; show('today'); };
-  $('#saveMeal').onclick = saveDraft;
-}
-function renderItems() {
-  const box = $('#items');
-  box.innerHTML = draft.items.map((it, i) => `<div class="item" data-i="${i}">
-    <div class="row"><input data-f="name" value="${esc(it.name)}" placeholder="Food name" class="grow">
-      <input data-f="grams" class="grams" inputmode="decimal" value="${it.grams}" aria-label="grams"><span class="small muted">g</span>
-      <button class="ghost" data-rm="${i}" aria-label="Remove">✕</button></div>
-    <div class="grid4">
-      ${['kcal', 'protein', 'carbs', 'fat'].map(f => `<div><label>${f === 'kcal' ? 'kcal' : cap(f) + ' g'}</label><input data-f="${f}" inputmode="decimal" value="${it[f]}"></div>`).join('')}
-    </div></div>`).join('') || '<p class="muted">No foods. Add one below.</p>';
-  box.querySelectorAll('input').forEach(inp => inp.oninput = onItemInput);
-  box.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { draft.items.splice(+b.dataset.rm, 1); renderItems(); });
-  renderTotals();
-}
-function onItemInput(e) {
-  const card = e.target.closest('.item'), it = draft.items[+card.dataset.i], f = e.target.dataset.f;
-  if (f === 'name') { it.name = e.target.value; return; }
-  it[f] = num(e.target.value);
-  if (f === 'grams') {
-    // Scale nutrition with the portion size
-    if (it.base.grams > 0) {
-      const k = it.grams / it.base.grams;
-      for (const m of ['kcal', 'protein', 'carbs', 'fat']) {
-        it[m] = m === 'kcal' ? r0(it.base[m] * k) : r1(it.base[m] * k);
-        card.querySelector(`[data-f="${m}"]`).value = it[m];
-      }
-    } else setBase(it);
-  } else setBase(it);
-  renderTotals();
-}
-function renderTotals() {
-  const t = draft.items.reduce((a, it) => { for (const k in a) a[k] += num(it[k]); return a; }, { kcal: 0, protein: 0, carbs: 0, fat: 0 });
-  $('#totals').innerHTML = `<span>${r0(t.kcal)}<small>kcal</small></span><span style="color:var(--protein)">${r0(t.protein)} g<small>protein</small></span>
-    <span style="color:var(--carbs)">${r0(t.carbs)} g<small>carbs</small></span><span style="color:var(--fat)">${r0(t.fat)} g<small>fat</small></span>`;
-}
-function saveDraft() {
-  const d = draft;
-  d.items = d.items.filter(it => it.name.trim() || num(it.kcal) > 0);
-  if (!d.items.length) return toast('Add at least one food');
-  if (!d.name.trim()) d.name = d.items.map(i => i.name || 'Food').join(', ');
-  const meal = { id: d.id || uid(), date: d.date, type: d.type, name: d.name.trim(), source: d.source,
-    time: d.time || new Date().toTimeString().slice(0, 5),
-    items: d.items.map(({ base, ...it }) => ({ ...it, name: it.name.trim() || 'Food' })) };
-  const i = db.meals.findIndex(m => m.id === meal.id);
-  if (i >= 0) db.meals[i] = meal; else db.meals.push(meal);
-  save(); draft = null; curDate = meal.date; toast('Saved ✓'); show('today');
-}
-
-/* ---------- Progress ---------- */
-function renderProgress() {
-  const t = targets(), p = db.profile;
-  const ws = [...db.weights].sort((a, b) => a.date.localeCompare(b.date));
-  let h = `<div class="card"><h2>Log weight</h2><div class="row">
-    <input id="wKg" inputmode="decimal" placeholder="kg" value="${ws.length ? ws.at(-1).kg : (p?.weight || '')}" style="max-width:110px">
-    <input id="wDate" type="date" value="${iso()}" max="${iso()}" class="grow"><button id="wSave">Save</button></div></div>`;
-
-  h += `<div class="card"><h2>Weight</h2>`;
-  if (ws.length < 2) h += `<p class="muted">Log your weight a few times (e.g. every morning) to see your trend here.</p>`;
-  else h += weightChart(ws.slice(-120), p && p.goal !== 'maintain' ? p.targetWeight : null);
-  if (ws.length) {
-    const start = ws[0].kg, cur = ws.at(-1).kg, diff = r1(cur - start);
-    let toGo = '', eta = '';
-    if (p && p.goal !== 'maintain' && p.targetWeight) {
-      const rem = r1(p.targetWeight - cur);
-      toGo = (rem > 0 ? '+' : '') + rem + ' kg';
-      const reached = (p.goal === 'lose' && rem >= 0) || (p.goal === 'gain' && rem <= 0);
-      if (reached) eta = 'Reached 🎉';
-      else { const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(rem) / p.pace * 7)); eta = d.toLocaleDateString(undefined, { month: 'short', year: 'numeric' }); }
-    }
-    h += `<div class="stats" style="margin-top:12px">
-      <div class="stat"><span class="small muted">Current</span><b>${cur} kg</b></div>
-      <div class="stat"><span class="small muted">Change</span><b>${diff > 0 ? '+' : ''}${diff} kg</b></div>
-      ${toGo ? `<div class="stat"><span class="small muted">To goal (${p.targetWeight} kg)</span><b>${toGo}</b></div>
-      <div class="stat"><span class="small muted">Expected</span><b>${eta}</b></div>` : ''}</div>`;
-  }
-  h += `</div>`;
-
-  // Last 7 days
-  const days = [...Array(7)].map((_, i) => addDays(iso(), i - 6));
-  const tot = days.map(dayTotals);
-  const goal = t ? t.kcal : 2000;
-  const maxV = Math.max(goal * 1.25, ...tot.map(x => x.kcal));
-  const logged = tot.filter(x => x.count);
-  const avgK = logged.length ? r0(logged.reduce((a, x) => a + x.kcal, 0) / logged.length) : 0;
-  const avgP = logged.length ? r0(logged.reduce((a, x) => a + x.protein, 0) / logged.length) : 0;
-  const pHit = t ? logged.filter(x => x.protein >= t.protein * 0.95).length : 0;
-  const kHit = t ? logged.filter(x => Math.abs(x.kcal - t.kcal) <= t.kcal * 0.1).length : 0;
-  h += `<div class="card"><h2>Last 7 days</h2><div class="bars">
-    <div class="goal" style="bottom:calc(${goal / maxV * 100}% * (130 - 20) / 130 + 20px)"></div>
-    ${tot.map((x, i) => `<div class="col"><i class="${x.kcal > goal * 1.1 ? 'over' : ''}" style="height:${x.kcal / maxV * 110}px"></i>
-      <span>${new Date(days[i] + 'T12:00').toLocaleDateString(undefined, { weekday: 'narrow' })}</span></div>`).join('')}
-  </div><p class="small muted" style="margin:6px 0 12px">Dashed line = your calorie goal (${goal} kcal)</p>
-  <div class="stats">
-    <div class="stat"><span class="small muted">Avg calories</span><b>${avgK}</b></div>
-    <div class="stat"><span class="small muted">Avg protein</span><b>${avgP} g</b></div>
-    <div class="stat"><span class="small muted">Protein goal hit</span><b>${pHit} / 7 days</b></div>
-    <div class="stat"><span class="small muted">Calories on target</span><b>${kHit} / 7 days</b></div>
-    <div class="stat" style="grid-column:1/-1"><span class="small muted">Logging streak</span><b>🔥 ${streak()} day${streak() === 1 ? '' : 's'}</b></div>
-  </div></div>`;
-
-  if (ws.length) h += `<div class="card"><h2>Weight entries</h2><div class="wlist">${ws.slice(-10).reverse().map(w =>
-    `<div><span>${fmtDate(w.date)}</span><span><b>${w.kg} kg</b><button class="ghost" onclick="delWeight('${w.date}')" aria-label="Delete">✕</button></span></div>`).join('')}</div></div>`;
-  $('#v-progress').innerHTML = h;
-  $('#wSave').onclick = () => {
-    const kg = r1(num($('#wKg').value)), date = $('#wDate').value || iso();
-    if (kg < 25 || kg > 350) return toast('Please enter a valid weight in kg');
-    db.weights = db.weights.filter(w => w.date !== date); db.weights.push({ date, kg });
-    save(); toast('Weight saved ✓'); renderProgress();
-  };
-}
-function delWeight(date) { if (!confirm('Delete this weight entry?')) return; db.weights = db.weights.filter(w => w.date !== date); save(); renderProgress(); }
-function streak() {
-  const has = new Set(db.meals.map(m => m.date));
-  let d = iso(), n = 0;
-  if (!has.has(d)) d = addDays(d, -1);
-  while (has.has(d)) { n++; d = addDays(d, -1); }
-  return n;
-}
-function weightChart(ws, target) {
-  const W = 340, H = 170, P = { l: 34, r: 10, t: 10, b: 22 };
-  const vals = ws.map(w => w.kg).concat(target ? [target] : []);
-  let lo = Math.min(...vals), hi = Math.max(...vals); if (hi - lo < 2) { lo -= 1; hi += 1; }
-  const t0 = new Date(ws[0].date).getTime(), t1 = Math.max(new Date(ws.at(-1).date).getTime(), t0 + 864e5);
-  const x = d => P.l + (new Date(d).getTime() - t0) / (t1 - t0) * (W - P.l - P.r);
-  const y = v => P.t + (hi - v) / (hi - lo) * (H - P.t - P.b);
-  const pts = ws.map(w => `${x(w.date).toFixed(1)},${y(w.kg).toFixed(1)}`).join(' ');
-  const ticks = [hi, (hi + lo) / 2, lo];
-  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Weight chart">
-    ${ticks.map(v => `<line x1="${P.l}" x2="${W - P.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${P.l - 6}" y="${y(v) + 4}" font-size="10" text-anchor="end" fill="var(--muted)">${r1(v)}</text>`).join('')}
-    ${target ? `<line x1="${P.l}" x2="${W - P.r}" y1="${y(target)}" y2="${y(target)}" stroke="var(--accent)" stroke-dasharray="5 4"/><text x="${W - P.r}" y="${y(target) - 4}" font-size="10" text-anchor="end" fill="var(--accent)">goal</text>` : ''}
-    <polyline points="${pts}" fill="none" stroke="var(--protein)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-    ${ws.length <= 40 ? ws.map(w => `<circle cx="${x(w.date)}" cy="${y(w.kg)}" r="3" fill="var(--protein)"/>`).join('') : ''}
-    <text x="${P.l}" y="${H - 6}" font-size="10" fill="var(--muted)">${fmtDate(ws[0].date)}</text>
-    <text x="${W - P.r}" y="${H - 6}" font-size="10" text-anchor="end" fill="var(--muted)">${fmtDate(ws.at(-1).date)}</text></svg>`;
-}
-
-/* ---------- Goals & Settings ---------- */
-function renderGoals(settingsOnly) {
-  const p = db.profile || { sex: 'm', age: 30, height: 178, weight: 80, activity: 1.375, goal: 'lose', pace: 0.5, targetWeight: 75 };
-  const t = targets();
-  let h = '';
-  if (!settingsOnly) {
-    h += `<div class="card"><h2>About you</h2>
-    <div class="grid2">
-      <div><label for="gSex">Sex</label><select id="gSex"><option value="m" ${p.sex === 'm' ? 'selected' : ''}>Male</option><option value="f" ${p.sex === 'f' ? 'selected' : ''}>Female</option></select></div>
-      <div><label for="gAge">Age</label><input id="gAge" inputmode="numeric" value="${p.age}"></div>
-      <div><label for="gHeight">Height (cm)</label><input id="gHeight" inputmode="decimal" value="${p.height}"></div>
-      <div><label for="gWeight">Weight (kg)</label><input id="gWeight" inputmode="decimal" value="${db.weights.length ? currentWeight() : p.weight}"></div>
-    </div>
-    <label for="gAct">Activity</label><select id="gAct">
-      ${[[1.2, 'Mostly sitting, no sport'], [1.375, 'Light: sport 1–3× / week'], [1.55, 'Moderate: sport 3–5× / week'], [1.725, 'Very active: sport 6–7× / week'], [1.9, 'Extreme: physical job + training']]
-        .map(([v, l]) => `<option value="${v}" ${p.activity == v ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
-    <div class="card"><h2>Your goal</h2>
-    <label for="gGoal" style="margin-top:0">I want to…</label><select id="gGoal">
-      <option value="lose" ${p.goal === 'lose' ? 'selected' : ''}>Lose fat</option>
-      <option value="maintain" ${p.goal === 'maintain' ? 'selected' : ''}>Keep my weight / recomposition</option>
-      <option value="gain" ${p.goal === 'gain' ? 'selected' : ''}>Build muscle (lean bulk)</option></select>
-    <div class="grid2" id="paceRow" ${p.goal === 'maintain' ? 'hidden' : ''}>
-      <div><label for="gTarget">Target weight (kg)</label><input id="gTarget" inputmode="decimal" value="${p.targetWeight || ''}"></div>
-      <div><label for="gPace">Speed</label><select id="gPace">
-        ${[[0.25, 'Slow (0.25/wk)'], [0.5, 'Normal (0.5/wk)'], [0.75, 'Fast (0.75/wk)']].map(([v, l]) => `<option value="${v}" ${p.pace == v ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
-    </div>
-    <button class="block" id="gSave" style="margin-top:14px">${db.profile ? 'Update goals' : 'Save & calculate'}</button></div>`;
-    if (t) h += `<div class="card"><h2>Your daily targets</h2>
-      <p class="small muted" style="margin-top:0">Your body burns about <b>${t.tdee} kcal</b>/day (resting: ${t.bmr}). Change any number to use your own.</p>
-      <div class="grid4">${[['kcal', 'kcal'], ['protein', 'Protein g'], ['carbs', 'Carbs g'], ['fat', 'Fat g']].map(([k, l]) =>
-        `<div><label>${l}</label><input data-ov="${k}" inputmode="numeric" value="${db.overrides[k] || ''}" placeholder="${t.auto[k]}"></div>`).join('')}</div>
-      <p class="small muted">Empty = calculated automatically. Estimates only, not medical advice.</p></div>`;
-  }
-  const key = getKey();
-  h += `<div class="card"><h2>AI photo analysis (free)</h2>
-    <p class="small muted" style="margin-top:0">1. Open <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> and sign in with Google.<br>
-    2. Tap <b>Create API key</b> and copy it.<br>3. Paste it here. It stays only on this phone.</p>
-    <label for="sKey">Google AI key</label><input id="sKey" type="password" autocomplete="off" placeholder="AIza…" value="${esc(key)}">
-    <label for="sModel">Model</label><input id="sModel" value="${esc(LS.get('ft_model', ''))}" placeholder="gemini-2.5-flash">
-    <div class="row" style="margin-top:12px"><button class="grow" id="sSave">Save key</button><button class="secondary grow" id="sTest">Test</button></div>
-    <p class="small muted" id="sMsg">${key ? '✓ Key saved' : 'No key yet'}</p></div>
-  <div class="card"><h2>Your data</h2>
-    <p class="small muted" style="margin-top:0">Everything is saved only on this phone. Make a backup now and then.</p>
-    <div class="row wrap"><button class="secondary grow" id="dExport">⬇ Backup</button><button class="secondary grow" id="dImport">⬆ Restore</button></div>
-    <button class="danger block" id="dReset" style="margin-top:10px">Delete all data</button></div>`;
-  $('#v-goals').innerHTML = h;
-
-  if (!settingsOnly) {
-    $('#gGoal').onchange = e => $('#paceRow').hidden = e.target.value === 'maintain';
-    $('#gSave').onclick = () => {
-      const np = { sex: $('#gSex').value, age: num($('#gAge').value), height: num($('#gHeight').value), weight: r1(num($('#gWeight').value)),
-        activity: num($('#gAct').value), goal: $('#gGoal').value, pace: num($('#gPace').value), targetWeight: r1(num($('#gTarget').value)) };
-      if (np.age < 12 || np.age > 100 || np.height < 120 || np.height > 230 || np.weight < 30 || np.weight > 300) return toast('Please check age, height and weight');
-      if (np.goal !== 'maintain' && !np.targetWeight) return toast('Please enter a target weight');
-      const first = !db.profile;
-      db.profile = np;
-      if (!db.weights.length || currentWeight() !== np.weight) { db.weights = db.weights.filter(w => w.date !== iso()); db.weights.push({ date: iso(), kg: np.weight }); }
-      save(); toast('Goals saved ✓');
-      if (first) show('today'); else renderGoals(false);
-    };
-    document.querySelectorAll('[data-ov]').forEach(inp => inp.onchange = () => {
-      const v = num(inp.value); if (v > 0) db.overrides[inp.dataset.ov] = v; else delete db.overrides[inp.dataset.ov];
-      save(); toast('Targets updated');
-    });
-  }
-  $('#sSave').onclick = () => {
-    const k = $('#sKey').value.trim(), m = $('#sModel').value.trim();
-    if (k) LS.set('ft_key', k); else LS.del('ft_key');
-    if (m) LS.set('ft_model', m); else LS.del('ft_model');
-    $('#sMsg').textContent = k ? '✓ Key saved' : 'Key removed'; toast('Saved');
-  };
-  $('#sTest').onclick = async () => {
-    $('#sSave').click(); $('#sMsg').textContent = 'Testing…';
-    try { const r = await askGemini([{ text: 'Return JSON {"ok": true}' }]); $('#sMsg').textContent = r.ok ? '✓ Key works! Model: ' + getModel() : '✓ Key works'; }
-    catch (e) { $('#sMsg').textContent = '✕ ' + (e.message === 'NOKEY' ? 'Enter a key first' : e.message); }
-  };
-  $('#dExport').onclick = () => {
-    const blob = new Blob([JSON.stringify(db, null, 1)], { type: 'application/json' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `foodtracker-backup-${iso()}.json`;
-    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
-  };
-  $('#dImport').onclick = () => $('#fileImport').click();
-  $('#dReset').onclick = () => {
-    if (!confirm('Delete ALL meals, weights and goals? This cannot be undone.')) return;
-    db = { profile: null, overrides: {}, meals: [], weights: [] }; save(); toast('All data deleted'); show('today');
-  };
-}
-$('#fileImport').onchange = async e => {
-  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
-  try {
-    const d = JSON.parse(await f.text());
-    if (!Array.isArray(d.meals) || !Array.isArray(d.weights)) throw 0;
-    if (!confirm(`Restore backup with ${d.meals.length} meals and ${d.weights.length} weights? Current data will be replaced.`)) return;
-    db = Object.assign({ profile: null, overrides: {}, meals: [], weights: [] }, d); save(); toast('Backup restored ✓'); show('today');
-  } catch { toast('This is not a valid backup file'); }
-};
-
-/* ---------- Start ---------- */
-show(db.profile ? 'today' : 'goals');
+/* ================= Start ================= */
+go('home');
+if (!db.profile) startOnboarding();
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>
 </body>
