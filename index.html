@@ -209,6 +209,31 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .stats3{display:flex;justify-content:space-around;text-align:center}
 .stats3 b{display:block;font-size:20px}
 
+/* Chat */
+body.chatting{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
+body.chatting .fab{display:none}
+.msgs{display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.msg{max-width:86%;padding:11px 15px;border-radius:20px;font-size:15.5px;line-height:1.45;word-wrap:break-word}
+.msg.user{align-self:flex-end;background:var(--ink);color:var(--on-ink);border-bottom-right-radius:6px}
+.msg.ai{align-self:flex-start;background:var(--card);box-shadow:var(--shadow);border-bottom-left-radius:6px}
+.msg.err{background:transparent;box-shadow:inset 0 0 0 1.5px var(--bad);color:var(--bad)}
+.msg img{display:block;max-width:180px;border-radius:12px;margin-bottom:6px}
+.msg ul,.msg ol{margin:4px 0;padding-left:20px}
+.msg p{margin:0 0 6px}.msg p:last-child{margin:0}
+.dots span{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--muted);margin:0 2px;animation:pulse 1s infinite}
+.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
+.chatbar{position:fixed;left:0;right:0;bottom:calc(66px + env(safe-area-inset-bottom));z-index:19;background:color-mix(in srgb,var(--bg) 92%,transparent);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:8px 14px}
+.chatbar .in{max-width:560px;margin:0 auto}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chips button{flex:none;background:var(--card);box-shadow:inset 0 0 0 1.5px var(--line);border-radius:999px;padding:8px 13px;font-size:13.5px;font-weight:500}
+.composer{display:flex;gap:8px;align-items:flex-end;background:var(--card);border-radius:24px;padding:5px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.composer textarea{min-height:0;height:40px;max-height:120px;overflow-y:hidden;background:none;padding:10px 6px;border-radius:0}
+.composer .cbtn{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:18px}
+.composer .send{background:var(--ink);color:var(--on-ink)}
+.attach{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:13px}
+.attach img{width:44px;height:44px;border-radius:10px;object-fit:cover}
 #toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translate(-50%,-20px);background:var(--ink);color:var(--on-ink);
   padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:.25s;pointer-events:none;z-index:99;max-width:calc(100% - 32px);text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,0)}
@@ -224,6 +249,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 <nav class="tabbar"><div class="in">
   <button class="tab on" data-tab="home"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2 2.8 11h2.7v9h5v-6h3v6h5v-9h2.7z"/></svg>Home</button>
   <button class="tab" data-tab="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20V12M12 20V5M19 20v-9"/></svg>Progress</button>
+  <button class="tab" data-tab="chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" stroke-width="2.6" stroke-linecap="round"/></svg>Coach</button>
   <button class="tab" data-tab="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Settings</button>
   <button class="fab" id="fab" aria-label="Add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
 </div></nav>
@@ -232,6 +258,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 <input type="file" accept="image/*" id="fileLib" class="hiddenfile">
 <input type="file" accept="image/*" capture="environment" id="fileBar" class="hiddenfile">
 <input type="file" accept="application/json,.json" id="fileImport" class="hiddenfile">
+<input type="file" accept="image/*" id="fileChat" class="hiddenfile">
 <div id="qr-hidden" style="display:none"></div>
 <div id="toast"></div>
 
@@ -374,10 +401,12 @@ let progRange = 90, nutWeek = 0;
 function go(t) {
   tab = t;
   document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  document.body.classList.toggle('chatting', t === 'chat');
+  $('.chatbar')?.remove();
   window.scrollTo(0, 0);
   render();
 }
-function render() { ({ home: renderHome, progress: renderProgress, settings: renderSettings })[tab](); }
+function render() { ({ home: renderHome, progress: renderProgress, chat: renderChat, settings: renderSettings })[tab](); }
 document.querySelectorAll('.tab').forEach(b => b.onclick = () => go(b.dataset.tab));
 $('#fab').onclick = openAddMenu;
 
@@ -441,7 +470,7 @@ function renderHome() {
   $('#view').innerHTML = `
     <div class="top"><div class="brand"><img src="icon-180.png" alt="">FoodTracker</div><div class="streak">🔥 ${st}</div></div>
     <div class="week"><button class="nav" id="wPrev">‹</button><div class="days">${week}</div><button class="nav" id="wNext" ${weekOff >= 0 ? 'style="visibility:hidden"' : ''}>›</button></div>
-    ${!getKey() ? `<button class="card" style="width:100%;text-align:left;display:flex;gap:12px;align-items:center" onclick="go('settings')"><span style="font-size:26px">✨</span><span class="grow"><b>Turn on AI food scanning</b><br><span class="small muted">Add your free Google AI key in Settings</span></span><span class="muted">›</span></button>` : ''}
+    ${!hasAI() ? `<button class="card" style="width:100%;text-align:left;display:flex;gap:12px;align-items:center" onclick="go('settings')"><span style="font-size:26px">✨</span><span class="grow"><b>Turn on AI food scanning</b><br><span class="small muted">Add your free Google AI key in Settings</span></span><span class="muted">›</span></button>` : ''}
     <button class="card calcard" data-toggle style="width:100%;text-align:left"><div>${calBig}</div>${ring(104, 9, tot.kcal / goalK, left < 0 ? 'var(--bad)' : 'var(--ink)', '<span style="font-size:28px">🔥</span>')}</button>
     <div class="macros">${macros}</div>
     ${burned ? `<div class="burned">🏋️ ${r0(burned)} kcal burned${db.settings.addBurned ? ' · added to your goal' : ''}</div>` : ''}
@@ -508,29 +537,130 @@ Return ONLY JSON in this exact shape:
 {"name": "short appetising meal name", "items": [{"name": "ingredient", "grams": 0, "kcal": 0, "protein": 0, "carbs": 0, "fat": 0}], "health_score": 7, "notes": "short"}
 Numbers are for the whole portion (not per 100 g); macros in grams. health_score is an integer 1-10 (10 = very healthy: whole foods, high protein and fibre, low sugar). If there is no food, return "items": [] and explain in notes.`;
 
-async function askGemini(parts) {
-  const key = getKey(); if (!key) throw new Error('NOKEY');
-  const call = model => fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-    body: JSON.stringify({ contents: [{ parts }], generationConfig: { responseMimeType: 'application/json', temperature: 0.2 } })
-  });
+/* --- AI engine ---
+   Parts format: [{ text }, { image: base64jpeg }]. Tries every free Google model in turn (each has its
+   own daily limit), skipping ones that are rate-limited, then Claude if a Claude key is set. */
+const getClaudeKey = () => LS.get('ft_claude_key', '');
+const hasAI = () => !!(getKey() || getClaudeKey());
+let lastAI = '';
+const GEMINI = [
+  { id: 'gemini-3.5-flash-lite' },                                   // fastest, minimal thinking by default
+  { id: 'gemini-3.1-flash-lite' },
+  { id: 'gemini-3.6-flash', think: { thinkingLevel: 'minimal' } },
+  { id: 'gemini-3.8-flash', think: { thinkingLevel: 'low' } },
+  { id: 'gemini-flash-latest' },
+  { id: 'gemini-2.5-flash-lite' },
+  { id: 'gemini-2.5-flash', think: { thinkingBudget: 0 } }
+];
+const aiErr = (msg, fatal) => Object.assign(new Error(msg), { fatal });
+function parseJSON(text) {
+  const t = String(text || '').replace(/```(json)?/g, '').trim();
+  try { return JSON.parse(t); } catch {}
+  const a = t.indexOf('{'), b = t.lastIndexOf('}');
+  if (a >= 0 && b > a) try { return JSON.parse(t.slice(a, b + 1)); } catch {}
+  throw aiErr('The AI gave an unreadable answer. Please try again.');
+}
+function untilQuotaReset() { const d = new Date(); d.setUTCHours(8, 5, 0, 0); if (d <= new Date()) d.setUTCDate(d.getUTCDate() + 1); return d - new Date(); }
+// Merge consecutive same-role messages so the conversation alternates user/assistant
+function normMsgs(msgs) {
+  const out = [];
+  for (const m of msgs) { const prev = out.at(-1); if (prev && prev.role === m.role) prev.parts = prev.parts.concat(m.parts); else out.push({ role: m.role, parts: [...m.parts] }); }
+  while (out.length && out[0].role !== 'user') out.shift();
+  return out;
+}
+async function askAI(parts, opt = {}) {
+  const json = opt.json !== false;
+  const msgs = normMsgs([...(opt.history || []), { role: 'user', parts }]);
+  const g = getKey(), c = getClaudeKey();
+  if (!g && !c) throw new Error('NOKEY');
+  const prov = [];
+  if (g) prov.push(() => geminiChain(g, msgs, opt.system, json));
+  if (c) prov.push(() => claudeCall(c, msgs, opt.system, json));
+  if (LS.get('ft_ai_first', 'gemini') === 'claude') prov.reverse();
+  let err;
+  for (const run of prov) {
+    try { const text = await run(); return json ? parseJSON(text) : text; }
+    catch (e) { err = e; }
+  }
+  throw err;
+}
+async function geminiOnce(key, model, msgs, system, json) {
+  const def = GEMINI.find(m => m.id === model) || {};
+  const noThink = JSON.parse(LS.get('ft_nothink', '[]'));
+  const think = def.think && !noThink.includes(model) ? def.think : null;
+  const body = {
+    contents: msgs.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user',
+      parts: m.parts.map(p => p.image ? { inlineData: { mimeType: 'image/jpeg', data: p.image } } : { text: p.text }) })),
+    generationConfig: { temperature: json ? 0.2 : 0.7, ...(json ? { responseMimeType: 'application/json' } : {}), ...(think ? { thinkingConfig: think } : {}) }
+  };
+  if (system) body.systemInstruction = { parts: [{ text: system }] };
+  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 30000);
   let res;
   try {
-    const model = getModel();
-    res = await call(model);
-    if (res.status === 404 && model !== 'gemini-flash-latest') res = await call('gemini-flash-latest');
-  } catch { throw new Error('No connection to the AI. Check your internet.'); }
+    res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+      method: 'POST', signal: ctl.signal, headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, body: JSON.stringify(body) });
+  } catch (e) { return { ok: false, status: e.name === 'AbortError' ? 504 : 0, msg: e.name === 'AbortError' ? 'took too long' : 'no connection' }; }
+  finally { clearTimeout(timer); }
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     const msg = data.error?.message || 'HTTP ' + res.status;
-    if (res.status === 429) throw new Error('Free AI limit reached for now. Wait a minute and try again.');
-    if (/api key|API_KEY|permission/i.test(msg)) throw new Error('Your AI key was rejected. Check it in Settings.');
-    if (res.status === 404) throw new Error('AI model not found. Change the model in Settings.');
-    throw new Error('AI error: ' + msg);
+    if (think && res.status === 400 && /think/i.test(msg)) { noThink.push(model); LS.set('ft_nothink', JSON.stringify(noThink)); return geminiOnce(key, model, msgs, system, json); }
+    return { ok: false, status: res.status, msg };
   }
-  const text = (data.candidates?.[0]?.content?.parts || []).map(p => p.text || '').join('').replace(/^```(json)?|```$/gm, '').trim();
-  try { return JSON.parse(text); } catch { throw new Error('The AI gave an unreadable answer. Please try again.'); }
+  const text = (data.candidates?.[0]?.content?.parts || []).filter(p => !p.thought).map(p => p.text || '').join('');
+  return text ? { ok: true, text } : { ok: false, status: 500, msg: 'empty answer (' + (data.candidates?.[0]?.finishReason || data.promptFeedback?.blockReason || 'unknown') + ')' };
+}
+async function geminiChain(key, msgs, system, json) {
+  const cool = JSON.parse(LS.get('ft_cool', '{}')), now = Date.now();
+  let list = GEMINI.map(m => m.id);
+  const custom = LS.get('ft_model', ''), last = LS.get('ft_lastModel', '');
+  if (last && list.includes(last)) list = [last, ...list.filter(x => x !== last)];
+  if (custom) list = [custom, ...list.filter(x => x !== custom)];
+  const ready = list.filter(m => !(cool[m] > now));
+  let err = aiErr('All free Google AI models are busy right now. Try again in a minute' + (getClaudeKey() ? '.' : ', or add a Claude key in Settings.'));
+  let offline = 0;
+  for (const model of (ready.length ? ready : list)) {
+    const r = await geminiOnce(key, model, msgs, system, json);
+    if (r.ok) { LS.set('ft_lastModel', model); lastAI = model; return r.text; }
+    if (r.status === 0 && ++offline >= 2) throw aiErr('No connection to the AI. Check your internet.');
+    if (/api[_ ]?key|API_KEY_INVALID|unauthenticated/i.test(r.msg) || r.status === 401) throw aiErr('Your Google AI key was rejected. Check it in Settings.', true);
+    let wait = 0;
+    if (r.status === 429) wait = /day|PerDay/i.test(r.msg) ? untilQuotaReset() : 60e3;
+    else if (r.status === 404 || r.status === 403 || (r.status === 400 && /not (found|supported|available)|no longer|deprecat|access/i.test(r.msg))) wait = 7 * 864e5;
+    else if (r.status >= 500) wait = 20e3;
+    else err = aiErr('Google AI error: ' + r.msg);
+    if (wait) { cool[model] = Date.now() + wait; LS.set('ft_cool', JSON.stringify(cool)); }
+  }
+  throw err;
+}
+async function claudeCall(key, msgs, system, json) {
+  const model = LS.get('ft_claude_model', '') || 'claude-opus-5-5', isOpus = model === 'claude-opus-5-5';
+  const jsonRule = 'Respond with only the JSON object, no other text.';
+  const body = {
+    model, max_tokens: 8000, output_config: { effort: 'low' },
+    messages: msgs.map(m => ({ role: m.role, content: m.parts.map(p => p.image
+      ? { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: p.image } } : { type: 'text', text: p.text }) }))
+  };
+  if (system || json) body.system = [system, json ? jsonRule : ''].filter(Boolean).join('\n\n');
+  if (isOpus) body.fallbacks = 'default';   // re-runs a declined request on Anthropic's recommended fallback model
+  let res;
+  try {
+    res = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', body: JSON.stringify(body), headers: {
+      'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true',
+      ...(isOpus ? { 'anthropic-beta': 'server-side-fallback-2026-07-01' } : {}) } });
+  } catch { throw aiErr('No connection to Claude. Check your internet.'); }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const msg = data.error?.message || 'HTTP ' + res.status;
+    if (res.status === 401 || res.status === 403) throw aiErr('Your Claude key was rejected. Check it in Settings.');
+    if (/credit balance/i.test(msg)) throw aiErr('Your Claude account has no credit left. Add credit at console.anthropic.com.');
+    if (res.status === 429 || res.status === 529) throw aiErr('Claude is busy right now. Try again in a moment.');
+    throw aiErr('Claude error: ' + msg);
+  }
+  if (data.stop_reason === 'refusal') throw aiErr('Claude declined this request.');
+  const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+  if (!text) throw aiErr('Claude gave an empty answer. Please try again.');
+  lastAI = 'Claude'; return text;
 }
 const normItems = items => (items || []).map(it => ({
   name: String(it.name || 'Food'), grams: r0(num(it.grams)), kcal: r0(num(it.kcal)),
@@ -553,7 +683,7 @@ async function runAnalysis(p) {
   }, 200);
   if (tab === 'home') renderHome();
   try {
-    const res = await askGemini(p.parts);
+    const res = await askAI(p.parts);
     const items = normItems(res.items);
     if (!items.length) throw new Error(res.notes || 'No food recognised. Try a clearer photo.');
     const m = { id: p.id, date: p.date, time: p.time, name: res.name || items.map(i => i.name).join(', '), items, servings: 1,
@@ -574,12 +704,17 @@ function removePending(id) { pending = pending.filter(x => x.id !== id); renderH
 async function onFoodPhoto(file) {
   if (!file) return;
   try {
-    const full = await scaleImage(file, 1024), thumb = await scaleImage(full, 480);
-    addPending(thumb, [{ text: FOOD_PROMPT }, { inlineData: { mimeType: 'image/jpeg', data: full.split(',')[1] } }]);
+    const full = await scaleImage(file, 960), thumb = await scaleImage(full, 480);
+    addPending(thumb, [{ text: FOOD_PROMPT }, { image: full.split(',')[1] }]);
   } catch (e) { toast(e.message); }
 }
 $('#fileCam').onchange = e => { onFoodPhoto(e.target.files[0]); e.target.value = ''; };
 $('#fileLib').onchange = e => { onFoodPhoto(e.target.files[0]); e.target.value = ''; };
+$('#fileChat').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  try { const full = await scaleImage(f, 960); chatImg = { full: full.split(',')[1], thumb: await scaleImage(full, 240) }; renderAttach(); }
+  catch (err) { toast(err.message); }
+};
 
 function openDescribeSheet() {
   sheet(`<h3>Describe your food</h3><p class="muted" style="margin-top:4px">The AI calculates the nutrition for you.</p>
@@ -652,7 +787,7 @@ function openExercise(id) {
       const b = s.querySelector('#eAi'); b.innerHTML = '<span class="spin"></span>';
       try {
         const p = db.profile || {};
-        const r = await askGemini([{ text: `Estimate calories burned. Person: ${currentWeight() || 75} kg, ${p.sex === 'f' ? 'female' : 'male'}. Activity: "${t}". Return ONLY JSON {"name": "short activity name", "minutes": 0, "kcal": 0}` }]);
+        const r = await askAI([{ text: `Estimate calories burned. Person: ${currentWeight() || 75} kg, ${p.sex === 'f' ? 'female' : 'male'}. Activity: "${t}". Return ONLY JSON {"name": "short activity name", "minutes": 0, "kcal": 0}` }]);
         s.querySelector('#eName').value = r.name || t; s.querySelector('#eMin').value = r0(num(r.minutes)) || ''; s.querySelector('#eKcal').value = r0(num(r.kcal));
       } catch (e) { toast(e.message === 'NOKEY' ? 'Add your AI key in Settings' : e.message); }
       b.textContent = '✨';
@@ -757,8 +892,8 @@ function openFixSheet() {
       try {
         const m = det.m, cur = { name: m.name, items: m.items.map(({ base, ...x }) => x), health_score: m.health };
         const parts = [{ text: FOOD_PROMPT + `\nCurrent analysis (for ${m.servings} serving): ${JSON.stringify(cur)}\nThe user corrects it: "${t}"\nApply the correction and return the complete corrected JSON.` }];
-        if (m.photo) { const ph = photoCache[m.id] || await idb.get(m.id); if (ph) parts.push({ inlineData: { mimeType: 'image/jpeg', data: ph.split(',')[1] } }); }
-        const r = await askGemini(parts), items = normItems(r.items);
+        if (m.photo) { const ph = photoCache[m.id] || await idb.get(m.id); if (ph) parts.push({ image: ph.split(',')[1] }); }
+        const r = await askAI(parts), items = normItems(r.items);
         if (!items.length) throw new Error(r.notes || 'The AI could not update this meal.');
         m.items = items.map(setBase); m.name = r.name || m.name; m.health = healthOf(r.health_score) || m.health;
         closeSheet(); renderDetail(); toast('✓ Updated');
@@ -872,9 +1007,109 @@ function weightChart(ws, target) {
     <text x="${W - P.r}" y="${H - 4}" font-size="10" text-anchor="end" fill="var(--muted)">${fmtDate(ws.at(-1).date)}</text></svg>`;
 }
 
+/* ================= AI Coach chat ================= */
+let chat;
+try { chat = JSON.parse(LS.get('ft_chat', '[]')) || []; } catch { chat = []; }
+let chatBusy = false, chatImg = null;
+const saveChat = () => { chat = chat.slice(-60); if (!LS.set('ft_chat', JSON.stringify(chat))) { chat = chat.slice(-20).map(m => ({ ...m, img: null })); LS.set('ft_chat', JSON.stringify(chat)); } };
+const CHIPS = ['What should I eat for dinner to hit my goals today?', 'How much protein do I still need today?', 'Give me a high-protein snack under 300 kcal',
+  'How was my week?', 'Make me a meal plan for tomorrow', 'Is my goal realistic?'];
+
+function md(text) {
+  // Tiny Markdown: bold, italics, headings, bullet and numbered lists
+  const lines = esc(text).split('\n'), out = [];
+  let list = null;
+  const inline = l => l.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/(^|\W)\*(?!\s)(.+?)\*(?=\W|$)/g, '$1<i>$2</i>');
+  for (const raw of lines) {
+    const l = raw.trim(), ul = l.match(/^[-*•]\s+(.*)/), ol = l.match(/^\d+[.)]\s+(.*)/);
+    const kind = ul ? 'ul' : ol ? 'ol' : null;
+    if (list && list !== kind) { out.push(`</${list}>`); list = null; }
+    if (kind) { if (!list) { out.push(`<${kind}>`); list = kind; } out.push(`<li>${inline((ul || ol)[1])}</li>`); continue; }
+    if (!l) continue;
+    const h = l.match(/^#{1,4}\s+(.*)/);
+    out.push(h ? `<p><b>${inline(h[1])}</b></p>` : `<p>${inline(l)}</p>`);
+  }
+  if (list) out.push(`</${list}>`);
+  return out.join('');
+}
+
+function coachSystem() {
+  const p = db.profile, t = targets(), today = iso(), tot = dayTotals(today), burned = dayBurned(today);
+  const now = new Date();
+  const meals = db.meals.filter(m => m.date === today).map(m => { const x = mealTotals(m); return `- ${m.time || ''} ${m.name}: ${r0(x.kcal)} kcal, ${r0(x.protein)} g protein, ${r0(x.carbs)} g carbs, ${r0(x.fat)} g fat`; });
+  const week = [...Array(7)].map((_, i) => addDays(today, i - 7)).map(d => { const x = dayTotals(d); return `- ${fmtDate(d, { weekday: 'short', day: 'numeric', month: 'short' })}: ${x.count ? `${r0(x.kcal)} kcal, ${r0(x.protein)} g protein` : 'nothing logged'}`; });
+  const ws = [...db.weights].sort((a, b) => a.date.localeCompare(b.date)).slice(-6).map(w => `${w.date}: ${w.kg} kg`).join('; ');
+  const goalTxt = p ? { lose: `lose weight to ${p.targetWeight} kg at ${p.pace} kg/week`, gain: `gain weight to ${p.targetWeight} kg at ${p.pace} kg/week`, maintain: 'maintain weight' }[p.goal] : 'not set';
+  return `You are the friendly AI nutrition coach inside the FoodTracker calorie-tracking app. Give practical, specific and encouraging advice based on the user's real data below.
+Keep answers short and easy to scan on a phone: a few short paragraphs or bullet points, no tables. When you suggest meals, name concrete foods with portion sizes in grams plus approximate calories and protein, and make them fit the user's remaining calories and macros. Use metric units. Always answer in the language the user writes in.
+You are not a doctor. For medical conditions, medication, pregnancy or signs of an eating disorder, recommend seeing a professional.
+
+Now: ${now.toLocaleString(LOC, { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}
+Profile: ${p ? `${{ m: 'male', f: 'female', o: 'other' }[p.sex]}, ${age(p)} years, ${p.height} cm, ${currentWeight()} kg, ${p.workouts} workouts per week. Goal: ${goalTxt}.` : 'not set up yet'}
+Daily targets: ${t.kcal} kcal, ${t.protein} g protein, ${t.carbs} g carbs, ${t.fat} g fat.
+Today so far: ${r0(tot.kcal)} kcal, ${r0(tot.protein)} g protein, ${r0(tot.carbs)} g carbs, ${r0(tot.fat)} g fat${burned ? `; burned ${r0(burned)} kcal with exercise${db.settings.addBurned ? ' (added to the goal)' : ''}` : ''}.
+Remaining today: ${r0(t.kcal + (db.settings.addBurned ? burned : 0) - tot.kcal)} kcal, ${r0(t.protein - tot.protein)} g protein, ${r0(t.carbs - tot.carbs)} g carbs, ${r0(t.fat - tot.fat)} g fat.
+Today's meals:
+${meals.join('\n') || '- nothing logged yet'}
+Previous 7 days:
+${week.join('\n')}
+Weight log (latest last): ${ws || 'none'}
+Logging streak: ${streak()} days.`;
+}
+
+function renderChat() {
+  const msgs = chat.map(m => m.role === 'user'
+    ? `<div class="msg user">${m.img ? `<img src="${m.img}" alt="">` : ''}${esc(m.text).replace(/\n/g, '<br>')}</div>`
+    : `<div class="msg ai ${m.err ? 'err' : ''}">${m.err ? esc(m.text) : md(m.text)}</div>`).join('');
+  $('#view').innerHTML = `
+    <div class="top"><div class="brand">AI Coach</div>${chat.length ? '<button class="chipbtn" id="cClear">New chat</button>' : ''}</div>
+    ${!chat.length ? `<div class="empty" style="margin-top:14px"><div style="font-size:40px">🥗</div><b>Ask me anything</b>
+      <span class="muted">I can see your goals, today's meals and your progress. Ask what to eat, how you're doing, or anything about nutrition.</span></div>` : ''}
+    <div class="msgs" id="msgs">${msgs}${chatBusy ? '<div class="msg ai"><span class="dots"><span></span><span></span><span></span></span></div>' : ''}</div>`;
+  let bar = $('.chatbar');
+  if (!bar) {
+    bar = document.createElement('div'); bar.className = 'chatbar';
+    bar.innerHTML = `<div class="in"><div class="chips">${CHIPS.map(c => `<button>${esc(c)}</button>`).join('')}</div><div id="cAttach"></div>
+      <div class="composer"><button class="cbtn" id="cPhoto" aria-label="Add photo">📷</button>
+      <textarea id="cIn" rows="1" placeholder="Ask your coach…"></textarea><button class="cbtn send" id="cSend" aria-label="Send">↑</button></div></div>`;
+    document.body.appendChild(bar);
+    const ta = bar.querySelector('#cIn');
+    ta.oninput = () => { ta.style.height = '40px'; ta.style.height = Math.min(ta.scrollHeight, 120) + 'px'; };
+    bar.querySelectorAll('.chips button').forEach(b => b.onclick = () => sendChat(b.textContent));
+    bar.querySelector('#cSend').onclick = () => { const v = ta.value.trim(); if (v || chatImg) { ta.value = ''; ta.oninput(); sendChat(v); } };
+    bar.querySelector('#cPhoto').onclick = () => $('#fileChat').click();
+  }
+  renderAttach();
+  if ($('#cClear')) $('#cClear').onclick = () => { if (confirm('Start a new chat? The current conversation will be cleared.')) { chat = []; saveChat(); renderChat(); } };
+  requestAnimationFrame(() => window.scrollTo(0, document.body.scrollHeight));
+}
+function renderAttach() {
+  const box = $('#cAttach'); if (!box) return;
+  box.innerHTML = chatImg ? `<div class="attach"><img src="${chatImg.thumb}" alt=""><span class="grow muted">Photo attached</span><button class="chipbtn" id="cRm">Remove</button></div>` : '';
+  if (chatImg) $('#cRm').onclick = () => { chatImg = null; renderAttach(); };
+}
+async function sendChat(text) {
+  if (chatBusy) return;
+  if (!hasAI()) { toast('Add your free AI key in Settings first'); return; }
+  const img = chatImg; chatImg = null;
+  const q = text || 'What do you think about this food?';
+  const history = chat.filter(m => !m.err).slice(-16).map(m => ({ role: m.role, parts: [{ text: m.text + (m.img ? '\n[photo attached]' : '') }] }));
+  chat.push({ role: 'user', text: q, img: img ? img.thumb : null, t: Date.now() });
+  saveChat(); chatBusy = true; renderChat();
+  try {
+    const parts = img ? [{ image: img.full }, { text: q }] : [{ text: q }];
+    const answer = await askAI(parts, { json: false, system: coachSystem(), history });
+    chat.push({ role: 'assistant', text: answer.trim(), t: Date.now() });
+  } catch (e) {
+    chat.push({ role: 'assistant', err: true, text: e.message === 'NOKEY' ? 'Add your free AI key in Settings first.' : e.message, t: Date.now() });
+  }
+  chatBusy = false; saveChat();
+  if (tab === 'chat') renderChat();
+}
+
 /* ================= Settings ================= */
 function renderSettings() {
-  const p = db.profile, t = targets(), key = getKey();
+  const p = db.profile, t = targets();
   $('#view').innerHTML = `
     <div class="top"><div class="brand">Settings</div></div>
     ${p ? `<div class="card" style="margin-top:12px"><div class="stats3">
@@ -887,13 +1122,25 @@ function renderSettings() {
     </div>
     <div class="h2">Preferences</div>
     <div class="list"><button class="li" id="sBurn"><span class="grow">Add burned calories<br><span class="small muted">Add exercise calories back to your daily goal</span></span><span class="switch ${db.settings.addBurned ? 'on' : ''}"></span></button></div>
-    <div class="h2">AI food scanning</div>
+    <div class="h2">AI</div>
     <div class="card">
-      <p class="small muted" style="margin:0 0 6px">1. Open <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener"><b>aistudio.google.com/apikey</b></a> and sign in with Google<br>2. Tap <b>Create API key</b> and copy it<br>3. Paste it below. It stays only on this phone.</p>
-      <label class="lbl">Google AI key (free)</label><input id="kKey" type="password" autocomplete="off" placeholder="AIza…" value="${esc(key)}">
-      <label class="lbl">Model (optional)</label><input id="kModel" value="${esc(LS.get('ft_model', ''))}" placeholder="gemini-2.5-flash">
+      <b>Google Gemini · free</b>
+      <p class="small muted" style="margin:4px 0 6px">Open <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener"><b>aistudio.google.com/apikey</b></a>, sign in with Google, tap <b>Create API key</b> and paste it here. The app automatically switches between ${GEMINI.length} free models, so you rarely hit a limit.</p>
+      <input id="kKey" type="password" autocomplete="off" placeholder="AIza…" value="${esc(getKey())}">
+      <div style="height:1px;background:var(--line);margin:18px 0"></div>
+      <b>Claude · optional backup, no daily limit</b>
+      <p class="small muted" style="margin:4px 0 6px">Paid per use (prepaid credit, no subscription). Create a key at <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener"><b>console.anthropic.com</b></a> and add credit there.</p>
+      <input id="kClaude" type="password" autocomplete="off" placeholder="sk-ant-…" value="${esc(getClaudeKey())}">
+      <div class="row"><div class="grow"><label class="lbl">Claude model</label><select id="kCModel">
+        <option value="claude-opus-5-5" ${(LS.get('ft_claude_model', '') || 'claude-opus-5-5') === 'claude-opus-5-5' ? 'selected' : ''}>Opus 5.5 · most accurate</option>
+        <option value="claude-haiku-5-5" ${LS.get('ft_claude_model', '') === 'claude-haiku-5-5' ? 'selected' : ''}>Haiku 5.5 · fastest, cheapest</option></select></div>
+      <div class="grow"><label class="lbl">Use first</label><select id="kFirst">
+        <option value="gemini" ${LS.get('ft_ai_first', 'gemini') === 'gemini' ? 'selected' : ''}>Gemini (free)</option>
+        <option value="claude" ${LS.get('ft_ai_first', 'gemini') === 'claude' ? 'selected' : ''}>Claude</option></select></div></div>
+      <details style="margin-top:12px"><summary class="small muted">Advanced</summary>
+        <label class="lbl">Force a Gemini model (optional)</label><input id="kModel" value="${esc(LS.get('ft_model', ''))}" placeholder="automatic"></details>
       <div class="row" style="margin-top:14px"><button class="btn" id="kSave">Save</button><button class="btn outline" id="kTest">Test</button></div>
-      <p class="small" id="kMsg" style="margin:10px 0 0;text-align:center">${key ? '✓ Key saved' : 'No key yet'}</p></div>
+      <p class="small" id="kMsg" style="margin:10px 0 0;text-align:center">${hasAI() ? '✓ AI is on' : 'No key yet'}</p></div>
     <div class="h2">Your data</div>
     <div class="list">
       <button class="li" id="dExp"><span class="ic">⬇️</span><span class="grow">Backup data</span><span class="chev">›</span></button>
@@ -906,14 +1153,18 @@ function renderSettings() {
   $('#sRedo').onclick = startOnboarding;
   $('#sBurn').onclick = () => { db.settings.addBurned = !db.settings.addBurned; save(); renderSettings(); };
   $('#kSave').onclick = () => {
-    const k = $('#kKey').value.trim(), m = $('#kModel').value.trim();
-    k ? LS.set('ft_key', k) : LS.del('ft_key'); m ? LS.set('ft_model', m) : LS.del('ft_model');
-    $('#kMsg').textContent = k ? '✓ Key saved' : 'Key removed'; toast('Saved');
+    const set = (k, v) => v ? LS.set(k, v) : LS.del(k);
+    set('ft_key', $('#kKey').value.trim()); set('ft_claude_key', $('#kClaude').value.trim()); set('ft_model', $('#kModel').value.trim());
+    LS.set('ft_claude_model', $('#kCModel').value); LS.set('ft_ai_first', $('#kFirst').value);
+    LS.del('ft_cool');   // new key or settings: give every model a fresh chance
+    $('#kMsg').textContent = hasAI() ? '✓ Saved' : 'No key saved'; toast('Saved');
   };
   $('#kTest').onclick = async () => {
     $('#kSave').click(); $('#kMsg').innerHTML = '<span class="spin"></span> Testing…';
-    try { await askGemini([{ text: 'Return JSON {"ok": true}' }]); $('#kMsg').textContent = '✓ Key works! AI scanning is on.'; }
-    catch (e) { $('#kMsg').textContent = '✕ ' + (e.message === 'NOKEY' ? 'Enter a key first' : e.message); }
+    const ping = [{ role: 'user', parts: [{ text: 'Return JSON {"ok": true}' }] }], out = [];
+    if (getKey()) try { await geminiChain(getKey(), ping, '', true); out.push('✓ Gemini works (' + lastAI + ')'); } catch (e) { out.push('✕ Gemini: ' + e.message); }
+    if (getClaudeKey()) try { await claudeCall(getClaudeKey(), ping, '', true); out.push('✓ Claude works'); } catch (e) { out.push('✕ Claude: ' + e.message); }
+    $('#kMsg').innerHTML = out.length ? out.map(esc).join('<br>') : 'Enter a key first';
   };
   $('#dExp').onclick = () => {
     const blob = new Blob([JSON.stringify(db)], { type: 'application/json' });
