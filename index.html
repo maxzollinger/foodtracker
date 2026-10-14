@@ -187,6 +187,11 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .wdots div{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;color:var(--muted);font-weight:600}
 .wdots i{width:14px;height:14px;border-radius:50%;background:var(--track)}
 .wdots i.on{background:var(--flame)}
+.hcard .hscale{height:10px;border-radius:5px;background:linear-gradient(90deg,#ff5a4f 0%,#f5b83d 45%,#34c759 75%,#1fa64a 100%);position:relative;margin:14px 0 8px}
+.hcard .hscale b{position:absolute;top:-6px;width:22px;height:22px;border-radius:50%;background:var(--card);border:4px solid var(--text);transform:translateX(-50%);transition:left .6s ease}
+.hcard .hticks{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:600}
+.hdots{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.hdots span{font-size:12px;font-weight:600;padding:4px 9px;border-radius:999px;background:var(--chip);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .bmi-bar{height:10px;border-radius:5px;background:linear-gradient(90deg,#5aa9f2 0%,#5aa9f2 14%,#34c759 14%,#34c759 40%,#f5b83d 40%,#f5b83d 60%,#ff5a4f 60%);position:relative;margin:18px 0 10px}
 .bmi-bar b{position:absolute;top:-6px;width:4px;height:22px;border-radius:2px;background:var(--text);transform:translateX(-50%)}
 .legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
@@ -402,6 +407,33 @@ function dayGoals(date) {
   const extra = !burned || mode === 'off' ? 0 : mode === 'all' ? burned : Math.max(0, r0(burned * 0.75 - included));
   return { ...t, kcal: t.kcal + extra, carbs: t.carbs + r0(extra * 0.75 / 4), fat: t.fat + r0(extra * 0.25 / 9), burned, extra, included };
 }
+/* Health score (1-10). AI gives one per meal; meals without one (manual entries, older meals)
+   get an estimate from their macros. The day score is a calorie-weighted average, so a big
+   lunch counts more than a small snack. */
+function estimateHealth(m) {
+  const t = mealTotals(m); if (t.kcal < 1) return null;
+  const pP = t.protein * 4 / t.kcal, fP = t.fat * 9 / t.kcal, cP = t.carbs * 4 / t.kcal;
+  let h = 5;
+  h += pP >= 0.3 ? 2 : pP >= 0.2 ? 1 : pP < 0.1 ? -1 : 0;
+  h -= fP > 0.5 ? 1.5 : fP > 0.4 ? 0.5 : 0;
+  if (cP > 0.7 && pP < 0.1) h -= 1;
+  return clamp(Math.round(h), 1, 10);
+}
+const mealHealth = m => m.health || estimateHealth(m);
+function healthAvg(meals) {
+  let sum = 0, w = 0;
+  for (const m of meals) { const h = mealHealth(m); if (!h) continue; const k = Math.max(mealTotals(m).kcal, 50); sum += h * k; w += k; }
+  return w ? r1(sum / w) : null;
+}
+const healthLabel = h => h >= 8 ? 'Excellent' : h >= 6.5 ? 'Good' : h >= 5 ? 'Okay' : h >= 3.5 ? 'Could be better' : 'Poor';
+const healthColor = h => h >= 6.5 ? 'var(--good)' : h >= 5 ? 'var(--carbs)' : 'var(--bad)';
+function healthCard(date) {
+  const avg = healthAvg(db.meals.filter(m => m.date === date));
+  return `<div class="card hcard"><div class="spread"><span style="font-weight:700">💚 Health score</span>
+      <span>${avg === null ? '<span class="muted" style="font-weight:600">No meals yet</span>'
+        : `<span style="color:${healthColor(avg)};font-weight:700;margin-right:8px">${healthLabel(avg)}</span><b style="font-size:22px">${avg}</b><span class="muted" style="font-weight:600">/10</span>`}</span></div>
+    <div class="hscale" style="margin-bottom:4px">${avg === null ? '' : `<b style="left:${(avg - 1) / 9 * 100}%"></b>`}</div></div>`;
+}
 function streak() {
   const has = new Set(db.meals.map(m => m.date));
   let d = iso(), n = 0;
@@ -477,7 +509,7 @@ function renderHome() {
     return `<button class="entry" onclick="openMeal('${m.id}')"><div class="thumb">${m.photo ? `<img data-photo="${m.id}" alt="">` : (m.source === 'barcode' ? '🏷️' : '🍽️')}</div>
       <div class="einfo"><div class="spread"><span class="ename">${esc(m.name)}</span><span class="etime">${esc(m.time || '')}</span></div>
       <div class="ecal">🔥 ${r0(mt.kcal)} calories</div>
-      <div class="emac"><span>🍗 ${r0(mt.protein)}g</span><span>🌾 ${r0(mt.carbs)}g</span><span>🥑 ${r0(mt.fat)}g</span></div></div></button>`;
+      <div class="emac"><span>🍗 ${r0(mt.protein)}g</span><span>🌾 ${r0(mt.carbs)}g</span><span>🥑 ${r0(mt.fat)}g</span>${mealHealth(m) ? `<span style="color:${healthColor(mealHealth(m))}">💚 ${mealHealth(m)}</span>` : ''}</div></div></button>`;
   }).join('');
   if (!entries.length) list = `<div class="empty"><b>You haven't uploaded any food</b><span class="muted">Start tracking ${sel === today ? "today's" : 'this day\'s'} meals by taking a quick picture</span>
     <div style="margin-top:16px"><button class="btn sm" style="margin:0 auto" onclick="openAddMenu()">＋ Add food</button></div></div>`;
@@ -488,6 +520,7 @@ function renderHome() {
     ${!hasAI() ? `<button class="card" style="width:100%;text-align:left;display:flex;gap:12px;align-items:center" onclick="go('settings')"><span style="font-size:26px">✨</span><span class="grow"><b>Turn on AI food scanning</b><br><span class="small muted">Add your free Google AI key in Settings</span></span><span class="muted">›</span></button>` : ''}
     <button class="card calcard" data-toggle style="width:100%;text-align:left"><div>${calBig}</div>${ring(104, 9, tot.kcal / goalK, left < 0 ? 'var(--bad)' : 'var(--ink)', '<span style="font-size:28px">🔥</span>')}</button>
     <div class="macros">${macros}</div>
+    ${healthCard(sel)}
     <div class="card burncard"><div class="ic">🏃</div><div class="grow"><div class="small muted" style="font-weight:600">Calories burned</div>
       <div style="font-size:24px;font-weight:800;letter-spacing:-.02em">${burned}<small class="muted" style="font-size:14px;font-weight:600"> kcal</small></div>
       <div class="small muted">${burnNote(t)}</div></div>
@@ -892,8 +925,8 @@ function renderDetTotals() {
   $('#dTot').innerHTML = `
     <button class="card bigcal" data-edit="kcal"><div class="ic">🔥</div><div><div class="small muted">Calories</div><div style="font-size:30px;font-weight:800;letter-spacing:-.03em">${r0(t.kcal)}</div></div></button>
     <div class="dmac">${MAC.map(x => `<button class="dm" data-edit="${x.k}"><div class="t">${x.ic} ${x.label}</div><b>${r0(t[x.k])}g</b></button>`).join('')}</div>
-    ${m.health ? `<div class="card" style="margin-top:14px"><div class="spread"><span style="font-weight:600">💚 Health score</span><b>${m.health}/10</b></div>
-      <div class="hbar"><i style="width:${m.health * 10}%;background:${m.health >= 7 ? 'var(--good)' : m.health >= 4 ? 'var(--carbs)' : 'var(--bad)'}"></i></div></div>` : ''}`;
+    ${mealHealth(m) ? `<div class="card" style="margin-top:14px"><div class="spread"><span style="font-weight:600">💚 Health score${m.health ? '' : ' <span class="small muted">(estimated)</span>'}</span><b>${mealHealth(m)}/10</b></div>
+      <div class="hbar"><i style="width:${mealHealth(m) * 10}%;background:${healthColor(mealHealth(m))}"></i></div></div>` : ''}`;
   $('#dTot').querySelectorAll('[data-edit]').forEach(b => b.onclick = () => {
     const f = b.dataset.edit, label = f === 'kcal' ? 'Calories' : MAC.find(x => x.k === f).label + ' (g)';
     numberSheet(label, r0(mealTotals(det.m)[f]), f === 'kcal' ? 'kcal' : 'g', v => setTotal(f, v), f === 'kcal' ? 10 : 1);
@@ -1104,6 +1137,7 @@ ${meals.join('\n') || '- nothing logged yet'}
 Previous 7 days:
 ${week.join('\n')}
 Weight log (latest last): ${ws || 'none'}
+Health score today (1-10, calorie-weighted average of meals): ${healthAvg(db.meals.filter(m => m.date === today)) ?? 'no meals yet'}.
 Logging streak: ${streak()} days.`;
 }
 
