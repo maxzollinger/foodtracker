@@ -282,6 +282,13 @@ try { db = JSON.parse(LS.get('ft_data', '{}')) || {}; } catch { db = {}; }
 db = migrate(Object.assign(EMPTY(), db));
 function migrate(d) {
   d.settings = Object.assign({ addBurned: false }, d.settings);
+  // Goal changed from plain "gain weight" to "build lean muscle" (2026-10-14). Details and history stay;
+  // the speed is capped at a lean pace and old custom macro numbers are dropped so the new plan applies.
+  const pr = d.profile;
+  if (pr && !d.settings.leanV1) {
+    if (pr.goal === 'gain') { pr.goal = 'lean'; pr.pace = Math.min(parseFloat(pr.pace) || 0.25, 0.25); d.overrides = {}; }
+    d.settings.leanV1 = true;
+  }
   if (!d.settings.burnV3) { d.settings.burnMode = 'smart'; d.settings.burnV3 = true; }
   d.settings.burnMode = d.settings.burnMode || 'smart';
   d.exercises = d.exercises || [];
@@ -361,6 +368,10 @@ const MAC = [
 
 /* ================= Calculations ================= */
 const ACT = { '0-2': 1.375, '3-5': 1.55, '6+': 1.725 };
+// "lean" = build lean muscle: a small surplus so most of the gain is muscle, not fat.
+const isGain = g => g === 'gain' || g === 'lean';
+const LEAN_MAX = 0.5;   // kg/week; faster than this mostly adds fat
+const GOALS = [['lose', 'Lose weight'], ['maintain', 'Maintain'], ['lean', 'Build lean muscle'], ['gain', 'Gain weight (fast)']];
 function age(p) { const b = new Date(p.birth), n = new Date(); let a = n.getFullYear() - b.getFullYear(); if (n < new Date(n.getFullYear(), b.getMonth(), b.getDate())) a--; return a || 30; }
 function currentWeight() {
   if (db.weights.length) return [...db.weights].sort((a, b) => a.date.localeCompare(b.date)).at(-1).kg;
@@ -372,8 +383,9 @@ function calcTargets(p, w) {
   let kcal = tdee;
   if (p.goal === 'lose') kcal -= p.pace * 7700 / 7;
   if (p.goal === 'gain') kcal += p.pace * 7700 / 7;
+  if (p.goal === 'lean') kcal += Math.min(num(p.pace) || 0.25, LEAN_MAX) * 7700 / 7;
   kcal = Math.max(kcal, p.sex === 'm' ? 1500 : 1200);
-  const protein = w * (p.goal === 'lose' ? 2.0 : p.goal === 'gain' ? 1.8 : 1.6);
+  const protein = w * (p.goal === 'lose' || p.goal === 'lean' ? 2.0 : p.goal === 'gain' ? 1.8 : 1.6);
   const fat = kcal * 0.27 / 9;
   const carbs = Math.max(0, (kcal - protein * 4 - fat * 9) / 4);
   return { kcal: r0(kcal), protein: r0(protein), carbs: r0(carbs), fat: r0(fat), tdee: r0(tdee), bmr: r0(bmr) };
@@ -1064,9 +1076,21 @@ function renderProgress() {
 function expectedText(p, cur) {
   if (!p || p.goal === 'maintain' || !cur) return '';
   const rem = p.targetWeight - cur;
-  if ((p.goal === 'lose' && rem >= 0) || (p.goal === 'gain' && rem <= 0)) return `<div class="tip">🎉 You reached your goal weight! Update your goal in Settings.</div>`;
+  if ((p.goal === 'lose' && rem >= 0) || (isGain(p.goal) && rem <= 0)) return `<div class="tip">🎉 You reached your goal weight! Update your goal in Settings.</div>`;
+  let check = '';
+  if (p.goal === 'lean') {
+    // Real gain per week over the last ~4 weeks (needs at least 2 weeks of weigh-ins)
+    const ws = [...db.weights].sort((a, b) => a.date.localeCompare(b.date)).filter(w => w.date >= addDays(iso(), -28));
+    const days = ws.length >= 2 ? (dt(ws.at(-1).date) - dt(ws[0].date)) / 864e5 : 0;
+    if (days >= 14) {
+      const rate = r1((ws.at(-1).kg - ws[0].kg) / days * 7 * 100) / 100;
+      check = rate > p.pace + 0.15 ? `<br>📈 You're gaining <b>${rate} kg/week</b>. That's faster than planned, so more of it is fat. Eat about 150 kcal less per day.`
+        : rate < p.pace - 0.15 ? `<br>📉 You're gaining <b>${rate} kg/week</b>. That's slower than planned. Eat about 150 kcal more per day.`
+        : `<br>✅ You're gaining <b>${rate} kg/week</b>. Right on track for lean muscle.`;
+    }
+  }
   const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(rem) / p.pace * 7));
-  return `<div class="tip">At your pace you'll reach <b>${p.targetWeight} kg</b> around <b>${d.toLocaleDateString(LOC, { day: 'numeric', month: 'long', year: 'numeric' })}</b>.</div>`;
+  return `<div class="tip">At your pace you'll reach <b>${p.targetWeight} kg</b> around <b>${d.toLocaleDateString(LOC, { day: 'numeric', month: 'long', year: 'numeric' })}</b>.${check}</div>`;
 }
 function delWeight(date) { if (!confirm('Delete this weight entry?')) return; db.weights = db.weights.filter(w => w.date !== date); save(); renderProgress(); }
 function weightChart(ws, target) {
@@ -1122,7 +1146,8 @@ function coachSystem() {
   const meals = db.meals.filter(m => m.date === today).map(m => { const x = mealTotals(m); return `- ${m.time || ''} ${m.name}: ${r0(x.kcal)} kcal, ${r0(x.protein)} g protein, ${r0(x.carbs)} g carbs, ${r0(x.fat)} g fat`; });
   const week = [...Array(7)].map((_, i) => addDays(today, i - 7)).map(d => { const x = dayTotals(d); return `- ${fmtDate(d, { weekday: 'short', day: 'numeric', month: 'short' })}: ${x.count ? `${r0(x.kcal)} kcal, ${r0(x.protein)} g protein` : 'nothing logged'}`; });
   const ws = [...db.weights].sort((a, b) => a.date.localeCompare(b.date)).slice(-6).map(w => `${w.date}: ${w.kg} kg`).join('; ');
-  const goalTxt = p ? { lose: `lose weight to ${p.targetWeight} kg at ${p.pace} kg/week`, gain: `gain weight to ${p.targetWeight} kg at ${p.pace} kg/week`, maintain: 'maintain weight' }[p.goal] : 'not set';
+  const goalTxt = p ? { lose: `lose weight to ${p.targetWeight} kg at ${p.pace} kg/week`, gain: `gain weight to ${p.targetWeight} kg at ${p.pace} kg/week`, maintain: 'maintain weight',
+    lean: `build lean muscle: reach ${p.targetWeight} kg slowly (${p.pace} kg/week) with as little fat gain as possible. Prioritise hitting the protein goal, spreading protein over 3-5 meals, mostly whole foods, and progressive strength training. Discourage dirty bulking and eating far above the calorie goal` }[p.goal] : 'not set';
   return `You are the friendly AI nutrition coach inside the FoodTracker calorie-tracking app. Give practical, specific and encouraging advice based on the user's real data below.
 Keep answers short and easy to scan on a phone: a few short paragraphs or bullet points, no tables. When you suggest meals, name concrete foods with portion sizes in grams plus approximate calories and protein, and make them fit the user's remaining calories and macros. Use metric units. Always answer in the language the user writes in.
 You are not a doctor. For medical conditions, medication, pregnancy or signs of an eating disorder, recommend seeing a professional.
@@ -1286,7 +1311,7 @@ function profileFields(p, w) {
     <label class="lbl">Workouts / week</label><select id="pW">${opt([['0-2', '0–2 · now and then'], ['3-5', '3–5 · a few per week'], ['6+', '6+ · dedicated athlete']], p.workouts)}</select>
     <div class="row"><div class="grow"><label class="lbl">Goal weight (kg)</label><input id="pT" inputmode="decimal" value="${p.targetWeight || w}"></div>
     <div class="grow"><label class="lbl">Speed (kg / week)</label><select id="pPace" ${p.goal === 'maintain' ? 'disabled' : ''}>${opt(paces.map(v => [v, v + ' kg']), num(p.pace) || 0.5)}</select></div></div>
-    <label class="lbl">Goal</label><select id="pGoal">${opt([['lose', 'Lose weight'], ['maintain', 'Maintain'], ['gain', 'Gain weight']], p.goal)}</select>`;
+    <label class="lbl">Goal</label><select id="pGoal">${opt(GOALS, p.goal)}</select>`;
 }
 function openPersonalSheet() {
   if (!db.profile) return startOnboarding();
@@ -1313,7 +1338,7 @@ function openPersonalSheet() {
     // Goal follows the goal weight automatically (and the other way round for "Maintain")
     const syncGoal = () => {
       const w = num(s.querySelector('#pWt').value), tw = num(s.querySelector('#pT').value), g = s.querySelector('#pGoal');
-      if (w && tw) g.value = tw < w - 0.4 ? 'lose' : tw > w + 0.4 ? 'gain' : 'maintain';
+      if (w && tw) g.value = tw < w - 0.4 ? 'lose' : tw > w + 0.4 ? (isGain(g.value) ? g.value : 'lean') : 'maintain';
       s.querySelector('#pPace').disabled = g.value === 'maintain';
     };
     s.querySelector('#pT').addEventListener('input', syncGoal);
@@ -1322,7 +1347,8 @@ function openPersonalSheet() {
       const w = num(s.querySelector('#pWt').value), t = s.querySelector('#pT');
       if (e.target.value === 'maintain') t.value = w;
       else if (e.target.value === 'lose' && num(t.value) >= w) t.value = r1(w - 5);
-      else if (e.target.value === 'gain' && num(t.value) <= w) t.value = r1(w + 5);
+      else if (isGain(e.target.value) && num(t.value) <= w) t.value = r1(w + 5);
+      if (e.target.value === 'lean' && num(s.querySelector('#pPace').value) > LEAN_MAX) s.querySelector('#pPace').value = 0.25;
       s.querySelector('#pPace').disabled = e.target.value === 'maintain';
     });
     s.querySelectorAll('input,select').forEach(el => { el.addEventListener('input', preview); el.addEventListener('change', preview); });
@@ -1333,6 +1359,7 @@ function openPersonalSheet() {
       if (Math.abs(p._w - currentWeight()) >= 0.05) { db.weights = db.weights.filter(x => x.date !== iso()); db.weights.push({ date: iso(), kg: p._w }); }
       delete p._w;
       if (p.goal === 'maintain') p.targetWeight = currentWeight();
+      if (p.goal === 'lean' && p.pace > LEAN_MAX) p.pace = LEAN_MAX;
       db.profile = p; db.overrides = {};   // goals follow the new details
       save(); closeSheet();
       const t = targets(); toast(`✓ Updated: ${t.kcal} kcal · ${t.protein} g protein`); renderSettings();
@@ -1391,21 +1418,23 @@ function renderOb() {
   if (s === 'birth') { title = 'When were you born?'; sub = 'This will be used to calibrate your custom plan.';
     body = `<input type="date" id="obB" value="${p.birth}" max="${addDays(iso(), -365 * 12)}" min="1920-01-01" style="font-size:20px;text-align:center;padding:18px">`; ok = !!p.birth; }
   if (s === 'goal') { title = 'What is your goal?'; sub = 'This helps us generate a plan for your calorie intake.';
-    body = opts('goal', [['lose', 'Lose weight'], ['maintain', 'Maintain'], ['gain', 'Gain weight']]); ok = !!p.goal; }
+    body = opts('goal', [['lose', 'Lose weight'], ['maintain', 'Maintain'], ['lean', 'Build lean muscle', 'Gain slowly, mostly muscle, little fat'], ['gain', 'Gain weight (fast)', 'Gain quickly, more fat along the way']]); ok = !!p.goal; }
   if (s === 'target') {
     if (!p.targetWeight) p.targetWeight = Math.round((p.goal === 'lose' ? p.weight - 5 : p.weight + 5) * 2) / 2;
     title = 'What is your desired weight?';
     const diff = r1(p.targetWeight - p.weight);
     ok = p.goal === 'lose' ? diff < 0 : diff > 0;
-    body = `<div style="text-align:center"><div class="muted" style="font-weight:600">${p.goal === 'lose' ? 'Lose weight' : 'Gain weight'}</div>
+    body = `<div style="text-align:center"><div class="muted" style="font-weight:600">${p.goal === 'lose' ? 'Lose weight' : p.goal === 'lean' ? 'Build lean muscle' : 'Gain weight'}</div>
       <div class="speedv">${p.targetWeight} kg</div><div class="small ${ok ? 'muted' : ''}" style="${ok ? '' : 'color:var(--bad)'}">${ok ? `${diff > 0 ? '+' : ''}${diff} kg from now` : `Must be ${p.goal === 'lose' ? 'below' : 'above'} your current ${p.weight} kg`}</div></div>
       <select id="obT" style="margin-top:22px">${kgOpts(p.targetWeight, 35, 250)}</select>`;
   }
   if (s === 'speed') {
     title = 'How fast do you want to reach your goal?';
+    const lean = p.goal === 'lean', max = lean ? LEAN_MAX : 1.5;
+    if (lean && (p.pace > LEAN_MAX || !p.pace)) p.pace = 0.25;
     body = `<div style="text-align:center"><div class="muted" style="font-weight:600">${p.goal === 'lose' ? 'Loss' : 'Gain'} speed per week</div><div class="speedv" id="obSv">${p.pace} kg</div></div>
       <div class="animals"><span>🦥</span><span>🐇</span><span>🐆</span></div>
-      <input type="range" id="obS" min="0.1" max="1.5" step="0.1" value="${p.pace}"><div class="spread small muted"><span>0.1 kg</span><span>0.8 kg</span><span>1.5 kg</span></div>
+      <input type="range" id="obS" min="0.1" max="${max}" step="${lean ? 0.05 : 0.1}" value="${p.pace}"><div class="spread small muted"><span>0.1 kg</span><span>${lean ? '0.3' : '0.8'} kg</span><span>${max} kg</span></div>
       <div class="tip" id="obTip"></div>`;
   }
   if (s === 'ai') {
@@ -1424,7 +1453,7 @@ function renderOb() {
     body = `${reach}<b>Daily recommendation</b><p class="small muted" style="margin:2px 0 12px">You can edit this any time in Settings.</p>
       <div class="plan4">${[['🔥', 'Calories', t.kcal, '', 'var(--ink)'], ['🌾', 'Carbs', t.carbs, 'g', 'var(--carbs)'], ['🍗', 'Protein', t.protein, 'g', 'var(--protein)'], ['🥑', 'Fats', t.fat, 'g', 'var(--fat)']]
         .map(([ic, l, v, u, c]) => `<div class="card"><span class="small" style="font-weight:600">${ic} ${l}</span>${ring(80, 7, 0.75, c, `<b style="font-size:17px">${v}${u}</b>`)}</div>`).join('')}</div>
-      <div class="tip"><b>How to reach your goals</b><br>📷 Snap every meal, even snacks<br>🍗 Hit your protein goal every day<br>⚖️ Weigh yourself in the morning a few times a week</div>`;
+      <div class="tip"><b>How to reach your goals</b><br>📷 Snap every meal, even snacks<br>🍗 Hit your protein goal every day<br>${p.goal === 'lean' ? '🏋️ Train with weights 3–5× a week and get stronger over time<br>' : ''}⚖️ Weigh yourself in the morning a few times a week</div>`;
     cta = "Let's get started!";
   }
   const pct = ob.step / (OB.length - 1) * 100;
@@ -1440,7 +1469,12 @@ function renderOb() {
   bind('#obW', el => p.weight = +el.value);
   bind('#obB', el => { p.birth = el.value; pg.querySelector('#obNext').disabled = !p.birth; });
   bind('#obT', el => { p.targetWeight = +el.value; renderOb(); });
-  const tip = () => { const t = pg.querySelector('#obTip'); if (t) t.innerHTML = p.pace <= 0.3 ? '🐢 Slow and steady. Very easy to keep up.' : p.pace <= 0.8 ? '✅ <b>Recommended.</b> The best balance of speed and comfort.' : '⚡ Fast. You may feel very tired. Make sure to eat enough protein.'; };
+  const tip = () => {
+    const t = pg.querySelector('#obTip'); if (!t) return;
+    t.innerHTML = p.goal === 'lean'
+      ? (p.pace <= 0.15 ? '🐢 Very slow. Almost no fat gain, but muscle also comes slowly.' : p.pace <= 0.35 ? '✅ <b>Recommended.</b> Mostly muscle, very little fat.' : '⚡ Upper limit. A bit more fat will come along with the muscle.')
+      : p.pace <= 0.3 ? '🐢 Slow and steady. Very easy to keep up.' : p.pace <= 0.8 ? '✅ <b>Recommended.</b> The best balance of speed and comfort.' : '⚡ Fast. You may feel very tired. Make sure to eat enough protein.';
+  };
   bind('#obS', el => { p.pace = +el.value; pg.querySelector('#obSv').textContent = p.pace + ' kg'; tip(); });
   tip();
   pg.querySelector('#obNext').onclick = () => {
@@ -1480,6 +1514,7 @@ function loadScript(src) {
 }
 
 /* ================= Start ================= */
+if (db.profile) save();   // keep any migration changes
 go('home');
 if (!db.profile) startOnboarding();
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('sw.js').catch(() => {});

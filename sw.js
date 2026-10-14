@@ -1,5 +1,5 @@
 ﻿// Offline support: keeps the app shell cached, always tries the network first so updates arrive.
-const CACHE = 'foodtracker-v7';
+const CACHE = 'foodtracker-v8';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-180.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
