@@ -221,6 +221,9 @@ body.chatting{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
 body.chatting .fab{display:none}
 .msgs{display:flex;flex-direction:column;gap:10px;margin-top:10px}
 .msg{max-width:86%;padding:11px 15px;border-radius:20px;font-size:15.5px;line-height:1.45;word-wrap:break-word}
+.msg.new{animation:msgIn .25s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}}
+.memnote{font-size:12px;color:var(--muted);margin-top:6px;font-weight:600}
 .msg.user{align-self:flex-end;background:var(--ink);color:var(--on-ink);border-bottom-right-radius:6px}
 .msg.ai{align-self:flex-start;background:var(--card);box-shadow:var(--shadow);border-bottom-left-radius:6px}
 .msg.err{background:transparent;box-shadow:inset 0 0 0 1.5px var(--bad);color:var(--bad)}
@@ -638,8 +641,8 @@ async function askAI(parts, opt = {}) {
   const g = getKey(), c = getClaudeKey();
   if (!g && !c) throw new Error('NOKEY');
   const prov = [];
-  if (g) prov.push(() => geminiChain(g, msgs, opt.system, json));
-  if (c) prov.push(() => claudeCall(c, msgs, opt.system, json));
+  if (g) prov.push(() => geminiChain(g, msgs, opt.system, json, opt.onText));
+  if (c) prov.push(() => claudeCall(c, msgs, opt.system, json, opt.onText));
   if (LS.get('ft_ai_first', 'gemini') === 'claude') prov.reverse();
   let err;
   for (const run of prov) {
@@ -648,7 +651,23 @@ async function askAI(parts, opt = {}) {
   }
   throw err;
 }
-async function geminiOnce(key, model, msgs, system, json) {
+// Reads a server-sent-events stream and calls onEvent with each parsed JSON "data:" payload
+async function readSSE(res, onEvent) {
+  const reader = res.body.getReader(), dec = new TextDecoder();
+  let buf = '';
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf = (buf + dec.decode(value, { stream: true })).replace(/\r\n/g, '\n');
+    let i;
+    while ((i = buf.indexOf('\n\n')) >= 0) {
+      const data = buf.slice(0, i).split('\n').filter(l => l.startsWith('data:')).map(l => l.slice(5).trim()).join('\n');
+      buf = buf.slice(i + 2);
+      if (data && data !== '[DONE]') { let ev; try { ev = JSON.parse(data); } catch { continue; } onEvent(ev); }
+    }
+  }
+}
+async function geminiOnce(key, model, msgs, system, json, onText) {
   const def = GEMINI.find(m => m.id === model) || {};
   const noThink = JSON.parse(LS.get('ft_nothink', '[]'));
   const think = def.think && !noThink.includes(model) ? def.think : null;
@@ -661,20 +680,33 @@ async function geminiOnce(key, model, msgs, system, json) {
   const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 30000);
   let res;
   try {
-    res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
+    res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:${onText ? 'streamGenerateContent?alt=sse' : 'generateContent'}`, {
       method: 'POST', signal: ctl.signal, headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, body: JSON.stringify(body) });
   } catch (e) { return { ok: false, status: e.name === 'AbortError' ? 504 : 0, msg: e.name === 'AbortError' ? 'took too long' : 'no connection' }; }
   finally { clearTimeout(timer); }
-  const data = await res.json().catch(() => ({}));
   if (!res.ok) {
-    const msg = data.error?.message || 'HTTP ' + res.status;
-    if (think && res.status === 400 && /think/i.test(msg)) { noThink.push(model); LS.set('ft_nothink', JSON.stringify(noThink)); return geminiOnce(key, model, msgs, system, json); }
+    const data = await res.json().catch(() => ({}));
+    const msg = (Array.isArray(data) ? data[0] : data)?.error?.message || 'HTTP ' + res.status;
+    if (think && res.status === 400 && /think/i.test(msg)) { noThink.push(model); LS.set('ft_nothink', JSON.stringify(noThink)); return geminiOnce(key, model, msgs, system, json, onText); }
     return { ok: false, status: res.status, msg };
   }
+  if (onText) {
+    let full = '', why = '';
+    try {
+      await readSSE(res, ev => {
+        const c = ev.candidates?.[0];
+        const piece = (c?.content?.parts || []).filter(p => !p.thought).map(p => p.text || '').join('');
+        if (piece) { full += piece; onText(full); }
+        if (c?.finishReason) why = c.finishReason;
+      });
+    } catch { if (!full) return { ok: false, status: 0, msg: 'connection lost' }; }
+    return full ? { ok: true, text: full } : { ok: false, status: 500, msg: 'empty answer (' + (why || 'unknown') + ')' };
+  }
+  const data = await res.json().catch(() => ({}));
   const text = (data.candidates?.[0]?.content?.parts || []).filter(p => !p.thought).map(p => p.text || '').join('');
   return text ? { ok: true, text } : { ok: false, status: 500, msg: 'empty answer (' + (data.candidates?.[0]?.finishReason || data.promptFeedback?.blockReason || 'unknown') + ')' };
 }
-async function geminiChain(key, msgs, system, json) {
+async function geminiChain(key, msgs, system, json, onText) {
   const cool = JSON.parse(LS.get('ft_cool', '{}')), now = Date.now();
   let list = GEMINI.map(m => m.id);
   const custom = LS.get('ft_model', ''), last = LS.get('ft_lastModel', '');
@@ -684,7 +716,7 @@ async function geminiChain(key, msgs, system, json) {
   let err = aiErr('All free Google AI models are busy right now. Try again in a minute' + (getClaudeKey() ? '.' : ', or add a Claude key in Settings.'));
   let offline = 0;
   for (const model of (ready.length ? ready : list)) {
-    const r = await geminiOnce(key, model, msgs, system, json);
+    const r = await geminiOnce(key, model, msgs, system, json, onText);
     if (r.ok) { LS.set('ft_lastModel', model); lastAI = model; return r.text; }
     if (r.status === 0 && ++offline >= 2) throw aiErr('No connection to the AI. Check your internet.');
     if (/api[_ ]?key|API_KEY_INVALID|unauthenticated/i.test(r.msg) || r.status === 401) throw aiErr('Your Google AI key was rejected. Check it in Settings.', true);
@@ -697,7 +729,7 @@ async function geminiChain(key, msgs, system, json) {
   }
   throw err;
 }
-async function claudeCall(key, msgs, system, json) {
+async function claudeCall(key, msgs, system, json, onText) {
   const model = LS.get('ft_claude_model', '') || 'claude-opus-5-5', isOpus = model === 'claude-opus-5-5';
   const jsonRule = 'Respond with only the JSON object, no other text.';
   const body = {
@@ -707,12 +739,24 @@ async function claudeCall(key, msgs, system, json) {
   };
   if (system || json) body.system = [system, json ? jsonRule : ''].filter(Boolean).join('\n\n');
   if (isOpus) body.fallbacks = 'default';   // re-runs a declined request on Anthropic's recommended fallback model
+  if (onText) body.stream = true;
   let res;
   try {
     res = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST', body: JSON.stringify(body), headers: {
       'content-type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true',
       ...(isOpus ? { 'anthropic-beta': 'server-side-fallback-2026-07-01' } : {}) } });
   } catch { throw aiErr('No connection to Claude. Check your internet.'); }
+  if (onText && res.ok) {
+    let full = '', stop = '', err = '';
+    await readSSE(res, ev => {
+      if (ev.type === 'content_block_delta' && ev.delta?.type === 'text_delta') { full += ev.delta.text; onText(full); }
+      else if (ev.type === 'message_delta' && ev.delta?.stop_reason) stop = ev.delta.stop_reason;
+      else if (ev.type === 'error') err = ev.error?.message || 'stream error';
+    }).catch(() => { err = err || 'connection lost'; });
+    if (stop === 'refusal') throw aiErr('Claude declined this request.');
+    if (!full) throw aiErr(err ? 'Claude error: ' + err : 'Claude gave an empty answer. Please try again.');
+    lastAI = 'Claude'; return full;
+  }
   const data = await res.json().catch(() => ({}));
   if (!res.ok) {
     const msg = data.error?.message || 'HTTP ' + res.status;
@@ -1079,11 +1123,8 @@ function expectedText(p, cur) {
   if ((p.goal === 'lose' && rem >= 0) || (isGain(p.goal) && rem <= 0)) return `<div class="tip">🎉 You reached your goal weight! Update your goal in Settings.</div>`;
   let check = '';
   if (p.goal === 'lean') {
-    // Real gain per week over the last ~4 weeks (needs at least 2 weeks of weigh-ins)
-    const ws = [...db.weights].sort((a, b) => a.date.localeCompare(b.date)).filter(w => w.date >= addDays(iso(), -28));
-    const days = ws.length >= 2 ? (dt(ws.at(-1).date) - dt(ws[0].date)) / 864e5 : 0;
-    if (days >= 14) {
-      const rate = r1((ws.at(-1).kg - ws[0].kg) / days * 7 * 100) / 100;
+    const rate = weeklyRate();
+    if (rate !== null) {
       check = rate > p.pace + 0.15 ? `<br>📈 You're gaining <b>${rate} kg/week</b>. That's faster than planned, so more of it is fat. Eat about 150 kcal less per day.`
         : rate < p.pace - 0.15 ? `<br>📉 You're gaining <b>${rate} kg/week</b>. That's slower than planned. Eat about 150 kcal more per day.`
         : `<br>✅ You're gaining <b>${rate} kg/week</b>. Right on track for lean muscle.`;
@@ -1091,6 +1132,12 @@ function expectedText(p, cur) {
   }
   const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(rem) / p.pace * 7));
   return `<div class="tip">At your pace you'll reach <b>${p.targetWeight} kg</b> around <b>${d.toLocaleDateString(LOC, { day: 'numeric', month: 'long', year: 'numeric' })}</b>.${check}</div>`;
+}
+// Real weight change per week over the last ~4 weeks (null until there are 2+ weeks of weigh-ins)
+function weeklyRate() {
+  const ws = [...db.weights].sort((a, b) => a.date.localeCompare(b.date)).filter(w => w.date >= addDays(iso(), -28));
+  const days = ws.length >= 2 ? (dt(ws.at(-1).date) - dt(ws[0].date)) / 864e5 : 0;
+  return days >= 14 ? Math.round((ws.at(-1).kg - ws[0].kg) / days * 7 * 100) / 100 : null;
 }
 function delWeight(date) { if (!confirm('Delete this weight entry?')) return; db.weights = db.weights.filter(w => w.date !== date); save(); renderProgress(); }
 function weightChart(ws, target) {
@@ -1118,9 +1165,9 @@ function weightChart(ws, target) {
 let chat;
 try { chat = JSON.parse(LS.get('ft_chat', '[]')) || []; } catch { chat = []; }
 let chatBusy = false, chatImg = null;
-const saveChat = () => { chat = chat.slice(-60); if (!LS.set('ft_chat', JSON.stringify(chat))) { chat = chat.slice(-20).map(m => ({ ...m, img: null })); LS.set('ft_chat', JSON.stringify(chat)); } };
-const CHIPS = ['What should I eat for dinner to hit my goals today?', 'How much protein do I still need today?', 'Give me a high-protein snack under 300 kcal',
-  'How was my week?', 'Make me a meal plan for tomorrow', 'Is my goal realistic?'];
+const saveChat = () => { chat = chat.slice(-80); if (!LS.set('ft_chat', JSON.stringify(chat))) { chat = chat.slice(-30).map(m => ({ ...m, img: null })); LS.set('ft_chat', JSON.stringify(chat)); } };
+const CHIPS = ['What should I eat next to hit my goals today?', 'How much protein do I still need today?', 'Give me a high-protein snack that fits my day',
+  'How was my week?', 'Make me a meal plan for tomorrow', 'Am I on track with my goal?'];
 
 function md(text) {
   // Tiny Markdown: bold, italics, headings, bullet and numbered lists
@@ -1140,41 +1187,127 @@ function md(text) {
   return out.join('');
 }
 
-function coachSystem() {
-  const p = db.profile, today = iso(), t = dayGoals(today), tot = dayTotals(today), burned = t.burned;
-  const now = new Date();
-  const meals = db.meals.filter(m => m.date === today).map(m => { const x = mealTotals(m); return `- ${m.time || ''} ${m.name}: ${r0(x.kcal)} kcal, ${r0(x.protein)} g protein, ${r0(x.carbs)} g carbs, ${r0(x.fat)} g fat`; });
-  const week = [...Array(7)].map((_, i) => addDays(today, i - 7)).map(d => { const x = dayTotals(d); return `- ${fmtDate(d, { weekday: 'short', day: 'numeric', month: 'short' })}: ${x.count ? `${r0(x.kcal)} kcal, ${r0(x.protein)} g protein` : 'nothing logged'}`; });
-  const ws = [...db.weights].sort((a, b) => a.date.localeCompare(b.date)).slice(-6).map(w => `${w.date}: ${w.kg} kg`).join('; ');
-  const goalTxt = p ? { lose: `lose weight to ${p.targetWeight} kg at ${p.pace} kg/week`, gain: `gain weight to ${p.targetWeight} kg at ${p.pace} kg/week`, maintain: 'maintain weight',
-    lean: `build lean muscle: reach ${p.targetWeight} kg slowly (${p.pace} kg/week) with as little fat gain as possible. Prioritise hitting the protein goal, spreading protein over 3-5 meals, mostly whole foods, and progressive strength training. Discourage dirty bulking and eating far above the calorie goal` }[p.goal] : 'not set';
-  return `You are the friendly AI nutrition coach inside the FoodTracker calorie-tracking app. Give practical, specific and encouraging advice based on the user's real data below.
-Keep answers short and easy to scan on a phone: a few short paragraphs or bullet points, no tables. When you suggest meals, name concrete foods with portion sizes in grams plus approximate calories and protein, and make them fit the user's remaining calories and macros. Use metric units. Always answer in the language the user writes in.
-You are not a doctor. For medical conditions, medication, pregnancy or signs of an eating disorder, recommend seeing a professional.
+/* --- Coach memory: lasting facts the user told the coach. The coach adds/removes them with
+   <memory>…</memory> and <forget>…</forget> tags at the end of a reply; the tags are hidden in the chat. */
+const memList = () => (db.coachMemory = db.coachMemory || []);
+function applyMemoryTags(text) {
+  let changed = 0;
+  for (const [, f] of text.matchAll(/<memory>([\s\S]*?)<\/memory>/gi)) {
+    const fact = f.trim();
+    if (fact && !memList().some(m => m.text.toLowerCase() === fact.toLowerCase())) { memList().push({ id: uid(), text: fact, date: iso() }); changed++; }
+  }
+  for (const [, f] of text.matchAll(/<forget>([\s\S]*?)<\/forget>/gi)) {
+    const q = f.trim().toLowerCase(), before = memList().length;
+    if (q) db.coachMemory = memList().filter(m => !m.text.toLowerCase().includes(q) && !q.includes(m.text.toLowerCase()));
+    changed += before - memList().length;
+  }
+  if (changed) save();
+  return changed;
+}
+// Hide memory tags, including a half-written one at the end while the answer is still streaming in
+const stripTags = t => t.replace(/<(memory|forget)>[\s\S]*?(<\/\1>|$)/gi, '').replace(/<\/?[a-z]{0,6}$/i, '').trim();
 
-Now: ${now.toLocaleString(LOC, { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' })}
-Profile: ${p ? `${{ m: 'male', f: 'female', o: 'other' }[p.sex]}, ${age(p)} years, ${p.height} cm, ${currentWeight()} kg, ${p.workouts} workouts per week. Goal: ${goalTxt}.` : 'not set up yet'}
-Today's targets${t.extra ? ` (base ${t.kcal - t.extra} kcal + ${t.extra} kcal burned)` : ''}: ${t.kcal} kcal, ${t.protein} g protein, ${t.carbs} g carbs, ${t.fat} g fat.
-Today so far: ${r0(tot.kcal)} kcal, ${r0(tot.protein)} g protein, ${r0(tot.carbs)} g carbs, ${r0(tot.fat)} g fat${burned ? `; burned ${r0(burned)} kcal with exercise${t.extra ? ` (${t.extra} kcal of it added to the goal; normal training is already included)` : ' (already covered by the goal, normal training is included)'}` : ''}.
-Remaining today: ${r0(t.kcal - tot.kcal)} kcal, ${r0(t.protein - tot.protein)} g protein, ${r0(t.carbs - tot.carbs)} g carbs, ${r0(t.fat - tot.fat)} g fat.
-Today's meals:
-${meals.join('\n') || '- nothing logged yet'}
-Previous 7 days:
-${week.join('\n')}
-Weight log (latest last): ${ws || 'none'}
-Health score today (1-10, calorie-weighted average of meals): ${healthAvg(db.meals.filter(m => m.date === today)) ?? 'no meals yet'}.
-Logging streak: ${streak()} days.`;
+// Short version of the Home screen numbers, attached to every message the user sends
+function liveNumbers() {
+  const today = iso(), g = dayGoals(today), t = dayTotals(today);
+  const f = (k, u) => `${r0(t[k])}/${g[k]}${u} (${g[k] - t[k] >= 0 ? r0(g[k] - t[k]) + u + ' left' : r0(t[k] - g[k]) + u + ' over'})`;
+  return `[Live app numbers right now, ${new Date().toLocaleTimeString(LOC, { hour: '2-digit', minute: '2-digit' })}: calories ${f('kcal', ' kcal')}, protein ${f('protein', ' g')}, carbs ${f('carbs', ' g')}, fats ${f('fat', ' g')}; burned ${g.burned} kcal; health score ${healthAvg(db.meals.filter(m => m.date === today)) ?? 'n/a'}/10; ${t.count} meal${t.count === 1 ? '' : 's'} logged today]`;
 }
 
-function renderChat() {
-  const msgs = chat.map(m => m.role === 'user'
-    ? `<div class="msg user">${m.img ? `<img src="${m.img}" alt="">` : ''}${esc(m.text).replace(/\n/g, '<br>')}</div>`
-    : `<div class="msg ai ${m.err ? 'err' : ''}">${m.err ? esc(m.text) : md(m.text)}</div>`).join('');
+// Everything the app knows, rebuilt fresh for every message
+function coachContext() {
+  const p = db.profile, today = iso(), g = dayGoals(today), tot = dayTotals(today), base = targets();
+  const fmtD = d => fmtDate(d, { weekday: 'short', day: 'numeric', month: 'short' });
+  const left = k => { const v = r0(g[k] - tot[k]); return v >= 0 ? `${v} left` : `${-v} OVER`; };
+  const meal = m => {
+    const x = mealTotals(m), h = mealHealth(m);
+    return `- ${m.time || '--:--'} ${m.name}${m.servings !== 1 ? ` (${m.servings} servings)` : ''}: ${r0(x.kcal)} kcal, P ${r0(x.protein)} g, C ${r0(x.carbs)} g, F ${r0(x.fat)} g${h ? `, health ${h}/10` : ''}\n    ingredients: ${m.items.map(i => `${i.name} ${i.grams} g (${r0(i.kcal)} kcal, P ${r1(i.protein)} g)`).join('; ')}`;
+  };
+  const todayMeals = db.meals.filter(m => m.date === today).sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+  const todayEx = db.exercises.filter(e => e.date === today);
+  const days = [...Array(14)].map((_, i) => addDays(today, -i - 1)).map(d => {
+    const x = dayTotals(d), dg = dayGoals(d), ms = db.meals.filter(m => m.date === d);
+    if (!x.count && !dg.burned) return `- ${fmtD(d)}: nothing logged`;
+    return `- ${fmtD(d)}: ${r0(x.kcal)}/${dg.kcal} kcal, P ${r0(x.protein)}/${dg.protein} g, C ${r0(x.carbs)} g, F ${r0(x.fat)} g` +
+      `${dg.burned ? `, burned ${dg.burned}` : ''}${ms.length ? `, health ${healthAvg(ms)}/10; meals: ${ms.map(m => m.name).join(', ')}` : ''}`;
+  });
+  const ws = [...db.weights].sort((a, b) => a.date.localeCompare(b.date));
+  const cur = currentWeight(), rate = weeklyRate();
+  const goalTxt = !p ? 'not set up yet' : {
+    lose: `lose weight to ${p.targetWeight} kg at ${p.pace} kg/week`,
+    maintain: 'maintain weight',
+    gain: `gain weight fast to ${p.targetWeight} kg at ${p.pace} kg/week`,
+    lean: `BUILD LEAN MUSCLE: reach ${p.targetWeight} kg slowly (${p.pace} kg/week) with as little fat gain as possible`
+  }[p.goal];
+  let eta = '';
+  if (p && p.goal !== 'maintain' && Math.abs(p.targetWeight - cur) >= 0.1) { const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(p.targetWeight - cur) / p.pace * 7)); eta = d.toLocaleDateString(LOC, { day: 'numeric', month: 'long', year: 'numeric' }); }
+  const pend = pending.filter(x => x.status === 'analyzing').length;
+  return `=== HOME SCREEN: TODAY (${fmtDate(today, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}) ===
+Calories: ${r0(tot.kcal)} eaten of ${g.kcal} kcal goal → ${left('kcal')}
+Protein: ${r0(tot.protein)} of ${g.protein} g → ${left('protein')}
+Carbs: ${r0(tot.carbs)} of ${g.carbs} g → ${left('carbs')}
+Fats: ${r0(tot.fat)} of ${g.fat} g → ${left('fat')}
+Calories burned today: ${g.burned} kcal → ${g.extra} kcal added to today's goal (mode "${db.settings.burnMode}"; normal training of ~${g.included} kcal/day is already part of the base goal)
+Health score today: ${healthAvg(todayMeals) ?? 'no meals yet'}/10${pend ? `\nStill analysing: ${pend} food photo(s), not counted yet` : ''}
+
+=== TODAY'S MEALS ===
+${todayMeals.map(meal).join('\n') || '- nothing logged yet'}
+${todayEx.length ? `\n=== TODAY'S EXERCISE ===\n${todayEx.map(e => `- ${e.time || ''} ${e.name}: ${r0(e.kcal)} kcal${e.minutes ? `, ${e.minutes} min` : ''}`).join('\n')}\n` : ''}
+=== PROFILE & GOAL ===
+${p ? `${{ m: 'Male', f: 'Female', o: 'Other' }[p.sex]}, ${age(p)} years, ${p.height} cm, ${cur} kg (BMI ${r1(cur / Math.pow(p.height / 100, 2))}), ${p.workouts} workouts per week.` : 'No profile yet.'}
+Goal: ${goalTxt}${eta ? `. Expected to reach it around ${eta}` : ''}.
+Real weight change over the last 4 weeks: ${rate === null ? 'not enough weigh-ins yet (needs 2+ weeks)' : `${rate > 0 ? '+' : ''}${rate} kg/week`}
+Base daily targets (before burned calories): ${base.kcal} kcal, ${base.protein} g protein, ${base.carbs} g carbs, ${base.fat} g fat${Object.keys(db.overrides).length ? ' (some set manually by the user)' : ''}. Maintenance (TDEE) ≈ ${base.tdee ?? '?'} kcal.
+
+=== PREVIOUS 14 DAYS ===
+${days.join('\n')}
+
+=== WEIGHT LOG (oldest → newest) ===
+${ws.slice(-15).map(w => `${fmtD(w.date)}: ${w.kg} kg`).join('; ') || 'no entries'}
+
+Logging streak: ${streak()} days. Total meals ever logged: ${db.meals.length}.`;
+}
+
+function coachSystem() {
+  const mem = memList();
+  return `You are the personal AI nutrition coach inside the user's FoodTracker app. You can see the user's complete, live app data below. It is refreshed automatically every time the user sends a message, so it is always 100% up to date.
+
+RULES
+- Always base answers on the live data below. NEVER say you can't see their data and NEVER ask for a screenshot: you already have everything the app shows, and more.
+- Earlier messages in this chat may mention older numbers. Always trust the data below over anything said earlier.
+- Be practical, specific and encouraging. Keep answers short and easy to read on a phone: short paragraphs or bullet points, no tables.
+- When suggesting food, give concrete foods with grams plus calories and protein, and make them fit exactly what is left today. Vary suggestions; look at what they ate recently.
+- Use metric units. Always answer in the language the user writes in.
+- You are not a doctor. For medical conditions, medication, pregnancy or signs of an eating disorder, recommend a professional.
+${db.profile?.goal === 'lean' ? '- Their goal is lean muscle: prioritise the protein goal, protein spread over 3-5 meals, mostly whole foods, progressive strength training and sleep. Discourage dirty bulking and big calorie overshoots.\n' : ''}
+MEMORY
+- Below is what you remember about the user from earlier chats. Use it naturally.
+- When the user tells you something lasting about themselves (food likes/dislikes, allergies, diet style, training schedule, budget, cooking habits, routines, injuries, preferences for how you answer), add one short fact at the very END of your reply like this: <memory>Is lactose intolerant</memory>. One tag per fact, only for new lasting facts, never for today's numbers.
+- If a remembered fact is no longer true, add <forget>the old fact</forget> (and a new <memory> if needed).
+- The user doesn't see these tags.
+
+WHAT YOU REMEMBER ABOUT THE USER
+${mem.length ? mem.map(m => `- ${m.text}`).join('\n') : '- nothing yet'}
+
+LIVE APP DATA
+${coachContext()}`;
+}
+
+// Only freshly added bubbles fade in, so re-rendering the chat doesn't flicker
+function chatBubble(m, anim) {
+  const a = anim ? ' new' : '';
+  return m.role === 'user'
+    ? `<div class="msg user${a}">${m.img ? `<img src="${m.img}" alt="">` : ''}${esc(m.text).replace(/\n/g, '<br>')}</div>`
+    : `<div class="msg ai${a} ${m.err ? 'err' : ''}">${m.err ? esc(m.text) : md(m.text)}${m.mem ? `<div class="memnote">🧠 Remembered</div>` : ''}</div>`;
+}
+function renderChat(animLast) {
+  const n = memList().length;
   $('#view').innerHTML = `
-    <div class="top"><div class="brand">AI Coach</div>${chat.length ? '<button class="chipbtn" id="cClear">New chat</button>' : ''}</div>
+    <div class="top"><div class="brand">AI Coach</div><div class="row" style="gap:8px">
+      <button class="chipbtn" id="cMem">🧠 Memory${n ? ' · ' + n : ''}</button>${chat.length ? '<button class="chipbtn" id="cClear">New chat</button>' : ''}</div></div>
     ${!chat.length ? `<div class="empty" style="margin-top:14px"><div style="font-size:40px">🥗</div><b>Ask me anything</b>
-      <span class="muted">I can see your goals, today's meals and your progress. Ask what to eat, how you're doing, or anything about nutrition.</span></div>` : ''}
-    <div class="msgs" id="msgs">${msgs}${chatBusy ? '<div class="msg ai"><span class="dots"><span></span><span></span><span></span></span></div>' : ''}</div>`;
+      <span class="muted">I always see your latest numbers, meals, goals and progress, and I remember what you tell me.</span></div>` : ''}
+    <div class="msgs" id="msgs">${chat.map((m, i) => chatBubble(m, animLast && i === chat.length - 1)).join('')}${chatBusy ? '<div class="msg ai new" id="live"><span class="dots"><span></span><span></span><span></span></span></div>' : ''}</div>`;
   let bar = $('.chatbar');
   if (!bar) {
     bar = document.createElement('div'); bar.className = 'chatbar';
@@ -1189,7 +1322,8 @@ function renderChat() {
     bar.querySelector('#cPhoto').onclick = () => $('#fileChat').click();
   }
   renderAttach();
-  if ($('#cClear')) $('#cClear').onclick = () => { if (confirm('Start a new chat? The current conversation will be cleared.')) { chat = []; saveChat(); renderChat(); } };
+  $('#cMem').onclick = openMemorySheet;
+  if ($('#cClear')) $('#cClear').onclick = () => { if (confirm('Start a new chat? The conversation is cleared, but your coach keeps its memory.')) { chat = []; saveChat(); renderChat(); } };
   requestAnimationFrame(() => window.scrollTo(0, document.body.scrollHeight));
 }
 function renderAttach() {
@@ -1197,23 +1331,61 @@ function renderAttach() {
   box.innerHTML = chatImg ? `<div class="attach"><img src="${chatImg.thumb}" alt=""><span class="grow muted">Photo attached</span><button class="chipbtn" id="cRm">Remove</button></div>` : '';
   if (chatImg) $('#cRm').onclick = () => { chatImg = null; renderAttach(); };
 }
+function openMemorySheet() {
+  const list = memList(), refresh = () => { openMemorySheet(); if (tab === 'chat') renderChat(); };
+  sheet(`<h3>🧠 Coach memory</h3><p class="muted" style="margin-top:4px">Things your coach remembers about you. It adds them on its own when you tell it something lasting. You can also add or delete them here.</p>
+    <div class="list" style="box-shadow:none;background:var(--chip)">${list.map(m => `<div class="li"><span class="grow">${esc(m.text)}</span><button class="muted" data-del="${m.id}" style="padding:0 4px">✕</button></div>`).join('') || '<div class="li muted">Nothing yet</div>'}</div>
+    <div class="row"><input id="memNew" placeholder="e.g. I train Mon, Wed, Fri at 6 pm"><button class="btn sm" id="memAdd">Add</button></div>
+    ${list.length ? '<button class="btn outline" id="memClear" style="margin-top:14px;color:var(--bad)">Forget everything</button>' : ''}`, s => {
+    s.querySelectorAll('[data-del]').forEach(b => b.onclick = () => { db.coachMemory = memList().filter(m => m.id !== b.dataset.del); save(); refresh(); });
+    s.querySelector('#memAdd').onclick = () => { const v = s.querySelector('#memNew').value.trim(); if (!v) return; memList().push({ id: uid(), text: v, date: iso() }); save(); refresh(); };
+    if (s.querySelector('#memClear')) s.querySelector('#memClear').onclick = () => { if (confirm('Forget everything your coach remembers?')) { db.coachMemory = []; save(); refresh(); } };
+  });
+}
 async function sendChat(text) {
   if (chatBusy) return;
   if (!hasAI()) { toast('Add your free AI key in Settings first'); return; }
   const img = chatImg; chatImg = null;
   const q = text || 'What do you think about this food?';
-  const history = chat.filter(m => !m.err).slice(-16).map(m => ({ role: m.role, parts: [{ text: m.text + (m.img ? '\n[photo attached]' : '') }] }));
+  const history = chat.filter(m => !m.err).slice(-30).map(m => ({ role: m.role, parts: [{ text: m.text + (m.img ? '\n[photo attached]' : '') }] }));
   chat.push({ role: 'user', text: q, img: img ? img.thumb : null, t: Date.now() });
-  saveChat(); chatBusy = true; renderChat();
+  saveChat(); chatBusy = true; renderChat(true);
+
+  // Smooth typing: the stream fills `target`; each frame reveals a few more characters
+  let target = '', shown = 0, done = false, frame;
+  const near = () => window.innerHeight + window.scrollY >= document.body.scrollHeight - 220;
+  const tick = () => {
+    const live = $('#live');
+    if (live && shown < target.length) {
+      const stick = near();
+      shown = Math.min(target.length, shown + Math.max(1, Math.ceil((target.length - shown) / 10)));
+      live.innerHTML = md(stripTags(target.slice(0, shown)));
+      if (stick) window.scrollTo(0, document.body.scrollHeight);
+    }
+    if (!done || shown < target.length) frame = requestAnimationFrame(tick);
+  };
+  frame = requestAnimationFrame(tick);
+
+  let entry;
   try {
-    const parts = img ? [{ image: img.full }, { text: q }] : [{ text: q }];
-    const answer = await askAI(parts, { json: false, system: coachSystem(), history });
-    chat.push({ role: 'assistant', text: answer.trim(), t: Date.now() });
+    const parts = [...(img ? [{ image: img.full }] : []), { text: `${liveNumbers()}\n\n${q}` }];
+    const answer = await askAI(parts, { json: false, system: coachSystem(), history, onText: t => { target = t; } });
+    target = answer;
+    const mem = applyMemoryTags(answer);
+    entry = { role: 'assistant', text: stripTags(answer), mem: mem > 0, t: Date.now() };
   } catch (e) {
-    chat.push({ role: 'assistant', err: true, text: e.message === 'NOKEY' ? 'Add your free AI key in Settings first.' : e.message, t: Date.now() });
+    entry = { role: 'assistant', err: true, text: e.message === 'NOKEY' ? 'Add your free AI key in Settings first.' : e.message, t: Date.now() };
   }
-  chatBusy = false; saveChat();
-  if (tab === 'chat') renderChat();
+  done = true;
+  // Let the typing animation finish before swapping in the final message
+  if (!entry.err) await new Promise(r => { const wait = () => (shown >= target.length || tab !== 'chat' || !$('#live')) ? r() : setTimeout(wait, 30); wait(); });
+  cancelAnimationFrame(frame);
+  chat.push(entry); chatBusy = false; saveChat();
+  if (tab === 'chat') {
+    const live = $('#live');
+    if (live) { const stick = near(); live.outerHTML = chatBubble(entry); if (stick) window.scrollTo(0, document.body.scrollHeight); }
+    else renderChat(true);
+  }
 }
 
 /* ================= Settings ================= */
