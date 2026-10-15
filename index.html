@@ -152,12 +152,14 @@ a{color:inherit}
 .fab{animation:fabIn .3s cubic-bezier(.2,1.4,.4,1)}
 .fab:active{transform:scale(.92)}
 @keyframes fabIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
-#view.pagein{animation:pageIn .32s cubic-bezier(.2,.8,.2,1)}
-#chatScreen.pagein{animation:pageFade .26s ease}
-#chatScreen.pagein #msgScroll{animation:pageIn .32s cubic-bezier(.2,.8,.2,1)}
-@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+#view.pagein{animation:pageIn .5s cubic-bezier(.22,.75,.25,1)}
+#chatScreen.pagein{animation:pageFade .45s ease}
+#chatScreen.pagein #msgScroll{animation:pageIn .5s cubic-bezier(.22,.75,.25,1)}
+#view.pageout,#chatScreen.pageout{animation:pageOut .18s ease forwards}
+@keyframes pageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes pageFade{from{opacity:0}to{opacity:1}}
-@media (prefers-reduced-motion:reduce){#view.pagein,#chatScreen.pagein,#chatScreen.pagein #msgScroll,.fab{animation:none}}
+@keyframes pageOut{from{opacity:1}to{opacity:0}}
+@media (prefers-reduced-motion:reduce){#view.pagein,#chatScreen.pagein,#chatScreen.pagein #msgScroll,#view.pageout,#chatScreen.pageout,.fab{animation:none}}
 
 /* Sheets & pages */
 .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:50;display:flex;align-items:flex-end;animation:fade .2s}
@@ -263,13 +265,14 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 /* Chat */
 body.chatting{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
 body.chatting .fab,body.nofab .fab{display:none}
-body.typing .tabbar{display:none}
-#chatScreen{position:fixed;left:0;right:0;top:0;height:100%;z-index:5;display:flex;flex-direction:column;background:var(--bg)}
+.tabbar{transition:opacity .2s ease}
+body.typing .tabbar{opacity:0;pointer-events:none}
+#chatScreen{position:fixed;left:0;right:0;top:0;height:100%;z-index:5;display:flex;flex-direction:column;background:var(--bg);transition:height .3s cubic-bezier(.25,.8,.25,1)}
 body.chatting{overflow:hidden;padding-bottom:0}
 .chathead{flex:none;width:100%}
 .msgscroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
 .msgscroll .wrap{padding-bottom:14px}
-#chatScreen .chatbar{position:relative;left:auto;right:auto;bottom:auto;flex:none;padding:8px 14px calc(74px + env(safe-area-inset-bottom))}
+#chatScreen .chatbar{position:relative;left:auto;right:auto;bottom:auto;flex:none;padding:8px 14px calc(74px + env(safe-area-inset-bottom));transition:padding-bottom .3s cubic-bezier(.25,.8,.25,1)}
 body.typing #chatScreen .chatbar{padding-bottom:8px}
 body.typing .chatbar{bottom:0;padding-bottom:6px}
 .chatbar.hasText .chips{display:none}
@@ -791,7 +794,8 @@ function streak() {
 let tab = 'home', sel = iso(), weekOff = 0, calMode = 'left', pending = [];
 let progRange = 90, nutWeek = 0;
 function go(t) {
-  tab = t;
+  clearTimeout(goT); tab = t;
+  $('#view').classList.remove('pageout');
   document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
   document.body.classList.toggle('chatting', t === 'chat');
   document.body.classList.toggle('nofab', t !== 'home');   // food is added from Home only
@@ -805,7 +809,17 @@ function go(t) {
   if (v) { v.classList.remove('pagein'); void v.offsetWidth; v.classList.add('pagein'); }
 }
 function render() { ({ home: renderHome, progress: renderProgress, chat: renderChat, settings: renderSettings })[tab](); }
-document.querySelectorAll('.tab').forEach(b => b.onclick = () => go(b.dataset.tab));
+// Tapping a tab: the tab lights up right away, the current page fades out, then the new one glides in
+let goT;
+function switchTab(t) {
+  const out = $('#chatScreen') || $('#view');
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches || !out) return go(t);
+  document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
+  clearTimeout(goT);
+  out.classList.remove('pagein'); out.classList.add('pageout');
+  goT = setTimeout(() => go(t), 170);
+}
+document.querySelectorAll('.tab').forEach(b => b.onclick = () => switchTab(b.dataset.tab));
 $('#fab').onclick = openAddMenu;
 
 /* ================= Home ================= */
@@ -1783,7 +1797,14 @@ function buildChatbar(scr) {
   ta.oninput = () => { ta.style.height = '40px'; ta.style.height = Math.min(ta.scrollHeight, 120) + 'px'; updateSendState(); };
   // While typing, hide the tab bar so there's more room for the conversation
   let blurT;
-  ta.addEventListener('focus', () => { clearTimeout(blurT); closeChatMenu(); document.body.classList.add('typing'); fitChat(); setTimeout(() => { fitChat(); chatToBottom(); }, 300); });
+  ta.addEventListener('focus', () => {
+    clearTimeout(blurT); closeChatMenu(); document.body.classList.add('typing');
+    // The keyboard height from last time lets the bar rise together with the keyboard, without waiting
+    const kb = +LS.get('ft_kbh', 0), vv = window.visualViewport;
+    if (kb && vv && vv.height > innerHeight - 80) scr.style.height = (innerHeight - kb) + 'px'; else fitChat();
+    chatToBottom();
+    setTimeout(() => { fitChat(true); chatToBottom(); }, 650);
+  });
   ta.addEventListener('blur', () => { blurT = setTimeout(() => { document.body.classList.remove('typing'); fitChat(); }, 120); });
   // Tapping send keeps the keyboard open (no layout jump under your finger)
   bar.querySelector('#cSend').addEventListener('pointerdown', e => { if (document.activeElement === ta) e.preventDefault(); });
@@ -1810,10 +1831,16 @@ document.addEventListener('click', e => { if (!e.target.closest('#cMenu') && !e.
 // Mic when empty, send arrow when there's something to send
 function updateSendState() { const bar = $('.chatbar'); if (bar) bar.classList.toggle('hasText', !!($('#cIn').value.trim() || chatImg)); }
 // When the keyboard opens, the chat screen shrinks to the visible area, so the bar sits right on the keyboard
-function fitChat() {
+function fitChat(final) {
   const scr = $('#chatScreen'), vv = window.visualViewport;
   if (!scr) return;
-  if (vv && document.body.classList.contains('typing')) { scr.style.height = vv.height + 'px'; scr.style.transform = `translateY(${vv.offsetTop}px)`; }
+  if (vv && document.body.classList.contains('typing')) {
+    const kbUp = vv.height < innerHeight - 80;
+    if (kbUp) LS.set('ft_kbh', String(Math.round(innerHeight - vv.height)));
+    // Before the keyboard has arrived, keep the predicted height (unless there turns out to be no keyboard)
+    if (kbUp || final || !LS.get('ft_kbh', '')) scr.style.height = vv.height + 'px';
+    scr.style.transform = vv.offsetTop ? `translateY(${vv.offsetTop}px)` : '';
+  }
   else { scr.style.height = ''; scr.style.transform = ''; }
   updateDown();
 }
