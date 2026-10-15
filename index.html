@@ -21,7 +21,7 @@
   color-scheme:light;
   --bg:#f7f7f9;--card:#fff;--text:#111113;--muted:#8e8e93;--line:#ececf0;--track:#efeff3;
   --ink:#111113;--on-ink:#fff;--chip:#f2f2f5;
-  --protein:#e3605b;--carbs:#ef9f45;--fat:#4b8cf5;--flame:#ff9500;--good:#34c759;--bad:#ff3b30;
+  --protein:#e3605b;--carbs:#ef9f45;--fat:#4b8cf5;--flame:#ff9500;--good:#34c759;--bad:#ff3b30;--water:#3aa0ff;
   --shadow:0 2px 14px rgba(0,0,0,.05);
 }
 :root[data-theme="dark"]{
@@ -265,6 +265,12 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .mp-tips{margin:8px 0 0;padding-left:20px}.mp-tips li{margin:6px 0}
 .mp-chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
 .mp-auto{display:block;margin:0 auto 12px;font-size:13px;font-weight:600;color:var(--muted);padding:4px 10px}
+.watercard{display:flex;align-items:center;gap:12px;cursor:pointer}
+.wbtn{width:40px;height:40px;border-radius:50%;background:var(--chip);font-size:22px;font-weight:600;flex:none;display:flex;align-items:center;justify-content:center}
+.addtile small{font-size:12px;font-weight:600}
+.rtimes{margin-top:12px;display:flex;flex-direction:column;gap:10px}
+.rtimes .spread{gap:10px;font-weight:600;font-size:15px}
+.rsel{width:auto;padding:8px 10px;border-radius:12px;font-size:15px}
 .inpop{position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));z-index:70;max-width:536px;margin:0 auto;display:flex;align-items:center;gap:12px;
   padding:12px 10px 12px 14px;border-radius:20px;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   box-shadow:0 12px 34px rgba(0,0,0,.28),inset 0 0 0 1px var(--line);animation:popIn .5s cubic-bezier(.2,1.2,.4,1)}
@@ -542,7 +548,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v38';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v39';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -968,10 +974,10 @@ function renderHome() {
     <div class="macros">${macros}</div>
     ${focusCard(sel, t, tot)}
     ${healthCard(sel)}
+    ${waterCard(sel)}
     <div class="card burncard"><div class="ic">🏃</div><div class="grow"><div class="small muted" style="font-weight:600">${T('Calories burned')}</div>
       <div style="font-size:24px;font-weight:800;letter-spacing:-.02em">${burned}<small class="muted" style="font-size:14px;font-weight:600"> kcal</small></div></div>
-      <button class="btn sm" id="burnAdd">＋ ${T('Add')}</button>
-      <div class="small muted note">${burnNote(t)}</div></div>
+      <button class="btn sm" id="burnAdd">＋ ${T('Add')}</button></div>
     ${mealPlanCard()}
     <div class="h2">${sel === today ? T('Recently uploaded') : fmtDate(sel, { weekday: 'long', day: 'numeric', month: 'long' })}</div>
     ${list}`;
@@ -981,6 +987,7 @@ function renderHome() {
   $('#burnAdd').onclick = e => { e.stopPropagation(); openBurnSheet(); };
   document.querySelector('.burncard').onclick = openBurnSheet;
   $('#mpCard').onclick = openMealPlan;
+  bindWater();
   if ($('#planChip')) $('#planChip').onclick = openMainGoalSheet;
   $('#wPrev').onclick = () => { weekOff--; renderHome(); };
   $('#wNext').onclick = () => { if (weekOff < 0) { weekOff++; renderHome(); } };
@@ -1591,6 +1598,112 @@ async function startBarScan() {
   }
 }
 
+/* ================= Water ================= */
+const waterLog = () => (db.water = db.water || {});
+const waterGoal = () => db.settings.waterGoal || (db.profile ? clamp(Math.round(currentWeight() * 35 / 250) * 250, 1500, 4500) : 2500);
+const waterOn = d => num(waterLog()[d]);
+const fmtL = ml => (ml >= 1000 ? (Math.round(ml / 100) / 10).toLocaleString(LOC) + ' L' : ml + ' ml');
+function addWater(ml, d = sel) {
+  const v = Math.max(0, waterOn(d) + ml);
+  if (v) waterLog()[d] = v; else delete waterLog()[d];
+  save(); if (tab === 'home') renderHome();
+}
+function waterCard(d) {
+  const ml = waterOn(d), goal = waterGoal();
+  return `<div class="card watercard" id="waterCard">${ring(54, 6, ml / goal, 'var(--water)', '<span style="font-size:20px">💧</span>')}
+    <div class="grow" style="white-space:nowrap"><div class="small muted" style="font-weight:600">${T('Water')} · ${fmtL(goal)}</div>
+      <div style="font-size:22px;font-weight:800;letter-spacing:-.02em">${fmtL(ml)}</div></div>
+    <button class="wbtn" id="wMinus" aria-label="−250 ml">−</button><button class="btn sm" id="wPlus">＋ 250 ml</button></div>`;
+}
+function bindWater() {
+  if (!$('#waterCard')) return;
+  $('#wPlus').onclick = e => { e.stopPropagation(); addWater(250); };
+  $('#wMinus').onclick = e => { e.stopPropagation(); if (waterOn(sel)) addWater(-250); };
+  $('#waterCard').onclick = openWaterSheet;
+}
+function openWaterSheet() {
+  const goals = []; for (let g = 1500; g <= 4500; g += 250) goals.push(g);
+  sheet(`<h3>💧 ${T('Water')}</h3><p class="muted" style="margin-top:4px">${T('{a} of {b} today', { a: fmtL(waterOn(sel)), b: fmtL(waterGoal()) })}</p>
+    <div class="addgrid">${[[150, '🥛', N('Small glass')], [250, '🥤', N('Glass')], [500, '🍶', N('Bottle')], [750, '🧴', N('Large bottle')]].map(([ml, ic, l]) =>
+      `<button class="addtile" data-ml="${ml}"><span>${ic}</span>${T(l)}<small class="muted">+${ml} ml</small></button>`).join('')}</div>
+    <div class="row" style="margin-top:14px"><input id="wCustom" inputmode="numeric" placeholder="${T('Other amount (ml)')}"><button class="btn sm" id="wAdd">${T('Add')}</button></div>
+    <label class="lbl">${T('Daily goal')}</label><select id="wGoal">${goals.map(g => `<option value="${g}" ${g === waterGoal() ? 'selected' : ''}>${fmtL(g)}</option>`).join('')}</select>
+    ${waterOn(sel) ? `<button class="btn outline" id="wReset" style="margin-top:14px;color:var(--bad)">${T('Reset for this day')}</button>` : ''}`, s => {
+    s.querySelectorAll('[data-ml]').forEach(b => b.onclick = () => { addWater(+b.dataset.ml); closeSheet(); toast(`💧 +${b.dataset.ml} ml`); });
+    s.querySelector('#wAdd').onclick = () => { const v = r0(num(s.querySelector('#wCustom').value)); if (v > 0 && v <= 5000) { addWater(v); closeSheet(); toast(`💧 +${v} ml`); } };
+    s.querySelector('#wGoal').onchange = e => { db.settings.waterGoal = +e.target.value; save(); if (tab === 'home') renderHome(); toast(T('✓ Saved')); };
+    if (s.querySelector('#wReset')) s.querySelector('#wReset').onclick = () => { addWater(-waterOn(sel)); closeSheet(); };
+  });
+}
+
+/* ================= Small in-app pop-up (top of the screen) ================= */
+function inPop(icon, title, text, onOpen) {
+  $('#inPop')?.remove();
+  const el = document.createElement('div'); el.id = 'inPop'; el.className = 'inpop';
+  el.innerHTML = `<div class="inpop-ic">${icon}</div><div class="grow"><b>${title}</b><div class="small muted">${text}</div></div>
+    <button class="chipbtn" id="inPopOpen">${T('Open')}</button><button class="inpop-x" aria-label="${T('Close')}">✕</button>`;
+  document.body.appendChild(el);
+  const close = () => { el.classList.add('out'); setTimeout(() => el.remove(), 300); };
+  el.querySelector('#inPopOpen').onclick = () => { close(); closeSheet(); onOpen(); };
+  el.querySelector('.inpop-x').onclick = close;
+  setTimeout(close, 12000);
+}
+
+/* ================= Weekly check-in from the coach (Sundays) =================
+   On Sunday (from 9:00), or the next time the app is opened in the two days after, the coach writes a
+   short summary of the week with the real numbers and one tip. It appears in the coach chat. */
+let checkinBusy = false;
+async function weeklyCheckin() {
+  if (checkinBusy || !db.profile || !hasAI()) return;
+  const today = iso(), sun = addDays(today, -dt(today).getDay());
+  if (LS.get('ft_checkin', '') === sun || daysBetween(sun, today) > 2 || (today === sun && new Date().getHours() < 9)) return;
+  const days = [...Array(7)].map((_, i) => addDays(sun, i - 6)), logged = days.filter(d => dayTotals(d).count);
+  if (logged.length < 2) return LS.set('ft_checkin', sun);   // too little to say anything useful
+  checkinBusy = true; LS.set('ft_checkin', sun);
+  const avg = f => r0(logged.reduce((a, d) => a + f(d), 0) / logged.length);
+  const wAt = d => { const w = db.weights.filter(x => x.date <= d).sort((a, b) => a.date.localeCompare(b.date)).at(-1); return w ? w.kg : null; };
+  const w1 = wAt(sun), w0 = wAt(addDays(sun, -7));
+  const wd = days.filter(d => waterOn(d));
+  const stats = `Week ${days[0]} to ${sun}. Food logged on ${logged.length} of 7 days.
+Averages on logged days: ${avg(d => dayTotals(d).kcal)} kcal (goal ${avg(d => dayGoals(d).kcal)}), protein ${avg(d => dayTotals(d).protein)} g (goal ${avg(d => dayGoals(d).protein)}), carbs ${avg(d => dayTotals(d).carbs)} g, fat ${avg(d => dayTotals(d).fat)} g.
+Days within ±10% of the calorie goal: ${logged.filter(d => Math.abs(dayTotals(d).kcal - dayGoals(d).kcal) <= dayGoals(d).kcal * 0.1).length}. Days that hit the protein goal: ${logged.filter(d => dayTotals(d).protein >= dayGoals(d).protein * 0.95).length}.
+Health score of the week: ${healthAvg(db.meals.filter(m => days.includes(m.date))) ?? 'n/a'}/10. Calories burned (logged): ${days.reduce((a, d) => a + dayBurned(d), 0)} kcal.
+Weight: ${w1 == null ? 'no weigh-ins' : w0 == null || w0 === w1 ? `${w1} kg` : `${w0} → ${w1} kg (${w1 - w0 > 0 ? '+' : ''}${r1(w1 - w0)} kg this week)`}.
+Water: ${wd.length ? `${avg(d => waterOn(d))} ml on average on ${wd.length} days (goal ${waterGoal()} ml)` : 'not tracked'}.`;
+  const prompt = `${stats}
+
+Write my WEEKLY CHECK-IN for this week. First line: a short title starting with "📊". Then 3 to 5 short bullet points with the real numbers: calories and protein vs my goals, consistency, weight trend compared with my goal, and anything that stands out. End with ONE concrete tip for next week, starting with "**Tip:**". Short, honest, warm and motivating. No memory tags.`;
+  try {
+    const text = await askAI([{ text: prompt }], { json: false, system: coachSystem() });
+    chat.push({ role: 'assistant', text: stripTags(text), t: Date.now(), checkin: true }); saveChat();
+    if (tab === 'chat') renderChat(true);
+    else inPop('📊', T('Your weekly check-in is here'), T('Your coach looked at your week and has one tip for the next.'), () => go('chat'));
+  } catch { LS.set('ft_checkin', ''); }
+  checkinBusy = false;
+}
+
+/* ================= Reminder times (per person) ================= */
+const PUSH_DEF = { burn: 20, wDay: 0, wTime: 9 };
+const pushPrefs = () => { try { return { ...PUSH_DEF, ...JSON.parse(LS.get('ft_push_prefs', '{}')) }; } catch { return { ...PUSH_DEF }; } };
+const userTZ = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Zurich'; } catch { return 'Europe/Zurich'; } };
+function reminderTimesHTML() {
+  const p = pushPrefs(), hrs = [...Array(18)].map((_, i) => i + 6);
+  const hourOpts = (v, off) => (off ? `<option value="-1" ${v < 0 ? 'selected' : ''}>${T('Off')}</option>` : '') +
+    hrs.map(h => `<option value="${h}" ${h === v ? 'selected' : ''}>${String(h).padStart(2, '0')}:00</option>`).join('');
+  const dayName = i => dt(addDays(iso(), i - dt(iso()).getDay())).toLocaleDateString(LOC, { weekday: 'long' });
+  return `<div class="rtimes">
+    <div class="spread"><span>🏃 ${T('Calories burned')}</span><select id="rBurn" class="rsel">${hourOpts(p.burn, true)}</select></div>
+    <div class="spread"><span>⚖️ ${T('Weigh-in')}</span><span class="row" style="gap:6px">
+      <select id="rWDay" class="rsel"><option value="-1" ${p.wDay < 0 ? 'selected' : ''}>${T('Off')}</option>${[1, 2, 3, 4, 5, 6, 0].map(i => `<option value="${i}" ${i === p.wDay ? 'selected' : ''}>${dayName(i)}</option>`).join('')}</select>
+      ${p.wDay >= 0 ? `<select id="rWTime" class="rsel">${hourOpts(p.wTime, false)}</select>` : ''}</span></div></div>`;
+}
+function bindReminderTimes() {
+  const set = (k, v) => { const p = pushPrefs(); p[k] = +v; LS.set('ft_push_prefs', JSON.stringify(p)); syncPush(); toast(T('✓ Saved')); renderSettings(); };
+  if ($('#rBurn')) $('#rBurn').onchange = e => set('burn', e.target.value);
+  if ($('#rWDay')) $('#rWDay').onchange = e => set('wDay', e.target.value);
+  if ($('#rWTime')) $('#rWTime').onchange = e => set('wTime', e.target.value);
+}
+
 /* ================= Exercise ================= */
 // Quick entry from the Home screen: "how many calories did I burn?"
 function burnNote(g) {
@@ -1964,16 +2077,9 @@ function checkPlanWeek() {
   }
 }
 function planPopup(isNew) {
-  $('#mpPop')?.remove();
-  const el = document.createElement('div'); el.id = 'mpPop'; el.className = 'inpop';
-  el.innerHTML = `<div class="inpop-ic">🛒</div><div class="grow"><b>${isNew ? T('Your new meal plan is here') : T('Same meal plan this week')}</b>
-    <div class="small muted">${isNew ? T('A fresh plan and grocery list for this week. Have a look before you go shopping!') : T("Your grocery list was reset for this week's shopping.")}</div></div>
-    <button class="chipbtn" id="mpPopOpen">${T('Open')}</button><button class="inpop-x" aria-label="${T('Close')}">✕</button>`;
-  document.body.appendChild(el);
-  const close = () => { el.classList.add('out'); setTimeout(() => el.remove(), 300); };
-  el.querySelector('#mpPopOpen').onclick = () => { close(); closeSheet(); if (tab !== 'home') go('home'); openMealPlan(); };
-  el.querySelector('.inpop-x').onclick = close;
-  setTimeout(close, 12000);
+  inPop('🛒', isNew ? T('Your new meal plan is here') : T('Same meal plan this week'),
+    isNew ? T('A fresh plan and grocery list for this week. Have a look before you go shopping!') : T("Your grocery list was reset for this week's shopping."),
+    () => { if (tab !== 'home') go('home'); openMealPlan(); });
   if (tab === 'home' && !$('#mplan')) renderHome(); else renderMealPlan();
 }
 
@@ -2313,6 +2419,7 @@ Carbs: ${r0(tot.carbs)} of ${g.carbs} g → ${left('carbs')}
 Fats: ${r0(tot.fat)} of ${g.fat} g → ${left('fat')}
 Calories burned today: ${g.burned} kcal → ${g.extra} kcal added to today's goal (mode "${db.settings.burnMode}"; normal training of ~${g.included} kcal/day is already part of the base goal)
 Health score today: ${healthAvg(todayMeals) ?? 'no meals yet'}/10
+Water today: ${waterOn(today)} of ${waterGoal()} ml
 Sugar ${r0(dayExtras(today).sugar)} g, fiber ${r0(dayExtras(today).fiber)} g, sodium ${r0(dayExtras(today).sodium)} mg today (known for ${dayExtras(today).known} of ${dayExtras(today).meals} meals)${pend ? `\nStill analysing: ${pend} food photo(s), not counted yet` : ''}
 
 === TODAY'S MEALS ===
@@ -2650,7 +2757,7 @@ async function enableReminders() {
     if (perm !== 'granted') return toast(T('Notifications are blocked. Allow them in iPhone Settings → FoodTracker → Notifications.'));
     const reg = await navigator.serviceWorker.ready;
     const sub = await reg.pushManager.getSubscription() || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(VAPID_PUBLIC) });
-    LS.set('ft_push', JSON.stringify(sub)); saveReminderTexts(); syncPush();
+    LS.set('ft_push', JSON.stringify(sub)); saveReminderTexts(); LS.del('ft_push_sent'); syncPush();
     toast(T('✓ Notifications allowed')); if (tab === 'settings') renderSettings();
   } catch (e) { toast(T('Could not turn on notifications.') + ' ' + (e.message || '')); }
 }
@@ -2662,17 +2769,19 @@ function remindersCard() {
   } else if (perm !== 'granted' || !sub) {
     body = `<button class="btn" id="rOn" style="margin-top:12px">🔔 ${T('Turn on notifications')}</button>`;
   } else if (!isAdmin()) {
-    body = `<p class="small" style="margin:10px 0 0;color:var(--good);font-weight:600">✓ ${T('Notifications are allowed on this phone.')}</p>`;
+    body = `<p class="small" style="margin:10px 0 0;color:var(--good);font-weight:600">✓ ${T('Notifications are allowed on this phone.')}</p>${SERVER_URL ? reminderTimesHTML() : ''}`;
   } else {
     body = `<p class="small" style="margin:10px 0 0;color:var(--good);font-weight:600">✓ ${T('Notifications are allowed on this phone.')}</p>
       ${SERVER_URL ? '' : `<p class="small muted" style="margin:8px 0 0">${T('One-time setup: copy this code and save it on GitHub as the secret PUSH_SUBSCRIPTION (see the setup guide).')}</p>
       <div class="code">${esc(sub)}</div>`}
+      ${SERVER_URL ? reminderTimesHTML() : ''}
       <div class="row" style="margin-top:10px">${SERVER_URL ? '' : `<button class="btn sm grow" id="rCopy">📋 ${T('Copy code')}</button>`}<button class="btn sm outline grow" id="rTest">${T('Test')}</button></div>`;
   }
   return `<div class="card"><b>🔔 ${T('Notifications')}</b>
-    <p class="small muted" style="margin:4px 0 0">${T('Every evening at about 20:00: log your calories burned. Every Sunday morning: log your weight.')}</p>${body}</div>`;
+    <p class="small muted" style="margin:4px 0 0">${SERVER_URL ? T('A reminder to log your calories burned, and one for your weekly weigh-in. Choose the times that suit you.') : T('Every evening at about 20:00: log your calories burned. Every Sunday morning: log your weight.')}</p>${body}</div>`;
 }
 function bindReminders() {
+  bindReminderTimes();
   if ($('#rOn')) $('#rOn').onclick = enableReminders;
   if ($('#rCopy')) $('#rCopy').onclick = async () => {
     try { await navigator.clipboard.writeText(LS.get('ft_push', '')); toast(T('✓ Copied')); }
@@ -2692,9 +2801,10 @@ async function syncPush() {
     const reg = await navigator.serviceWorker.ready;
     const sub = await reg.pushManager.getSubscription() || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(VAPID_PUBLIC) });
     const js = JSON.stringify(sub); LS.set('ft_push', js);
-    if (LS.get('ft_push_sent', '') === js) return;
-    const r = await fetch(SERVER_URL + '/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sub }) });
-    if (r.ok) LS.set('ft_push_sent', js);
+    const prefs = { ...pushPrefs(), tz: userTZ() }, sent = js + JSON.stringify(prefs);   // resend when the address, times or time zone change
+    if (LS.get('ft_push_sent', '') === sent) return;
+    const r = await fetch(SERVER_URL + '/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sub, prefs }) });
+    if (r.ok) LS.set('ft_push_sent', sent);
   } catch {}
 }
 // Friendly question to turn on reminders: right after setup, then at most twice more, a few days apart
@@ -2759,7 +2869,7 @@ async function checkUpdate() {
   } catch {}
 }
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') { checkUpdate(); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); }
+  if (document.visibilityState === 'visible') { checkUpdate(); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); setTimeout(weeklyCheckin, 1500); }
   else if (updReady) location.reload();   // the app is in the background: nobody sees the reload
 });
 
@@ -3180,6 +3290,8 @@ setTimeout(checkPlanWeek, 4800);
 setInterval(checkPlanWeek, 5 * 60e3);
 setTimeout(autoBackup, 9000);
 setInterval(autoBackup, 60 * 60e3);
+setTimeout(weeklyCheckin, 6500);
+setInterval(weeklyCheckin, 30 * 60e3);
 if (sessionStorage.getItem('ft_restored')) { sessionStorage.removeItem('ft_restored'); setTimeout(() => toast('✓ ' + T('Backup restored')), 4500); }
 </script>
 </body>
