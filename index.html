@@ -556,7 +556,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v40';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v41';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1455,19 +1455,24 @@ function openFavorites() {
   });
 }
 
-/* ================= Automatic backup =================
-   Once a day the app saves an encrypted copy of the data on the Food Tracker server. Only this phone knows
-   the backup code that unlocks it, so nobody else (not even the app owner) can read it. Meal photos stay on
-   the phone. With the code, everything comes back, e.g. on a new phone. */
-const B32 = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';   // no 0/O, 1/I/L mix-ups
-const fmtCode = c => normCode(c).replace(/(.{4})(?=.)/g, '$1-');
-const normCode = c => String(c || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
-const newBackupCode = () => fmtCode([...crypto.getRandomValues(new Uint8Array(16))].map(b => B32[b % B32.length]).join(''));
+/* ================= Account & automatic backup =================
+   People sign up with their email and a password (the iPhone can save it in its Keychain, so there's
+   nothing to remember). Once a day the app saves an encrypted copy of the data on the Food Tracker server.
+   The key comes from the password and never leaves the phone, so nobody else (not even the app owner)
+   can read it. Meal photos stay on the phone. Signing in on a new phone brings everything back.
+   The email is only a name for the account: no emails are ever sent. */
+const acct = () => { try { return JSON.parse(LS.get('ft_acct', 'null')); } catch { return null; } };
 const sha = async s => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)))].map(b => b.toString(16).padStart(2, '0')).join('');
-async function backupKeys(code) {
-  const c = normCode(code), raw = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('ft-key:' + c));
-  return { id: await sha('ft-id:' + c), auth: await sha('ft-auth:' + c), key: await crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['encrypt', 'decrypt']) };
+const hexOf = bytes => [...bytes].map(b => b.toString(16).padStart(2, '0')).join('');
+const bytesOf = hex => Uint8Array.from(hex.match(/../g).map(h => parseInt(h, 16)));
+const normEmail = e => String(e || '').trim().toLowerCase();
+// Password → login proof + encryption key (slow on purpose, so passwords can't be guessed quickly)
+async function deriveAcct(email, password) {
+  const e = normEmail(email), base = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
+  const bits = new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: new TextEncoder().encode('foodtracker:' + e), iterations: 210000 }, base, 512));
+  return { email: e, id: await sha('ft-acct-id:' + e), auth: hexOf(bits.slice(0, 32)), key: hexOf(bits.slice(32)) };
 }
+const aesKey = hex => crypto.subtle.importKey('raw', bytesOf(hex), 'AES-GCM', false, ['encrypt', 'decrypt']);
 const b64 = bytes => { let s = ''; for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(s); };
 const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
 async function zipText(str) {
@@ -1478,16 +1483,16 @@ async function unzipText(bytes, z) {
   if (!z) return new TextDecoder().decode(bytes);
   return new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
 }
-async function runBackup(manual) {
-  if (!SERVER_URL || !db.profile || !window.crypto || !crypto.subtle) return false;
+const post = (path, body) => fetch(SERVER_URL + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+
+async function runBackup(manual, a = acct()) {
+  if (!SERVER_URL || !a || !db.profile || !window.crypto || !crypto.subtle) return false;
   try {
-    let code = LS.get('ft_bk_code', ''); if (!code) { code = newBackupCode(); LS.set('ft_bk_code', code); }
-    const k = await backupKeys(code), iv = crypto.getRandomValues(new Uint8Array(12));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
     const payload = JSON.stringify({ v: 1, t: Date.now(), data: LS.get('ft_data', ''), chat: LS.get('ft_chat', ''), lang: LS.get('ft_lang', ''), theme: LS.get('ft_theme', '') });
     const zz = await zipText(payload);
-    const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, k.key, zz.bytes));
-    const r = await fetch(SERVER_URL + '/backup', { method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: k.id, auth: k.auth, data: (zz.z ? 'z' : 'p') + '.' + b64(iv) + '.' + b64(ct) }) });
+    const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await aesKey(a.key), zz.bytes));
+    const r = await post('/backup', { id: a.id, auth: a.auth, data: (zz.z ? 'z' : 'p') + '.' + b64(iv) + '.' + b64(ct) });
     if (!r.ok) throw new Error('HTTP ' + r.status);
     LS.set('ft_bk_last', String(Date.now()));
     if (manual) toast('✓ ' + T('Backup saved'));
@@ -1497,82 +1502,120 @@ async function runBackup(manual) {
 }
 let bkRunning = false;
 async function autoBackup() {
-  if (bkRunning || Date.now() - +LS.get('ft_bk_last', 0) < 20 * 3600e3) return;
-  bkRunning = true;
-  const ok = await runBackup(false);
-  bkRunning = false;
-  if (ok) showBackupCode(false);
+  if (bkRunning || !acct() || Date.now() - +LS.get('ft_bk_last', 0) < 20 * 3600e3) return;
+  bkRunning = true; await runBackup(false); bkRunning = false;
 }
-async function restoreBackup(code) {
-  const k = await backupKeys(code);
-  const r = await fetch(SERVER_URL + '/backup/restore', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: k.id, auth: k.auth }) });
-  if (r.status === 404) throw new Error(T('No backup found for this code.'));
-  if (!r.ok) throw new Error(T('Restore failed. Check your internet and try again.'));
+// Reads the account's saved data. Errors: 'none' (no account with this email), 'wrong' (wrong password)
+async function fetchAccountData(a) {
+  const r = await post('/backup/restore', { id: a.id, auth: a.auth });
+  if (r.status === 404) throw new Error('none');
+  if (r.status === 403) throw new Error('wrong');
+  if (!r.ok) throw new Error('net');
   const [z, iv, ct] = (await r.json()).data.split('.');
-  const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(iv) }, k.key, unb64(ct));
+  const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(iv) }, await aesKey(a.key), unb64(ct));
   return JSON.parse(await unzipText(new Uint8Array(plain), z === 'z'));
 }
-async function deleteBackup() {
-  const code = LS.get('ft_bk_code', ''); if (!code || !SERVER_URL) return;
-  try { const k = await backupKeys(code); await fetch(SERVER_URL + '/backup/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: k.id, auth: k.auth }) }); } catch {}
-  ['ft_bk_code', 'ft_bk_last', 'ft_bk_seen'].forEach(x => LS.del(x));
+function applyAccountData(p) {
+  if (p.data) LS.set('ft_data', p.data);
+  if (p.chat) LS.set('ft_chat', p.chat);
+  if (p.lang) LS.set('ft_lang', p.lang);
+  if (p.theme) LS.set('ft_theme', p.theme);
+  sessionStorage.setItem('ft_restored', '1');
+  location.reload();
 }
-// The code is shown once after the first backup (and any time in Settings)
-function showBackupCode(force) {
-  const code = LS.get('ft_bk_code', '');
-  if (!code || (!force && (LS.get('ft_bk_seen', '') || $('.backdrop') || $('#onb') || $('.page')))) return;
-  LS.set('ft_bk_seen', '1');
-  sheet(`<div style="text-align:center"><div class="askbell">☁️</div><h3 style="margin:14px 0 6px">${T('Your backup code')}</h3>
-    <p class="muted" style="margin:0">${T('Your data is now backed up automatically every day. If you ever get a new phone, this code brings everything back.')}</p>
-    <div class="bkcode">${code}</div>
-    <p class="small muted" style="margin:0 0 16px">${T("Keep this code safe, e.g. in your Notes or as a screenshot. Without it the backup can't be opened.")}</p>
-    <button class="btn" id="bkC">📋 ${T('Copy code')}</button><button class="btn outline" id="bkOk" style="margin-top:10px">${T('Done')}</button></div>`, s => {
-    s.querySelector('#bkC').onclick = async () => { try { await navigator.clipboard.writeText(code); toast(T('✓ Copied')); } catch { toast(code); } };
-    s.querySelector('#bkOk').onclick = dismissSheet;
+async function deleteBackup() {   // used by "Delete all data": the account and its saved data are removed too
+  const a = acct();
+  if (a && SERVER_URL) { try { await post('/backup/delete', { id: a.id, auth: a.auth }); } catch {} }
+  ['ft_acct', 'ft_bk_last', 'ft_acct_ask'].forEach(x => LS.del(x));
+}
+// Backup codes from the first version: the old copy is removed once an account exists
+async function dropOldCode() {
+  const code = LS.get('ft_bk_code', ''); if (!code || !SERVER_URL) return;
+  try {
+    const c = String(code).toUpperCase().replace(/[^A-Z0-9]/g, '');
+    await post('/backup/delete', { id: await sha('ft-id:' + c), auth: await sha('ft-auth:' + c) });
+  } catch {}
+  ['ft_bk_code', 'ft_bk_seen'].forEach(x => LS.del(x));
+}
+
+// One sheet for both: create an account, or sign in on a new phone
+function openAccountSheet(mode = 'signup') {
+  const up = mode === 'signup';
+  sheet(`<h3>${up ? '☁️ ' + T('Create your account') : '👋 ' + T('Sign in')}</h3>
+    <p class="muted" style="margin-top:4px">${up ? T('Your data is then backed up automatically every day, encrypted. On a new phone, just sign in and everything is back.') : T('Sign in with the email and password of your Food Tracker account. Your meals, weights, goals, meal plans and coach chat come back.')}</p>
+    <form id="acForm" autocomplete="on" style="margin-top:10px">
+      <label class="lbl" for="acEmail">${T('Email')}</label>
+      <input id="acEmail" name="email" type="email" autocomplete="${up ? 'email' : 'username'}" inputmode="email" autocapitalize="off" spellcheck="false" required placeholder="name@example.com">
+      <label class="lbl" for="acPw">${T('Password')}</label>
+      <input id="acPw" name="password" type="password" autocomplete="${up ? 'new-password' : 'current-password'}" minlength="8" required placeholder="${up ? T('At least 8 characters') : ''}">
+      <button class="btn" type="submit" style="margin-top:18px">${up ? T('Create account') : T('Sign in')}</button>
+    </form>
+    <p class="small" id="acMsg" style="text-align:center;min-height:20px;margin:10px 0 0"></p>
+    ${up ? `<p class="small muted" style="margin:4px 0 0">🔒 ${T("Your iPhone can save the password for you. Without the password the data can't be opened, not even by us.")}</p>` : ''}
+    <button class="small muted" id="acSwitch" style="display:block;margin:14px auto 0;padding:6px">${up ? T('Already have an account? Sign in') : T('New here? Create an account')}</button>`, s => {
+    const msg = (t, bad) => { const m = s.querySelector('#acMsg'); m.innerHTML = t; m.style.color = bad ? 'var(--bad)' : ''; };
+    s.querySelector('#acSwitch').onclick = () => openAccountSheet(up ? 'login' : 'signup');
+    s.querySelector('#acForm').onsubmit = async e => {
+      e.preventDefault();
+      const email = s.querySelector('#acEmail').value, pw = s.querySelector('#acPw').value;
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(normEmail(email))) return msg(T('Please enter a valid email.'), true);
+      if (pw.length < 8) return msg(T('The password needs at least 8 characters.'), true);
+      msg(`<span class="spin"></span> ${up ? T('Creating your account…') : T('Signing in…')}`);
+      try {
+        const a = await deriveAcct(email, pw);
+        let data = null;
+        try { data = await fetchAccountData(a); }
+        catch (err) {
+          if (err.message === 'wrong') return msg(up ? T('This email already has an account. Sign in instead, with the right password.') : T('Wrong password. Please try again.'), true);
+          if (err.message === 'net') return msg(T('No connection. Check your internet and try again.'), true);
+          if (!up) return msg(T('No account with this email. Check it, or create a new account.'), true);
+        }
+        LS.set('ft_acct', JSON.stringify(a)); LS.set('ft_acct_ask', '1'); dropOldCode();
+        if (data && (!db.profile || !db.meals.length || confirm(T('Load the data from your account onto this phone? (Cancel keeps the data on this phone and saves it to your account.)')))) {
+          LS.set('ft_bk_last', String(Date.now())); return applyAccountData(data);
+        }
+        if (!db.profile) { closeSheet(); toast('✓ ' + T('Signed in')); return; }
+        const ok = await runBackup(false, a);
+        closeSheet(); toast(ok ? '✓ ' + T('Account ready. Your data is backed up.') : '✓ ' + T('Signed in'));
+        if (tab === 'settings') renderSettings();
+      } catch { msg(T('Something went wrong. Please try again.'), true); }
+    };
   });
 }
-function openRestoreSheet() {
-  sheet(`<h3>☁️ ${T('Restore from backup')}</h3>
-    <p class="muted" style="margin-top:4px">${T('Enter your backup code. Your meals, weights, goals, meal plans and coach chat come back. Meal photos are not part of the backup.')}</p>
-    <input id="rsCode" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" style="text-align:center;font-weight:700;letter-spacing:.06em;margin-top:12px">
-    <button class="btn" id="rsGo" style="margin-top:14px">${T('Restore')}</button>
-    <p class="small" id="rsMsg" style="text-align:center;min-height:20px;margin:10px 0 0"></p>`, s => {
-    s.querySelector('#rsGo').onclick = async () => {
-      const code = s.querySelector('#rsCode').value, msg = s.querySelector('#rsMsg');
-      msg.style.color = '';
-      if (normCode(code).length !== 16) { msg.textContent = T('The code has 16 letters and numbers.'); return; }
-      msg.innerHTML = `<span class="spin"></span> ${T('Restoring…')}`;
-      try {
-        const p = await restoreBackup(code);
-        if (db.meals.length && !confirm(T('Replace the data on this phone with the backup?'))) { msg.textContent = ''; return; }
-        if (p.data) LS.set('ft_data', p.data);
-        if (p.chat) LS.set('ft_chat', p.chat);
-        if (p.lang) LS.set('ft_lang', p.lang);
-        if (p.theme) LS.set('ft_theme', p.theme);
-        LS.set('ft_bk_code', fmtCode(code)); LS.set('ft_bk_last', String(Date.now())); LS.set('ft_bk_seen', '1');
-        sessionStorage.setItem('ft_restored', '1');
-        location.reload();
-      } catch (e) { msg.textContent = e.message || T('Restore failed. Check your internet and try again.'); msg.style.color = 'var(--bad)'; }
-    };
+// Once, after someone has started using the app: invite them to create an account
+function askAccount() {
+  if (!SERVER_URL || acct() || LS.get('ft_acct_ask', '') || !db.profile || !db.meals.length || $('.backdrop') || $('#onb') || $('.page')) return;
+  LS.set('ft_acct_ask', '1');
+  sheet(`<div style="text-align:center;padding:6px 4px 0"><div class="askbell">☁️</div>
+      <h3 style="margin:14px 0 6px">${T('Keep your data safe')}</h3>
+      <p class="muted" style="margin:0 0 20px">${T('Create a free account with your email and a password. Your data is then backed up every day, and you can get it back on any new phone.')}</p>
+      <button class="btn" id="aaYes">${T('Create account')}</button><button class="btn outline" id="aaNo" style="margin-top:10px">${T('Not now')}</button></div>`, s => {
+    s.querySelector('#aaYes').onclick = () => openAccountSheet('signup');
+    s.querySelector('#aaNo').onclick = dismissSheet;
   });
 }
 function backupCard() {
   if (!SERVER_URL) return '';
-  const code = LS.get('ft_bk_code', ''), last = +LS.get('ft_bk_last', 0);
+  const a = acct(), last = +LS.get('ft_bk_last', 0);
   const when = last ? `${fmtDate(iso(new Date(last)))} ${new Date(last).toLocaleTimeString(LOC, { hour: '2-digit', minute: '2-digit' })}` : '';
-  return `<div class="card"><b>☁️ ${T('Automatic backup')}</b>
-    <p class="small muted" style="margin:4px 0 10px">${T('Once a day your data is saved encrypted. With your backup code you get everything back, e.g. on a new phone.')}</p>
-    <div class="spread"><span class="small" style="${last ? 'color:var(--good);font-weight:600' : ''}">${last ? '✓ ' + T('Last backup: {d}', { d: when }) : T('No backup yet')}</span>
+  if (!a) return `<div class="card"><b>☁️ ${T('Account & backup')}</b>
+    <p class="small muted" style="margin:4px 0 12px">${T('Create a free account with your email and a password. Your data is then backed up every day, and you can get it back on any new phone.')}</p>
+    <div class="row"><button class="btn sm grow" id="acUp">${T('Create account')}</button><button class="btn sm outline grow" id="acIn">${T('Sign in')}</button></div></div>`;
+  return `<div class="card"><b>☁️ ${T('Account & backup')}</b>
+    <p class="small" style="margin:6px 0 2px">👤 <b>${esc(a.email)}</b></p>
+    <div class="spread" style="margin-top:6px"><span class="small" style="${last ? 'color:var(--good);font-weight:600' : ''}">${last ? '✓ ' + T('Last backup: {d}', { d: when }) : T('No backup yet')}</span>
       <button class="chipbtn" id="bkNow">${T('Back up now')}</button></div>
-    ${code ? `<div class="bkcode">${code}</div>
-      <p class="small muted" style="margin:0 0 10px">${T("Keep this code safe, e.g. in your Notes or as a screenshot. Without it the backup can't be opened.")}</p>` : ''}
-    <div class="row">${code ? `<button class="btn sm outline grow" id="bkCopy">📋 ${T('Copy code')}</button>` : ''}<button class="btn sm outline grow" id="bkRestore">${code ? T('Restore') : T('Restore with a code')}</button></div></div>`;
+    <p class="small muted" style="margin:8px 0 10px">${T('Backed up automatically every day, encrypted. On a new phone, sign in with this email and password.')}</p>
+    <button class="btn sm outline" id="acOut">${T('Sign out')}</button></div>`;
 }
 function bindBackupCard() {
-  if (!$('#bkNow')) return;
-  $('#bkNow').onclick = () => { $('#bkNow').innerHTML = '<span class="spin"></span>'; runBackup(true).then(() => { if (tab === 'settings') renderSettings(); }); };
-  if ($('#bkCopy')) $('#bkCopy').onclick = async () => { try { await navigator.clipboard.writeText(LS.get('ft_bk_code', '')); toast(T('✓ Copied')); } catch { toast(LS.get('ft_bk_code', '')); } };
-  $('#bkRestore').onclick = openRestoreSheet;
+  if ($('#acUp')) $('#acUp').onclick = () => openAccountSheet('signup');
+  if ($('#acIn')) $('#acIn').onclick = () => openAccountSheet('login');
+  if ($('#bkNow')) $('#bkNow').onclick = () => { $('#bkNow').innerHTML = '<span class="spin"></span>'; runBackup(true).then(() => { if (tab === 'settings') renderSettings(); }); };
+  if ($('#acOut')) $('#acOut').onclick = () => {
+    if (!confirm(T('Sign out? Your data stays on this phone, but it is no longer backed up.'))) return;
+    ['ft_acct', 'ft_bk_last'].forEach(x => LS.del(x)); toast(T('Signed out')); renderSettings();
+  };
 }
 
 /* ================= Live barcode scanning ================= */
@@ -2875,7 +2918,7 @@ async function checkUpdate() {
   } catch {}
 }
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') { checkUpdate(); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); setTimeout(weeklyCheckin, 1500); }
+  if (document.visibilityState === 'visible') { checkUpdate(); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); setTimeout(askAccount, 5000); setTimeout(weeklyCheckin, 1500); }
   else if (updReady) location.reload();   // the app is in the background: nobody sees the reload
 });
 
@@ -2937,7 +2980,7 @@ function renderSettings() {
       <button class="li" id="dImp"><span class="ic">⬆️</span><span class="grow">${T('Restore backup')}</span><span class="chev">›</span></button>
       <button class="li" id="dDel" style="color:var(--bad)"><span class="ic">🗑</span><span class="grow">${T('Delete all data')}</span></button>
     </div>
-    <p class="small muted" id="sNote" style="text-align:center;margin:20px 10px 10px">${T('Your data is saved only on this phone. Nutrition values are estimates, not medical advice.')}${isAdmin() ? '<br>Admin' : ''}</p>`;
+    <p class="small muted" id="sNote" style="text-align:center;margin:20px 10px 10px">${acct() ? T('Your data is on this phone and backed up encrypted in your account. Nutrition values are estimates, not medical advice.') : T('Your data is saved only on this phone. Nutrition values are estimates, not medical advice.')}${isAdmin() ? '<br>Admin' : ''}</p>`;
   // Hidden switch: tap the note 7 times to turn admin mode on/off
   let taps = 0, tapT;
   $('#sNote').onclick = () => { clearTimeout(tapT); tapT = setTimeout(() => taps = 0, 2500);
@@ -3140,9 +3183,9 @@ function renderOb() {
         <p class="muted" style="max-width:300px">${T('Just snap a photo of your meal and let AI do the rest.')}</p></div>
       <div class="langpick"><button id="obLang" class="lp-btn">🌐 <span class="lp-flag">${langInfo().f}</span> ${langInfo().n} <span class="lp-change">⌄</span></button></div>
       <button class="btn" id="obNext">${T('Get started')}</button>
-      ${SERVER_URL && !db.profile ? `<button class="small muted" id="obRestore" style="margin-top:14px;padding:6px">${T('Already used Food Tracker? Restore your backup')}</button>` : ''}</div>`;
+      ${SERVER_URL && !db.profile ? `<button class="small muted" id="obRestore" style="margin-top:14px;padding:6px">${T('Already have an account? Sign in')}</button>` : ''}</div>`;
     pg.querySelector('#obNext').onclick = () => obMove(1);
-    if (pg.querySelector('#obRestore')) pg.querySelector('#obRestore').onclick = openRestoreSheet;
+    if (pg.querySelector('#obRestore')) pg.querySelector('#obRestore').onclick = () => openAccountSheet('login');
     pg.querySelector('#obLang').onclick = () => openLangSheet(renderOb);
     // Redoing the setup from Settings can be cancelled; nothing is changed until the last step
     if (pg.querySelector('#obCancel')) pg.querySelector('#obCancel').onclick = () => { ob = null; $('#onb')?.remove(); render(); };
@@ -3296,9 +3339,10 @@ setTimeout(checkPlanWeek, 4800);
 setInterval(checkPlanWeek, 5 * 60e3);
 setTimeout(autoBackup, 9000);
 setInterval(autoBackup, 60 * 60e3);
+setTimeout(askAccount, 11000);
 setTimeout(weeklyCheckin, 6500);
 setInterval(weeklyCheckin, 30 * 60e3);
-if (sessionStorage.getItem('ft_restored')) { sessionStorage.removeItem('ft_restored'); setTimeout(() => toast('✓ ' + T('Backup restored')), 4500); }
+if (sessionStorage.getItem('ft_restored')) { sessionStorage.removeItem('ft_restored'); setTimeout(() => toast('✓ ' + T('Signed in. Your data is back.')), 4500); }
 </script>
 </body>
 </html>
