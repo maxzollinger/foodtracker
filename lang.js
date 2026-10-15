@@ -508,7 +508,17 @@ window.I18N = {
 "e.g. no fish, more chicken, easy lunches for work":"z. B. kein Fisch, mehr Hähnchen, einfache Mittagessen für die Arbeit",
 "Update plan":"Plan aktualisieren",
 "Edit preferences":"Vorlieben bearbeiten",
-"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Hilf mir mit meinem Essensplan diese Woche: Mach mir einen einfachen Meal-Prep- und Kochplan und gib mir Tipps zum Kochen der Mahlzeiten."
+"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Hilf mir mit meinem Essensplan diese Woche: Mach mir einen einfachen Meal-Prep- und Kochplan und gib mir Tipps zum Kochen der Mahlzeiten.",
+"New plan every Saturday":"Jeden Samstag ein neuer Plan",
+"Plan kept, no weekly change":"Plan bleibt, keine wöchentliche Änderung",
+"Every Saturday":"Jeden Samstag",
+"Make a new plan automatically":"Automatisch einen neuen Plan erstellen",
+"Keep my current plan":"Meinen aktuellen Plan behalten",
+"Your new meal plan is here":"Dein neuer Essensplan ist da",
+"Same meal plan this week":"Diese Woche derselbe Essensplan",
+"A fresh plan and grocery list for this week. Have a look before you go shopping!":"Ein frischer Plan und eine neue Einkaufsliste für diese Woche. Schau rein, bevor du einkaufen gehst!",
+"Your grocery list was reset for this week's shopping.":"Deine Einkaufsliste wurde für den Einkauf dieser Woche zurückgesetzt.",
+"Open":"Öffnen"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1018,7 +1028,17 @@ window.I18N = {
 "e.g. no fish, more chicken, easy lunches for work":"p. ej. sin pescado, más pollo, comidas fáciles para el trabajo",
 "Update plan":"Actualizar plan",
 "Edit preferences":"Editar preferencias",
-"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Ayúdame con mi plan de comidas de esta semana: hazme un horario sencillo de meal prep y cocina, y dame consejos para cocinar las comidas."
+"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Ayúdame con mi plan de comidas de esta semana: hazme un horario sencillo de meal prep y cocina, y dame consejos para cocinar las comidas.",
+"New plan every Saturday":"Plan nuevo cada sábado",
+"Plan kept, no weekly change":"Plan fijo, sin cambio semanal",
+"Every Saturday":"Cada sábado",
+"Make a new plan automatically":"Crear un plan nuevo automáticamente",
+"Keep my current plan":"Mantener mi plan actual",
+"Your new meal plan is here":"Ya está tu nuevo plan de comidas",
+"Same meal plan this week":"El mismo plan de comidas esta semana",
+"A fresh plan and grocery list for this week. Have a look before you go shopping!":"Un plan y una lista de la compra nuevos para esta semana. ¡Échale un vistazo antes de ir a comprar!",
+"Your grocery list was reset for this week's shopping.":"Tu lista de la compra se ha reiniciado para la compra de esta semana.",
+"Open":"Abrir"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -1528,7 +1548,17 @@ window.I18N = {
 "e.g. no fish, more chicken, easy lunches for work":"ex. pas de poisson, plus de poulet, déjeuners simples pour le travail",
 "Update plan":"Mettre à jour le plan",
 "Edit preferences":"Modifier les préférences",
-"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Aide-moi avec mon plan de repas de la semaine : fais-moi un planning simple de meal prep et de cuisine, et donne-moi des conseils pour cuisiner les repas."
+"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Aide-moi avec mon plan de repas de la semaine : fais-moi un planning simple de meal prep et de cuisine, et donne-moi des conseils pour cuisiner les repas.",
+"New plan every Saturday":"Nouveau plan chaque samedi",
+"Plan kept, no weekly change":"Plan conservé, pas de changement hebdo",
+"Every Saturday":"Chaque samedi",
+"Make a new plan automatically":"Créer automatiquement un nouveau plan",
+"Keep my current plan":"Garder mon plan actuel",
+"Your new meal plan is here":"Ton nouveau plan de repas est là",
+"Same meal plan this week":"Même plan de repas cette semaine",
+"A fresh plan and grocery list for this week. Have a look before you go shopping!":"Un nouveau plan et une nouvelle liste de courses pour cette semaine. Jette un œil avant d'aller faire les courses !",
+"Your grocery list was reset for this week's shopping.":"Ta liste de courses a été remise à zéro pour les courses de cette semaine.",
+"Open":"Ouvrir"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -2038,7 +2068,17 @@ window.I18N = {
 "e.g. no fish, more chicken, easy lunches for work":"es. niente pesce, più pollo, pranzi facili per il lavoro",
 "Update plan":"Aggiorna piano",
 "Edit preferences":"Modifica preferenze",
-"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Aiutami con il mio piano pasti di questa settimana: fammi un programma semplice di meal prep e cucina, e dammi consigli per cucinare i pasti."
+"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Aiutami con il mio piano pasti di questa settimana: fammi un programma semplice di meal prep e cucina, e dammi consigli per cucinare i pasti.",
+"New plan every Saturday":"Nuovo piano ogni sabato",
+"Plan kept, no weekly change":"Piano mantenuto, nessun cambio settimanale",
+"Every Saturday":"Ogni sabato",
+"Make a new plan automatically":"Crea automaticamente un nuovo piano",
+"Keep my current plan":"Mantieni il mio piano attuale",
+"Your new meal plan is here":"Il tuo nuovo piano pasti è arrivato",
+"Same meal plan this week":"Stesso piano pasti questa settimana",
+"A fresh plan and grocery list for this week. Have a look before you go shopping!":"Un piano e una lista della spesa nuovi per questa settimana. Dai un'occhiata prima di fare la spesa!",
+"Your grocery list was reset for this week's shopping.":"La tua lista della spesa è stata azzerata per la spesa di questa settimana.",
+"Open":"Apri"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -2548,7 +2588,17 @@ window.I18N = {
 "e.g. no fish, more chicken, easy lunches for work":"例：魚なし、鶏肉多め、職場に持っていける簡単なランチ",
 "Update plan":"プランを更新",
 "Edit preferences":"好みを編集",
-"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"今週の食事プランを手伝って：簡単な作り置きと調理のスケジュールを作り、料理のコツを教えて。"
+"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"今週の食事プランを手伝って：簡単な作り置きと調理のスケジュールを作り、料理のコツを教えて。",
+"New plan every Saturday":"毎週土曜に新しいプラン",
+"Plan kept, no weekly change":"プランを維持（毎週変更なし）",
+"Every Saturday":"毎週土曜日",
+"Make a new plan automatically":"新しいプランを自動で作成",
+"Keep my current plan":"今のプランを続ける",
+"Your new meal plan is here":"新しい食事プランが届きました",
+"Same meal plan this week":"今週も同じ食事プラン",
+"A fresh plan and grocery list for this week. Have a look before you go shopping!":"今週の新しいプランと買い物リストです。買い物に行く前にチェックしましょう！",
+"Your grocery list was reset for this week's shopping.":"今週の買い物に向けて買い物リストをリセットしました。",
+"Open":"開く"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -3058,7 +3108,17 @@ window.I18N = {
 "e.g. no fish, more chicken, easy lunches for work":"bijv. geen vis, meer kip, makkelijke lunches voor werk",
 "Update plan":"Plan bijwerken",
 "Edit preferences":"Voorkeuren bewerken",
-"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Help me met mijn maaltijdplan deze week: maak een eenvoudig meal-prep- en kookschema en geef me tips voor het koken van de maaltijden."
+"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Help me met mijn maaltijdplan deze week: maak een eenvoudig meal-prep- en kookschema en geef me tips voor het koken van de maaltijden.",
+"New plan every Saturday":"Elke zaterdag een nieuw plan",
+"Plan kept, no weekly change":"Plan blijft, geen wekelijkse wijziging",
+"Every Saturday":"Elke zaterdag",
+"Make a new plan automatically":"Automatisch een nieuw plan maken",
+"Keep my current plan":"Mijn huidige plan houden",
+"Your new meal plan is here":"Je nieuwe maaltijdplan is er",
+"Same meal plan this week":"Deze week hetzelfde maaltijdplan",
+"A fresh plan and grocery list for this week. Have a look before you go shopping!":"Een vers plan en nieuwe boodschappenlijst voor deze week. Kijk even voordat je boodschappen gaat doen!",
+"Your grocery list was reset for this week's shopping.":"Je boodschappenlijst is gereset voor de boodschappen van deze week.",
+"Open":"Openen"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -3568,7 +3628,17 @@ window.I18N = {
 "e.g. no fish, more chicken, easy lunches for work":"np. bez ryb, więcej kurczaka, proste lunche do pracy",
 "Update plan":"Zaktualizuj plan",
 "Edit preferences":"Edytuj preferencje",
-"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Pomóż mi z moim planem posiłków na ten tydzień: zrób prosty harmonogram meal prep i gotowania oraz daj wskazówki do gotowania posiłków."
+"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Pomóż mi z moim planem posiłków na ten tydzień: zrób prosty harmonogram meal prep i gotowania oraz daj wskazówki do gotowania posiłków.",
+"New plan every Saturday":"Nowy plan w każdą sobotę",
+"Plan kept, no weekly change":"Plan zachowany, bez cotygodniowej zmiany",
+"Every Saturday":"W każdą sobotę",
+"Make a new plan automatically":"Twórz nowy plan automatycznie",
+"Keep my current plan":"Zachowaj mój obecny plan",
+"Your new meal plan is here":"Twój nowy plan posiłków już jest",
+"Same meal plan this week":"Ten sam plan posiłków w tym tygodniu",
+"A fresh plan and grocery list for this week. Have a look before you go shopping!":"Świeży plan i lista zakupów na ten tydzień. Zajrzyj, zanim pójdziesz na zakupy!",
+"Your grocery list was reset for this week's shopping.":"Twoja lista zakupów została wyzerowana na zakupy w tym tygodniu.",
+"Open":"Otwórz"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -4078,7 +4148,17 @@ window.I18N = {
 "e.g. no fish, more chicken, easy lunches for work":"ex. sem peixe, mais frango, almoços fáceis para o trabalho",
 "Update plan":"Atualizar plano",
 "Edit preferences":"Editar preferências",
-"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Ajuda-me com o meu plano de refeições desta semana: faz-me um horário simples de meal prep e cozinha, e dá-me dicas para cozinhar as refeições."
+"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Ajuda-me com o meu plano de refeições desta semana: faz-me um horário simples de meal prep e cozinha, e dá-me dicas para cozinhar as refeições.",
+"New plan every Saturday":"Plano novo todos os sábados",
+"Plan kept, no weekly change":"Plano mantido, sem mudança semanal",
+"Every Saturday":"Todos os sábados",
+"Make a new plan automatically":"Criar um plano novo automaticamente",
+"Keep my current plan":"Manter o meu plano atual",
+"Your new meal plan is here":"O teu novo plano de refeições chegou",
+"Same meal plan this week":"O mesmo plano de refeições esta semana",
+"A fresh plan and grocery list for this week. Have a look before you go shopping!":"Um plano e uma lista de compras novos para esta semana. Dá uma olhadela antes de ires às compras!",
+"Your grocery list was reset for this week's shopping.":"A tua lista de compras foi reiniciada para as compras desta semana.",
+"Open":"Abrir"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -4588,7 +4668,17 @@ window.I18N = {
 "e.g. no fish, more chicken, easy lunches for work":"напр. без рыбы, больше курицы, простые обеды на работу",
 "Update plan":"Обновить план",
 "Edit preferences":"Изменить предпочтения",
-"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Помоги мне с планом питания на эту неделю: составь простой график заготовок и готовки и дай советы, как готовить эти блюда."
+"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Помоги мне с планом питания на эту неделю: составь простой график заготовок и готовки и дай советы, как готовить эти блюда.",
+"New plan every Saturday":"Новый план каждую субботу",
+"Plan kept, no weekly change":"План сохранён, без еженедельной смены",
+"Every Saturday":"Каждую субботу",
+"Make a new plan automatically":"Автоматически создавать новый план",
+"Keep my current plan":"Оставить мой текущий план",
+"Your new meal plan is here":"Твой новый план питания готов",
+"Same meal plan this week":"На этой неделе тот же план питания",
+"A fresh plan and grocery list for this week. Have a look before you go shopping!":"Новый план и список покупок на эту неделю. Загляни перед походом в магазин!",
+"Your grocery list was reset for this week's shopping.":"Список покупок сброшен для покупок на этой неделе.",
+"Open":"Открыть"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -5098,7 +5188,17 @@ window.I18N = {
 "e.g. no fish, more chicken, easy lunches for work":"ör. balık yok, daha çok tavuk, iş için kolay öğle yemekleri",
 "Update plan":"Planı güncelle",
 "Edit preferences":"Tercihleri düzenle",
-"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Bu haftaki yemek planımda bana yardım et: basit bir meal prep ve pişirme takvimi hazırla ve yemekleri pişirmek için ipuçları ver."
+"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"Bu haftaki yemek planımda bana yardım et: basit bir meal prep ve pişirme takvimi hazırla ve yemekleri pişirmek için ipuçları ver.",
+"New plan every Saturday":"Her cumartesi yeni plan",
+"Plan kept, no weekly change":"Plan korunuyor, haftalık değişiklik yok",
+"Every Saturday":"Her cumartesi",
+"Make a new plan automatically":"Otomatik olarak yeni plan oluştur",
+"Keep my current plan":"Mevcut planımı koru",
+"Your new meal plan is here":"Yeni yemek planın hazır",
+"Same meal plan this week":"Bu hafta aynı yemek planı",
+"A fresh plan and grocery list for this week. Have a look before you go shopping!":"Bu hafta için yeni bir plan ve alışveriş listesi. Alışverişe gitmeden önce bir göz at!",
+"Your grocery list was reset for this week's shopping.":"Alışveriş listen bu haftanın alışverişi için sıfırlandı.",
+"Open":"Aç"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -5608,6 +5708,16 @@ window.I18N = {
 "e.g. no fish, more chicken, easy lunches for work":"例如：不要鱼、多点鸡肉、方便带去上班的午餐",
 "Update plan":"更新计划",
 "Edit preferences":"编辑偏好",
-"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"帮我处理本周的饮食计划：给我做一个简单的备餐和烹饪时间表，并告诉我做这些餐的技巧。"
+"Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.":"帮我处理本周的饮食计划：给我做一个简单的备餐和烹饪时间表，并告诉我做这些餐的技巧。",
+"New plan every Saturday":"每周六生成新计划",
+"Plan kept, no weekly change":"保留计划，每周不变",
+"Every Saturday":"每周六",
+"Make a new plan automatically":"自动生成新计划",
+"Keep my current plan":"保留我当前的计划",
+"Your new meal plan is here":"你的新饮食计划来了",
+"Same meal plan this week":"本周沿用同一饮食计划",
+"A fresh plan and grocery list for this week. Have a look before you go shopping!":"本周的新计划和购物清单已准备好。去购物前先看看吧！",
+"Your grocery list was reset for this week's shopping.":"你的购物清单已为本周购物重置。",
+"Open":"打开"
 }
 };

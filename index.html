@@ -254,6 +254,16 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .mp-swap{width:38px;height:38px;border-radius:50%;background:var(--chip);flex:none;display:flex;align-items:center;justify-content:center;font-size:16px}
 .mp-tips{margin:8px 0 0;padding-left:20px}.mp-tips li{margin:6px 0}
 .mp-chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.mp-auto{display:block;margin:0 auto 12px;font-size:13px;font-weight:600;color:var(--muted);padding:4px 10px}
+.inpop{position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));z-index:70;max-width:536px;margin:0 auto;display:flex;align-items:center;gap:12px;
+  padding:12px 10px 12px 14px;border-radius:20px;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 12px 34px rgba(0,0,0,.28),inset 0 0 0 1px var(--line);animation:popIn .5s cubic-bezier(.2,1.2,.4,1)}
+.inpop.out{opacity:0;transform:translateY(-24px);transition:.3s ease}
+.inpop-ic{font-size:26px;flex:none}
+.inpop .small{margin-top:2px;line-height:1.35}
+.inpop .chipbtn{flex:none}
+.inpop-x{color:var(--muted);font-size:14px;padding:6px;flex:none}
+@keyframes popIn{from{opacity:0;transform:translateY(-34px) scale(.96)}to{opacity:1;transform:none}}
 .mp-actions{gap:10px}.mp-actions .btn{font-size:14px;white-space:nowrap;padding:11px 8px}
 .mp-chips .chipbtn.on{background:var(--ink);color:var(--on-ink)}
 /* Language choice on the first setup screen: big and easy to find */
@@ -514,7 +524,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v34';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v35';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1414,19 +1424,41 @@ function openExercise(id) {
 
 /* ================= Weekly meal plan & grocery list =================
    The AI plans 7 days of meals that fit the user's goal, daily targets, preferences and what the coach
-   remembers, plus one merged shopping list for the week. Each week gets a new plan; old ones are kept
-   for a few weeks so the next plan doesn't repeat them. The coach sees the current plan too. */
-const mealPlans = () => (db.mealPlans = db.mealPlans || {});
+   remembers, plus one merged shopping list for the week. A plan week runs Saturday → Friday: every
+   Saturday morning a new plan is made by itself (unless the user chose to keep their plan). Old plans are
+   kept for a few weeks so the next plan doesn't repeat them. The coach sees the current plan too. */
+let mpMigrated = false;
+function mealPlans() {
+  const ps = (db.mealPlans = db.mealPlans || {});
+  if (!mpMigrated) {   // plans from the first version were filed under Mondays: move them to their Saturday
+    mpMigrated = true;
+    for (const k of Object.keys(ps)) {
+      if (!ps[k].start) ps[k].start = k;
+      if (dt(k).getDay() !== 6) { const nk = satOnOrBefore(k); if (!ps[nk]) ps[nk] = ps[k]; delete ps[k]; }
+    }
+  }
+  return ps;
+}
 const mealPrefs = () => (db.mealPrefs = db.mealPrefs || { set: false, diet: 'all', avoid: '', likes: '', cook: 'normal', budget: 'normal', meals: '3+1', people: 1 });
-const weekStart = (s = iso()) => addDays(s, -((dt(s).getDay() + 6) % 7));
-const curPlan = () => mealPlans()[weekStart()];
+const satOnOrBefore = s => addDays(s, -((dt(s).getDay() + 1) % 7));
+const planKey = () => satOnOrBefore(iso(new Date(Date.now() - 6 * 3600e3)));   // the new week starts Saturday 06:00
+const daysBetween = (a, b) => Math.round((dt(b) - dt(a)) / 864e5);
+const autoPlan = () => mealPrefs().auto !== false;
+function curPlan() {
+  const ps = mealPlans(), k = planKey();
+  if (ps[k]) return ps[k];
+  if (!autoPlan()) { const last = Object.keys(ps).filter(x => x <= k).sort().pop(); return last ? ps[last] : undefined; }
+}
+// The 7 days shown right now (a kept plan simply repeats every week)
+const cycleStart = plan => { const d = daysBetween(plan.start, iso()); return d > 0 ? addDays(plan.start, Math.floor(d / 7) * 7) : plan.start; };
+const todayIdx = plan => daysBetween(cycleStart(plan), iso());
+const engDay = (start, i) => dt(addDays(start, i)).toLocaleDateString('en-GB', { weekday: 'long' });
 const weekLabel = ws => `${fmtDate(ws)} – ${fmtDate(addDays(ws, 6))}`;
 const MP_DIET = [['all', N('I eat everything')], ['vegetarian', N('Vegetarian')], ['vegan', N('Vegan')], ['pescatarian', N('Pescatarian (fish, no meat)')], ['nopork', N('No pork')], ['halal', N('Halal')]];
 const MP_COOK = [['quick', N('Quick (under 20 min)')], ['normal', N('Normal')], ['prep', N('Meal prep (cook 2–3× a week)')]];
 const MP_BUDGET = [['low', N('Low budget')], ['normal', N('Normal')], ['high', N('No limit')]];
 const MP_MEALS = [['2', N('2 meals')], ['3', N('3 meals')], ['3+1', N('3 meals + 1 snack')], ['3+2', N('3 meals + 2 snacks')]];
-const MP_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-let mpBusy = null, mpTab = 'list';   // mpBusy: null, 'all' (whole plan) or 'day-meal' (one swap)
+let mpBusy = null, mpTab = 'list', mpTried = 0;   // mpBusy: null, 'all' (whole plan) or 'day-meal' (one swap)
 
 function prefsText(pr) {
   const lab = (list, v) => (list.find(x => x[0] === v) || list[0])[1];
@@ -1439,7 +1471,7 @@ function planGoalText() {
   return s;
 }
 function planBrief(plan, withList) {
-  let s = plan.days.map((d, i) => `${MP_DAYS[i]}: ${d.meals.map(m => `${m.type} "${m.name}" (${m.kcal} kcal, ${m.protein} g P)`).join('; ')}`).join('\n');
+  let s = plan.days.map((d, i) => `${engDay(plan.start, i)}: ${d.meals.map(m => `${m.type} "${m.name}" (${m.kcal} kcal, ${m.protein} g P)`).join('; ')}`).join('\n');
   if (withList) s += '\nGrocery list: ' + plan.groceries.map(g => `${g.cat}: ${g.items.map(i => `${i.name} ${i.qty}`).join(', ')}`).join(' | ');
   return s;
 }
@@ -1449,13 +1481,13 @@ const cleanGroceries = gs => gs.map(g => ({ cat: String(g.cat || ''), items: (g.
   .map(i => ({ name: String(i.name), qty: String(i.qty || ''), have: false })) })).filter(g => g.items.length);
 function trimPlans() { const ks = Object.keys(mealPlans()).sort(); ks.slice(0, Math.max(0, ks.length - 8)).forEach(k => delete db.mealPlans[k]); }
 
-async function generatePlan(change) {
+async function generatePlan(change, background) {
   if (mpBusy) return;
-  if (!hasAI()) return toast(T('Add your free AI key in Settings first.'));
-  const ws = weekStart(), pr = mealPrefs(), old = mealPlans()[ws];
+  if (!hasAI()) return background ? null : toast(T('Add your free AI key in Settings first.'));
+  const ws = planKey(), pr = mealPrefs(), old = curPlan();
   const recent = Object.keys(mealPlans()).filter(k => k < ws).sort().slice(-2).flatMap(k => mealPlans()[k].days.flatMap(d => d.meals.map(m => m.name)));
-  mpBusy = 'all'; renderMealPlan();
-  const prompt = `Create a weekly meal plan and ONE grocery list for the whole week (Monday to Sunday, starting ${ws}).
+  mpBusy = 'all'; mpTried = Date.now(); renderMealPlan(); if (tab === 'home' && !$('#mplan')) renderHome();
+  const prompt = `Create a weekly meal plan and ONE grocery list for the whole week (${engDay(ws, 0)} to ${engDay(ws, 6)}, starting ${ws}).
 
 THE USER
 ${planGoalText()}
@@ -1463,7 +1495,7 @@ Preferences: ${prefsText(pr)}
 ${memList().length ? 'What their nutrition coach knows about them: ' + memList().map(m => m.text).join('; ') : ''}
 
 RULES
-- 7 days. Every day has exactly the meals from "meals per day" (snacks use type "Snack"). Each day adds up to the daily kcal target (within ±5%) and reaches the protein target.
+- 7 days, in order from ${engDay(ws, 0)}. Every day has exactly the meals from "meals per day" (snacks use type "Snack"). Each day adds up to the daily kcal target (within ±5%) and reaches the protein target.
 - Tasty, varied, realistic home cooking with ingredients that are easy to find in a normal supermarket in the user's country (app locale ${LOC}). Different main dishes on different days; leftovers may be planned on purpose to save time.
 - Follow the diet, allergies and dislikes strictly. Match the cooking time and budget.
 - Reuse ingredients across the week so little is wasted.
@@ -1478,10 +1510,11 @@ Return JSON only:
   try {
     const r = await askAI([{ text: prompt }], { timeout: 120000 });
     if (!r || !Array.isArray(r.days) || r.days.length < 7 || !Array.isArray(r.groceries)) throw new Error(T('The AI answer was incomplete. Please try again.'));
-    mealPlans()[ws] = { created: Date.now(), days: r.days.slice(0, 7).map(d => ({ meals: (d.meals || []).map(cleanMeal) })),
+    mealPlans()[ws] = { created: Date.now(), start: ws, days: r.days.slice(0, 7).map(d => ({ meals: (d.meals || []).map(cleanMeal) })),
       groceries: cleanGroceries(r.groceries), prep: (r.prep || []).map(String).filter(Boolean).slice(0, 8) };
-    trimPlans(); save(); mpTab = 'list'; toast('✓ ' + T('Your meal plan is ready'));
-  } catch (e) { toast(aiMsg(e)); }
+    trimPlans(); save(); mpTab = 'list'; LS.set('ft_mp_week', ws);
+    if (background) planPopup(true); else toast('✓ ' + T('Your meal plan is ready'));
+  } catch (e) { if (!background) toast(aiMsg(e)); }
   mpBusy = null; renderMealPlan(); if (tab === 'home') renderHome();
 }
 
@@ -1498,7 +1531,7 @@ THE USER
 ${planGoalText()}
 Preferences: ${prefsText(mealPrefs())}
 
-Replace ONLY this meal: ${MP_DAYS[di]}, ${m.type} "${m.name}" (${m.kcal} kcal, ${m.protein} g protein). Give a different, tasty meal of the same type with about the same calories and protein that is not already in the plan. Then return the complete updated grocery list (remove what is no longer needed, add what the new meal needs, keep the same sections). Write in ${langInfo().ai}.
+Replace ONLY this meal: ${engDay(plan.start, di)}, ${m.type} "${m.name}" (${m.kcal} kcal, ${m.protein} g protein). Give a different, tasty meal of the same type with about the same calories and protein that is not already in the plan. Then return the complete updated grocery list (remove what is no longer needed, add what the new meal needs, keep the same sections). Write in ${langInfo().ai}.
 Return JSON only: {"meal":{"type":"","name":"","desc":"","min":15,"kcal":0,"protein":0,"carbs":0,"fat":0},"groceries":[{"cat":"","items":[{"name":"","qty":""}]}]}`;
   try {
     const r = await askAI([{ text: prompt }], { timeout: 90000 });
@@ -1516,7 +1549,7 @@ Return JSON only: {"meal":{"type":"","name":"","desc":"","min":15,"kcal":0,"prot
 
 // Home card
 function mealPlanCard() {
-  const plan = curPlan(), today = plan ? plan.days[(dt(iso()).getDay() + 6) % 7] : null;
+  const plan = curPlan(), today = plan ? plan.days[todayIdx(plan)] : null;
   const sub = plan ? (today && today.meals.length ? `${T('Today')}: ${today.meals.map(m => esc(m.name)).join(' · ')}` : T('Your plan for this week'))
     : mpBusy === 'all' ? T('Creating your meal plan…') : T('Let AI plan tasty meals and your shopping list for this week');
   return `<button class="card mpcard" id="mpCard"><div class="ic">🛒</div><div class="grow"><b>${T('Meal plan & groceries')}</b><div class="small muted mp-sub">${sub}</div></div><span class="muted" style="font-size:20px">›</span></button>`;
@@ -1528,12 +1561,13 @@ function openMealPlan() {
   renderMealPlan();
   // A new week: make the new plan right away (preferences are known)
   if (!curPlan() && !mpBusy && mealPrefs().set && hasAI()) generatePlan();
+  else if (curPlan()) LS.set('ft_mp_week', planKey());
 }
 function closeMealPlan() { $('#mplan')?.remove(); document.body.style.overflow = ''; if (tab === 'home') renderHome(); }
 
 function renderMealPlan() {
   const pg = $('#mplan'); if (!pg) return;
-  const ws = weekStart(), plan = curPlan(), y = pg.scrollTop;
+  const plan = curPlan(), ws = plan ? cycleStart(plan) : planKey(), y = pg.scrollTop;
   let body;
   if (mpBusy === 'all') body = `<div class="card mp-empty"><div class="mp-emoji"><span class="spin" style="width:34px;height:34px;border-width:3.5px"></span></div>
       <h3>${T('Creating your meal plan…')}</h3><p class="muted">${T('Matching it to your goal and preferences. This takes about 20–40 seconds.')}</p></div>`;
@@ -1561,10 +1595,11 @@ function renderMealPlan() {
   pg.innerHTML = `<div class="mp-head"><button class="mp-back" id="mpBack" aria-label="${T('Close')}">‹</button>
       <div class="grow"><div class="mp-title">${T('Meal plan')}</div><div class="small muted">${weekLabel(ws)}</div></div>
       <button class="chipbtn" id="mpPrefs">⚙︎ ${T('Preferences')}</button></div>
-    <div class="wrap mp-body">${body}</div>`;
+    <div class="wrap mp-body"><button class="mp-auto" id="mpAuto">${autoPlan() ? '🔄 ' + T('New plan every Saturday') : '📌 ' + T('Plan kept, no weekly change')} ›</button>${body}</div>`;
   pg.scrollTop = y;
   pg.querySelector('#mpBack').onclick = closeMealPlan;
   pg.querySelector('#mpPrefs').onclick = () => openMealPrefs(false);
+  pg.querySelector('#mpAuto').onclick = () => openMealPrefs(false);
   if (pg.querySelector('#mpCreate')) pg.querySelector('#mpCreate').onclick = () => mealPrefs().set ? generatePlan() : openMealPrefs(true);
   if (pg.querySelector('#mpCoach')) pg.querySelector('#mpCoach').onclick = askCoachAboutPlan;
   if (pg.querySelector('#mpEdit')) pg.querySelector('#mpEdit').onclick = openPlanChange;
@@ -1588,11 +1623,13 @@ function openMealPrefs(thenGenerate) {
       <div style="width:96px"><label class="lbl">${T('People')}</label><select id="mpPeople">${[1, 2, 3, 4, 5, 6].map(n => `<option ${n == pr.people ? 'selected' : ''}>${n}</option>`).join('')}</select></div></div>
     <div class="row"><div class="grow"><label class="lbl">${T('Cooking time')}</label>${pick('mpCook', MP_COOK, pr.cook)}</div>
       <div class="grow"><label class="lbl">${T('Budget')}</label>${pick('mpBudget', MP_BUDGET, pr.budget)}</div></div>
+    <label class="lbl">${T('Every Saturday')}</label><select id="mpAutoSel"><option value="1" ${pr.auto !== false ? 'selected' : ''}>🔄 ${T('Make a new plan automatically')}</option><option value="0" ${pr.auto === false ? 'selected' : ''}>📌 ${T('Keep my current plan')}</option></select>
     <button class="btn" id="mpPSave" style="margin-top:20px">${thenGenerate ? '✨ ' + T('Create my plan') : T('Save')}</button>
     ${!thenGenerate && curPlan() ? `<p class="small muted" style="text-align:center;margin:10px 0 0">${T('Saved preferences are used for your next plans. To change this week now, tap "Change plan".')}</p>` : ''}`, sh => {
     sh.querySelector('#mpPSave').onclick = () => {
       db.mealPrefs = { set: true, diet: sh.querySelector('#mpDiet').value, avoid: sh.querySelector('#mpAvoid').value.trim(), likes: sh.querySelector('#mpLikes').value.trim(),
-        meals: sh.querySelector('#mpMeals').value, people: +sh.querySelector('#mpPeople').value || 1, cook: sh.querySelector('#mpCook').value, budget: sh.querySelector('#mpBudget').value };
+        meals: sh.querySelector('#mpMeals').value, people: +sh.querySelector('#mpPeople').value || 1, cook: sh.querySelector('#mpCook').value, budget: sh.querySelector('#mpBudget').value,
+        auto: sh.querySelector('#mpAutoSel').value === '1' };
       save(); closeSheet();
       if (thenGenerate || !curPlan()) generatePlan(); else { toast(T('✓ Saved')); renderMealPlan(); }
     };
@@ -1626,7 +1663,7 @@ function askCoachAboutPlan() {
 // Saves the grocery list + meal plan as one image (iPhone: "Save Image" → Photos, or "Save to Files")
 async function exportPlan() {
   const plan = curPlan(); if (!plan) return;
-  const ws = weekStart(), W = 1080, P = 72, c = document.createElement('canvas'), x = c.getContext('2d');
+  const ws = cycleStart(plan), W = 1080, P = 72, c = document.createElement('canvas'), x = c.getContext('2d');
   const font = (s, w) => `${w} ${s}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
   const layout = draw => {
     let y = P;
@@ -1663,14 +1700,45 @@ async function exportPlan() {
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
 }
 
+// Saturday morning: a new plan by itself (or, for a kept plan, a fresh grocery list), with a small pop-up
+function checkPlanWeek() {
+  if (!db.profile || !mealPrefs().set || !Object.keys(mealPlans()).length || mpBusy) return;
+  const k = planKey(), seen = LS.get('ft_mp_week', '');
+  if (seen === k) return;
+  if (!seen) return LS.set('ft_mp_week', k);
+  if (autoPlan()) {
+    if (mealPlans()[k]) return LS.set('ft_mp_week', k);
+    if (hasAI() && Date.now() - mpTried > 10 * 60e3) generatePlan(null, true);
+  } else {
+    const plan = curPlan();
+    if (plan) { plan.groceries.forEach(g => g.items.forEach(i => i.have = false)); save(); }
+    LS.set('ft_mp_week', k); planPopup(false);
+    if ($('#mplan')) renderMealPlan(); else if (tab === 'home') renderHome();
+  }
+}
+function planPopup(isNew) {
+  $('#mpPop')?.remove();
+  const el = document.createElement('div'); el.id = 'mpPop'; el.className = 'inpop';
+  el.innerHTML = `<div class="inpop-ic">🛒</div><div class="grow"><b>${isNew ? T('Your new meal plan is here') : T('Same meal plan this week')}</b>
+    <div class="small muted">${isNew ? T('A fresh plan and grocery list for this week. Have a look before you go shopping!') : T("Your grocery list was reset for this week's shopping.")}</div></div>
+    <button class="chipbtn" id="mpPopOpen">${T('Open')}</button><button class="inpop-x" aria-label="${T('Close')}">✕</button>`;
+  document.body.appendChild(el);
+  const close = () => { el.classList.add('out'); setTimeout(() => el.remove(), 300); };
+  el.querySelector('#mpPopOpen').onclick = () => { close(); closeSheet(); if (tab !== 'home') go('home'); openMealPlan(); };
+  el.querySelector('.inpop-x').onclick = close;
+  setTimeout(close, 12000);
+  if (tab === 'home' && !$('#mplan')) renderHome(); else renderMealPlan();
+}
+
 // For the coach (kept in English)
 function mealPlanContext() {
   const plan = curPlan(), pr = mealPrefs();
   if (!plan) return `\n\n=== WEEKLY MEAL PLAN ===\nNo meal plan for this week yet. The user can create one on the Home screen under "Meal plan & groceries".${pr.set ? `\nTheir meal plan preferences: ${prefsText(pr)}` : ''}`;
-  const ws = weekStart(), today = (dt(iso()).getDay() + 6) % 7;
-  return `\n\n=== WEEKLY MEAL PLAN (week of ${ws}; made by the app's AI, the user sees it in the app) ===
+  const ws = cycleStart(plan), today = todayIdx(plan);
+  return `\n\n=== WEEKLY MEAL PLAN (current week ${ws} to ${addDays(ws, 6)}; made by the app's AI, the user sees it in the app) ===
+${autoPlan() ? 'A new plan is made automatically every Saturday morning.' : 'The user chose to KEEP this plan: it repeats every week, no automatic new plan.'}
 Preferences: ${prefsText(pr)}
-${plan.days.map((d, i) => `${MP_DAYS[i]}${i === today ? ' (TODAY)' : ''}: ${d.meals.map(m => `${m.type}: ${m.name} — ${m.desc} (${m.kcal} kcal, P ${m.protein} g, C ${m.carbs} g, F ${m.fat} g${m.min ? `, ${m.min} min` : ''})`).join(' | ')}`).join('\n')}
+${plan.days.map((d, i) => `${engDay(ws, i)}${i === today ? ' (TODAY)' : ''}: ${d.meals.map(m => `${m.type}: ${m.name} — ${m.desc} (${m.kcal} kcal, P ${m.protein} g, C ${m.carbs} g, F ${m.fat} g${m.min ? `, ${m.min} min` : ''})`).join(' | ')}`).join('\n')}
 GROCERY LIST (✓ = already bought / at home):
 ${plan.groceries.map(g => `${g.cat}: ${g.items.map(i => `${i.have ? '✓ ' : ''}${i.name} ${i.qty}`).join(', ')}`).join('\n')}
 Meal prep tips in the app: ${plan.prep.join(' / ') || 'none'}`;
@@ -2437,7 +2505,7 @@ async function checkUpdate() {
   } catch {}
 }
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') { checkUpdate(); syncPush(); }
+  if (document.visibilityState === 'visible') { checkUpdate(); syncPush(); setTimeout(checkPlanWeek, 800); }
   else if (updReady) location.reload();   // the app is in the background: nobody sees the reload
 });
 
@@ -2850,6 +2918,8 @@ const openParam = new URLSearchParams(location.search).get('open');
 if (openParam) { history.replaceState(null, '', location.pathname); handleOpen(openParam); }
 syncPush();
 setTimeout(() => askReminders(false), 2500);
+setTimeout(checkPlanWeek, 4800);
+setInterval(checkPlanWeek, 5 * 60e3);
 </script>
 </body>
 </html>
