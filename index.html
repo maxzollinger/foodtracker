@@ -815,9 +815,9 @@ function renderHome() {
   // Entries for selected day
   const entries = [
     ...pending.filter(p => p.date === sel).map(p => ({ kind: 'pending', time: p.time, p })),
-    ...db.meals.filter(m => m.date === sel).map(m => ({ kind: 'meal', time: m.time, m })),
-    ...db.exercises.filter(e => e.date === sel).map(e => ({ kind: 'ex', time: e.time, e }))
-  ].sort((a, b) => (b.kind === 'pending') - (a.kind === 'pending') || (b.time || '').localeCompare(a.time || ''));
+    ...db.meals.filter(m => m.date === sel).map(m => ({ kind: 'meal', time: m.time, m }))
+  // Calories burned always first, then photos still being analysed, then meals (newest first)
+  ].sort((a, b) => { const rank = k => k === 'ex' ? 0 : k === 'pending' ? 1 : 2; return rank(a.kind) - rank(b.kind) || (b.time || '').localeCompare(a.time || ''); });
 
   let list = entries.map(en => {
     if (en.kind === 'pending') {
@@ -833,7 +833,7 @@ function renderHome() {
     if (en.kind === 'ex') {
       const e = en.e;
       return `<button class="entry" onclick="openExercise('${e.id}')"><div class="thumb">🏋️</div><div class="einfo">
-        <div class="spread"><span class="ename">${esc(e.name)}</span><span class="etime">${esc(e.time || '')}</span></div>
+        <span class="ename">${esc(e.name)}</span>
         <div class="ecal">🔥 ${T('{n} calories burned', { n: r0(e.kcal) })}</div>${e.minutes ? `<div class="emac"><span>⏱ ${e.minutes} min</span></div>` : ''}</div></button>`;
     }
     const m = en.m, mt = mealTotals(m);
@@ -864,7 +864,8 @@ function renderHome() {
   document.querySelectorAll('.day').forEach(b => b.onclick = () => { sel = b.dataset.d; renderHome(); });
   document.querySelectorAll('[data-toggle]').forEach(b => b.onclick = () => { calMode = calMode === 'left' ? 'eaten' : 'left'; renderHome(); });
   $('#themeBtn').onclick = () => { setTheme(isDark() ? 'light' : 'dark'); renderHome(); };
-  $('#burnAdd').onclick = openBurnSheet;
+  $('#burnAdd').onclick = e => { e.stopPropagation(); openBurnSheet(); };
+  document.querySelector('.burncard').onclick = openBurnSheet;
   if ($('#planChip')) $('#planChip').onclick = openMainGoalSheet;
   $('#wPrev').onclick = () => { weekOff--; renderHome(); };
   $('#wNext').onclick = () => { if (weekOff < 0) { weekOff++; renderHome(); } };
@@ -1269,7 +1270,9 @@ function burnNote(g) {
 function openBurnSheet() {
   const already = r0(dayBurned(sel)), isToday = sel === iso();
   sheet(`<h3>${T('Calories burned')}</h3><p class="muted" style="margin-top:4px">${T('Use <b>active</b> calories from your watch, gym machine or fitness app (not "total").')}${db.settings.burnMode === 'smart' ? ' ' + T('Your normal training is already in your goal, so only extra activity raises it.') : ''}</p>
-    ${already ? `<p class="small" style="margin:0">${T('Already logged: <b>{n} kcal</b>. This adds on top.', { n: already })}</p>` : ''}
+    ${already ? `<p class="small" style="margin:0">${T('Already logged: <b>{n} kcal</b>. This adds on top.', { n: already })}</p>
+      <div class="list" style="box-shadow:none;background:var(--chip);margin:10px 0 0">${db.exercises.filter(e => e.date === sel).map(e =>
+        `<div class="li"><span class="ic">🏋️</span><span class="grow">${esc(e.name)}</span><b>${r0(e.kcal)} kcal</b><button class="muted" data-delex="${e.id}" aria-label="${T('Delete')}" style="padding:0 4px">✕</button></div>`).join('')}</div>` : ''}
     <div class="row" style="margin:16px 0 0"><input id="bKcal" inputmode="numeric" placeholder="0" style="text-align:center;font-size:32px;font-weight:800"><span class="muted" style="font-weight:600">kcal</span></div>
     <div class="quick">${[100, 200, 300, 500].map(v => `<button class="chipbtn" data-q="${v}">+${v}</button>`).join('')}</div>
     <label class="lbl">${T('What did you do? (optional)')}</label><input id="bName" placeholder="${T('e.g. Running, Gym, Steps')}">
@@ -1278,6 +1281,7 @@ function openBurnSheet() {
     const inp = s.querySelector('#bKcal'); inp.focus();
     s.querySelectorAll('[data-q]').forEach(b => b.onclick = () => { inp.value = r0(num(inp.value) + +b.dataset.q); });
     s.querySelector('#bAi').onclick = () => openExercise(null);
+    s.querySelectorAll('[data-delex]').forEach(b => b.onclick = () => { db.exercises = db.exercises.filter(x => x.id !== b.dataset.delex); save(); renderHome(); openBurnSheet(); });
     s.querySelector('#bSave').onclick = () => {
       const kcal = r0(num(inp.value));
       if (kcal <= 0 || kcal > 5000) return toast(T('Enter the calories you burned'));
