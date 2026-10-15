@@ -1,6 +1,6 @@
 // Offline support: keeps the app shell cached, always tries the network first so updates arrive.
 // Also shows the reminder notifications that the GitHub workflow sends.
-const CACHE = 'foodtracker-v25';
+const CACHE = 'foodtracker-v26';
 const KEEP = [CACHE, 'ft-meta'];   // ft-meta holds the notification texts in the app's language
 const ASSETS = ['./', './index.html', './lang.js', './manifest.json', './icon-180.png', './icon-512.png'];
 
@@ -24,20 +24,12 @@ self.addEventListener('fetch', e => {
   );
 });
 
-const DEFAULT_TEXTS = {
-  burn: { title: 'Calories burned today?', line: '{a} / {b} kcal eaten · {p} / {q} g protein', tail: 'Tap to log the calories you burned today.' },
-  weight: { title: 'Weekly weigh-in', line: 'Last {w} kg · Goal {g} kg', lineNoGoal: 'Last {w} kg', tail: 'Time to log your current weight.' }
-};
-const iso = (d = new Date()) => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
-// Same builder as reminderContent() in index.html: one line with today's numbers, one short action line
+// Minimal look: the app name on top, one short line below (texts in the app's language, saved by the app)
+const APP_NAME = 'Food Tracker';
+const DEFAULT_TEXTS = { burn: 'Calories burned today?', weight: 'Weekly weigh-in' };
 function content(R, kind) {
-  const s = R.snap, n = x => Number(x).toLocaleString(R.loc || 'en'), fill = (str, o) => str.replace(/\{(\w+)\}/g, (m, k) => o[k] ?? m);
-  const r = R[kind] && R[kind].tail ? R[kind] : DEFAULT_TEXTS[kind]; let line = '';
-  try {
-    if (s && kind === 'burn') { const today = s.date === iso(); line = fill(r.line, { a: n(today ? s.kcal : 0), b: n(today ? s.goal : s.baseGoal), p: n(today ? s.protein : 0), q: n(s.pgoal) }); }
-    if (s && kind === 'weight' && s.weight) line = s.target ? fill(r.line, { w: n(s.weight), g: n(s.target) }) : fill(r.lineNoGoal, { w: n(s.weight) });
-  } catch { line = ''; }
-  return { title: r.title, body: line ? line + '\n' + r.tail : r.tail };
+  const v = R && R[kind];
+  return { title: APP_NAME, body: typeof v === 'string' ? v : v && v.title ? v.title.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u, '') : DEFAULT_TEXTS[kind] };
 }
 
 self.addEventListener('push', e => {

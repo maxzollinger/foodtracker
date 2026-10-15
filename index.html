@@ -1947,26 +1947,11 @@ const isIOS = () => /iPhone|iPad|iPod/.test(navigator.userAgent);
 const isStandalone = () => navigator.standalone === true || matchMedia('(display-mode: standalone)').matches;
 const pushSupported = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
 function b64ToBytes(b) { const p = '='.repeat((4 - b.length % 4) % 4), raw = atob((b + p).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from(raw, c => c.charCodeAt(0)); }
-// The service worker builds the notifications from this: texts in the app's language plus a snapshot of
-// today's numbers. If the app wasn't opened today, the worker knows nothing was eaten yet (date check).
-function reminderData() {
-  const p = db.profile, d = iso(), t = p ? dayTotals(d) : null, g = p ? dayGoals(d) : null, base = p ? targets() : null;
-  return {
-    loc: LOC,
-    burn: { title: T('Calories burned today?'), line: T('{a} / {b} kcal eaten · {p} / {q} g protein'), tail: T('Tap to log the calories you burned today.') },
-    weight: { title: T('Weekly weigh-in'), line: T('Last {w} kg · Goal {g} kg'), lineNoGoal: T('Last {w} kg'), tail: T('Time to log your current weight.') },
-    snap: p ? { date: d, kcal: Math.round(t.kcal), goal: g.kcal, baseGoal: base.kcal, protein: Math.round(t.protein), pgoal: base.protein,
-      weight: currentWeight(), target: p.goal !== 'maintain' ? p.targetWeight : null } : null
-  };
-}
-// Same builder as content() in sw.js (keep both in sync): one line with the numbers, one short action line
-function reminderContent(R, kind) {
-  const s = R.snap, n = x => Number(x).toLocaleString(R.loc), fill = (str, o) => str.replace(/\{(\w+)\}/g, (m, k) => o[k] ?? m);
-  const r = R[kind]; let line = '';
-  if (s && kind === 'burn') { const today = s.date === iso(); line = fill(r.line, { a: n(today ? s.kcal : 0), b: n(today ? s.goal : s.baseGoal), p: n(today ? s.protein : 0), q: n(s.pgoal) }); }
-  if (s && kind === 'weight' && s.weight) line = s.target ? fill(r.line, { w: n(s.weight), g: n(s.target) }) : fill(r.lineNoGoal, { w: n(s.weight) });
-  return { title: r.title, body: line ? line + '\n' + r.tail : r.tail };
-}
+// The service worker shows the notifications in the app's language; it reads the texts from here.
+// Minimal look: the app name on top, one short line below.
+const APP_NAME = 'Food Tracker';
+const reminderData = () => ({ burn: T('Calories burned today?'), weight: T('Weekly weigh-in') });
+const reminderContent = (R, kind) => ({ title: APP_NAME, body: R[kind] });
 let remT;
 function saveReminderTexts() {
   if (!('caches' in window)) return;
