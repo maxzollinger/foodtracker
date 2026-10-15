@@ -225,6 +225,12 @@ input[type=range]{-webkit-appearance:none;appearance:none;background:transparent
 input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--track)}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--ink);margin-top:-11px;border:3px solid var(--card);box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .tip{background:var(--chip);border-radius:16px;padding:14px 16px;font-size:14px;margin-top:16px}
+/* Language choice on the first setup screen: big and easy to find */
+.langpick{margin:0 0 14px;text-align:center}
+.lp-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:999px;background:var(--card);
+  box-shadow:inset 0 0 0 1px var(--line);font-size:12.5px;font-weight:600}
+.lp-flag{font-size:14px;line-height:1}
+.lp-change{color:var(--muted);margin-top:-4px}
 .askbell{width:76px;height:76px;margin:0 auto;border-radius:24px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:38px;animation:bellIn .6s cubic-bezier(.2,1.4,.4,1)}
 @keyframes bellIn{from{transform:scale(.5) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
 .plan4{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -477,7 +483,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v32';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v33';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2389,11 +2395,12 @@ function renderOb() {
   let title = '', sub = '', body = '', ok = true, cta = T('Continue');
   if (s === 'intro') {
     pg.innerHTML = `<div class="onb" style="justify-content:center;text-align:center">
-      <div class="spread">${db.profile ? `<button class="chipbtn" id="obCancel">✕ ${T('Close')}</button>` : '<span></span>'}<button class="chipbtn" id="obLang">🌐 ${langInfo().f} ${langInfo().n}</button></div>
+      <div class="spread">${db.profile ? `<button class="chipbtn" id="obCancel">✕ ${T('Close')}</button>` : '<span></span>'}<span></span></div>
       <div class="onb-body" style="display:flex;flex-direction:column;justify-content:center;align-items:center">
         <img src="icon-512.png" alt="" style="width:110px;height:110px;border-radius:28px;box-shadow:var(--shadow)">
         <h1 style="margin-top:30px">${T('Calorie tracking<br>made easy')}</h1>
         <p class="muted" style="max-width:300px">${T('Just snap a photo of your meal and let AI do the rest.')}</p></div>
+      <div class="langpick"><button id="obLang" class="lp-btn">🌐 <span class="lp-flag">${langInfo().f}</span> ${langInfo().n} <span class="lp-change">⌄</span></button></div>
       <button class="btn" id="obNext">${T('Get started')}</button></div>`;
     pg.querySelector('#obNext').onclick = () => obMove(1);
     pg.querySelector('#obLang').onclick = () => openLangSheet(renderOb);

@@ -446,7 +446,8 @@ window.I18N = {
 "Add Food Tracker to your Home Screen":"Food Tracker zum Home-Bildschirm hinzufügen",
 "It works like a normal app, and only then can it send you reminders.":"So funktioniert sie wie eine normale App und kann dir Erinnerungen senden.",
 "Install app":"App installieren",
-"Continue in the browser":"Im Browser weiter"
+"Continue in the browser":"Im Browser weiter",
+"Change":"Ändern"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -894,7 +895,8 @@ window.I18N = {
 "Add Food Tracker to your Home Screen":"Añade Food Tracker a tu pantalla de inicio",
 "It works like a normal app, and only then can it send you reminders.":"Así funciona como una app normal y puede enviarte recordatorios.",
 "Install app":"Instalar app",
-"Continue in the browser":"Seguir en el navegador"
+"Continue in the browser":"Seguir en el navegador",
+"Change":"Cambiar"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -1342,7 +1344,8 @@ window.I18N = {
 "Add Food Tracker to your Home Screen":"Ajoute Food Tracker à ton écran d'accueil",
 "It works like a normal app, and only then can it send you reminders.":"Elle fonctionne alors comme une vraie app et peut t'envoyer des rappels.",
 "Install app":"Installer l'app",
-"Continue in the browser":"Continuer dans le navigateur"
+"Continue in the browser":"Continuer dans le navigateur",
+"Change":"Changer"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -1790,7 +1793,8 @@ window.I18N = {
 "Add Food Tracker to your Home Screen":"Aggiungi Food Tracker alla schermata Home",
 "It works like a normal app, and only then can it send you reminders.":"Così funziona come una normale app e può inviarti promemoria.",
 "Install app":"Installa app",
-"Continue in the browser":"Continua nel browser"
+"Continue in the browser":"Continua nel browser",
+"Change":"Cambia"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -2238,7 +2242,8 @@ window.I18N = {
 "Add Food Tracker to your Home Screen":"Food Tracker をホーム画面に追加",
 "It works like a normal app, and only then can it send you reminders.":"通常のアプリのように動作し、リマインダーを受け取れるようになります。",
 "Install app":"アプリをインストール",
-"Continue in the browser":"ブラウザで続ける"
+"Continue in the browser":"ブラウザで続ける",
+"Change":"変更"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -2686,7 +2691,8 @@ window.I18N = {
 "Add Food Tracker to your Home Screen":"Zet Food Tracker op je beginscherm",
 "It works like a normal app, and only then can it send you reminders.":"Dan werkt hij als een normale app en kan hij je herinneringen sturen.",
 "Install app":"App installeren",
-"Continue in the browser":"Verder in de browser"
+"Continue in the browser":"Verder in de browser",
+"Change":"Wijzigen"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -3134,7 +3140,8 @@ window.I18N = {
 "Add Food Tracker to your Home Screen":"Dodaj Food Tracker do ekranu początkowego",
 "It works like a normal app, and only then can it send you reminders.":"Wtedy działa jak zwykła aplikacja i może wysyłać przypomnienia.",
 "Install app":"Zainstaluj aplikację",
-"Continue in the browser":"Kontynuuj w przeglądarce"
+"Continue in the browser":"Kontynuuj w przeglądarce",
+"Change":"Zmień"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -3582,7 +3589,8 @@ window.I18N = {
 "Add Food Tracker to your Home Screen":"Adiciona o Food Tracker ao ecrã principal",
 "It works like a normal app, and only then can it send you reminders.":"Assim funciona como uma app normal e pode enviar-te lembretes.",
 "Install app":"Instalar app",
-"Continue in the browser":"Continuar no navegador"
+"Continue in the browser":"Continuar no navegador",
+"Change":"Alterar"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -4030,7 +4038,8 @@ window.I18N = {
 "Add Food Tracker to your Home Screen":"Добавь Food Tracker на экран «Домой»",
 "It works like a normal app, and only then can it send you reminders.":"Так оно работает как обычное приложение и может присылать напоминания.",
 "Install app":"Установить приложение",
-"Continue in the browser":"Продолжить в браузере"
+"Continue in the browser":"Продолжить в браузере",
+"Change":"Изменить"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -4478,7 +4487,8 @@ window.I18N = {
 "Add Food Tracker to your Home Screen":"Food Tracker'ı ana ekranına ekle",
 "It works like a normal app, and only then can it send you reminders.":"Böylece normal bir uygulama gibi çalışır ve sana hatırlatma gönderebilir.",
 "Install app":"Uygulamayı yükle",
-"Continue in the browser":"Tarayıcıda devam et"
+"Continue in the browser":"Tarayıcıda devam et",
+"Change":"Değiştir"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -4926,6 +4936,7 @@ window.I18N = {
 "Add Food Tracker to your Home Screen":"将 Food Tracker 添加到主屏幕",
 "It works like a normal app, and only then can it send you reminders.":"这样它就像普通应用一样运行，并且可以给你发送提醒。",
 "Install app":"安装应用",
-"Continue in the browser":"继续在浏览器中使用"
+"Continue in the browser":"继续在浏览器中使用",
+"Change":"更改"
 }
 };
