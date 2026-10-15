@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
-<title>FoodTracker</title>
+<title>Food Tracker</title>
 <meta name="theme-color" content="#f7f7f9">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="FoodTracker">
+<meta name="apple-mobile-web-app-title" content="Food Tracker">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-180.png">
 <link rel="manifest" href="manifest.json">
@@ -1948,10 +1948,9 @@ const isStandalone = () => navigator.standalone === true || matchMedia('(display
 const pushSupported = () => 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window;
 function b64ToBytes(b) { const p = '='.repeat((4 - b.length % 4) % 4), raw = atob((b + p).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from(raw, c => c.charCodeAt(0)); }
 // The service worker shows the notifications in the app's language; it reads the texts from here.
-// Minimal look: the app name on top, one short line below.
-const APP_NAME = 'Food Tracker';
+// Minimal look: just the short message in bold; iPhone adds "from <app name>" below it by itself.
 const reminderData = () => ({ burn: T('Calories burned today?'), weight: T('Weekly weigh-in') });
-const reminderContent = (R, kind) => ({ title: APP_NAME, body: R[kind] });
+const reminderContent = (R, kind) => ({ title: R[kind], body: '' });
 let remT;
 function saveReminderTexts() {
   if (!('caches' in window)) return;

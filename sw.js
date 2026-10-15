@@ -1,6 +1,6 @@
 // Offline support: keeps the app shell cached, always tries the network first so updates arrive.
 // Also shows the reminder notifications that the GitHub workflow sends.
-const CACHE = 'foodtracker-v26';
+const CACHE = 'foodtracker-v27';
 const KEEP = [CACHE, 'ft-meta'];   // ft-meta holds the notification texts in the app's language
 const ASSETS = ['./', './index.html', './lang.js', './manifest.json', './icon-180.png', './icon-512.png'];
 
@@ -24,12 +24,11 @@ self.addEventListener('fetch', e => {
   );
 });
 
-// Minimal look: the app name on top, one short line below (texts in the app's language, saved by the app)
-const APP_NAME = 'Food Tracker';
+// Minimal look: just the short message in bold; iPhone adds "from <app name>" below it by itself
 const DEFAULT_TEXTS = { burn: 'Calories burned today?', weight: 'Weekly weigh-in' };
 function content(R, kind) {
   const v = R && R[kind];
-  return { title: APP_NAME, body: typeof v === 'string' ? v : v && v.title ? v.title.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u, '') : DEFAULT_TEXTS[kind] };
+  return { body: '', title: typeof v === 'string' ? v : v && v.title ? v.title.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u, '') : DEFAULT_TEXTS[kind] };
 }
 
 self.addEventListener('push', e => {
