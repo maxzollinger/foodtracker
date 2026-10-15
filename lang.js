@@ -409,7 +409,8 @@ window.I18N = {
 "Choose your fasting rhythm":"Wähle deinen Fasten-Rhythmus",
 "You only eat inside your eating window.":"Du isst nur innerhalb deines Essensfensters.",
 "Eating window: {a} – {b}":"Essensfenster: {a} – {b}",
-"Dirty bulk: you gain fast, but a good part of it will be fat.":"Dirty Bulk: Du nimmst schnell zu, aber ein guter Teil davon ist Fett."
+"Dirty bulk: you gain fast, but a good part of it will be fat.":"Dirty Bulk: Du nimmst schnell zu, aber ein guter Teil davon ist Fett.",
+"Close":"Schließen"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -820,7 +821,8 @@ window.I18N = {
 "Choose your fasting rhythm":"Elige tu ritmo de ayuno",
 "You only eat inside your eating window.":"Solo comes dentro de tu ventana de comida.",
 "Eating window: {a} – {b}":"Ventana de comida: {a} – {b}",
-"Dirty bulk: you gain fast, but a good part of it will be fat.":"Volumen sucio: ganas rápido, pero buena parte será grasa."
+"Dirty bulk: you gain fast, but a good part of it will be fat.":"Volumen sucio: ganas rápido, pero buena parte será grasa.",
+"Close":"Cerrar"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -1231,7 +1233,8 @@ window.I18N = {
 "Choose your fasting rhythm":"Choisis ton rythme de jeûne",
 "You only eat inside your eating window.":"Tu manges uniquement dans ta fenêtre de repas.",
 "Eating window: {a} – {b}":"Fenêtre de repas : {a} – {b}",
-"Dirty bulk: you gain fast, but a good part of it will be fat.":"Prise de masse rapide : tu prends vite, mais une bonne partie sera du gras."
+"Dirty bulk: you gain fast, but a good part of it will be fat.":"Prise de masse rapide : tu prends vite, mais une bonne partie sera du gras.",
+"Close":"Fermer"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -1642,7 +1645,8 @@ window.I18N = {
 "Choose your fasting rhythm":"Scegli il tuo ritmo di digiuno",
 "You only eat inside your eating window.":"Mangi solo dentro la tua finestra dei pasti.",
 "Eating window: {a} – {b}":"Finestra dei pasti: {a} – {b}",
-"Dirty bulk: you gain fast, but a good part of it will be fat.":"Dirty bulk: aumenti in fretta, ma una buona parte sarà grasso."
+"Dirty bulk: you gain fast, but a good part of it will be fat.":"Dirty bulk: aumenti in fretta, ma una buona parte sarà grasso.",
+"Close":"Chiudi"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -2053,7 +2057,8 @@ window.I18N = {
 "Choose your fasting rhythm":"断食のリズムを選んでください",
 "You only eat inside your eating window.":"食事時間内だけ食べます。",
 "Eating window: {a} – {b}":"食事時間：{a} – {b}",
-"Dirty bulk: you gain fast, but a good part of it will be fat.":"ダーティバルク：早く増えますが、かなりの部分が脂肪になります。"
+"Dirty bulk: you gain fast, but a good part of it will be fat.":"ダーティバルク：早く増えますが、かなりの部分が脂肪になります。",
+"Close":"閉じる"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -2464,7 +2469,8 @@ window.I18N = {
 "Choose your fasting rhythm":"Kies je vastenritme",
 "You only eat inside your eating window.":"Je eet alleen binnen je eetvenster.",
 "Eating window: {a} – {b}":"Eetvenster: {a} – {b}",
-"Dirty bulk: you gain fast, but a good part of it will be fat.":"Dirty bulk: je komt snel aan, maar een flink deel is vet."
+"Dirty bulk: you gain fast, but a good part of it will be fat.":"Dirty bulk: je komt snel aan, maar een flink deel is vet.",
+"Close":"Sluiten"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -2875,7 +2881,8 @@ window.I18N = {
 "Choose your fasting rhythm":"Wybierz rytm postu",
 "You only eat inside your eating window.":"Jesz tylko w swoim oknie jedzenia.",
 "Eating window: {a} – {b}":"Okno jedzenia: {a} – {b}",
-"Dirty bulk: you gain fast, but a good part of it will be fat.":"Brudna masa: przybierasz szybko, ale spora część to tłuszcz."
+"Dirty bulk: you gain fast, but a good part of it will be fat.":"Brudna masa: przybierasz szybko, ale spora część to tłuszcz.",
+"Close":"Zamknij"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -3286,7 +3293,8 @@ window.I18N = {
 "Choose your fasting rhythm":"Escolhe o teu ritmo de jejum",
 "You only eat inside your eating window.":"Só comes dentro da tua janela de refeições.",
 "Eating window: {a} – {b}":"Janela de refeições: {a} – {b}",
-"Dirty bulk: you gain fast, but a good part of it will be fat.":"Bulk sujo: ganhas depressa, mas boa parte será gordura."
+"Dirty bulk: you gain fast, but a good part of it will be fat.":"Bulk sujo: ganhas depressa, mas boa parte será gordura.",
+"Close":"Fechar"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -3697,7 +3705,8 @@ window.I18N = {
 "Choose your fasting rhythm":"Выбери режим голодания",
 "You only eat inside your eating window.":"Ты ешь только в своё окно приёма пищи.",
 "Eating window: {a} – {b}":"Окно приёма пищи: {a} – {b}",
-"Dirty bulk: you gain fast, but a good part of it will be fat.":"Грязный массонабор: набираешь быстро, но заметная часть — жир."
+"Dirty bulk: you gain fast, but a good part of it will be fat.":"Грязный массонабор: набираешь быстро, но заметная часть — жир.",
+"Close":"Закрыть"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -4108,7 +4117,8 @@ window.I18N = {
 "Choose your fasting rhythm":"Oruç ritmini seç",
 "You only eat inside your eating window.":"Sadece yeme aralığında yersin.",
 "Eating window: {a} – {b}":"Yeme aralığı: {a} – {b}",
-"Dirty bulk: you gain fast, but a good part of it will be fat.":"Kirli bulk: hızlı alırsın ama önemli bir kısmı yağ olur."
+"Dirty bulk: you gain fast, but a good part of it will be fat.":"Kirli bulk: hızlı alırsın ama önemli bir kısmı yağ olur.",
+"Close":"Kapat"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -4519,6 +4529,7 @@ window.I18N = {
 "Choose your fasting rhythm":"选择你的断食节奏",
 "You only eat inside your eating window.":"你只在进食窗口内吃东西。",
 "Eating window: {a} – {b}":"进食窗口：{a} – {b}",
-"Dirty bulk: you gain fast, but a good part of it will be fat.":"快速增重：增重很快，但相当一部分会是脂肪。"
+"Dirty bulk: you gain fast, but a good part of it will be fat.":"快速增重：增重很快，但相当一部分会是脂肪。",
+"Close":"关闭"
 }
 };
