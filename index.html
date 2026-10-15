@@ -312,7 +312,7 @@ body.typing .chatbar{bottom:0;padding-bottom:6px}
 #toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translate(-50%,-20px);background:var(--ink);color:var(--on-ink);
   padding:11px 18px;border-radius:999px;font-size:14px;font-weight:600;opacity:0;transition:.25s;pointer-events:none;z-index:99;max-width:calc(100% - 32px);text-align:center}
 #toast.show{opacity:1;transform:translate(-50%,0)}
-.hiddenfile{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.hiddenfile{position:fixed;left:0;top:0;width:1px;height:1px;opacity:0;pointer-events:none}
 .spin{width:18px;height:18px;border:2.5px solid currentColor;border-right-color:transparent;border-radius:50%;animation:rot .8s linear infinite;display:inline-block}
 @keyframes rot{to{transform:rotate(360deg)}}
 .code{font:12px/1.4 ui-monospace,Menlo,monospace;background:var(--chip);border-radius:12px;padding:10px 12px;word-break:break-all;max-height:84px;overflow:hidden;color:var(--muted);margin-top:10px}
@@ -850,7 +850,7 @@ function openAddMenu() {
     <button class="addtile" id="aEx"><span>🏋️</span>${T('Log exercise')}</button>
     <button class="addtile" id="aMan"><span>✏️</span>${T('Manual entry')}</button></div>`, s => {
     s.querySelector('#aScan').onclick = () => { closeSheet(); $('#fileCam').click(); };
-    s.querySelector('#aLib').onclick = () => { closeSheet(); $('#fileLib').click(); };
+    s.querySelector('#aLib').onclick = () => { closeSheet(); openPicker('#fileLib', $('#fab')); };
     s.querySelector('#aBar').onclick = openBarcodeSheet;
     s.querySelector('#aText').onclick = openDescribeSheet;
     s.querySelector('#aEx').onclick = () => openExercise(null);
@@ -1702,9 +1702,9 @@ function buildChatbar(scr) {
     closeChatMenu();
     const a = b.dataset.act;
     if (a === 'new') { chat = []; saveChat(); chatImg = null; renderChat(); toast('✓ ' + T('New conversation')); }
-    if (a === 'image') $('#fileChat').click();
+    if (a === 'image') openPicker('#fileChat', bar.querySelector('.chips'));
     if (a === 'photo') $('#fileChatCam').click();
-    if (a === 'file') $('#fileChatDoc').click();
+    if (a === 'file') openPicker('#fileChatDoc', bar.querySelector('.chips'));
   });
   bar.querySelector('#cMic').onclick = startVoice;
   bar.querySelector('#cRecX').onclick = () => finishVoice(false);
@@ -2275,6 +2275,13 @@ function finishOnboarding() {
 }
 
 /* ================= Utils ================= */
+// The iPhone shows its photo/file menu next to the (invisible) file input, so move the input
+// to where the menu should appear before opening it
+function openPicker(sel, anchor) {
+  const input = $(sel);
+  if (anchor) { const r = anchor.getBoundingClientRect(); input.style.left = Math.max(0, r.left + 16) + 'px'; input.style.top = Math.max(0, r.top) + 'px'; }
+  input.click();
+}
 function scaleImage(src, max) {
   return new Promise((res, rej) => {
     const img = new Image(), isFile = src instanceof Blob, url = isFile ? URL.createObjectURL(src) : src;
