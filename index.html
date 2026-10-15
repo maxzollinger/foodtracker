@@ -2043,12 +2043,6 @@ function renderSettings() {
     </div>
     <div class="card"><b>🌓 ${T('Appearance')}</b>
       <div class="seg">${[['auto', N('Automatic')], ['light', N('Light')], ['dark', N('Dark')]].map(([v, l]) => `<button data-th="${v}" class="${th === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div></div>
-    <div class="card"><b>${T('Burned calories and your goal')}</b>
-      <select id="sBurn" style="margin-top:10px">
-        <option value="smart" ${db.settings.burnMode === 'smart' ? 'selected' : ''}>${T('Smart (recommended): only extra activity raises the goal')}</option>
-        <option value="all" ${db.settings.burnMode === 'all' ? 'selected' : ''}>${T('Add all burned calories to the goal')}</option>
-        <option value="off" ${db.settings.burnMode === 'off' ? 'selected' : ''}>${T('Only track, never change the goal')}</option></select>
-      <p class="small muted" style="margin:8px 0 0">${T('Your goal already includes about {n} kcal of training per day, based on your workouts per week.', { n: includedExercise() })}</p></div>
     ${remindersCard()}
     <div class="h2">AI</div>
     <div class="card">
@@ -2082,7 +2076,6 @@ function renderSettings() {
   $('#sRedo').onclick = startOnboarding;
   $('#sLang').onclick = () => openLangSheet();
   document.querySelectorAll('[data-th]').forEach(b => b.onclick = () => { setTheme(b.dataset.th); renderSettings(); });
-  $('#sBurn').onchange = e => { db.settings.burnMode = e.target.value; save(); toast(T('✓ Saved')); };
   bindReminders();
   $('#kSave').onclick = () => {
     const set = (k, v) => v ? LS.set(k, v) : LS.del(k);
