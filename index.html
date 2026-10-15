@@ -243,6 +243,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 /* Chat */
 body.chatting{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
 body.chatting .fab{display:none}
+body.typing .tabbar,body.typing .chips{display:none}
+body.typing .chatbar{bottom:0;padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+body.chatting.typing{padding-bottom:calc(80px + env(safe-area-inset-bottom))}
 .msgs{display:flex;flex-direction:column;gap:12px;margin-top:10px}
 .msg{max-width:86%;padding:12px 16px;border-radius:20px;font-size:15.5px;line-height:1.5;word-wrap:break-word}
 .msg.new{animation:msgIn .35s ease}
@@ -669,6 +672,7 @@ function go(t) {
   tab = t;
   document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
   document.body.classList.toggle('chatting', t === 'chat');
+  document.body.classList.remove('typing');
   $('.chatbar')?.remove();
   window.scrollTo(0, 0);
   render();
@@ -1595,6 +1599,12 @@ function renderChat(animLast) {
     document.body.appendChild(bar);
     const ta = bar.querySelector('#cIn');
     ta.oninput = () => { ta.style.height = '40px'; ta.style.height = Math.min(ta.scrollHeight, 120) + 'px'; };
+    // While typing, hide the tab bar and suggestions so there's more room for the conversation
+    let blurT;
+    ta.addEventListener('focus', () => { clearTimeout(blurT); document.body.classList.add('typing'); setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 250); });
+    ta.addEventListener('blur', () => { blurT = setTimeout(() => document.body.classList.remove('typing'), 120); });
+    // Tapping send keeps the keyboard open (no layout jump under your finger)
+    bar.querySelector('#cSend').addEventListener('pointerdown', e => { if (document.activeElement === ta) e.preventDefault(); });
     bar.querySelectorAll('.chips button').forEach(b => b.onclick = () => sendChat(b.textContent));
     bar.querySelector('#cSend').onclick = () => { const v = ta.value.trim(); if (v || chatImg) { ta.value = ''; ta.oninput(); sendChat(v); } };
     bar.querySelector('#cPhoto').onclick = () => $('#fileChat').click();
