@@ -109,8 +109,8 @@ a{color:inherit}
 .hcard .spread>span:first-child{white-space:nowrap}
 .burncard .ic{width:48px;height:48px;border-radius:14px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:24px;flex:none}
 .quick{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}
-.planchip{display:inline-flex;align-items:center;gap:6px;max-width:100%;background:var(--card);box-shadow:var(--shadow);border-radius:999px;padding:8px 14px;font-size:14px;margin:0 0 12px;white-space:nowrap;overflow:hidden}
-.planchip .muted{overflow:hidden;text-overflow:ellipsis}
+.planchip{display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px 6px;max-width:100%;background:var(--card);box-shadow:var(--shadow);border-radius:20px;padding:8px 14px;font-size:14px;margin:0 0 12px;text-align:left}
+.planchip>*{white-space:nowrap}
 .frow{margin-top:12px}
 .frow .spread{font-size:14px}
 .opt.cmp{padding:14px 16px;font-size:16px;margin-bottom:8px}
@@ -318,6 +318,35 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .rtimes{margin-top:12px;display:flex;flex-direction:column;gap:10px}
 .rtimes .spread{gap:10px;font-weight:600;font-size:15px}
 .rsel{width:auto;padding:8px 10px;border-radius:12px;font-size:15px}
+.confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2000}
+.celpop{position:fixed;inset:0;z-index:1500;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.28);animation:fade .2s;padding:20px}
+.celpop.out{opacity:0;transition:opacity .3s}
+.celcard{background:var(--card);border-radius:28px;padding:26px 28px 24px;text-align:center;max-width:300px;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:celIn .5s cubic-bezier(.2,1.4,.4,1)}
+.celic{font-size:58px;line-height:1.1;margin-bottom:10px;animation:celBounce .9s ease .25s}
+.celcard b{display:block;font-size:20px;margin-bottom:4px}
+@keyframes celIn{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+@keyframes celBounce{40%{transform:scale(1.25) rotate(-8deg)}70%{transform:scale(.95) rotate(4deg)}}
+.badges{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.badge{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px 8px;border-radius:16px;background:var(--chip);min-width:0}
+.badge .bic{font-size:28px;line-height:1.1;filter:grayscale(1);opacity:.35}
+.badge.on .bic{filter:none;opacity:1}
+.badge .bname{font-size:10.5px;font-weight:700;text-align:center;line-height:1.2;color:var(--muted);overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.badge.on .bname{color:var(--text)}
+.bbar{width:70%;height:4px;border-radius:2px;background:var(--track);overflow:hidden}
+.bbar i{display:block;height:100%;background:var(--flame);border-radius:2px}
+.bigbadge{width:96px;height:96px;margin:0 auto;border-radius:30px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:54px;filter:grayscale(1);opacity:.45}
+.bigbadge.on{filter:none;opacity:1;animation:celIn .5s cubic-bezier(.2,1.4,.4,1)}
+.chipprog{display:inline-block;width:80px;height:5px;border-radius:3px;background:var(--track);overflow:hidden;margin-left:4px;vertical-align:middle}
+.chipprog i{display:block;height:100%;background:var(--flame)}
+.chippct{font-size:12px}
+.gp{text-align:center;padding-top:calc(30px + env(safe-area-inset-top));padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+.gp-trophy{font-size:96px;animation:celIn .7s cubic-bezier(.2,1.4,.4,1),celBounce 1.2s ease .6s}
+.gp h1{margin:8px 0 6px}
+.gp-stats{text-align:left;margin:20px 0 14px}
+.gp-stats .spread{padding:7px 0;border-top:1px solid var(--line)}
+.gp-big{font-size:28px;font-weight:800;text-align:center;margin-bottom:10px;letter-spacing:-.02em}
+.gp-big span{color:var(--flame)}
+.gp .opt{text-align:left}
 .inpop{position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));z-index:70;max-width:536px;margin:0 auto;display:flex;align-items:center;gap:12px;
   padding:12px 10px 12px 14px;border-radius:20px;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   box-shadow:0 12px 34px rgba(0,0,0,.28),inset 0 0 0 1px var(--line);animation:popIn .5s cubic-bezier(.2,1.2,.4,1)}
@@ -609,7 +638,7 @@ function migrate(d) {
   }
   return d;
 }
-function save() { if (!LS.set('ft_data', JSON.stringify(db))) toast(T('Could not save. Is your phone storage full?')); if (typeof saveReminderTexts === 'function') saveReminderTexts(); }
+function save() { if (!LS.set('ft_data', JSON.stringify(db))) toast(T('Could not save. Is your phone storage full?')); if (typeof saveReminderTexts === 'function') saveReminderTexts(); try { scheduleBadges(); } catch {} }
 const getKey = () => LS.get('ft_key', '');
 /* Sharing with friends & family: a small free server (Cloudflare Worker, see server/worker.js) holds the
    owner's Google AI key, so everyone gets AI without setup. It also keeps each phone's notification address. */
@@ -621,7 +650,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v48';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v50';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -786,6 +815,8 @@ function applyPlan(p, id, w) {
   else if (!['lose', 'maintain', 'lean'].includes(p.goal)) p.goal = p.goal === 'gain' ? 'lean' : 'maintain';
   p.pace = paceRange(p)[1];   // each goal starts at its typical speed (adjustable)
   fixTarget(p, w);
+  p.goalStart = { kg: w, date: iso() };
+  if (p.goal === 'maintain') p.maintainSince = p.maintainSince || iso(); else delete p.maintainSince;
 }
 function fixTarget(p, w) {
   if (p.goal === 'maintain') p.targetWeight = w;
@@ -944,13 +975,22 @@ function planChip() {
   if (pl.id === 'keto') detail = T('max {n} g carbs', { n: t.carbs });
   else if (pl.id === 'if') { const f = fastState(p); detail = `${f.h}:${f.win} · ${f.startStr}–${f.endStr}`; }
   else detail = diff > 30 ? T('+{n} kcal/day surplus', { n: diff }) : diff < -30 ? T('{n} kcal/day deficit', { n: diff }) : T('maintenance calories');
-  return `<button class="planchip" id="planChip"><span>${pl.ic}</span><b>${T(pl.name)}</b><span class="muted">· ${detail}</span></button>`;
+  const gp = goalProgress(), kd = keepDays();
+  const extra = gp ? `<span class="chipprog"><i style="width:${r0(gp.pct)}%"></i></span><b class="chippct">${r0(gp.pct)}%</b>`
+    : p.goal === 'maintain' && p.maintainSince ? `<span class="muted">· 🛡️ ${T('{n} days steady', { n: kd })}</span>` : '';
+  return `<button class="planchip" id="planChip"><span>${pl.ic}</span><b>${T(pl.name)}</b>${gp || (p.goal === 'maintain' && p.maintainSince) ? '' : `<span class="muted">· ${detail}</span>`}${extra}</button>`;
 }
+// Days logged in a row. One rest day per week is fine and doesn't break it (it just doesn't count).
 function streak() {
-  const has = new Set(db.meals.map(m => m.date));
-  let d = iso(), n = 0;
-  if (!has.has(d)) d = addDays(d, -1);
-  while (has.has(d)) { n++; d = addDays(d, -1); }
+  const has = new Set(db.meals.map(m => m.date)); if (!has.size) return 0;
+  const first = [...has].sort()[0];
+  let d = iso(), n = 0, miss = null;
+  if (!has.has(d)) d = addDays(d, -1);   // today isn't over yet
+  while (d >= first) {
+    if (has.has(d)) n++;
+    else { if (miss && Math.round((dt(miss) - dt(d)) / 864e5) < 7) break; miss = d; }
+    d = addDays(d, -1);
+  }
   return n;
 }
 
@@ -1689,6 +1729,184 @@ function bindBackupCard() {
   };
 }
 
+/* ================= Rewards: celebrations, badges, goal reached, maintenance =================
+   Friendly motivation only: real progress is celebrated, nothing is ever taken away or used to
+   make people feel guilty. */
+function confetti() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c = document.createElement('canvas'); c.className = 'confetti'; document.body.appendChild(c);
+  const dpr = Math.min(2, devicePixelRatio || 1), W = c.width = innerWidth * dpr, H = c.height = innerHeight * dpr, x = c.getContext('2d');
+  const cols = ['#ff9500', '#34c759', '#4b8cf5', '#e3605b', '#f5b83d', '#af52de'];
+  const ps = [...Array(150)].map((_, i) => ({ x: W / 2 + (Math.random() - 0.5) * W * 0.3, y: H * 0.4, vx: (Math.random() - 0.5) * 20 * dpr,
+    vy: (-Math.random() * 17 - 7) * dpr, s: (6 + Math.random() * 6) * dpr, r: Math.random() * 6, vr: (Math.random() - 0.5) * 0.4, c: cols[i % cols.length] }));
+  const t0 = performance.now();
+  const step = now => {
+    const el = now - t0; x.clearRect(0, 0, W, H);
+    for (const p of ps) {
+      p.vy += 0.55 * dpr; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+      x.save(); x.translate(p.x, p.y); x.rotate(p.r); x.globalAlpha = Math.max(0, 1 - el / 2800); x.fillStyle = p.c;
+      x.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); x.restore();
+    }
+    if (el < 2800) requestAnimationFrame(step); else c.remove();
+  };
+  requestAnimationFrame(step);
+}
+// Small celebration in the middle of the screen (one after another if several happen at once)
+const celQ = []; let celOn = false;
+function celebrate(ic, title, text) { celQ.push([ic, title, text]); if (!celOn) nextCel(); }
+function nextCel() {
+  const it = celQ.shift(); if (!it) { celOn = false; return; }
+  celOn = true;
+  const [ic, title, text] = it, el = document.createElement('div'); el.className = 'celpop';
+  el.innerHTML = `<div class="celcard"><div class="celic">${ic}</div><b>${title}</b>${text ? `<div class="small muted">${text}</div>` : ''}</div>`;
+  document.body.appendChild(el); confetti(); if (navigator.vibrate) navigator.vibrate([20, 40, 20]);
+  const close = () => { if (!el.isConnected) return; el.classList.add('out'); setTimeout(() => { el.remove(); nextCel(); }, 300); };
+  el.onclick = close; setTimeout(close, 2800);
+}
+
+// Progress towards the weight goal (start = weight when the goal was set, or the first weigh-in)
+function goalProgress() {
+  const p = db.profile; if (!p || p.goal === 'maintain' || !needsTarget(p)) return null;
+  const ws = [...db.weights].sort((a, b) => a.date.localeCompare(b.date)), cur = currentWeight();
+  const start = p.goalStart ? p.goalStart.kg : ws.length ? ws[0].kg : cur, tgt = p.targetWeight, up = tgt > start;
+  const done = up ? cur - start : start - cur, total = Math.abs(tgt - start);
+  return { start, cur, tgt, kgDone: r1(Math.max(0, done)), pct: total ? clamp(done / total * 100, 0, 100) : 100, reached: up ? cur >= tgt : cur <= tgt };
+}
+// Days in a row the weight stayed within ±1.5 kg in maintenance mode
+function keepDays() {
+  const p = db.profile; if (!p || p.goal !== 'maintain' || !p.maintainSince) return 0;
+  const out = db.weights.filter(w => w.date >= p.maintainSince && Math.abs(w.kg - p.targetWeight) > 1.5).map(w => w.date).sort().pop();
+  return Math.max(0, daysBetween(out || p.maintainSince, iso()));
+}
+
+const BADGES = [
+  { id: 'first_meal', ic: '🍽️', name: N('First bite'), desc: N('Log your first meal'), need: s => [s.meals, 1] },
+  { id: 'full_day', ic: '📅', name: N('Full day'), desc: N('Log 3 meals in one day'), need: s => [s.fullDays, 1] },
+  { id: 'streak3', ic: '🔥', name: N('On fire'), desc: N('3-day streak'), need: s => [s.streak, 3] },
+  { id: 'streak7', ic: '⚡', name: N('One week strong'), desc: N('7-day streak'), need: s => [s.streak, 7] },
+  { id: 'streak30', ic: '🌟', name: N('Habit made'), desc: N('30-day streak'), need: s => [s.streak, 30] },
+  { id: 'streak100', ic: '👑', name: N('Unstoppable'), desc: N('100-day streak'), need: s => [s.streak, 100] },
+  { id: 'meals50', ic: '🥗', name: N('50 meals'), desc: N('Log 50 meals'), need: s => [s.meals, 50] },
+  { id: 'meals250', ic: '🍱', name: N('250 meals'), desc: N('Log 250 meals'), need: s => [s.meals, 250] },
+  { id: 'protein1', ic: '💪', name: N('Protein power'), desc: N('Reach your protein goal'), need: s => [s.proteinDays, 1] },
+  { id: 'protein10', ic: '🦾', name: N('Protein pro'), desc: N('Reach your protein goal on 10 days'), need: s => [s.proteinDays, 10] },
+  { id: 'water1', ic: '💧', name: N('Hydrated'), desc: N('Reach your water goal'), need: s => [s.waterDays, 1] },
+  { id: 'water7', ic: '🌊', name: N('Water week'), desc: N('Reach your water goal on 7 days'), need: s => [s.waterDays, 7] },
+  { id: 'weigh5', ic: '⚖️', name: N('Check-in champ'), desc: N('Log your weight 5 times'), need: s => [s.weighs, 5] },
+  { id: 'plan', ic: '🛒', name: N('Planner'), desc: N('Create a weekly meal plan'), need: s => [s.plans, 1] },
+  { id: 'kg1', ic: '🎯', name: N('First kilo'), desc: N('1 kg closer to your goal'), need: s => [s.kgDone, 1] },
+  { id: 'half', ic: '🏁', name: N('Halfway there'), desc: N('Half of the way to your goal'), need: s => [s.pct, 50] },
+  { id: 'goal', ic: '🏆', name: N('Goal reached'), desc: N('Reach your goal weight'), need: s => [s.goals, 1] },
+  { id: 'keep30', ic: '🛡️', name: N('Steady 1 month'), desc: N('Keep your weight for 30 days'), need: s => [s.keep, 30] },
+  { id: 'keep90', ic: '🏅', name: N('Steady 3 months'), desc: N('Keep your weight for 90 days'), need: s => [s.keep, 90] },
+  { id: 'keep365', ic: '💎', name: N('Steady 1 year'), desc: N('Keep your weight for a whole year'), need: s => [s.keep, 365] }
+];
+const earned = () => (db.badges = db.badges || {});
+function badgeStats() {
+  const dates = [...new Set(db.meals.map(m => m.date))], per = {};
+  db.meals.forEach(m => per[m.date] = (per[m.date] || 0) + 1);
+  const gp = goalProgress();
+  return {
+    meals: db.meals.length, fullDays: Object.values(per).filter(n => n >= 3).length, streak: streak(),
+    proteinDays: dates.filter(d => dayTotals(d).protein >= dayGoals(d).protein * 0.95).length,
+    waterDays: Object.keys(waterLog()).filter(d => waterOn(d) >= waterGoal(d)).length,
+    weighs: db.weights.length, plans: Object.keys(db.mealPlans || {}).length,
+    kgDone: gp ? gp.kgDone : 0, pct: gp ? gp.pct : 0, goals: (db.goalsReached || []).length, keep: keepDays()
+  };
+}
+let badgeT;
+function scheduleBadges() { clearTimeout(badgeT); badgeT = setTimeout(checkRewards, 900); }
+function checkRewards() {
+  if (!db.profile || $('#onb')) return;
+  const s = badgeStats(), got = earned(), first = !db.badgesInit, fresh = [];
+  for (const b of BADGES) { const [have, need] = b.need(s); if (!got[b.id] && have >= need) { got[b.id] = iso(); fresh.push(b); } }
+  // Daily wins (once a day each)
+  const today = iso(), cel = JSON.parse(LS.get('ft_cel', '{}')), t = dayTotals(today), g = dayGoals(today), wins = [];
+  if (t.count && t.protein >= g.protein * 0.95 && cel.protein !== today) { cel.protein = today; wins.push(['💪', T('Protein goal reached!'), T('Great job, keep it up.')]); }
+  if (waterOn(today) >= waterGoal(today) && cel.water !== today) { cel.water = today; wins.push(['💧', T('Water goal reached!'), T('Well hydrated today.')]); }
+  LS.set('ft_cel', JSON.stringify(cel));
+  // Goal weight reached
+  const gp = goalProgress(), p = db.profile, key = p ? `${p.plan}:${p.targetWeight}:${p.goalStart ? p.goalStart.date : ''}` : '';
+  const reached = gp && gp.reached && !(db.goalsReached || []).some(x => x.key === key);
+  if (reached) { db.goalsReached = db.goalsReached || []; db.goalsReached.push({ key, date: today, from: gp.start, to: gp.cur, plan: p.plan }); got.goal = got.goal || today; }
+  if (first) { db.badgesInit = true; LS.set('ft_data', JSON.stringify(db)); if (!reached) return; }   // first run: existing progress is counted quietly
+  if (fresh.length || reached) LS.set('ft_data', JSON.stringify(db));
+  if (reached) return setTimeout(openGoalReached, 400);
+  for (const [ic, a, b] of wins) celebrate(ic, a, b);
+  for (const b of fresh) celebrate(b.ic, T('New badge: {n}', { n: T(b.name) }), T(b.desc));
+  if (fresh.length && tab === 'progress') renderProgress();
+}
+
+// Badges on the Progress page
+function badgesCard() {
+  if (!db.profile) return '';
+  const s = badgeStats(), got = earned(), n = BADGES.filter(b => got[b.id]).length;
+  return `<div class="card"><div class="spread"><b style="font-size:17px">🏅 ${T('Badges')}</b><span class="etime">${n} / ${BADGES.length}</span></div>
+    <div class="badges">${BADGES.map(b => { const [have, need] = b.need(s), on = !!got[b.id];
+      return `<button class="badge ${on ? 'on' : ''}" data-badge="${b.id}"><span class="bic">${b.ic}</span><span class="bname">${T(b.name)}</span>
+        ${on ? '' : `<span class="bbar"><i style="width:${clamp(have / need * 100, 0, 100)}%"></i></span>`}</button>`; }).join('')}</div></div>`;
+}
+function openBadge(id) {
+  const b = BADGES.find(x => x.id === id), [have, need] = b.need(badgeStats()), when = earned()[id];
+  sheet(`<div style="text-align:center;padding:4px 0 6px"><div class="bigbadge ${when ? 'on' : ''}">${b.ic}</div>
+    <h3 style="margin:14px 0 4px">${T(b.name)}</h3><p class="muted" style="margin:0">${T(b.desc)}</p>
+    <p style="margin:14px 0 0;font-weight:700;${when ? 'color:var(--good)' : ''}">${when ? '✓ ' + T('Earned on {d}', { d: fmtLong(dt(when)) }) : T('{a} of {b}', { a: r1(Math.min(have, need)), b: need })}</p></div>`);
+}
+
+// The big moment: goal weight reached
+function openGoalReached() {
+  const p = db.profile, last = (db.goalsReached || []).at(-1); if (!p || !last) return;
+  const first = db.meals.map(m => m.date).sort()[0] || iso(), days = daysBetween(first, iso()) + 1;
+  const recent = [...new Set(db.meals.map(m => m.date))].sort().slice(-30);
+  const avgP = recent.length ? r0(recent.reduce((a, d) => a + dayTotals(d).protein, 0) / recent.length) : 0;
+  const nb = Object.keys(earned()).length;
+  closeSheet(); $('#goalpage')?.remove();
+  const pg = document.createElement('div'); pg.id = 'goalpage'; pg.className = 'page'; pg.style.zIndex = 80;
+  pg.innerHTML = `<div class="wrap gp">
+    <div class="gp-trophy">🏆</div>
+    <h1>${T('You did it!')}</h1>
+    <p class="muted">${T('You reached your goal of {w} kg.', { w: last.to })}</p>
+    <div class="card gp-stats">
+      <div class="gp-big">${last.from} kg <span>→</span> ${last.to} kg</div>
+      ${[[T('Days on your journey'), days], [T('Meals logged'), db.meals.length], [T('Average protein (last 30 days)'), avgP + ' g'], [T('Weigh-ins'), db.weights.length], [T('Badges earned'), nb]]
+        .map(([l, v]) => `<div class="spread"><span class="muted">${l}</span><b>${v}</b></div>`).join('')}
+    </div>
+    <button class="btn outline" id="gpShare">📤 ${T('Share my journey')}</button>
+    <div class="h2" style="text-align:left">${T("What's next?")}</div>
+    <button class="opt cmp" id="gpKeep">🛡️ ${T('Keep it')}<small>${T('Switch to maintenance at {w} kg. The app helps you stay there.', { w: last.to })}</small></button>
+    <button class="opt cmp" id="gpNew">🎯 ${T('New goal')}<small>${T('More muscle, leaner, healthier: choose your next goal.')}</small></button>
+    <button class="small muted" id="gpLater" style="margin:10px auto 30px;display:block;padding:8px">${T('Later')}</button></div>`;
+  document.body.appendChild(pg);
+  confetti(); setTimeout(confetti, 900);
+  const close = () => pg.remove();
+  pg.querySelector('#gpLater').onclick = close;
+  pg.querySelector('#gpShare').onclick = () => shareJourney({ from: last.from, to: last.to, days, meals: db.meals.length, avgP, nb });
+  pg.querySelector('#gpNew').onclick = () => { close(); openMainGoalSheet(); };
+  pg.querySelector('#gpKeep').onclick = () => {
+    const w = currentWeight(); applyPlan(p, 'maintain', w); p.targetWeight = w; db.overrides = {}; save(); close();
+    if (tab === 'home') renderHome(); else go('home');
+    celebrate('🛡️', T('Maintenance mode on'), T('Your calories are now set to keep {w} kg.', { w }));
+  };
+}
+function shareJourney(j) {
+  const c = document.createElement('canvas'), W = 1080, H = 1350; c.width = W; c.height = H;
+  const x = c.getContext('2d'), g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#221c16'); g.addColorStop(1, '#0b0b0d');
+  x.fillStyle = g; x.fillRect(0, 0, W, H); x.textAlign = 'center';
+  const f = (s, w) => `${w} ${s}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+  x.font = f(200, 400); x.fillText('🏆', W / 2, 330);
+  x.fillStyle = '#fff'; x.font = f(84, 800); x.fillText(T('Goal reached!'), W / 2, 480);
+  x.fillStyle = '#ff9f1c'; x.font = f(96, 800); x.fillText(`${j.from} → ${j.to} kg`, W / 2, 630);
+  x.fillStyle = '#c9c9ce'; x.font = f(44, 600);
+  [[T('Days on your journey'), j.days], [T('Meals logged'), j.meals], [T('Average protein (last 30 days)'), j.avgP + ' g'], [T('Badges earned'), j.nb]]
+    .forEach(([l, v], i) => { x.fillText(`${l}: ${v}`, W / 2, 790 + i * 80); });
+  x.fillStyle = '#8a8a8e'; x.font = f(38, 600); x.fillText('Food Tracker', W / 2, H - 80);
+  const bin = atob(c.toDataURL('image/png').split(',')[1]), bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  const file = new File([bytes], 'my-journey.png', { type: 'image/png' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file] }).catch(() => {});
+  else { const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); }
+}
+
 /* ================= Privacy ================= */
 function openPrivacy() {
   const sec = (ic, title, text) => `<div class="priv"><div class="priv-ic">${ic}</div><div><b>${title}</b><p>${text}</p></div></div>`;
@@ -1862,10 +2080,11 @@ Averages on logged days: ${avg(d => dayTotals(d).kcal)} kcal (goal ${avg(d => da
 Days within ±10% of the calorie goal: ${logged.filter(d => Math.abs(dayTotals(d).kcal - dayGoals(d).kcal) <= dayGoals(d).kcal * 0.1).length}. Days that hit the protein goal: ${logged.filter(d => dayTotals(d).protein >= dayGoals(d).protein * 0.95).length}.
 Health score of the week: ${healthAvg(db.meals.filter(m => days.includes(m.date))) ?? 'n/a'}/10. Calories burned (logged): ${days.reduce((a, d) => a + dayBurned(d), 0)} kcal.
 Weight: ${w1 == null ? 'no weigh-ins' : w0 == null || w0 === w1 ? `${w1} kg` : `${w0} → ${w1} kg (${w1 - w0 > 0 ? '+' : ''}${r1(w1 - w0)} kg this week)`}.
-Water: ${wd.length ? `${avg(d => waterOn(d))} ml on average on ${wd.length} days (goal ${waterGoal()} ml)` : 'not tracked'}.`;
+Water: ${wd.length ? `${avg(d => waterOn(d))} ml on average on ${wd.length} days (goal ${waterGoal()} ml)` : 'not tracked'}.
+Best day: ${(() => { const sc = d => Math.min(1, dayTotals(d).protein / Math.max(1, dayGoals(d).protein)) - Math.abs(dayTotals(d).kcal - dayGoals(d).kcal) / Math.max(1, dayGoals(d).kcal); const b = [...logged].sort((x, y) => sc(y) - sc(x))[0]; return `${dt(b).toLocaleDateString('en-GB', { weekday: 'long' })} (${r0(dayTotals(b).kcal)} kcal, ${r0(dayTotals(b).protein)} g protein)`; })()}.`;
   const prompt = `${stats}
 
-Write my WEEKLY CHECK-IN for this week. First line: a short title starting with "📊". Then 3 to 5 short bullet points with the real numbers: calories and protein vs my goals, consistency, weight trend compared with my goal, and anything that stands out. End with ONE concrete tip for next week, starting with "**Tip:**". Short, honest, warm and motivating. No memory tags.`;
+Write my WEEKLY CHECK-IN for this week. First line: a short title starting with "📊". Then 3 to 5 short bullet points with the real numbers (one of them celebrates my best day): calories and protein vs my goals, consistency, weight trend compared with my goal, and anything that stands out. End with ONE concrete tip for next week, starting with "**Tip:**". Short, honest, warm and motivating. No memory tags.`;
   try {
     const text = await askAI([{ text: prompt }], { json: false, system: coachSystem() });
     chat.push({ role: 'assistant', text: stripTags(text), t: Date.now(), checkin: true }); saveChat();
@@ -2422,8 +2641,7 @@ function renderProgress() {
   const dots = [...Array(7)].map((_, i) => { const d = addDays(mon, i); return `<div><i class="${has.has(d) ? 'on' : ''}"></i>${dt(d).toLocaleDateString(LOC, { weekday: 'narrow' })}</div>`; }).join('');
 
   // Goal progress
-  let pct = 0;
-  if (p && p.goal !== 'maintain' && ws.length) { const s = ws[0].kg; pct = s === p.targetWeight ? 100 : clamp((s - cur) / (s - p.targetWeight) * 100, 0, 100); }
+  const gpr = goalProgress(), pct = gpr ? gpr.pct : 0;
   const since = progRange ? addDays(today, -progRange) : '0000';
   const wsR = ws.filter(w => w.date >= since);
 
@@ -2445,8 +2663,10 @@ function renderProgress() {
       <div class="card"><div class="small muted">${T('Current weight')}</div><div style="font-size:30px;font-weight:800;letter-spacing:-.03em;margin:4px 0">${cur || '–'}<small style="font-size:16px"> kg</small></div>
         <div class="small muted">${p && p.goal !== 'maintain' ? T('Goal <b>{w} kg</b>', { w: p.targetWeight }) : T('Goal: maintain')}</div>
         <button class="btn sm" id="logW" style="margin-top:12px;width:100%">${T('Log weight')}</button></div>
-      <div class="card" style="text-align:center"><div style="font-size:40px">🔥</div><div style="font-size:30px;font-weight:800;color:var(--flame)">${st}</div><div class="small muted" style="font-weight:600">${T('Day streak')}</div><div class="wdots">${dots}</div></div>
+      <div class="card" style="text-align:center"><div style="font-size:40px">🔥</div><div style="font-size:30px;font-weight:800;color:var(--flame)">${st}</div><div class="small muted" style="font-weight:600">${T('Day streak')}</div><div class="wdots">${dots}</div>
+        <div class="small muted" style="margin-top:6px;font-size:11px">${T('1 rest day a week is fine')}</div></div>
     </div>
+    ${badgesCard()}
     <div class="card"><div class="spread"><b style="font-size:17px">${T('Goal progress')}</b>${p && p.goal !== 'maintain' ? `<span class="etime">🚩 ${T('{n}% of goal', { n: r0(pct) })}</span>` : ''}</div>
       ${p && p.goal !== 'maintain' ? `<div class="hbar" style="margin:12px 0 16px"><i style="width:${pct}%;background:var(--ink)"></i></div>` : '<div style="height:12px"></div>'}
       ${wsR.length >= 2 ? weightChart(wsR, p && p.goal !== 'maintain' ? p.targetWeight : null) : `<p class="muted small" style="text-align:center;padding:24px 0">${T('Log your weight a few times to see your chart.')}</p>`}
@@ -2463,6 +2683,7 @@ function renderProgress() {
       <div class="bmi-bar"><b style="left:${clamp((bmi - 15) / 25 * 100, 0, 100)}%"></b></div>
       <div class="legend"><span style="--c:#5aa9f2">${T('Underweight')} &lt;18.5</span><span style="--c:var(--good)">${T('Healthy')} 18.5–24.9</span><span style="--c:#f5b83d">${T('Overweight')} 25–29.9</span><span style="--c:#ff5a4f">${T('Obese')} 30+</span></div></div>` : ''}
     ${ws.length ? `<div class="h2">${T('Weight history')}</div><div class="list">${ws.slice(-8).reverse().map(w => `<div class="li"><span class="grow">${fmtDate(w.date, { weekday: 'short', day: 'numeric', month: 'short' })}</span><b>${w.kg} kg</b><button class="muted" onclick="delWeight('${w.date}')" style="padding:0 4px">✕</button></div>`).join('')}</div>` : ''}`;
+  document.querySelectorAll('[data-badge]').forEach(b => b.onclick = () => openBadge(b.dataset.badge));
   $('#logW').onclick = openWeightSheet;
   document.querySelectorAll('[data-r]').forEach(b => b.onclick = () => { progRange = +b.dataset.r; renderProgress(); });
   document.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { nutWeek = +b.dataset.w; renderProgress(); });
@@ -2631,7 +2852,7 @@ ${days.join('\n')}
 === WEIGHT LOG (oldest → newest) ===
 ${ws.slice(-15).map(w => `${fmtD(w.date)}: ${w.kg} kg`).join('; ') || 'no entries'}
 
-Logging streak: ${streak()} days. Total meals ever logged: ${db.meals.length}.${mealPlanContext()}`;
+Logging streak: ${streak()} days (1 rest day per week allowed). Total meals ever logged: ${db.meals.length}. Badges earned: ${Object.keys(earned()).length} of ${BADGES.length}${goalProgress() ? `; ${r0(goalProgress().pct)}% of the way to the goal weight` : ''}${db.profile && db.profile.goal === 'maintain' && db.profile.maintainSince ? `; in maintenance mode since ${db.profile.maintainSince}, weight steady for ${keepDays()} days` : ''}.${mealPlanContext()}`;
 }
 
 const PLAN_COACH = {
@@ -3526,6 +3747,7 @@ if (openParam) { history.replaceState(null, '', location.pathname); handleOpen(o
 syncPush();
 setTimeout(() => askReminders(false), 2500);
 setTimeout(checkPlanWeek, 4800);
+setTimeout(checkRewards, 5200);
 setInterval(checkPlanWeek, 5 * 60e3);
 setTimeout(autoBackup, 9000);
 setInterval(autoBackup, 60 * 60e3);
