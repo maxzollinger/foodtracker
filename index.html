@@ -225,6 +225,37 @@ input[type=range]{-webkit-appearance:none;appearance:none;background:transparent
 input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--track)}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--ink);margin-top:-11px;border:3px solid var(--card);box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .tip{background:var(--chip);border-radius:16px;padding:14px 16px;font-size:14px;margin-top:16px}
+/* Meal plan */
+.mpcard{display:flex;align-items:center;gap:14px;width:100%;text-align:left}
+.mpcard .ic{width:48px;height:48px;border-radius:14px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:24px;flex:none}
+.mp-sub{margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mp-head{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:12px;padding:calc(10px + env(safe-area-inset-top)) 16px 10px;
+  background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.mp-back{width:40px;height:40px;border-radius:50%;background:var(--chip);font-size:24px;line-height:1;display:flex;align-items:center;justify-content:center;flex:none;padding-bottom:3px}
+.mp-title{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.mp-body{padding-top:6px;padding-bottom:calc(40px + env(safe-area-inset-bottom))}
+.mp-empty{text-align:center;padding:30px 22px}
+.mp-empty h3{margin:14px 0 6px}.mp-empty p{margin:0 0 20px}
+.mp-emoji{width:76px;height:76px;margin:0 auto;border-radius:24px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:38px}
+.mp-cat{padding:14px 16px 6px}
+.mp-catname{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:4px}
+.mp-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:11px 0;border-top:1px solid var(--line);font-size:16px}
+.mp-item:first-of-type{border-top:0}
+.mp-check{width:24px;height:24px;border-radius:50%;box-shadow:inset 0 0 0 2px var(--line);flex:none;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;transition:.15s}
+.mp-item.have .mp-check{background:var(--good);box-shadow:none;color:#fff}
+.mp-item.have .mp-iname{text-decoration:line-through;color:var(--muted)}
+.mp-qty{color:var(--muted);font-size:14px;font-weight:600;text-align:right;max-width:40%}
+.mp-day.today{box-shadow:var(--shadow),inset 0 0 0 2px var(--ink)}
+.mp-dayhead{margin-bottom:4px}
+.mp-meal{display:flex;gap:10px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+.mp-type{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.mp-name{font-weight:700;font-size:16px;margin:2px 0}
+.mp-mac{font-size:13px;font-weight:600;margin-top:4px}
+.mp-swap{width:38px;height:38px;border-radius:50%;background:var(--chip);flex:none;display:flex;align-items:center;justify-content:center;font-size:16px}
+.mp-tips{margin:8px 0 0;padding-left:20px}.mp-tips li{margin:6px 0}
+.mp-chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.mp-actions{gap:10px}.mp-actions .btn{font-size:14px;white-space:nowrap;padding:11px 8px}
+.mp-chips .chipbtn.on{background:var(--ink);color:var(--on-ink)}
 /* Language choice on the first setup screen: big and easy to find */
 .langpick{margin:0 0 14px;text-align:center}
 .lp-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:999px;background:var(--card);
@@ -483,7 +514,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v33';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v34';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -912,6 +943,7 @@ function renderHome() {
       <div style="font-size:24px;font-weight:800;letter-spacing:-.02em">${burned}<small class="muted" style="font-size:14px;font-weight:600"> kcal</small></div></div>
       <button class="btn sm" id="burnAdd">＋ ${T('Add')}</button>
       <div class="small muted note">${burnNote(t)}</div></div>
+    ${mealPlanCard()}
     <div class="h2">${sel === today ? T('Recently uploaded') : fmtDate(sel, { weekday: 'long', day: 'numeric', month: 'long' })}</div>
     ${list}`;
   document.querySelectorAll('.day').forEach(b => b.onclick = () => { sel = b.dataset.d; renderHome(); });
@@ -919,6 +951,7 @@ function renderHome() {
   $('#themeBtn').onclick = () => { setTheme(isDark() ? 'light' : 'dark'); renderHome(); };
   $('#burnAdd').onclick = e => { e.stopPropagation(); openBurnSheet(); };
   document.querySelector('.burncard').onclick = openBurnSheet;
+  $('#mpCard').onclick = openMealPlan;
   if ($('#planChip')) $('#planChip').onclick = openMainGoalSheet;
   $('#wPrev').onclick = () => { weekOff--; renderHome(); };
   $('#wNext').onclick = () => { if (weekOff < 0) { weekOff++; renderHome(); } };
@@ -1051,7 +1084,7 @@ async function askAI(parts, opt = {}) {
   const g = geminiKey(), c = getClaudeKey();
   if (!g && !c) throw new Error('NOKEY');
   const prov = [];
-  if (g) prov.push(() => geminiChain(g, msgs, opt.system, json, opt.onText));
+  if (g) prov.push(() => geminiChain(g, msgs, opt.system, json, opt.onText, opt.timeout));
   if (c) prov.push(() => claudeCall(c, msgs, opt.system, json, opt.onText));
   if (LS.get('ft_ai_first', 'gemini') === 'claude') prov.reverse();
   let err;
@@ -1078,7 +1111,7 @@ async function readSSE(res, onEvent) {
     }
   }
 }
-async function geminiOnce(key, model, msgs, system, json, onText) {
+async function geminiOnce(key, model, msgs, system, json, onText, ms) {
   const def = GEMINI.find(m => m.id === model) || {};
   const noThink = JSON.parse(LS.get('ft_nothink', '[]'));
   const think = def.think && !noThink.includes(model) ? def.think : null;
@@ -1088,7 +1121,7 @@ async function geminiOnce(key, model, msgs, system, json, onText) {
     generationConfig: { temperature: json ? 0.2 : 0.7, ...(json ? { responseMimeType: 'application/json' } : {}), ...(think ? { thinkingConfig: think } : {}) }
   };
   if (system) body.systemInstruction = { parts: [{ text: system }] };
-  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 30000);
+  const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), ms || 30000);
   let res;
   try {
     const viaServer = key === SHARED, method = onText ? 'streamGenerateContent' : 'generateContent';
@@ -1101,7 +1134,7 @@ async function geminiOnce(key, model, msgs, system, json, onText) {
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));
     const msg = (Array.isArray(data) ? data[0] : data)?.error?.message || 'HTTP ' + res.status;
-    if (think && res.status === 400 && /think/i.test(msg)) { noThink.push(model); LS.set('ft_nothink', JSON.stringify(noThink)); return geminiOnce(key, model, msgs, system, json, onText); }
+    if (think && res.status === 400 && /think/i.test(msg)) { noThink.push(model); LS.set('ft_nothink', JSON.stringify(noThink)); return geminiOnce(key, model, msgs, system, json, onText, ms); }
     return { ok: false, status: res.status, msg };
   }
   if (onText) {
@@ -1120,7 +1153,7 @@ async function geminiOnce(key, model, msgs, system, json, onText) {
   const text = (data.candidates?.[0]?.content?.parts || []).filter(p => !p.thought).map(p => p.text || '').join('');
   return text ? { ok: true, text } : { ok: false, status: 500, msg: 'empty answer (' + (data.candidates?.[0]?.finishReason || data.promptFeedback?.blockReason || 'unknown') + ')' };
 }
-async function geminiChain(key, msgs, system, json, onText) {
+async function geminiChain(key, msgs, system, json, onText, ms) {
   const cool = JSON.parse(LS.get('ft_cool', '{}')), now = Date.now();
   let list = GEMINI.map(m => m.id);
   const custom = LS.get('ft_model', ''), last = LS.get('ft_lastModel', '');
@@ -1130,7 +1163,7 @@ async function geminiChain(key, msgs, system, json, onText) {
   let err = aiErr(getClaudeKey() || !isAdmin() ? T('All free Google AI models are busy right now. Try again in a minute.') : T('All free Google AI models are busy right now. Try again in a minute, or add a Claude key in Settings.'));
   let offline = 0;
   for (const model of (ready.length ? ready : list)) {
-    const r = await geminiOnce(key, model, msgs, system, json, onText);
+    const r = await geminiOnce(key, model, msgs, system, json, onText, ms);
     if (r.ok) { LS.set('ft_lastModel', model); lastAI = model; return r.text; }
     if (r.status === 0 && ++offline >= 2) throw aiErr(T('No connection to the AI. Check your internet.'));
     if (key !== SHARED && (/api[_ ]?key|API_KEY_INVALID|unauthenticated/i.test(r.msg) || r.status === 401)) throw aiErr(T('Your Google AI key was rejected. Check it in Settings.'), true);
@@ -1377,6 +1410,270 @@ function openExercise(id) {
     };
     if (ex) s.querySelector('#eDel').onclick = () => { db.exercises = db.exercises.filter(x => x.id !== ex.id); save(); closeSheet(); renderHome(); };
   });
+}
+
+/* ================= Weekly meal plan & grocery list =================
+   The AI plans 7 days of meals that fit the user's goal, daily targets, preferences and what the coach
+   remembers, plus one merged shopping list for the week. Each week gets a new plan; old ones are kept
+   for a few weeks so the next plan doesn't repeat them. The coach sees the current plan too. */
+const mealPlans = () => (db.mealPlans = db.mealPlans || {});
+const mealPrefs = () => (db.mealPrefs = db.mealPrefs || { set: false, diet: 'all', avoid: '', likes: '', cook: 'normal', budget: 'normal', meals: '3+1', people: 1 });
+const weekStart = (s = iso()) => addDays(s, -((dt(s).getDay() + 6) % 7));
+const curPlan = () => mealPlans()[weekStart()];
+const weekLabel = ws => `${fmtDate(ws)} – ${fmtDate(addDays(ws, 6))}`;
+const MP_DIET = [['all', N('I eat everything')], ['vegetarian', N('Vegetarian')], ['vegan', N('Vegan')], ['pescatarian', N('Pescatarian (fish, no meat)')], ['nopork', N('No pork')], ['halal', N('Halal')]];
+const MP_COOK = [['quick', N('Quick (under 20 min)')], ['normal', N('Normal')], ['prep', N('Meal prep (cook 2–3× a week)')]];
+const MP_BUDGET = [['low', N('Low budget')], ['normal', N('Normal')], ['high', N('No limit')]];
+const MP_MEALS = [['2', N('2 meals')], ['3', N('3 meals')], ['3+1', N('3 meals + 1 snack')], ['3+2', N('3 meals + 2 snacks')]];
+const MP_DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+let mpBusy = null, mpTab = 'list';   // mpBusy: null, 'all' (whole plan) or 'day-meal' (one swap)
+
+function prefsText(pr) {
+  const lab = (list, v) => (list.find(x => x[0] === v) || list[0])[1];
+  return `diet: ${lab(MP_DIET, pr.diet)}; allergies / does not eat: ${pr.avoid || 'nothing special'}; loves: ${pr.likes || 'no special wishes'}; cooking time: ${lab(MP_COOK, pr.cook)}; budget: ${lab(MP_BUDGET, pr.budget)}; meals per day: ${lab(MP_MEALS, pr.meals)}; cooking for ${pr.people} person(s)`;
+}
+function planGoalText() {
+  const p = db.profile, t = targets(), id = planOf(p).id;
+  let s = `Daily targets per person: ${t.kcal} kcal, ${t.protein} g protein, ${t.carbs} g carbs, ${t.fat} g fat. Main goal: ${planOf(p).name} (${planOf(p).sub}). ${PLAN_COACH[id]}`;
+  if (id === 'if') { const f = fastState(p); s += ` Eating window ${f.startStr}-${f.endStr}: every meal must fit inside it.`; }
+  return s;
+}
+function planBrief(plan, withList) {
+  let s = plan.days.map((d, i) => `${MP_DAYS[i]}: ${d.meals.map(m => `${m.type} "${m.name}" (${m.kcal} kcal, ${m.protein} g P)`).join('; ')}`).join('\n');
+  if (withList) s += '\nGrocery list: ' + plan.groceries.map(g => `${g.cat}: ${g.items.map(i => `${i.name} ${i.qty}`).join(', ')}`).join(' | ');
+  return s;
+}
+const cleanMeal = m => ({ type: String(m.type || ''), name: String(m.name || ''), desc: String(m.desc || ''), min: r0(num(m.min)),
+  kcal: r0(num(m.kcal)), protein: r0(num(m.protein)), carbs: r0(num(m.carbs)), fat: r0(num(m.fat)) });
+const cleanGroceries = gs => gs.map(g => ({ cat: String(g.cat || ''), items: (g.items || []).filter(i => i && i.name)
+  .map(i => ({ name: String(i.name), qty: String(i.qty || ''), have: false })) })).filter(g => g.items.length);
+function trimPlans() { const ks = Object.keys(mealPlans()).sort(); ks.slice(0, Math.max(0, ks.length - 8)).forEach(k => delete db.mealPlans[k]); }
+
+async function generatePlan(change) {
+  if (mpBusy) return;
+  if (!hasAI()) return toast(T('Add your free AI key in Settings first.'));
+  const ws = weekStart(), pr = mealPrefs(), old = mealPlans()[ws];
+  const recent = Object.keys(mealPlans()).filter(k => k < ws).sort().slice(-2).flatMap(k => mealPlans()[k].days.flatMap(d => d.meals.map(m => m.name)));
+  mpBusy = 'all'; renderMealPlan();
+  const prompt = `Create a weekly meal plan and ONE grocery list for the whole week (Monday to Sunday, starting ${ws}).
+
+THE USER
+${planGoalText()}
+Preferences: ${prefsText(pr)}
+${memList().length ? 'What their nutrition coach knows about them: ' + memList().map(m => m.text).join('; ') : ''}
+
+RULES
+- 7 days. Every day has exactly the meals from "meals per day" (snacks use type "Snack"). Each day adds up to the daily kcal target (within ±5%) and reaches the protein target.
+- Tasty, varied, realistic home cooking with ingredients that are easy to find in a normal supermarket in the user's country (app locale ${LOC}). Different main dishes on different days; leftovers may be planned on purpose to save time.
+- Follow the diet, allergies and dislikes strictly. Match the cooking time and budget.
+- Reuse ingredients across the week so little is wasted.
+${recent.length ? `- Do NOT repeat these meals from the previous weeks: ${[...new Set(recent)].slice(0, 40).join(', ')}.` : ''}
+${change && old ? `- The user wants to CHANGE the current plan: "${change}". Keep what doesn't need to change.\nCurrent plan:\n${planBrief(old)}` : change ? `- Extra wish from the user: "${change}".` : ''}
+- The grocery list covers ALL meals for ${pr.people} person(s) for the whole week, merged (each ingredient once with the total amount, metric units or pieces), grouped into supermarket sections in a sensible shopping order. Leave out water; basic spices and oil go once into a pantry section.
+- "prep": 3 to 6 short, practical meal-prep tips for exactly this plan (what to cook ahead, on which day, how to store it).
+- Write all names, descriptions, section names and tips in ${langInfo().ai}. Nutrition numbers are per person, per serving.
+
+Return JSON only:
+{"days":[{"meals":[{"type":"Breakfast","name":"","desc":"one short sentence: main ingredients and how it is made","min":15,"kcal":0,"protein":0,"carbs":0,"fat":0}]}],"groceries":[{"cat":"","items":[{"name":"","qty":""}]}],"prep":[""]}`;
+  try {
+    const r = await askAI([{ text: prompt }], { timeout: 120000 });
+    if (!r || !Array.isArray(r.days) || r.days.length < 7 || !Array.isArray(r.groceries)) throw new Error(T('The AI answer was incomplete. Please try again.'));
+    mealPlans()[ws] = { created: Date.now(), days: r.days.slice(0, 7).map(d => ({ meals: (d.meals || []).map(cleanMeal) })),
+      groceries: cleanGroceries(r.groceries), prep: (r.prep || []).map(String).filter(Boolean).slice(0, 8) };
+    trimPlans(); save(); mpTab = 'list'; toast('✓ ' + T('Your meal plan is ready'));
+  } catch (e) { toast(aiMsg(e)); }
+  mpBusy = null; renderMealPlan(); if (tab === 'home') renderHome();
+}
+
+async function swapMeal(di, mi) {
+  const plan = curPlan();
+  if (!plan || mpBusy) return;
+  if (!hasAI()) return toast(T('Add your free AI key in Settings first.'));
+  const m = plan.days[di].meals[mi];
+  mpBusy = di + '-' + mi; renderMealPlan();
+  const prompt = `The user's weekly meal plan and grocery list:
+${planBrief(plan, true)}
+
+THE USER
+${planGoalText()}
+Preferences: ${prefsText(mealPrefs())}
+
+Replace ONLY this meal: ${MP_DAYS[di]}, ${m.type} "${m.name}" (${m.kcal} kcal, ${m.protein} g protein). Give a different, tasty meal of the same type with about the same calories and protein that is not already in the plan. Then return the complete updated grocery list (remove what is no longer needed, add what the new meal needs, keep the same sections). Write in ${langInfo().ai}.
+Return JSON only: {"meal":{"type":"","name":"","desc":"","min":15,"kcal":0,"protein":0,"carbs":0,"fat":0},"groceries":[{"cat":"","items":[{"name":"","qty":""}]}]}`;
+  try {
+    const r = await askAI([{ text: prompt }], { timeout: 90000 });
+    if (!r || !r.meal || !r.meal.name) throw new Error(T('The AI answer was incomplete. Please try again.'));
+    plan.days[di].meals[mi] = cleanMeal(r.meal);
+    if (Array.isArray(r.groceries) && r.groceries.length) {
+      const had = new Set(plan.groceries.flatMap(g => g.items.filter(i => i.have).map(i => i.name.toLowerCase())));
+      plan.groceries = cleanGroceries(r.groceries);
+      plan.groceries.forEach(g => g.items.forEach(i => { if (had.has(i.name.toLowerCase())) i.have = true; }));
+    }
+    save(); toast('✓ ' + T('Meal swapped'));
+  } catch (e) { toast(aiMsg(e)); }
+  mpBusy = null; renderMealPlan(); if (tab === 'home') renderHome();
+}
+
+// Home card
+function mealPlanCard() {
+  const plan = curPlan(), today = plan ? plan.days[(dt(iso()).getDay() + 6) % 7] : null;
+  const sub = plan ? (today && today.meals.length ? `${T('Today')}: ${today.meals.map(m => esc(m.name)).join(' · ')}` : T('Your plan for this week'))
+    : mpBusy === 'all' ? T('Creating your meal plan…') : T('Let AI plan tasty meals and your shopping list for this week');
+  return `<button class="card mpcard" id="mpCard"><div class="ic">🛒</div><div class="grow"><b>${T('Meal plan & groceries')}</b><div class="small muted mp-sub">${sub}</div></div><span class="muted" style="font-size:20px">›</span></button>`;
+}
+
+function openMealPlan() {
+  let pg = $('#mplan');
+  if (!pg) { pg = document.createElement('div'); pg.id = 'mplan'; pg.className = 'page'; document.body.appendChild(pg); document.body.style.overflow = 'hidden'; }
+  renderMealPlan();
+  // A new week: make the new plan right away (preferences are known)
+  if (!curPlan() && !mpBusy && mealPrefs().set && hasAI()) generatePlan();
+}
+function closeMealPlan() { $('#mplan')?.remove(); document.body.style.overflow = ''; if (tab === 'home') renderHome(); }
+
+function renderMealPlan() {
+  const pg = $('#mplan'); if (!pg) return;
+  const ws = weekStart(), plan = curPlan(), y = pg.scrollTop;
+  let body;
+  if (mpBusy === 'all') body = `<div class="card mp-empty"><div class="mp-emoji"><span class="spin" style="width:34px;height:34px;border-width:3.5px"></span></div>
+      <h3>${T('Creating your meal plan…')}</h3><p class="muted">${T('Matching it to your goal and preferences. This takes about 20–40 seconds.')}</p></div>`;
+  else if (!plan) body = `<div class="card mp-empty"><div class="mp-emoji">🥗</div><h3>${T('Your weekly meal plan')}</h3>
+      <p class="muted">${T('Tasty, varied meals that fit your goal, plus one shopping list for the whole week. A new plan every week.')}</p>
+      <button class="btn" id="mpCreate">✨ ${T("Create this week's plan")}</button></div>`;
+  else {
+    const total = plan.groceries.reduce((a, g) => a + g.items.length, 0), left = plan.groceries.reduce((a, g) => a + g.items.filter(i => !i.have).length, 0);
+    const list = `<p class="small muted" style="margin:12px 4px">${left ? T('{n} of {t} items still to buy · tap an item when you have it', { n: left, t: total }) : '✓ ' + T('You have everything for this week!')}</p>
+      ${plan.groceries.map((g, gi) => `<div class="card mp-cat"><div class="mp-catname">${esc(g.cat)}</div>${g.items.map((it, ii) =>
+        `<button class="mp-item ${it.have ? 'have' : ''}" data-gi="${gi}" data-ii="${ii}"><span class="mp-check">${it.have ? '✓' : ''}</span><span class="grow mp-iname">${esc(it.name)}</span><span class="mp-qty">${esc(it.qty)}</span></button>`).join('')}</div>`).join('')}`;
+    const meals = plan.days.map((d, di) => {
+      const date = addDays(ws, di), isToday = date === iso();
+      const tk = d.meals.reduce((a, m) => a + m.kcal, 0), tp = d.meals.reduce((a, m) => a + m.protein, 0);
+      return `<div class="card mp-day ${isToday ? 'today' : ''}"><div class="spread mp-dayhead"><b>${esc(fmtDate(date, { weekday: 'long', day: 'numeric', month: 'short' }))}${isToday ? ` · ${T('Today')}` : ''}</b><span class="small muted">${tk} kcal · ${tp} g P</span></div>
+        ${d.meals.map((m, mi) => `<div class="mp-meal"><div class="grow"><div class="mp-type">${esc(m.type)}${m.min ? ` · ${m.min} min` : ''}</div><div class="mp-name">${esc(m.name)}</div>
+          ${m.desc ? `<div class="small muted">${esc(m.desc)}</div>` : ''}<div class="mp-mac">${m.kcal} kcal · P ${m.protein} g · C ${m.carbs} g · F ${m.fat} g</div></div>
+          <button class="mp-swap" data-sw="${di}-${mi}" aria-label="${T('Swap meal')}">${mpBusy === di + '-' + mi ? '<span class="spin"></span>' : '🔄'}</button></div>`).join('')}</div>`;
+    }).join('') + (plan.prep.length ? `<div class="card"><b>🥡 ${T('Meal prep tips')}</b><ul class="mp-tips">${plan.prep.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : '');
+    body = `<button class="btn" id="mpCoach" style="font-size:15px;padding-left:12px;padding-right:12px">👨‍🍳 ${T('Get cooking & prep help from your coach')}</button>
+      <div class="row mp-actions" style="margin-top:10px"><button class="btn outline sm grow" id="mpEdit">✏️ ${T('Change plan')}</button><button class="btn outline sm grow" id="mpSave">⬇️ ${T('Save / share')}</button></div>
+      <div class="seg" style="margin-top:16px"><button data-mt="list" class="${mpTab === 'list' ? 'on' : ''}">🛒 ${T('Grocery list')}</button><button data-mt="meals" class="${mpTab === 'meals' ? 'on' : ''}">🍽 ${T('Meals')}</button></div>
+      ${mpTab === 'list' ? list : `<div style="height:12px"></div>${meals}`}`;
+  }
+  pg.innerHTML = `<div class="mp-head"><button class="mp-back" id="mpBack" aria-label="${T('Close')}">‹</button>
+      <div class="grow"><div class="mp-title">${T('Meal plan')}</div><div class="small muted">${weekLabel(ws)}</div></div>
+      <button class="chipbtn" id="mpPrefs">⚙︎ ${T('Preferences')}</button></div>
+    <div class="wrap mp-body">${body}</div>`;
+  pg.scrollTop = y;
+  pg.querySelector('#mpBack').onclick = closeMealPlan;
+  pg.querySelector('#mpPrefs').onclick = () => openMealPrefs(false);
+  if (pg.querySelector('#mpCreate')) pg.querySelector('#mpCreate').onclick = () => mealPrefs().set ? generatePlan() : openMealPrefs(true);
+  if (pg.querySelector('#mpCoach')) pg.querySelector('#mpCoach').onclick = askCoachAboutPlan;
+  if (pg.querySelector('#mpEdit')) pg.querySelector('#mpEdit').onclick = openPlanChange;
+  if (pg.querySelector('#mpSave')) pg.querySelector('#mpSave').onclick = exportPlan;
+  pg.querySelectorAll('[data-mt]').forEach(b => b.onclick = () => { mpTab = b.dataset.mt; renderMealPlan(); });
+  pg.querySelectorAll('[data-gi]').forEach(b => b.onclick = () => {
+    const it = plan.groceries[b.dataset.gi].items[b.dataset.ii]; it.have = !it.have; save(); renderMealPlan();
+  });
+  pg.querySelectorAll('[data-sw]').forEach(b => b.onclick = () => { const [di, mi] = b.dataset.sw.split('-').map(Number); swapMeal(di, mi); });
+}
+
+function openMealPrefs(thenGenerate) {
+  const pr = clone(mealPrefs());
+  const pick = (id, list, v) => `<select id="${id}">${list.map(([k, l]) => `<option value="${k}" ${k === v ? 'selected' : ''}>${T(l)}</option>`).join('')}</select>`;
+  sheet(`<h3>🥗 ${T('Meal plan preferences')}</h3>
+    <p class="muted" style="margin-top:4px">${T('Your plan is made for your goal and daily targets. Tell us what you like.')}</p>
+    <label class="lbl">${T('Diet')}</label>${pick('mpDiet', MP_DIET, pr.diet)}
+    <label class="lbl">${T("Allergies or foods you don't eat")}</label><input id="mpAvoid" value="${esc(pr.avoid)}" placeholder="${T('e.g. nuts, mushrooms, lactose')}">
+    <label class="lbl">${T('Foods and cuisines you love')}</label><input id="mpLikes" value="${esc(pr.likes)}" placeholder="${T('e.g. chicken, rice, Italian, spicy')}">
+    <div class="row"><div class="grow"><label class="lbl">${T('Meals per day')}</label>${pick('mpMeals', MP_MEALS, pr.meals)}</div>
+      <div style="width:96px"><label class="lbl">${T('People')}</label><select id="mpPeople">${[1, 2, 3, 4, 5, 6].map(n => `<option ${n == pr.people ? 'selected' : ''}>${n}</option>`).join('')}</select></div></div>
+    <div class="row"><div class="grow"><label class="lbl">${T('Cooking time')}</label>${pick('mpCook', MP_COOK, pr.cook)}</div>
+      <div class="grow"><label class="lbl">${T('Budget')}</label>${pick('mpBudget', MP_BUDGET, pr.budget)}</div></div>
+    <button class="btn" id="mpPSave" style="margin-top:20px">${thenGenerate ? '✨ ' + T('Create my plan') : T('Save')}</button>
+    ${!thenGenerate && curPlan() ? `<p class="small muted" style="text-align:center;margin:10px 0 0">${T('Saved preferences are used for your next plans. To change this week now, tap "Change plan".')}</p>` : ''}`, sh => {
+    sh.querySelector('#mpPSave').onclick = () => {
+      db.mealPrefs = { set: true, diet: sh.querySelector('#mpDiet').value, avoid: sh.querySelector('#mpAvoid').value.trim(), likes: sh.querySelector('#mpLikes').value.trim(),
+        meals: sh.querySelector('#mpMeals').value, people: +sh.querySelector('#mpPeople').value || 1, cook: sh.querySelector('#mpCook').value, budget: sh.querySelector('#mpBudget').value };
+      save(); closeSheet();
+      if (thenGenerate || !curPlan()) generatePlan(); else { toast(T('✓ Saved')); renderMealPlan(); }
+    };
+  });
+}
+
+function openPlanChange() {
+  const chips = [N('Completely new ideas'), N('Cheaper'), N('Quicker to cook'), N('More protein'), N('More variety'), N('Fewer ingredients')];
+  sheet(`<h3>✏️ ${T('Change plan')}</h3>
+    <p class="muted" style="margin-top:4px">${T('Tell the AI what to change. Your goal and preferences stay. To swap just one meal, tap 🔄 next to it.')}</p>
+    <div class="mp-chips">${chips.map(c => `<button class="chipbtn" data-c="${esc(T(c))}">${T(c)}</button>`).join('')}</div>
+    <textarea id="mpChange" placeholder="${T('e.g. no fish, more chicken, easy lunches for work')}"></textarea>
+    <button class="btn" id="mpGo" style="margin-top:14px">✨ ${T('Update plan')}</button>
+    <button class="btn outline" id="mpPrefs2" style="margin-top:10px">⚙︎ ${T('Edit preferences')}</button>`, sh => {
+    const ta = sh.querySelector('#mpChange');
+    sh.querySelectorAll('[data-c]').forEach(b => b.onclick = () => {
+      const parts = ta.value.split(',').map(s => s.trim()).filter(Boolean), c = b.dataset.c, i = parts.indexOf(c);
+      if (i >= 0) parts.splice(i, 1); else parts.push(c);
+      ta.value = parts.join(', '); b.classList.toggle('on', i < 0);
+    });
+    sh.querySelector('#mpGo').onclick = () => { const v = ta.value.trim() || T('Completely new ideas'); closeSheet(); generatePlan(v); };
+    sh.querySelector('#mpPrefs2').onclick = () => openMealPrefs(false);
+  });
+}
+
+function askCoachAboutPlan() {
+  closeMealPlan(); go('chat');
+  setTimeout(() => sendChat(T('Help me with my meal plan this week: make me a simple meal prep and cooking schedule, and give me tips for cooking the meals.')), 400);
+}
+
+// Saves the grocery list + meal plan as one image (iPhone: "Save Image" → Photos, or "Save to Files")
+async function exportPlan() {
+  const plan = curPlan(); if (!plan) return;
+  const ws = weekStart(), W = 1080, P = 72, c = document.createElement('canvas'), x = c.getContext('2d');
+  const font = (s, w) => `${w} ${s}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+  const layout = draw => {
+    let y = P;
+    const text = (t, size, w, color, gap = 1.4) => {
+      x.font = font(size, w);
+      const max = W - P * 2, lines = []; let line = '';
+      for (const wd of String(t).split(' ')) { const tl = line ? line + ' ' + wd : wd; if (line && x.measureText(tl).width > max) { lines.push(line); line = wd; } else line = tl; }
+      lines.push(line);
+      for (const l of lines) { y += size * gap; if (draw) { x.fillStyle = color; x.fillText(l, P, y); } }
+    };
+    text(T('Grocery list'), 62, 800, '#111', 1.2);
+    text(`${weekLabel(ws)} · Food Tracker`, 30, 500, '#8a8a8e');
+    for (const g of plan.groceries) {
+      y += 30; text(g.cat, 36, 700, '#f08000');
+      for (const it of g.items) text(`${it.have ? '☑' : '☐'}  ${it.name}${it.qty ? ' — ' + it.qty : ''}`, 32, 400, it.have ? '#b0b0b4' : '#222', 1.5);
+    }
+    y += 56; text(T('Meal plan'), 52, 800, '#111', 1.2);
+    plan.days.forEach((d, i) => {
+      y += 26; text(fmtDate(addDays(ws, i), { weekday: 'long', day: 'numeric', month: 'short' }), 34, 700, '#f08000');
+      for (const m of d.meals) text(`${m.type}: ${m.name} · ${m.kcal} kcal, ${m.protein} g P`, 29, 400, '#222', 1.5);
+    });
+    if (plan.prep.length) { y += 44; text(T('Meal prep tips'), 40, 800, '#111', 1.2); for (const t of plan.prep) text('• ' + t, 29, 400, '#222', 1.5); }
+    return Math.ceil(y + P);
+  };
+  c.width = W; c.height = 10; const H = layout(false);
+  c.width = W; c.height = H; x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); layout(true);
+  // Made without waiting, so the iPhone still allows the share menu for this tap
+  const bin = atob(c.toDataURL('image/png').split(',')[1]), bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  const file = new File([bytes], `grocery-list-${ws}.png`, { type: 'image/png' });
+  try { if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file] }); return; } }
+  catch (e) { if (e.name === 'AbortError') return; }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = file.name;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);
+}
+
+// For the coach (kept in English)
+function mealPlanContext() {
+  const plan = curPlan(), pr = mealPrefs();
+  if (!plan) return `\n\n=== WEEKLY MEAL PLAN ===\nNo meal plan for this week yet. The user can create one on the Home screen under "Meal plan & groceries".${pr.set ? `\nTheir meal plan preferences: ${prefsText(pr)}` : ''}`;
+  const ws = weekStart(), today = (dt(iso()).getDay() + 6) % 7;
+  return `\n\n=== WEEKLY MEAL PLAN (week of ${ws}; made by the app's AI, the user sees it in the app) ===
+Preferences: ${prefsText(pr)}
+${plan.days.map((d, i) => `${MP_DAYS[i]}${i === today ? ' (TODAY)' : ''}: ${d.meals.map(m => `${m.type}: ${m.name} — ${m.desc} (${m.kcal} kcal, P ${m.protein} g, C ${m.carbs} g, F ${m.fat} g${m.min ? `, ${m.min} min` : ''})`).join(' | ')}`).join('\n')}
+GROCERY LIST (✓ = already bought / at home):
+${plan.groceries.map(g => `${g.cat}: ${g.items.map(i => `${i.have ? '✓ ' : ''}${i.name} ${i.qty}`).join(', ')}`).join('\n')}
+Meal prep tips in the app: ${plan.prep.join(' / ') || 'none'}`;
 }
 
 /* ================= Food detail ================= */
@@ -1718,7 +2015,7 @@ ${days.join('\n')}
 === WEIGHT LOG (oldest → newest) ===
 ${ws.slice(-15).map(w => `${fmtD(w.date)}: ${w.kg} kg`).join('; ') || 'no entries'}
 
-Logging streak: ${streak()} days. Total meals ever logged: ${db.meals.length}.`;
+Logging streak: ${streak()} days. Total meals ever logged: ${db.meals.length}.${mealPlanContext()}`;
 }
 
 const PLAN_COACH = {
@@ -1744,6 +2041,7 @@ RULES
 - When suggesting food, give concrete foods with grams plus calories and protein, and make them fit exactly what is left today. Vary suggestions; look at what they ate recently.
 - Use metric units. The app is set to ${langInfo().ai}: answer in ${langInfo().ai} unless the user writes in another language, then answer in theirs.
 - You are not a doctor. For medical conditions, medication, pregnancy or signs of an eating disorder, recommend a professional.
+- The app has a weekly meal plan and grocery list (see WEEKLY MEAL PLAN below). For cooking, meal prep or planning questions, base your help on that plan: a concrete prep schedule (which day, what to cook ahead, how to store it and for how long), simple cooking steps, and swaps that keep them on target. Refer to today's planned meals when it fits. If they change something, tell them they can also swap meals or change the plan on the meal plan page.
 ${db.profile ? '- ' + PLAN_COACH[planOf(db.profile).id] + '\n' : ''}
 MEMORY
 - Below is what you remember about the user from earlier chats. Use it naturally.
