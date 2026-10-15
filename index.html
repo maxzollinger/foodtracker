@@ -246,7 +246,7 @@ body.chatting .fab{display:none}
 body.typing .tabbar{display:none}
 body.typing .chatbar{bottom:0;padding-bottom:6px}
 .chatbar.hasText .chips{display:none}
-body.chatting.typing{padding-bottom:140px}
+
 .msgs{display:flex;flex-direction:column;gap:12px;margin-top:10px}
 .msg{max-width:86%;padding:12px 16px;border-radius:20px;font-size:16px;line-height:1.55;word-wrap:break-word}
 .msg.new{animation:msgIn .35s ease}
@@ -269,8 +269,33 @@ body.chatting.typing{padding-bottom:140px}
 .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
 .chips button{flex:none;background:var(--ink);color:var(--on-ink);border-radius:999px;padding:10px 16px;font-size:14px;font-weight:600}
+.chatbar .in{position:relative}
+.chatbar .mic{color:var(--muted)}
+.chatbar .mic svg{width:22px;height:22px}
+.chatbar .composer .send{display:none}
+.chatbar.hasText .composer .send{display:flex}
+.chatbar.hasText .composer .mic{display:none}
+.composer textarea::placeholder{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pmenu{position:absolute;left:0;bottom:62px;z-index:3;width:min(300px,82vw);padding:8px 6px;border-radius:24px;background:var(--card);
+  box-shadow:0 10px 40px rgba(0,0,0,.45),inset 0 0 0 1px var(--line);
+  opacity:0;transform:translateY(10px) scale(.97);transform-origin:bottom left;pointer-events:none;transition:.18s ease}
+.chatbar.menuOpen .pmenu{opacity:1;transform:none;pointer-events:auto}
+.pmenu button{display:flex;align-items:center;gap:16px;width:100%;padding:15px 16px;text-transform:uppercase;letter-spacing:.09em;font-size:14px;font-weight:700;text-align:left}
+.pmenu svg{width:28px;height:28px;color:var(--muted);flex:none}
+.recbar{display:none;align-items:center;gap:10px;background:var(--card);border-radius:18px;padding:6px 8px;box-shadow:inset 0 0 0 1.5px var(--line),0 0 24px color-mix(in srgb,var(--fat) 35%,transparent)}
+.chatbar.recording .recbar{display:flex}
+.chatbar.recording .crow{display:none}
+.recbar .cbtn{width:42px;height:42px;font-size:20px;font-weight:600;display:flex;align-items:center;justify-content:center;flex:none}
+.recbar .ok{color:var(--fat);font-size:24px}
+.wave{flex:1;min-width:0;height:40px;display:flex;align-items:center;justify-content:flex-end;gap:3px;overflow:hidden}
+.wave i{width:4px;border-radius:2px;background:var(--muted);transition:height .07s}
+.wave i.dot{height:4px;opacity:.5}
+.downbtn{position:absolute;left:50%;top:-58px;width:42px;height:42px;margin-left:-21px;border-radius:50%;background:var(--ink);color:var(--on-ink);font-size:20px;font-weight:700;
+  box-shadow:0 4px 14px rgba(0,0,0,.3);opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s}
+.downbtn.show{opacity:1;transform:none;pointer-events:auto}
+.filetag{font-size:13px;font-weight:600;margin-bottom:4px}
 .crow{display:flex;gap:10px;align-items:flex-end}
-.plusbtn{width:50px;height:50px;border-radius:16px;flex:none;background:var(--card);box-shadow:inset 0 0 0 1.5px var(--line);font-size:28px;font-weight:300;display:flex;align-items:center;justify-content:center}
+.plusbtn{width:50px;height:50px;border-radius:16px;flex:none;background:var(--card);box-shadow:inset 0 0 0 1.5px var(--line);font-size:26px;font-weight:300;display:flex;align-items:center;justify-content:center}
 .composer{flex:1;min-width:0;display:flex;gap:8px;align-items:flex-end;background:var(--card);border-radius:18px;padding:5px 5px 5px 10px;box-shadow:inset 0 0 0 1.5px var(--line)}
 .composer textarea{min-height:0;height:40px;max-height:120px;overflow-y:hidden;background:none;padding:10px 6px;border-radius:0}
 .composer .cbtn{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:18px}
@@ -304,6 +329,8 @@ body.chatting.typing{padding-bottom:140px}
 <input type="file" accept="image/*" capture="environment" id="fileBar" class="hiddenfile">
 <input type="file" accept="application/json,.json" id="fileImport" class="hiddenfile">
 <input type="file" accept="image/*" id="fileChat" class="hiddenfile">
+<input type="file" accept="image/*" capture="environment" id="fileChatCam" class="hiddenfile">
+<input type="file" accept=".pdf,.txt,.csv,.md,application/pdf,text/plain,text/csv,text/markdown" id="fileChatDoc" class="hiddenfile">
 <div id="qr-hidden" style="display:none"></div>
 <div id="toast"></div>
 
@@ -677,6 +704,8 @@ function go(t) {
   document.body.classList.toggle('chatting', t === 'chat');
   document.body.classList.remove('typing');
   $('.chatbar')?.remove();
+  document.body.style.paddingBottom = '';
+  if (rec) finishVoice(false);
   window.scrollTo(0, 0);
   render();
 }
@@ -926,7 +955,7 @@ async function geminiOnce(key, model, msgs, system, json, onText) {
   const think = def.think && !noThink.includes(model) ? def.think : null;
   const body = {
     contents: msgs.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user',
-      parts: m.parts.map(p => p.image ? { inlineData: { mimeType: 'image/jpeg', data: p.image } } : { text: p.text }) })),
+      parts: m.parts.map(p => p.image ? { inlineData: { mimeType: 'image/jpeg', data: p.image } } : p.inline ? { inlineData: { mimeType: p.inline.mime, data: p.inline.data } } : { text: p.text }) })),
     generationConfig: { temperature: json ? 0.2 : 0.7, ...(json ? { responseMimeType: 'application/json' } : {}), ...(think ? { thinkingConfig: think } : {}) }
   };
   if (system) body.systemInstruction = { parts: [{ text: system }] };
@@ -988,7 +1017,9 @@ async function claudeCall(key, msgs, system, json, onText) {
   const body = {
     model, max_tokens: 8000, output_config: { effort: 'low' },
     messages: msgs.map(m => ({ role: m.role, content: m.parts.map(p => p.image
-      ? { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: p.image } } : { type: 'text', text: p.text }) }))
+      ? { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: p.image } }
+      : p.inline ? (p.inline.mime === 'application/pdf' ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: p.inline.data } } : { type: 'text', text: '[attachment type not supported]' })
+      : { type: 'text', text: p.text }) }))
   };
   if (system || json) body.system = [system, json ? jsonRule : ''].filter(Boolean).join('\n\n');
   if (isOpus) body.fallbacks = 'default';   // re-runs a declined request on Anthropic's recommended fallback model
@@ -1071,10 +1102,24 @@ async function onFoodPhoto(file) {
 }
 $('#fileCam').onchange = e => { onFoodPhoto(e.target.files[0]); e.target.value = ''; };
 $('#fileLib').onchange = e => { onFoodPhoto(e.target.files[0]); e.target.value = ''; };
-$('#fileChat').onchange = async e => {
+async function chatPhoto(e) {
   const f = e.target.files[0]; e.target.value = ''; if (!f) return;
-  try { const full = await scaleImage(f, 960); chatImg = { full: full.split(',')[1], thumb: await scaleImage(full, 240) }; renderAttach(); }
+  try { const full = await scaleImage(f, 960); chatImg = { kind: 'image', full: full.split(',')[1], thumb: await scaleImage(full, 240) }; renderAttach(); }
   catch (err) { toast(err.message); }
+}
+$('#fileChat').onchange = chatPhoto;
+$('#fileChatCam').onchange = chatPhoto;
+// Files for the coach: PDFs go to the AI as documents, text files as text
+$('#fileChatDoc').onchange = async e => {
+  const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  if (f.size > 15 * 1024 * 1024) return toast(T('This file is too large.'));
+  try {
+    if (f.type === 'application/pdf' || /\.pdf$/i.test(f.name)) {
+      const data = await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(',')[1]); r.onerror = rej; r.readAsDataURL(f); });
+      chatImg = { kind: 'file', name: f.name, mime: 'application/pdf', data };
+    } else chatImg = { kind: 'file', name: f.name, text: (await f.text()).slice(0, 100000) };
+    renderAttach();
+  } catch { toast(T('Could not read this file.')); }
 };
 
 function openDescribeSheet() {
@@ -1582,45 +1627,163 @@ ${coachContext()}`;
 function chatBubble(m, anim) {
   const a = anim ? ' new' : '';
   return m.role === 'user'
-    ? `<div class="msg user${a}">${m.img ? `<img src="${m.img}" alt="">` : ''}${esc(m.text).replace(/\n/g, '<br>')}</div>`
+    ? `<div class="msg user${a}">${m.img ? `<img src="${m.img}" alt="">` : ''}${m.file ? `<div class="filetag">📄 ${esc(m.file)}</div>` : ''}${esc(m.text).replace(/\n/g, '<br>')}</div>`
     : `<div class="msg ai${a} ${m.err ? 'err' : ''}">${m.err ? esc(m.text) : md(m.text)}${m.mem ? `<div class="memnote">🧠 ${T('Remembered')}</div>` : ''}</div>`;
 }
+const CICON = {
+  newchat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M4 4h16v12H9l-5 4z"/><path d="M12 7v6M9 10h6"/></svg>',
+  image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="M4 18l6-6 4 4 3-3 3 3"/></svg>',
+  camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+  file: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg>',
+  mic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>'
+};
 function renderChat(animLast) {
   const n = memList().length;
   $('#view').innerHTML = `
-    <div class="top"><div class="brand">${T('AI Coach')}</div><div class="row" style="gap:8px">
-      <button class="chipbtn" id="cMem" aria-label="${T('Memory')}">🧠${n ? ' ' + n : ''}</button>${chat.length ? `<button class="chipbtn" id="cClear">${T('New chat')}</button>` : ''}</div></div>
+    <div class="top"><div class="brand">${T('AI Coach')}</div><button class="chipbtn" id="cMem" aria-label="${T('Memory')}">🧠${n ? ' ' + n : ''}</button></div>
     ${!chat.length ? `<div class="empty" style="margin-top:14px"><div style="font-size:40px">🥗</div><b>${T('Ask me anything')}</b>
       <span class="muted">${T('I always see your latest numbers, meals, goals and progress, and I remember what you tell me.')}</span></div>` : ''}
     <div class="msgs" id="msgs">${chat.map((m, i) => chatBubble(m, animLast && i === chat.length - 1)).join('')}${chatBusy ? '<div class="msg ai new" id="live"><span class="dots"><span></span><span></span><span></span></span></div>' : ''}</div>`;
-  let bar = $('.chatbar');
-  if (!bar) {
-    bar = document.createElement('div'); bar.className = 'chatbar';
-    bar.innerHTML = `<div class="in"><div class="chips">${chipsFor().map(c => `<button>${esc(T(c))}</button>`).join('')}</div><div id="cAttach"></div>
-      <div class="crow"><button class="plusbtn" id="cPhoto" aria-label="${T('Add photo')}">＋</button>
-      <div class="composer"><textarea id="cIn" rows="1" placeholder="${T('Ask your coach anything')}"></textarea><button class="cbtn send" id="cSend" aria-label="${T('Send')}">↑</button></div></div></div>`;
-    document.body.appendChild(bar);
-    const ta = bar.querySelector('#cIn');
-    ta.oninput = () => { ta.style.height = '40px'; ta.style.height = Math.min(ta.scrollHeight, 120) + 'px'; bar.classList.toggle('hasText', !!ta.value.trim()); };
-    // While typing, hide the tab bar and suggestions so there's more room for the conversation
-    let blurT;
-    ta.addEventListener('focus', () => { clearTimeout(blurT); document.body.classList.add('typing'); setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 250); });
-    ta.addEventListener('blur', () => { blurT = setTimeout(() => document.body.classList.remove('typing'), 120); });
-    // Tapping send keeps the keyboard open (no layout jump under your finger)
-    bar.querySelector('#cSend').addEventListener('pointerdown', e => { if (document.activeElement === ta) e.preventDefault(); });
-    bar.querySelectorAll('.chips button').forEach(b => b.onclick = () => sendChat(b.textContent));
-    bar.querySelector('#cSend').onclick = () => { const v = ta.value.trim(); if (v || chatImg) { ta.value = ''; ta.oninput(); sendChat(v); } };
-    bar.querySelector('#cPhoto').onclick = () => $('#fileChat').click();
-  }
+  if (!$('.chatbar')) buildChatbar();
   renderAttach();
   $('#cMem').onclick = openMemorySheet;
-  if ($('#cClear')) $('#cClear').onclick = () => { if (confirm(T('Start a new chat? The conversation is cleared, but your coach keeps its memory.'))) { chat = []; saveChat(); renderChat(); } };
-  requestAnimationFrame(() => window.scrollTo(0, document.body.scrollHeight));
+  requestAnimationFrame(() => { chatPad(); window.scrollTo(0, document.body.scrollHeight); requestAnimationFrame(updateDown); });
+}
+function buildChatbar() {
+  const bar = document.createElement('div'); bar.className = 'chatbar';
+  bar.innerHTML = `<div class="in">
+    <button class="downbtn" id="cDown" aria-label="${T('Jump to the latest message')}">↓</button>
+    <div class="chips">${chipsFor().map(c => `<button>${esc(T(c))}</button>`).join('')}</div><div id="cAttach"></div>
+    <div class="pmenu" id="cMenu">
+      <button data-act="new">${CICON.newchat}<span>${T('New conversation')}</span></button>
+      <button data-act="image">${CICON.image}<span>${T('Upload image')}</span></button>
+      <button data-act="photo">${CICON.camera}<span>${T('Take photo')}</span></button>
+      <button data-act="file">${CICON.file}<span>${T('Upload file')}</span></button>
+    </div>
+    <div class="crow"><button class="plusbtn" id="cPlus" aria-label="${T('More')}">＋</button>
+      <div class="composer"><textarea id="cIn" rows="1" placeholder="${T('Ask your coach anything')}"></textarea>
+        <button class="cbtn mic" id="cMic" aria-label="${T('Speak')}">${CICON.mic}</button><button class="cbtn send" id="cSend" aria-label="${T('Send')}">↑</button></div></div>
+    <div class="recbar"><button class="cbtn" id="cRecX" aria-label="${T('Close')}">✕</button><div class="wave" id="cWave"></div><button class="cbtn ok" id="cRecOk" aria-label="${T('Done')}">✓</button></div>
+  </div>`;
+  document.body.appendChild(bar);
+  const ta = bar.querySelector('#cIn');
+  ta.oninput = () => { ta.style.height = '40px'; ta.style.height = Math.min(ta.scrollHeight, 120) + 'px'; updateSendState(); };
+  // While typing, hide the tab bar so there's more room for the conversation
+  let blurT;
+  ta.addEventListener('focus', () => { clearTimeout(blurT); closeChatMenu(); document.body.classList.add('typing'); setTimeout(() => { chatPad(); window.scrollTo(0, document.body.scrollHeight); }, 250); });
+  ta.addEventListener('blur', () => { blurT = setTimeout(() => { document.body.classList.remove('typing'); chatPad(); }, 120); });
+  // Tapping send keeps the keyboard open (no layout jump under your finger)
+  bar.querySelector('#cSend').addEventListener('pointerdown', e => { if (document.activeElement === ta) e.preventDefault(); });
+  bar.querySelectorAll('.chips button').forEach(b => b.onclick = () => sendChat(b.textContent));
+  bar.querySelector('#cSend').onclick = () => { const v = ta.value.trim(); if (v || chatImg) { ta.value = ''; ta.oninput(); sendChat(v); } };
+  bar.querySelector('#cPlus').onclick = e => { e.stopPropagation(); bar.classList.contains('menuOpen') ? closeChatMenu() : (bar.classList.add('menuOpen'), bar.querySelector('#cPlus').textContent = '✕'); };
+  bar.querySelectorAll('[data-act]').forEach(b => b.onclick = () => {
+    closeChatMenu();
+    const a = b.dataset.act;
+    if (a === 'new') { chat = []; saveChat(); chatImg = null; renderChat(); toast('✓ ' + T('New conversation')); }
+    if (a === 'image') $('#fileChat').click();
+    if (a === 'photo') $('#fileChatCam').click();
+    if (a === 'file') $('#fileChatDoc').click();
+  });
+  bar.querySelector('#cMic').onclick = startVoice;
+  bar.querySelector('#cRecX').onclick = () => finishVoice(false);
+  bar.querySelector('#cRecOk').onclick = () => finishVoice(true);
+  bar.querySelector('#cDown').onclick = () => { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); setTimeout(updateDown, 700); };
+  if (window.ResizeObserver) new ResizeObserver(chatPad).observe(bar);
+  updateSendState();
+}
+function closeChatMenu() { const bar = $('.chatbar'); if (bar && bar.classList.contains('menuOpen')) { bar.classList.remove('menuOpen'); bar.querySelector('#cPlus').textContent = '＋'; } }
+document.addEventListener('click', e => { if (!e.target.closest('#cMenu') && !e.target.closest('#cPlus')) closeChatMenu(); });
+// Mic when empty, send arrow when there's something to send
+function updateSendState() { const bar = $('.chatbar'); if (bar) bar.classList.toggle('hasText', !!($('#cIn').value.trim() || chatImg)); }
+// Keep exactly enough room under the messages for the bar, so no text hides behind it
+function chatPad() {
+  const bar = $('.chatbar');
+  if (!bar || tab !== 'chat') { document.body.style.paddingBottom = ''; return; }
+  document.body.style.paddingBottom = Math.max(0, window.innerHeight - bar.getBoundingClientRect().top + 16) + 'px';
+  updateDown();
+}
+// "↓" only shows when you've scrolled up away from the latest message
+function updateDown() {
+  const b = $('#cDown'); if (!b) return;
+  b.classList.toggle('show', tab === 'chat' && window.innerHeight + window.scrollY < document.body.scrollHeight - 160);
+}
+window.addEventListener('scroll', updateDown, { passive: true });
+document.addEventListener('scroll', updateDown, { passive: true });
+setInterval(() => { if (tab === 'chat') updateDown(); }, 1000);   // safety net if a scroll event is missed
+window.addEventListener('resize', chatPad);
+if (window.visualViewport) visualViewport.addEventListener('resize', () => setTimeout(chatPad, 50));
+
+/* --- Voice input: record, show a live sound wave, then turn it into text with Gemini --- */
+let rec = null;
+async function startVoice() {
+  if (rec) return;
+  if (!getKey()) return toast(T('Voice input needs your free Google AI key (Settings).'));
+  if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) return toast(T('Voice input is not supported on this device.'));
+  closeChatMenu();
+  let stream;
+  try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+  catch { return toast(T('Microphone access was blocked. Allow it in iPhone Settings → FoodTracker.')); }
+  const ac = new (window.AudioContext || window.webkitAudioContext)();
+  ac.resume?.();
+  const an = ac.createAnalyser(); an.fftSize = 512; ac.createMediaStreamSource(stream).connect(an);
+  const mr = new MediaRecorder(stream), chunks = [];
+  mr.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+  mr.start(250);
+  const levels = Array(34).fill(0), buf = new Uint8Array(an.fftSize), wave = $('#cWave');
+  const timer = setInterval(() => {
+    an.getByteTimeDomainData(buf);
+    let sum = 0; for (const v of buf) { const x = (v - 128) / 128; sum += x * x; }
+    levels.push(Math.min(1, Math.sqrt(sum / buf.length) * 5)); levels.shift();
+    wave.innerHTML = levels.map(l => l > 0.06 ? `<i style="height:${Math.round(6 + l * 22)}px"></i>` : '<i class="dot"></i>').join('');
+  }, 70);
+  rec = { stream, ac, mr, chunks, timer, auto: setTimeout(() => finishVoice(true), 120000) };
+  $('.chatbar').classList.add('recording');
+}
+async function finishVoice(keep) {
+  if (!rec) return;
+  const r = rec; rec = null;
+  clearInterval(r.timer); clearTimeout(r.auto);
+  const stopped = new Promise(res => { r.mr.onstop = res; });
+  try { r.mr.stop(); } catch {}
+  await Promise.race([stopped, new Promise(res => setTimeout(res, 1500))]);
+  r.stream.getTracks().forEach(t => t.stop()); r.ac.close?.().catch(() => {});
+  const bar = $('.chatbar');
+  if (!keep || !bar) { bar?.classList.remove('recording'); return; }
+  $('#cWave').innerHTML = `<span class="small muted"><span class="spin"></span> ${T('Transcribing…')}</span>`;
+  try {
+    const wav = await toWav16k(new Blob(r.chunks, { type: r.mr.mimeType || 'audio/mp4' }));
+    const prompt = 'Transcribe this voice message word for word, in the language that is spoken. Return only the transcript text, nothing else.';
+    const text = (await geminiChain(getKey(), [{ role: 'user', parts: [{ text: prompt }, { inline: { mime: 'audio/wav', data: wav } }] }], '', false, null)).trim().replace(/^["“]|["”]$/g, '');
+    if (!text) throw new Error(T('Could not understand the recording. Please try again.'));
+    bar.classList.remove('recording');   // show the text box again before sizing it
+    const ta = $('#cIn'); ta.value = (ta.value.trim() ? ta.value.trim() + ' ' : '') + text; ta.oninput();
+  } catch (e) { toast(e.message || T('Could not understand the recording. Please try again.')); }
+  bar.classList.remove('recording');
+}
+// Any recording (iPhone records AAC) → 16 kHz mono WAV, which every AI model accepts
+async function toWav16k(blob) {
+  const ac = new (window.AudioContext || window.webkitAudioContext)();
+  const audio = await new Promise((res, rej) => { blob.arrayBuffer().then(b => { const p = ac.decodeAudioData(b, res, rej); if (p && p.then) p.then(res, rej); }, rej); });
+  ac.close?.().catch(() => {});
+  const rate = 16000, off = new OfflineAudioContext(1, Math.max(1, Math.ceil(audio.duration * rate)), rate);
+  const src = off.createBufferSource(); src.buffer = audio; src.connect(off.destination); src.start();
+  const pcm = (await off.startRendering()).getChannelData(0);
+  const dv = new DataView(new ArrayBuffer(44 + pcm.length * 2)), str = (o, s) => [...s].forEach((c, i) => dv.setUint8(o + i, c.charCodeAt(0)));
+  str(0, 'RIFF'); dv.setUint32(4, 36 + pcm.length * 2, true); str(8, 'WAVEfmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+  dv.setUint32(24, rate, true); dv.setUint32(28, rate * 2, true); dv.setUint16(32, 2, true); dv.setUint16(34, 16, true); str(36, 'data'); dv.setUint32(40, pcm.length * 2, true);
+  for (let i = 0; i < pcm.length; i++) dv.setInt16(44 + i * 2, Math.max(-1, Math.min(1, pcm[i])) * 0x7fff, true);
+  const bytes = new Uint8Array(dv.buffer); let bin = '';
+  for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+  return btoa(bin);
 }
 function renderAttach() {
   const box = $('#cAttach'); if (!box) return;
-  box.innerHTML = chatImg ? `<div class="attach"><img src="${chatImg.thumb}" alt=""><span class="grow muted">${T('Photo attached')}</span><button class="chipbtn" id="cRm">${T('Remove')}</button></div>` : '';
+  box.innerHTML = !chatImg ? '' : chatImg.kind === 'file'
+    ? `<div class="attach"><span style="font-size:28px">📄</span><span class="grow muted">${esc(chatImg.name)}</span><button class="chipbtn" id="cRm">${T('Remove')}</button></div>`
+    : `<div class="attach"><img src="${chatImg.thumb}" alt=""><span class="grow muted">${T('Photo attached')}</span><button class="chipbtn" id="cRm">${T('Remove')}</button></div>`;
   if (chatImg) $('#cRm').onclick = () => { chatImg = null; renderAttach(); };
+  updateSendState(); chatPad();
 }
 function openMemorySheet() {
   const list = memList(), refresh = () => { openMemorySheet(); if (tab === 'chat') renderChat(); };
@@ -1636,10 +1799,10 @@ function openMemorySheet() {
 async function sendChat(text) {
   if (chatBusy) return;
   if (!hasAI()) { toast(T('Add your free AI key in Settings first.')); return; }
-  const img = chatImg; chatImg = null;
-  const q = text || T('What do you think about this food?');
-  const history = chat.filter(m => !m.err).slice(-30).map(m => ({ role: m.role, parts: [{ text: m.text + (m.img ? '\n[photo attached]' : '') }] }));
-  chat.push({ role: 'user', text: q, img: img ? img.thumb : null, t: Date.now() });
+  const img = chatImg, isFile = img && img.kind === 'file'; chatImg = null;
+  const q = text || (isFile ? T('What do you think about this file?') : T('What do you think about this food?'));
+  const history = chat.filter(m => !m.err).slice(-30).map(m => ({ role: m.role, parts: [{ text: m.text + (m.img ? '\n[photo attached]' : m.file ? `\n[file attached: ${m.file}]` : '') }] }));
+  chat.push({ role: 'user', text: q, img: img && !isFile ? img.thumb : null, file: isFile ? img.name : null, t: Date.now() });
   saveChat(); chatBusy = true; renderChat(true);
 
   /* Calm typing: the stream fills `target` as fast as the AI sends it; the bubble shows it word by
@@ -1659,7 +1822,8 @@ async function sendChat(text) {
 
   let entry;
   try {
-    const parts = [...(img ? [{ image: img.full }] : []), { text: `${liveNumbers()}\n\n${q}` }];
+    const attach = !img ? [] : !isFile ? [{ image: img.full }] : img.text != null ? [{ text: `Attached file "${img.name}":\n${img.text}` }] : [{ inline: { mime: img.mime, data: img.data } }];
+    const parts = [...attach, { text: `${liveNumbers()}\n\n${q}` }];
     const answer = await askAI(parts, { json: false, system: coachSystem(), history, onText: t => { target = t; } });
     target = answer;
     const mem = applyMemoryTags(answer);
