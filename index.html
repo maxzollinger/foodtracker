@@ -184,7 +184,11 @@ a{color:inherit}
 .fav-add{width:40px;height:40px;padding:0;flex:none;font-size:20px}
 .bkcode{margin:14px 0;padding:14px 10px;border-radius:14px;background:var(--chip);font:800 20px/1.2 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;text-align:center;user-select:all;-webkit-user-select:all}
 .barlive{margin-top:14px;border-radius:18px;overflow:hidden;background:#000;min-height:140px;position:relative}
-.barlive video{width:100%!important;height:auto!important;display:block;object-fit:cover}
+.barlive video{width:100%;aspect-ratio:4/3;display:block;object-fit:cover}
+.barframe{position:absolute;left:10%;right:10%;top:30%;bottom:30%;border:3px solid rgba(255,255,255,.92);border-radius:14px;box-shadow:0 0 0 999px rgba(0,0,0,.28);pointer-events:none}
+.priv{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.priv-ic{font-size:22px;width:30px;text-align:center;flex:none}
+.priv p{margin:4px 0 0;font-size:14px;color:var(--muted);line-height:1.45}
 .mp-ate{margin-top:8px;padding:7px 12px;border-radius:999px;background:var(--chip);font-size:13px;font-weight:700}
 .mp-ate.done{background:color-mix(in srgb,var(--good) 18%,transparent);color:var(--good)}
 
@@ -507,15 +511,41 @@ body.typing .chatbar{bottom:0;padding-bottom:6px}
 <input type="file" accept="image/*" id="fileChat" class="hiddenfile" multiple>
 <input type="file" accept="image/*" capture="environment" id="fileChatCam" class="hiddenfile">
 <input type="file" accept=".pdf,.txt,.csv,.md,application/pdf,text/plain,text/csv,text/markdown" id="fileChatDoc" class="hiddenfile" multiple>
-<div id="qr-hidden" style="display:none"></div>
+
 <div id="toast"></div>
 
-<script>
+<script id="appjs" type="text/plain">
 /* ================= Storage ================= */
+const BIG_KEYS = ['ft_data', 'ft_chat'];
+window.__kv = window.__kv || {};
+// Writes to the large storage; kvWait() resolves once everything is stored (used before reloading)
+let kvPending = Promise.resolve();
+function kvWrite(k, v) {
+  if (window.__idbBroken) return;
+  kvPending = kvPending.then(() => (v == null ? idb.kvDel(k) : idb.kvSet(k, v))).catch(() => { if (!localStorage.getItem(k)) toast(T('Could not save. Is your phone storage full?')); });
+}
+const kvWait = () => kvPending;
 const LS = {
-  get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch { return d; } },
-  set(k, v) { try { localStorage.setItem(k, v); return true; } catch { return false; } },
-  del(k) { try { localStorage.removeItem(k); } catch {} }
+  // Meals and chats (the big ones) live in memory + IndexedDB, with a quick copy in localStorage while it fits.
+  // If the quick copy no longer fits it is removed, so it can never be older than the large one.
+  get(k, d) {
+    if (BIG_KEYS.includes(k)) return k in window.__kv ? window.__kv[k] : d;
+    try { const v = localStorage.getItem(k); return v === null ? d : v; } catch { return d; }
+  },
+  set(k, v) {
+    if (BIG_KEYS.includes(k)) {
+      window.__kv[k] = v;
+      let quick = true;
+      try { localStorage.setItem(k, v); } catch { quick = false; try { localStorage.removeItem(k); } catch {} }
+      kvWrite(k, v);
+      return quick || !window.__idbBroken;
+    }
+    try { localStorage.setItem(k, v); return true; } catch { return false; }
+  },
+  del(k) {
+    if (BIG_KEYS.includes(k)) { delete window.__kv[k]; kvWrite(k, null); }
+    try { localStorage.removeItem(k); } catch {}
+  }
 };
 const EMPTY = () => ({ profile: null, overrides: {}, meals: [], weights: [], exercises: [], settings: { burnMode: 'smart', burnV3: true, leanV1: true } });
 let db;
@@ -556,20 +586,24 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v41';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v42';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
   let conn;
   const open = () => conn || (conn = new Promise((res, rej) => {
-    const r = indexedDB.open('foodtracker', 1);
-    r.onupgradeneeded = () => r.result.createObjectStore('photos');
+    const r = indexedDB.open('foodtracker', 2);
+    r.onupgradeneeded = () => {
+      const d = r.result;
+      if (!d.objectStoreNames.contains('photos')) d.createObjectStore('photos');
+      if (!d.objectStoreNames.contains('kv')) d.createObjectStore('kv');
+    };
     r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
   }));
-  const run = async (mode, fn) => {
+  const run = async (mode, fn, store = 'photos') => {
     const d = await open();
     return new Promise((res, rej) => {
-      const t = d.transaction('photos', mode), req = fn(t.objectStore('photos'));
+      const t = d.transaction(store, mode), req = fn(t.objectStore(store));
       t.oncomplete = () => res(req && req.result); t.onerror = () => rej(t.error);
     });
   };
@@ -577,7 +611,9 @@ const idb = (() => {
     get: k => run('readonly', s => s.get(k)).catch(() => null),
     set: (k, v) => run('readwrite', s => s.put(v, k)).catch(() => {}),
     del: k => run('readwrite', s => s.delete(k)).catch(() => {}),
-    clear: () => run('readwrite', s => s.clear()).catch(() => {})
+    clear: () => run('readwrite', s => s.clear()).catch(() => {}),
+    kvSet: (k, v) => run('readwrite', s => s.put(v, k), 'kv'),
+    kvDel: k => run('readwrite', s => s.delete(k), 'kv')
   };
 })();
 const photoCache = {};
@@ -1376,10 +1412,10 @@ $('#fileBar').onchange = async e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f) return;
   bMsg(`<span class="spin"></span> ${T('Reading barcode…')}`);
   try {
-    await loadScript('https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js');
-    const sc = new Html5Qrcode('qr-hidden');
-    let code; try { code = await sc.scanFile(f, false); } finally { try { sc.clear(); } catch {} }
-    code = String(code).replace(/\D/g, '');
+    const img = new Image(); img.src = await scaleImage(f, 1800); await img.decode();
+    const found = await (await getDetector()).detect(img);
+    const code = found && found[0] ? String(found[0].rawValue).replace(/\D/g, '') : '';
+    if (!code) throw new Error('none');
     if ($('#bCode')) $('#bCode').value = code;
     lookupBarcode(code);
   } catch { bMsg(T("Couldn't read the barcode. Try closer and sharper, or type the number."), true); }
@@ -1521,7 +1557,7 @@ function applyAccountData(p) {
   if (p.lang) LS.set('ft_lang', p.lang);
   if (p.theme) LS.set('ft_theme', p.theme);
   sessionStorage.setItem('ft_restored', '1');
-  location.reload();
+  kvWait().then(() => location.reload());
 }
 async function deleteBackup() {   // used by "Delete all data": the account and its saved data are removed too
   const a = acct();
@@ -1618,33 +1654,76 @@ function bindBackupCard() {
   };
 }
 
-/* ================= Live barcode scanning ================= */
-let barScanner = null;
-async function stopBarScan() { const sc = barScanner; barScanner = null; if (sc) { try { await sc.stop(); } catch {} try { sc.clear(); } catch {} } }
+/* ================= Privacy ================= */
+function openPrivacy() {
+  const sec = (ic, title, text) => `<div class="priv"><div class="priv-ic">${ic}</div><div><b>${title}</b><p>${text}</p></div></div>`;
+  sheet(`<h3>🔒 ${T('Privacy')}</h3>
+    <p class="muted" style="margin:4px 0 14px">${T('Food Tracker is a private app shared among friends and family. This is exactly what happens with your data.')}</p>
+    ${sec('📱', T('On your phone'), T('Your meals, photos, weights, goals, meal plans and coach chats are stored on your phone.'))}
+    ${sec('☁️', T('Account & backup'), T("If you create an account, a copy of your data is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner. Meal photos are not part of the backup."))}
+    ${sec('✨', T('AI'), T('When you scan food, chat with the coach, use voice input or create a meal plan, that photo, text or recording is sent through the Food Tracker server to Google Gemini to get an answer. The server does not keep it. Google handles it under the Gemini API terms, so please don\'t send very sensitive things like medical documents.'))}
+    ${sec('🔔', T('Notifications'), T("If you turn on reminders, the server keeps your phone's notification address, your reminder times and your time zone. Nothing else."))}
+    ${sec('🏷️', T('Barcodes'), T('When you scan a barcode, only its number is sent to Open Food Facts, a free food database, to find the product.'))}
+    ${sec('🚫', T('What never happens'), T('No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.'))}
+    ${sec('🗑️', T('Deleting'), T('Settings → Delete all data removes everything on this phone and your account backup on the server.'))}
+    <p class="small muted" style="text-align:center;margin:16px 0 0">${T('Questions? Ask the person who shared the app with you.')}</p>`);
+}
+
+/* ================= Live barcode scanning =================
+   Uses the phone's own barcode reader where there is one, otherwise ZXing (a fast reader, loaded once).
+   The camera stays ready for 2 minutes after the scanner closes, so scanning again doesn't ask again. */
+let bdPromise = null;
+function getDetector() {
+  return bdPromise || (bdPromise = (async () => {
+    const formats = ['ean_13', 'ean_8', 'upc_a', 'upc_e', 'code_128'];
+    if ('BarcodeDetector' in window) {
+      try { if ((await BarcodeDetector.getSupportedFormats()).includes('ean_13')) return new BarcodeDetector({ formats }); } catch {}
+    }
+    const m = await import('https://cdn.jsdelivr.net/npm/barcode-detector@3.2.2/dist/es/ponyfill.js');
+    return new m.BarcodeDetector({ formats });
+  })().catch(e => { bdPromise = null; throw e; }));
+}
+let camStream = null, camOffT = null, scanLoop = null;
+async function getCamera() {
+  clearTimeout(camOffT);
+  if (camStream && camStream.getVideoTracks().some(t => t.readyState === 'live')) return camStream;
+  camStream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } } });
+  return camStream;
+}
+function cameraOff() { clearTimeout(camOffT); if (camStream) camStream.getTracks().forEach(t => t.stop()); camStream = null; }
+function stopBarScan() { clearTimeout(scanLoop); scanLoop = null; clearTimeout(camOffT); camOffT = setTimeout(cameraOff, 120000); }
 async function startBarScan() {
+  if (!$('#bLive')) return;
   try {
-    await loadScript('https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js');
-    const box = $('#bLive'); if (!box || barScanner) return;
-    box.innerHTML = '';
-    const F = Html5QrcodeSupportedFormats;
-    const sc = new Html5Qrcode('bLive', { formatsToSupport: [F.EAN_13, F.EAN_8, F.UPC_A, F.UPC_E, F.CODE_128], useBarCodeDetectorIfSupported: true, verbose: false });
-    barScanner = sc;
-    // Stop the camera as soon as the sheet closes
-    const watch = setInterval(() => { if (!$('#bLive')) { clearInterval(watch); stopBarScan(); } }, 400);
-    await sc.start({ facingMode: 'environment' },
-      { fps: 12, aspectRatio: 1.3333, qrbox: (w, h) => ({ width: Math.round(Math.min(w * 0.86, 320)), height: Math.round(Math.min(h * 0.5, 150)) }) },
-      text => {
-        const code = String(text).replace(/\D/g, '');
-        if (!code || !barScanner) return;
-        if (navigator.vibrate) navigator.vibrate(40);
-        stopBarScan();
-        if ($('#bCode')) $('#bCode').value = code;
-        lookupBarcode(code).then(() => setTimeout(() => { if ($('#bLive') && !barScanner) startBarScan(); }, 2500));
-      }, () => {});
+    const [det, stream] = await Promise.all([getDetector(), getCamera()]);
+    const box = $('#bLive'); if (!box) return stopBarScan();
+    box.innerHTML = '<video playsinline muted autoplay></video><div class="barframe"></div>';
+    const v = box.querySelector('video'); v.srcObject = stream;
+    try { await v.play(); } catch {}
+    let busy = false;
+    const tick = async () => {
+      if (!$('#bLive') || !v.isConnected) return stopBarScan();
+      if (!busy && v.readyState >= 2) {
+        busy = true;
+        try {
+          const found = await det.detect(v), code = found && found[0] ? String(found[0].rawValue).replace(/\D/g, '') : '';
+          if (code.length >= 6) {
+            stopBarScan(); if (navigator.vibrate) navigator.vibrate(40);
+            if ($('#bCode')) $('#bCode').value = code;
+            await lookupBarcode(code);
+            setTimeout(() => { if ($('#bLive') && !scanLoop) startBarScan(); }, 2500);   // not found: keep scanning
+            return;
+          }
+        } catch {}
+        busy = false;
+      }
+      scanLoop = setTimeout(tick, 120);
+    };
+    scanLoop = setTimeout(tick, 50);
   } catch {
     stopBarScan();
-    const box = $('#bLive');
-    if (box) box.innerHTML = `<div class="small muted" style="padding:26px 14px;text-align:center">${T('Camera not available. Take a photo of the barcode or type the number.')}</div>`;
+    const b = $('#bLive');
+    if (b) b.innerHTML = `<div class="small" style="padding:26px 14px;text-align:center;color:#bbb">${T('Camera not available. Take a photo of the barcode or type the number.')}</div>`;
   }
 }
 
@@ -2647,13 +2726,22 @@ if (window.visualViewport) { visualViewport.addEventListener('resize', fitChat);
 
 /* --- Voice input: record, show a live sound wave, then turn it into text with Gemini --- */
 let rec = null;
+let micStream = null, micOffT = null;
+async function getMic() {
+  clearTimeout(micOffT);
+  if (micStream && micStream.getAudioTracks().some(t => t.readyState === 'live')) return micStream;
+  micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  return micStream;
+}
+function micOff() { clearTimeout(micOffT); if (micStream) micStream.getTracks().forEach(t => t.stop()); micStream = null; }
+function releaseMic() { clearTimeout(micOffT); micOffT = setTimeout(micOff, 180000); }
 async function startVoice() {
   if (rec) return;
   if (!geminiKey()) return toast(T('Voice input needs your free Google AI key (Settings).'));
   if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) return toast(T('Voice input is not supported on this device.'));
   closeChatMenu();
   let stream;
-  try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+  try { stream = await getMic(); }
   catch { return toast(T('Microphone access was blocked. Allow it in iPhone Settings → FoodTracker.')); }
   const ac = new (window.AudioContext || window.webkitAudioContext)();
   ac.resume?.();
@@ -2678,7 +2766,7 @@ async function finishVoice(keep) {
   const stopped = new Promise(res => { r.mr.onstop = res; });
   try { r.mr.stop(); } catch {}
   await Promise.race([stopped, new Promise(res => setTimeout(res, 1500))]);
-  r.stream.getTracks().forEach(t => t.stop()); r.ac.close?.().catch(() => {});
+  releaseMic(); r.ac.close?.().catch(() => {});
   const bar = $('.chatbar');
   if (!keep || !bar) { bar?.classList.remove('recording'); return; }
   $('#cWave').innerHTML = `<span class="small muted"><span class="spin"></span> ${T('Transcribing…')}</span>`;
@@ -2919,7 +3007,7 @@ async function checkUpdate() {
 }
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') { checkUpdate(); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); setTimeout(askAccount, 5000); setTimeout(weeklyCheckin, 1500); }
-  else if (updReady) location.reload();   // the app is in the background: nobody sees the reload
+  else { if (!rec) micOff(); cameraOff(); if (updReady) kvWait().then(() => location.reload()); }   // in the background: nobody sees the reload
 });
 
 // Opening the app from a notification: ?open=burn or ?open=weight
@@ -2974,6 +3062,7 @@ function renderSettings() {
       <div class="row" style="margin-top:14px"><button class="btn" id="kSave">${T('Save')}</button><button class="btn outline" id="kTest">${T('Test')}</button></div>
       <p class="small" id="kMsg" style="margin:10px 0 0;text-align:center">${hasAI() ? '✓ ' + T('AI is on') : T('No key yet')}</p></div>` : ''}
     <div class="h2">${T('Your data')}</div>
+    <div class="list"><button class="li" id="sPriv"><span class="ic">🔒</span><span class="grow">${T('Privacy')}<br><span class="small muted">${T('What happens with your data')}</span></span><span class="chev">›</span></button></div>
     ${backupCard()}
     <div class="list">
       <button class="li" id="dExp"><span class="ic">⬇️</span><span class="grow">${T('Backup data')}</span><span class="chev">›</span></button>
@@ -2994,6 +3083,7 @@ function renderSettings() {
   document.querySelectorAll('[data-th]').forEach(b => b.onclick = () => { setTheme(b.dataset.th); renderSettings(); });
   bindReminders();
   bindBackupCard();
+  $('#sPriv').onclick = openPrivacy;
   if ($('#kSave')) $('#kSave').onclick = () => {
     const set = (k, v) => v ? LS.set(k, v) : LS.del(k);
     set('ft_key', $('#kKey').value.trim()); set('ft_claude_key', $('#kClaude').value.trim()); set('ft_model', $('#kModel').value.trim());
@@ -3318,6 +3408,8 @@ function loadScript(src) {
 }
 
 /* ================= Start ================= */
+BIG_KEYS.forEach(k => { const v = window.__kv[k]; if (v != null) kvWrite(k, v); });
+try { navigator.storage?.persist?.(); } catch {}
 applyTheme();
 i18nStatic();
 measureTabbar();
@@ -3343,6 +3435,43 @@ setTimeout(askAccount, 11000);
 setTimeout(weeklyCheckin, 6500);
 setInterval(weeklyCheckin, 30 * 60e3);
 if (sessionStorage.getItem('ft_restored')) { sessionStorage.removeItem('ft_restored'); setTimeout(() => toast('✓ ' + T('Signed in. Your data is back.')), 4500); }
+</script>
+<script>
+/* Starts the app. Meals, chats and settings are kept in two places: the quick small storage
+   (localStorage, about 5 MB) and the phone's much larger storage (IndexedDB). As long as the quick copy
+   fits, the app starts from it right away; when it gets too big, the app reads the large copy first. */
+(function () {
+  var BIG = ['ft_data', 'ft_chat'], started = false;
+  window.__kv = {};
+  function start() {
+    if (started) return; started = true;
+    var s = document.createElement('script');
+    s.textContent = document.getElementById('appjs').textContent;
+    document.body.appendChild(s);
+  }
+  var need = BIG.filter(function (k) {
+    try { var v = localStorage.getItem(k); if (v !== null) { window.__kv[k] = v; return false; } } catch (e) {}
+    return true;
+  });
+  if (!need.length || !window.indexedDB) return start();
+  try {
+    var r = indexedDB.open('foodtracker', 2);
+    r.onupgradeneeded = function () {
+      var d = r.result;
+      if (!d.objectStoreNames.contains('photos')) d.createObjectStore('photos');
+      if (!d.objectStoreNames.contains('kv')) d.createObjectStore('kv');
+    };
+    r.onsuccess = function () {
+      var d = r.result, t;
+      try { t = d.transaction('kv', 'readonly'); } catch (e) { window.__idbBroken = true; d.close(); return start(); }
+      var st = t.objectStore('kv');
+      need.forEach(function (k) { var q = st.get(k); q.onsuccess = function () { if (q.result != null) window.__kv[k] = q.result; }; });
+      t.oncomplete = function () { d.close(); start(); };
+      t.onerror = t.onabort = function () { window.__idbBroken = true; d.close(); start(); };
+    };
+    r.onerror = function () { window.__idbBroken = true; start(); };
+  } catch (e) { window.__idbBroken = true; start(); }
+})();
 </script>
 </body>
 </html>
