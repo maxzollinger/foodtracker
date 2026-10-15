@@ -628,7 +628,12 @@ window.I18N = {
 "Personal":"Persönlich",
 "recommended":"empfohlen",
 "Set by you. Your personal goal would be {n}:":"Von dir eingestellt. Dein persönliches Ziel wäre {n}:",
-"Your personal goal adds up from:":"Dein persönliches Ziel setzt sich so zusammen:"
+"Your personal goal adds up from:":"Dein persönliches Ziel setzt sich so zusammen:",
+"Your goals are calculated from these.":"Daraus werden deine Ziele berechnet.",
+"{n} years":"{n} Jahre",
+"Your new daily goals":"Deine neuen Tagesziele",
+"per week":"pro Woche",
+"workouts per week":"Workouts pro Woche"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1258,7 +1263,12 @@ window.I18N = {
 "Personal":"Personal",
 "recommended":"recomendado",
 "Set by you. Your personal goal would be {n}:":"Elegido por ti. Tu objetivo personal sería {n}:",
-"Your personal goal adds up from:":"Tu objetivo personal se compone de:"
+"Your personal goal adds up from:":"Tu objetivo personal se compone de:",
+"Your goals are calculated from these.":"Tus objetivos se calculan con estos datos.",
+"{n} years":"{n} años",
+"Your new daily goals":"Tus nuevos objetivos diarios",
+"per week":"por semana",
+"workouts per week":"entrenamientos por semana"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -1888,7 +1898,12 @@ window.I18N = {
 "Personal":"Personnel",
 "recommended":"recommandé",
 "Set by you. Your personal goal would be {n}:":"Choisi par toi. Ton objectif personnel serait {n} :",
-"Your personal goal adds up from:":"Ton objectif personnel se compose de :"
+"Your personal goal adds up from:":"Ton objectif personnel se compose de :",
+"Your goals are calculated from these.":"Tes objectifs sont calculés à partir de ces infos.",
+"{n} years":"{n} ans",
+"Your new daily goals":"Tes nouveaux objectifs quotidiens",
+"per week":"par semaine",
+"workouts per week":"entraînements par semaine"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -2518,7 +2533,12 @@ window.I18N = {
 "Personal":"Personale",
 "recommended":"consigliato",
 "Set by you. Your personal goal would be {n}:":"Impostato da te. Il tuo obiettivo personale sarebbe {n}:",
-"Your personal goal adds up from:":"Il tuo obiettivo personale è dato da:"
+"Your personal goal adds up from:":"Il tuo obiettivo personale è dato da:",
+"Your goals are calculated from these.":"I tuoi obiettivi vengono calcolati da questi dati.",
+"{n} years":"{n} anni",
+"Your new daily goals":"I tuoi nuovi obiettivi giornalieri",
+"per week":"a settimana",
+"workouts per week":"allenamenti a settimana"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -3148,7 +3168,12 @@ window.I18N = {
 "Personal":"パーソナル",
 "recommended":"おすすめ",
 "Set by you. Your personal goal would be {n}:":"自分で設定中。パーソナル目標は {n} です：",
-"Your personal goal adds up from:":"パーソナル目標の内訳："
+"Your personal goal adds up from:":"パーソナル目標の内訳：",
+"Your goals are calculated from these.":"目標はこの情報から計算されます。",
+"{n} years":"{n} 歳",
+"Your new daily goals":"新しい 1 日の目標",
+"per week":"週あたり",
+"workouts per week":"週あたりのトレーニング回数"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -3778,7 +3803,12 @@ window.I18N = {
 "Personal":"Persoonlijk",
 "recommended":"aanbevolen",
 "Set by you. Your personal goal would be {n}:":"Door jou ingesteld. Je persoonlijke doel zou {n} zijn:",
-"Your personal goal adds up from:":"Je persoonlijke doel is opgebouwd uit:"
+"Your personal goal adds up from:":"Je persoonlijke doel is opgebouwd uit:",
+"Your goals are calculated from these.":"Je doelen worden hieruit berekend.",
+"{n} years":"{n} jaar",
+"Your new daily goals":"Je nieuwe dagdoelen",
+"per week":"per week",
+"workouts per week":"trainingen per week"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -4408,7 +4438,12 @@ window.I18N = {
 "Personal":"Osobisty",
 "recommended":"zalecane",
 "Set by you. Your personal goal would be {n}:":"Ustawione przez ciebie. Twój osobisty cel to {n}:",
-"Your personal goal adds up from:":"Twój osobisty cel składa się z:"
+"Your personal goal adds up from:":"Twój osobisty cel składa się z:",
+"Your goals are calculated from these.":"Na tej podstawie liczone są twoje cele.",
+"{n} years":"{n} lat",
+"Your new daily goals":"Twoje nowe cele dzienne",
+"per week":"w tygodniu",
+"workouts per week":"treningi w tygodniu"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -5038,7 +5073,12 @@ window.I18N = {
 "Personal":"Pessoal",
 "recommended":"recomendado",
 "Set by you. Your personal goal would be {n}:":"Definido por ti. O teu objetivo pessoal seria {n}:",
-"Your personal goal adds up from:":"O teu objetivo pessoal resulta de:"
+"Your personal goal adds up from:":"O teu objetivo pessoal resulta de:",
+"Your goals are calculated from these.":"Os teus objetivos são calculados a partir destes dados.",
+"{n} years":"{n} anos",
+"Your new daily goals":"Os teus novos objetivos diários",
+"per week":"por semana",
+"workouts per week":"treinos por semana"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -5668,7 +5708,12 @@ window.I18N = {
 "Personal":"Личная",
 "recommended":"рекомендуется",
 "Set by you. Your personal goal would be {n}:":"Задано тобой. Твоя личная цель была бы {n}:",
-"Your personal goal adds up from:":"Твоя личная цель складывается из:"
+"Your personal goal adds up from:":"Твоя личная цель складывается из:",
+"Your goals are calculated from these.":"По этим данным рассчитываются твои цели.",
+"{n} years":"{n} лет",
+"Your new daily goals":"Твои новые дневные цели",
+"per week":"в неделю",
+"workouts per week":"тренировок в неделю"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -6298,7 +6343,12 @@ window.I18N = {
 "Personal":"Kişisel",
 "recommended":"önerilen",
 "Set by you. Your personal goal would be {n}:":"Senin ayarın. Kişisel hedefin {n} olurdu:",
-"Your personal goal adds up from:":"Kişisel hedefin şunlardan oluşur:"
+"Your personal goal adds up from:":"Kişisel hedefin şunlardan oluşur:",
+"Your goals are calculated from these.":"Hedeflerin bunlardan hesaplanır.",
+"{n} years":"{n} yaş",
+"Your new daily goals":"Yeni günlük hedeflerin",
+"per week":"haftada",
+"workouts per week":"haftalık antrenman"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -6928,6 +6978,11 @@ window.I18N = {
 "Personal":"个性化",
 "recommended":"推荐",
 "Set by you. Your personal goal would be {n}:":"由你设置。你的个性化目标应为 {n}：",
-"Your personal goal adds up from:":"你的个性化目标由以下组成："
+"Your personal goal adds up from:":"你的个性化目标由以下组成：",
+"Your goals are calculated from these.":"你的目标根据这些信息计算。",
+"{n} years":"{n} 岁",
+"Your new daily goals":"你的新每日目标",
+"per week":"每周",
+"workouts per week":"每周训练次数"
 }
 };

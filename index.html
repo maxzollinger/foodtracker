@@ -280,6 +280,37 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .mini-l{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wbtn{width:40px;height:40px;border-radius:50%;background:var(--chip);font-size:22px;font-weight:600;flex:none;display:flex;align-items:center;justify-content:center}
 .addtile small{font-size:12px;font-weight:600}
+/* Personal details */
+.pd-head{display:flex;align-items:center;gap:12px;margin-bottom:4px}
+.pd-av{width:48px;height:48px;border-radius:16px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:24px;flex:none}
+.pd-sec{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin:18px 0 8px}
+.pd-seg,.pd-wk{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pd-seg button,.pd-wk button{background:var(--chip);border-radius:16px;padding:12px 6px;font-weight:700;font-size:15px;display:flex;flex-direction:column;align-items:center;gap:3px;transition:background .15s,color .15s}
+.pd-seg button span{font-size:20px;line-height:1.1}
+.pd-seg button.on,.pd-wk button.on{background:var(--ink);color:var(--on-ink)}
+.pd-wk .pd-wic{font-size:22px;line-height:1.2}
+.pd-wk small{font-size:11px;font-weight:600;opacity:.75;text-align:center;line-height:1.2}
+.pd-row{display:flex;align-items:center;gap:12px;background:var(--chip);border-radius:16px;padding:14px 16px}
+.pd-ic{font-size:22px}
+.pd-date{position:relative;cursor:pointer}
+.pd-date input{position:absolute;inset:0;width:100%;height:100%;opacity:0;padding:0;margin:0;border:0}
+.pd-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.pd-num{background:var(--chip);border-radius:18px;padding:12px 14px;min-width:0}
+.pd-val{display:flex;align-items:baseline;gap:4px;margin:2px 0 10px}
+.pd-val input{background:none;border:0;padding:0;margin:0;font-size:30px;font-weight:800;width:100%;min-width:0;letter-spacing:-.02em;box-shadow:none;border-radius:0}
+.pd-val span{font-weight:700;color:var(--muted)}
+.pd-step{display:flex;gap:8px}
+.pd-step button{flex:1;height:36px;border-radius:12px;background:var(--card);font-size:20px;font-weight:700}
+.pd-prev{margin-top:18px;background:var(--chip);border-radius:20px;padding:16px}
+.pd-kcal{display:flex;align-items:baseline;gap:6px;margin:6px 0 12px;font-weight:700;color:var(--muted)}
+.pd-kcal b{font-size:34px;font-weight:800;color:var(--text);letter-spacing:-.03em}
+.pd-kcal span{font-size:24px;align-self:center}
+.pd-mac{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pd-mac div{background:var(--card);border-radius:14px;padding:10px 10px 9px;display:flex;flex-direction:column;gap:1px;box-shadow:inset 0 3px 0 var(--c)}
+.pd-mac span{font-size:16px}
+.pd-mac b{font-size:17px}
+.pd-mac small{font-size:12px;color:var(--muted);font-weight:600}
+.pd-when{margin-top:12px;font-size:14px}
 .wwhy{margin-top:10px;padding:12px 14px;border-radius:14px;background:var(--chip)}
 .wwhy .spread{padding:3px 0}
 .addtile .wicon{height:64px;display:flex;align-items:flex-end;justify-content:center}
@@ -590,7 +621,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v46';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v48';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3172,28 +3203,61 @@ function bindFast(root, f, cb) {
 
 function openPersonalSheet() {
   if (!db.profile) return startOnboarding();
-  const p0 = db.profile, w0 = currentWeight(), custom = Object.keys(db.overrides).length > 0;
-  const opt = (arr, v) => arr.map(([k, l]) => `<option value="${k}" ${String(v) === String(k) ? 'selected' : ''}>${l}</option>`).join('');
-  sheet(`<h3>${T('Personal details')}</h3>
-    <div class="row"><div class="grow"><label class="lbl">${T('Gender')}</label><select id="pSex">${opt([['m', T('Male')], ['f', T('Female')], ['o', T('Other')]], p0.sex)}</select></div>
-    <div class="grow"><label class="lbl">${T('Birthday')}</label><input id="pBirth" type="date" value="${p0.birth}"></div></div>
-    <div class="row"><div class="grow"><label class="lbl">${T('Height (cm)')}</label><input id="pH" inputmode="numeric" value="${p0.height}"></div>
-    <div class="grow"><label class="lbl">${T('Current weight (kg)')}</label><input id="pWt" inputmode="decimal" value="${w0}"></div></div>
-    <label class="lbl">${T('Workouts / week')}</label><select id="pW">${opt([['0-2', '0–2 · ' + T('now and then')], ['3-5', '3–5 · ' + T('a few per week')], ['6+', '6+ · ' + T('dedicated athlete')]], p0.workouts)}</select>
-    <div class="tip" id="pPrev"></div>
+  const p0 = db.profile, custom = Object.keys(db.overrides).length > 0;
+  const st = { sex: p0.sex || 'm', birth: p0.birth, height: num(p0.height) || 175, weight: currentWeight(), workouts: p0.workouts || '3-5' };
+  const SEX = [['m', '♂', N('Male')], ['f', '♀', N('Female')], ['o', '⚧', N('Other')]];
+  const WK = [['0-2', '🚶', '0–2', N('per week')], ['3-5', '🏃', '3–5', N('per week')], ['6+', '🏋️', '6+', N('per week')]];
+  sheet(`<div class="pd-head"><div class="pd-av">👤</div><div><h3 style="margin:0">${T('Personal details')}</h3>
+      <div class="small muted">${T('Your goals are calculated from these.')}</div></div></div>
+    <div class="pd-sec">${T('Gender')}</div>
+    <div class="pd-seg">${SEX.map(([v, ic, l]) => `<button data-sex="${v}" class="${st.sex === v ? 'on' : ''}"><span>${ic}</span>${T(l)}</button>`).join('')}</div>
+    <div class="pd-sec">${T('Birthday')}</div>
+    <label class="pd-row pd-date"><span class="pd-ic">🎂</span><span class="grow"><b id="pdBirthTxt"></b><span class="small muted" id="pdAge"></span></span>
+      <span class="chev">›</span><input id="pBirth" type="date" value="${st.birth}" max="${iso()}"></label>
+    <div class="pd-grid">
+      ${[['h', T('Height'), 'cm', 1], ['w', T('Weight'), 'kg', 0.1]].map(([k, l, u, step]) => `<div class="pd-num"><div class="small muted" style="font-weight:600">${l}</div>
+        <div class="pd-val"><input id="pd_${k}" inputmode="decimal" value="${k === 'h' ? st.height : st.weight}"><span>${u}</span></div>
+        <div class="pd-step"><button data-step="${k}" data-d="${-step}" aria-label="−">−</button><button data-step="${k}" data-d="${step}" aria-label="+">＋</button></div></div>`).join('')}</div>
+    <div class="pd-sec">${T('Workouts / week')}</div>
+    <div class="pd-wk">${WK.map(([v, ic, n, l]) => `<button data-wk="${v}" class="${st.workouts === v ? 'on' : ''}"><span class="pd-wic">${ic}</span><b>${n}</b><small>${T(l)}</small></button>`).join('')}</div>
+    <div class="pd-prev" id="pPrev"></div>
     <button class="btn" id="pSave" style="margin-top:16px">${T('Save & update goals')}</button>`, s => {
-    const read = () => ({ ...p0, sex: s.querySelector('#pSex').value, birth: s.querySelector('#pBirth').value || p0.birth,
-      height: num(s.querySelector('#pH').value) || p0.height, workouts: s.querySelector('#pW').value });
-    const w = () => r1(num(s.querySelector('#pWt').value)) || w0;
-    const preview = () => goalPreview(s.querySelector('#pPrev'), read(), w(), custom);
-    s.querySelectorAll('input,select').forEach(el => { el.addEventListener('input', preview); el.addEventListener('change', preview); });
-    preview();
-    s.querySelector('#pSave').onclick = () => {
-      const p = read(), kg = w();
-      if (p.height < 120 || p.height > 230 || kg < 30 || kg > 300) return toast(T('Please check height and weight'));
+    const $s = q => s.querySelector(q);
+    const p = () => ({ ...p0, sex: st.sex, birth: st.birth || p0.birth, height: st.height, workouts: st.workouts });
+    const draw = () => {
+      $s('#pdBirthTxt').textContent = st.birth ? fmtLong(dt(st.birth)) : '—';
+      $s('#pdAge').textContent = st.birth ? ' · ' + T('{n} years', { n: age({ birth: st.birth }) }) : '';
+      const t = calcTargets(p(), st.weight);
+      let when = '';
+      if (needsTarget(p0) && Math.abs(p0.targetWeight - st.weight) >= 0.1 && (p0.goal === 'lose') === (p0.targetWeight < st.weight)) {
+        const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(p0.targetWeight - st.weight) / p0.pace * 7)); when = fmtLong(d);
+      }
+      $s('#pPrev').innerHTML = `<div class="small muted" style="font-weight:700;text-transform:uppercase;letter-spacing:.06em">${T('Your new daily goals')}</div>
+        <div class="pd-kcal"><span>🔥</span><b>${t.kcal}</b> kcal</div>
+        <div class="pd-mac">${[['protein', '🍗', T('Protein')], ['carbs', '🌾', T('Carbs')], ['fat', '🥑', T('Fats')]].map(([k, ic, l]) =>
+          `<div style="--c:var(--${k})"><span>${ic}</span><b>${t[k]} g</b><small>${l}</small></div>`).join('')}</div>
+        ${when ? `<div class="pd-when">🎯 ${T('Goal weight around <b>{d}</b>', { d: when })}</div>` : ''}
+        ${custom ? `<div class="small muted" style="margin-top:8px">${T('Your custom macro numbers will be replaced by these.')}</div>` : ''}`;
+    };
+    s.querySelectorAll('[data-sex]').forEach(b => b.onclick = () => { st.sex = b.dataset.sex; s.querySelectorAll('[data-sex]').forEach(x => x.classList.toggle('on', x === b)); draw(); });
+    s.querySelectorAll('[data-wk]').forEach(b => b.onclick = () => { st.workouts = b.dataset.wk; s.querySelectorAll('[data-wk]').forEach(x => x.classList.toggle('on', x === b)); draw(); });
+    $s('#pBirth').onchange = e => { if (e.target.value) { st.birth = e.target.value; draw(); } };
+    const inp = { h: $s('#pd_h'), w: $s('#pd_w') };
+    inp.h.oninput = () => { const v = num(inp.h.value); if (v) { st.height = r0(v); draw(); } };
+    inp.w.oninput = () => { const v = num(inp.w.value); if (v) { st.weight = r1(v); draw(); } };
+    s.querySelectorAll('[data-step]').forEach(b => b.onclick = () => {
+      const k = b.dataset.step, d = +b.dataset.d;
+      if (k === 'h') { st.height = clamp(r0(st.height + d), 120, 230); inp.h.value = st.height; }
+      else { st.weight = clamp(r1(st.weight + d), 30, 300); inp.w.value = st.weight; }
+      draw();
+    });
+    draw();
+    $s('#pSave').onclick = () => {
+      const pp = p(), kg = st.weight;
+      if (pp.height < 120 || pp.height > 230 || kg < 30 || kg > 300) return toast(T('Please check height and weight'));
       if (Math.abs(kg - currentWeight()) >= 0.05) { db.weights = db.weights.filter(x => x.date !== iso()); db.weights.push({ date: iso(), kg }); }
-      fixTarget(p, kg);                    // keep goal weight on the right side of the new weight
-      db.profile = p; db.overrides = {};   // goals follow the new details
+      fixTarget(pp, kg);                    // keep goal weight on the right side of the new weight
+      db.profile = pp; db.overrides = {};   // goals follow the new details
       save(); closeSheet();
       const t = targets(); toast(T('✓ Updated: {k} kcal · {p} g protein', { k: t.kcal, p: t.protein })); renderSettings();
     };
@@ -3317,7 +3381,7 @@ function renderOb() {
   }
   if (s === 'gender') { title = T('Choose your gender'); sub = calib; body = opts('sex', [['m', T('Male')], ['f', T('Female')], ['o', T('Other')]]); ok = !!p.sex; }
   if (s === 'workouts') { title = T('How many workouts do you do per week?'); sub = calib;
-    body = opts('workouts', [['0-2', '0–2', T('Workouts now and then')], ['3-5', '3–5', T('A few workouts per week')], ['6+', '6+', T('Dedicated athlete')]]); ok = !!p.workouts; }
+    body = opts('workouts', [['0-2', '0–2', T('workouts per week')], ['3-5', '3–5', T('workouts per week')], ['6+', '6+', T('workouts per week')]]); ok = !!p.workouts; }
   if (s === 'body') { title = T('Height & weight'); sub = calib;
     let h = ''; for (let c = 120; c <= 230; c++) h += `<option value="${c}" ${c === r0(p.height) ? 'selected' : ''}>${c} cm</option>`;
     body = `<div class="row"><div class="grow"><label class="lbl">${T('Height')}</label><select id="obH">${h}</select></div><div class="grow"><label class="lbl">${T('Weight')}</label><select id="obW">${kgOpts(Math.round(p.weight * 2) / 2, 35, 250)}</select></div></div>`; }
