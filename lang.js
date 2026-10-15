@@ -410,7 +410,8 @@ window.I18N = {
 "You only eat inside your eating window.":"Du isst nur innerhalb deines Essensfensters.",
 "Eating window: {a} – {b}":"Essensfenster: {a} – {b}",
 "Dirty bulk: you gain fast, but a good part of it will be fat.":"Dirty Bulk: Du nimmst schnell zu, aber ein guter Teil davon ist Fett.",
-"Close":"Schließen"
+"Close":"Schließen",
+"Ask your coach anything":"Frag deinen Coach alles"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -822,7 +823,8 @@ window.I18N = {
 "You only eat inside your eating window.":"Solo comes dentro de tu ventana de comida.",
 "Eating window: {a} – {b}":"Ventana de comida: {a} – {b}",
 "Dirty bulk: you gain fast, but a good part of it will be fat.":"Volumen sucio: ganas rápido, pero buena parte será grasa.",
-"Close":"Cerrar"
+"Close":"Cerrar",
+"Ask your coach anything":"Pregunta lo que quieras a tu coach"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -1234,7 +1236,8 @@ window.I18N = {
 "You only eat inside your eating window.":"Tu manges uniquement dans ta fenêtre de repas.",
 "Eating window: {a} – {b}":"Fenêtre de repas : {a} – {b}",
 "Dirty bulk: you gain fast, but a good part of it will be fat.":"Prise de masse rapide : tu prends vite, mais une bonne partie sera du gras.",
-"Close":"Fermer"
+"Close":"Fermer",
+"Ask your coach anything":"Demande ce que tu veux à ton coach"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -1646,7 +1649,8 @@ window.I18N = {
 "You only eat inside your eating window.":"Mangi solo dentro la tua finestra dei pasti.",
 "Eating window: {a} – {b}":"Finestra dei pasti: {a} – {b}",
 "Dirty bulk: you gain fast, but a good part of it will be fat.":"Dirty bulk: aumenti in fretta, ma una buona parte sarà grasso.",
-"Close":"Chiudi"
+"Close":"Chiudi",
+"Ask your coach anything":"Chiedi qualsiasi cosa al tuo coach"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -2058,7 +2062,8 @@ window.I18N = {
 "You only eat inside your eating window.":"食事時間内だけ食べます。",
 "Eating window: {a} – {b}":"食事時間：{a} – {b}",
 "Dirty bulk: you gain fast, but a good part of it will be fat.":"ダーティバルク：早く増えますが、かなりの部分が脂肪になります。",
-"Close":"閉じる"
+"Close":"閉じる",
+"Ask your coach anything":"コーチになんでも聞いてみよう"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -2470,7 +2475,8 @@ window.I18N = {
 "You only eat inside your eating window.":"Je eet alleen binnen je eetvenster.",
 "Eating window: {a} – {b}":"Eetvenster: {a} – {b}",
 "Dirty bulk: you gain fast, but a good part of it will be fat.":"Dirty bulk: je komt snel aan, maar een flink deel is vet.",
-"Close":"Sluiten"
+"Close":"Sluiten",
+"Ask your coach anything":"Vraag je coach alles"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -2882,7 +2888,8 @@ window.I18N = {
 "You only eat inside your eating window.":"Jesz tylko w swoim oknie jedzenia.",
 "Eating window: {a} – {b}":"Okno jedzenia: {a} – {b}",
 "Dirty bulk: you gain fast, but a good part of it will be fat.":"Brudna masa: przybierasz szybko, ale spora część to tłuszcz.",
-"Close":"Zamknij"
+"Close":"Zamknij",
+"Ask your coach anything":"Zapytaj trenera o cokolwiek"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -3294,7 +3301,8 @@ window.I18N = {
 "You only eat inside your eating window.":"Só comes dentro da tua janela de refeições.",
 "Eating window: {a} – {b}":"Janela de refeições: {a} – {b}",
 "Dirty bulk: you gain fast, but a good part of it will be fat.":"Bulk sujo: ganhas depressa, mas boa parte será gordura.",
-"Close":"Fechar"
+"Close":"Fechar",
+"Ask your coach anything":"Pergunta o que quiseres ao teu coach"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -3706,7 +3714,8 @@ window.I18N = {
 "You only eat inside your eating window.":"Ты ешь только в своё окно приёма пищи.",
 "Eating window: {a} – {b}":"Окно приёма пищи: {a} – {b}",
 "Dirty bulk: you gain fast, but a good part of it will be fat.":"Грязный массонабор: набираешь быстро, но заметная часть — жир.",
-"Close":"Закрыть"
+"Close":"Закрыть",
+"Ask your coach anything":"Спроси коуча о чём угодно"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -4118,7 +4127,8 @@ window.I18N = {
 "You only eat inside your eating window.":"Sadece yeme aralığında yersin.",
 "Eating window: {a} – {b}":"Yeme aralığı: {a} – {b}",
 "Dirty bulk: you gain fast, but a good part of it will be fat.":"Kirli bulk: hızlı alırsın ama önemli bir kısmı yağ olur.",
-"Close":"Kapat"
+"Close":"Kapat",
+"Ask your coach anything":"Koçuna her şeyi sor"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -4530,6 +4540,7 @@ window.I18N = {
 "You only eat inside your eating window.":"你只在进食窗口内吃东西。",
 "Eating window: {a} – {b}":"进食窗口：{a} – {b}",
 "Dirty bulk: you gain fast, but a good part of it will be fat.":"快速增重：增重很快，但相当一部分会是脂肪。",
-"Close":"关闭"
+"Close":"关闭",
+"Ask your coach anything":"问问你的教练任何问题"
 }
 };

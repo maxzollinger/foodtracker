@@ -243,17 +243,18 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 /* Chat */
 body.chatting{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
 body.chatting .fab{display:none}
-body.typing .tabbar,body.typing .chips{display:none}
-body.typing .chatbar{bottom:0;padding-bottom:calc(8px + env(safe-area-inset-bottom))}
-body.chatting.typing{padding-bottom:calc(80px + env(safe-area-inset-bottom))}
+body.typing .tabbar{display:none}
+body.typing .chatbar{bottom:0;padding-bottom:6px}
+.chatbar.hasText .chips{display:none}
+body.chatting.typing{padding-bottom:140px}
 .msgs{display:flex;flex-direction:column;gap:12px;margin-top:10px}
-.msg{max-width:86%;padding:12px 16px;border-radius:20px;font-size:15.5px;line-height:1.5;word-wrap:break-word}
+.msg{max-width:86%;padding:12px 16px;border-radius:20px;font-size:16px;line-height:1.55;word-wrap:break-word}
 .msg.new{animation:msgIn .35s ease}
 @keyframes msgIn{from{opacity:0;transform:translateY(8px)}}
 .memnote{font-size:12px;color:var(--muted);margin-top:8px;font-weight:600}
-.msg.user{align-self:flex-end;background:var(--ink);color:var(--on-ink);border-bottom-right-radius:6px}
-.msg.ai{align-self:flex-start;background:var(--card);box-shadow:var(--shadow);border-bottom-left-radius:6px}
-.msg.err{background:transparent;box-shadow:inset 0 0 0 1.5px var(--bad);color:var(--bad)}
+.msg.user{align-self:flex-end;background:var(--chip);color:var(--text);border-radius:18px;padding:10px 16px}
+.msg.ai{align-self:stretch;max-width:100%;background:none;padding:2px 2px 6px;border-radius:0}
+.msg.err{background:transparent;box-shadow:inset 0 0 0 1.5px var(--bad);color:var(--bad);padding:10px 14px;border-radius:14px}
 .msg img{display:block;max-width:180px;border-radius:12px;margin-bottom:6px}
 .msg ul,.msg ol{margin:6px 0 8px;padding-left:20px}
 .msg li{margin:3px 0}
@@ -267,8 +268,10 @@ body.chatting.typing{padding-bottom:calc(80px + env(safe-area-inset-bottom))}
 .chatbar .in{max-width:560px;margin:0 auto}
 .chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
 .chips::-webkit-scrollbar{display:none}
-.chips button{flex:none;background:var(--card);box-shadow:inset 0 0 0 1.5px var(--line);border-radius:999px;padding:8px 13px;font-size:13.5px;font-weight:500}
-.composer{display:flex;gap:8px;align-items:flex-end;background:var(--card);border-radius:24px;padding:5px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.chips button{flex:none;background:var(--ink);color:var(--on-ink);border-radius:999px;padding:10px 16px;font-size:14px;font-weight:600}
+.crow{display:flex;gap:10px;align-items:flex-end}
+.plusbtn{width:50px;height:50px;border-radius:16px;flex:none;background:var(--card);box-shadow:inset 0 0 0 1.5px var(--line);font-size:28px;font-weight:300;display:flex;align-items:center;justify-content:center}
+.composer{flex:1;min-width:0;display:flex;gap:8px;align-items:flex-end;background:var(--card);border-radius:18px;padding:5px 5px 5px 10px;box-shadow:inset 0 0 0 1.5px var(--line)}
 .composer textarea{min-height:0;height:40px;max-height:120px;overflow-y:hidden;background:none;padding:10px 6px;border-radius:0}
 .composer .cbtn{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:18px}
 .composer .send{background:var(--ink);color:var(--on-ink)}
@@ -1594,11 +1597,11 @@ function renderChat(animLast) {
   if (!bar) {
     bar = document.createElement('div'); bar.className = 'chatbar';
     bar.innerHTML = `<div class="in"><div class="chips">${chipsFor().map(c => `<button>${esc(T(c))}</button>`).join('')}</div><div id="cAttach"></div>
-      <div class="composer"><button class="cbtn" id="cPhoto" aria-label="${T('Add photo')}">📷</button>
-      <textarea id="cIn" rows="1" placeholder="${T('Ask your coach…')}"></textarea><button class="cbtn send" id="cSend" aria-label="${T('Send')}">↑</button></div></div>`;
+      <div class="crow"><button class="plusbtn" id="cPhoto" aria-label="${T('Add photo')}">＋</button>
+      <div class="composer"><textarea id="cIn" rows="1" placeholder="${T('Ask your coach anything')}"></textarea><button class="cbtn send" id="cSend" aria-label="${T('Send')}">↑</button></div></div></div>`;
     document.body.appendChild(bar);
     const ta = bar.querySelector('#cIn');
-    ta.oninput = () => { ta.style.height = '40px'; ta.style.height = Math.min(ta.scrollHeight, 120) + 'px'; };
+    ta.oninput = () => { ta.style.height = '40px'; ta.style.height = Math.min(ta.scrollHeight, 120) + 'px'; bar.classList.toggle('hasText', !!ta.value.trim()); };
     // While typing, hide the tab bar and suggestions so there's more room for the conversation
     let blurT;
     ta.addEventListener('focus', () => { clearTimeout(blurT); document.body.classList.add('typing'); setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 250); });
