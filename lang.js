@@ -518,7 +518,10 @@ window.I18N = {
 "Same meal plan this week":"Diese Woche derselbe Essensplan",
 "A fresh plan and grocery list for this week. Have a look before you go shopping!":"Ein frischer Plan und eine neue Einkaufsliste für diese Woche. Schau rein, bevor du einkaufen gehst!",
 "Your grocery list was reset for this week's shopping.":"Deine Einkaufsliste wurde für den Einkauf dieser Woche zurückgesetzt.",
-"Open":"Öffnen"
+"Open":"Öffnen",
+"You can attach up to {n} photos or files per message.":"Du kannst bis zu {n} Fotos oder Dateien pro Nachricht anhängen.",
+"What do you think about these files?":"Was hältst du von diesen Dateien?",
+"What do you think about these photos?":"Was hältst du von diesen Fotos?"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1038,7 +1041,10 @@ window.I18N = {
 "Same meal plan this week":"El mismo plan de comidas esta semana",
 "A fresh plan and grocery list for this week. Have a look before you go shopping!":"Un plan y una lista de la compra nuevos para esta semana. ¡Échale un vistazo antes de ir a comprar!",
 "Your grocery list was reset for this week's shopping.":"Tu lista de la compra se ha reiniciado para la compra de esta semana.",
-"Open":"Abrir"
+"Open":"Abrir",
+"You can attach up to {n} photos or files per message.":"Puedes adjuntar hasta {n} fotos o archivos por mensaje.",
+"What do you think about these files?":"¿Qué opinas de estos archivos?",
+"What do you think about these photos?":"¿Qué opinas de estas fotos?"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -1558,7 +1564,10 @@ window.I18N = {
 "Same meal plan this week":"Même plan de repas cette semaine",
 "A fresh plan and grocery list for this week. Have a look before you go shopping!":"Un nouveau plan et une nouvelle liste de courses pour cette semaine. Jette un œil avant d'aller faire les courses !",
 "Your grocery list was reset for this week's shopping.":"Ta liste de courses a été remise à zéro pour les courses de cette semaine.",
-"Open":"Ouvrir"
+"Open":"Ouvrir",
+"You can attach up to {n} photos or files per message.":"Tu peux joindre jusqu'à {n} photos ou fichiers par message.",
+"What do you think about these files?":"Que penses-tu de ces fichiers ?",
+"What do you think about these photos?":"Que penses-tu de ces photos ?"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -2078,7 +2087,10 @@ window.I18N = {
 "Same meal plan this week":"Stesso piano pasti questa settimana",
 "A fresh plan and grocery list for this week. Have a look before you go shopping!":"Un piano e una lista della spesa nuovi per questa settimana. Dai un'occhiata prima di fare la spesa!",
 "Your grocery list was reset for this week's shopping.":"La tua lista della spesa è stata azzerata per la spesa di questa settimana.",
-"Open":"Apri"
+"Open":"Apri",
+"You can attach up to {n} photos or files per message.":"Puoi allegare fino a {n} foto o file per messaggio.",
+"What do you think about these files?":"Cosa ne pensi di questi file?",
+"What do you think about these photos?":"Cosa ne pensi di queste foto?"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -2598,7 +2610,10 @@ window.I18N = {
 "Same meal plan this week":"今週も同じ食事プラン",
 "A fresh plan and grocery list for this week. Have a look before you go shopping!":"今週の新しいプランと買い物リストです。買い物に行く前にチェックしましょう！",
 "Your grocery list was reset for this week's shopping.":"今週の買い物に向けて買い物リストをリセットしました。",
-"Open":"開く"
+"Open":"開く",
+"You can attach up to {n} photos or files per message.":"1 回のメッセージに最大 {n} 枚の写真やファイルを添付できます。",
+"What do you think about these files?":"これらのファイルについてどう思う？",
+"What do you think about these photos?":"これらの写真についてどう思う？"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -3118,7 +3133,10 @@ window.I18N = {
 "Same meal plan this week":"Deze week hetzelfde maaltijdplan",
 "A fresh plan and grocery list for this week. Have a look before you go shopping!":"Een vers plan en nieuwe boodschappenlijst voor deze week. Kijk even voordat je boodschappen gaat doen!",
 "Your grocery list was reset for this week's shopping.":"Je boodschappenlijst is gereset voor de boodschappen van deze week.",
-"Open":"Openen"
+"Open":"Openen",
+"You can attach up to {n} photos or files per message.":"Je kunt tot {n} foto's of bestanden per bericht toevoegen.",
+"What do you think about these files?":"Wat vind je van deze bestanden?",
+"What do you think about these photos?":"Wat vind je van deze foto's?"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -3638,7 +3656,10 @@ window.I18N = {
 "Same meal plan this week":"Ten sam plan posiłków w tym tygodniu",
 "A fresh plan and grocery list for this week. Have a look before you go shopping!":"Świeży plan i lista zakupów na ten tydzień. Zajrzyj, zanim pójdziesz na zakupy!",
 "Your grocery list was reset for this week's shopping.":"Twoja lista zakupów została wyzerowana na zakupy w tym tygodniu.",
-"Open":"Otwórz"
+"Open":"Otwórz",
+"You can attach up to {n} photos or files per message.":"Możesz dołączyć do {n} zdjęć lub plików na wiadomość.",
+"What do you think about these files?":"Co myślisz o tych plikach?",
+"What do you think about these photos?":"Co myślisz o tych zdjęciach?"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -4158,7 +4179,10 @@ window.I18N = {
 "Same meal plan this week":"O mesmo plano de refeições esta semana",
 "A fresh plan and grocery list for this week. Have a look before you go shopping!":"Um plano e uma lista de compras novos para esta semana. Dá uma olhadela antes de ires às compras!",
 "Your grocery list was reset for this week's shopping.":"A tua lista de compras foi reiniciada para as compras desta semana.",
-"Open":"Abrir"
+"Open":"Abrir",
+"You can attach up to {n} photos or files per message.":"Podes anexar até {n} fotos ou ficheiros por mensagem.",
+"What do you think about these files?":"O que achas destes ficheiros?",
+"What do you think about these photos?":"O que achas destas fotos?"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -4678,7 +4702,10 @@ window.I18N = {
 "Same meal plan this week":"На этой неделе тот же план питания",
 "A fresh plan and grocery list for this week. Have a look before you go shopping!":"Новый план и список покупок на эту неделю. Загляни перед походом в магазин!",
 "Your grocery list was reset for this week's shopping.":"Список покупок сброшен для покупок на этой неделе.",
-"Open":"Открыть"
+"Open":"Открыть",
+"You can attach up to {n} photos or files per message.":"К одному сообщению можно прикрепить до {n} фото или файлов.",
+"What do you think about these files?":"Что думаешь об этих файлах?",
+"What do you think about these photos?":"Что думаешь об этих фото?"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -5198,7 +5225,10 @@ window.I18N = {
 "Same meal plan this week":"Bu hafta aynı yemek planı",
 "A fresh plan and grocery list for this week. Have a look before you go shopping!":"Bu hafta için yeni bir plan ve alışveriş listesi. Alışverişe gitmeden önce bir göz at!",
 "Your grocery list was reset for this week's shopping.":"Alışveriş listen bu haftanın alışverişi için sıfırlandı.",
-"Open":"Aç"
+"Open":"Aç",
+"You can attach up to {n} photos or files per message.":"Mesaj başına en fazla {n} fotoğraf veya dosya ekleyebilirsin.",
+"What do you think about these files?":"Bu dosyalar hakkında ne düşünüyorsun?",
+"What do you think about these photos?":"Bu fotoğraflar hakkında ne düşünüyorsun?"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -5718,6 +5748,9 @@ window.I18N = {
 "Same meal plan this week":"本周沿用同一饮食计划",
 "A fresh plan and grocery list for this week. Have a look before you go shopping!":"本周的新计划和购物清单已准备好。去购物前先看看吧！",
 "Your grocery list was reset for this week's shopping.":"你的购物清单已为本周购物重置。",
-"Open":"打开"
+"Open":"打开",
+"You can attach up to {n} photos or files per message.":"每条消息最多可附加 {n} 张照片或文件。",
+"What do you think about these files?":"你觉得这些文件怎么样？",
+"What do you think about these photos?":"你觉得这些照片怎么样？"
 }
 };
