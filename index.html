@@ -280,6 +280,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .mini-l{font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wbtn{width:40px;height:40px;border-radius:50%;background:var(--chip);font-size:22px;font-weight:600;flex:none;display:flex;align-items:center;justify-content:center}
 .addtile small{font-size:12px;font-weight:600}
+.wwhy{margin-top:10px;padding:12px 14px;border-radius:14px;background:var(--chip)}
+.wwhy .spread{padding:3px 0}
 .addtile .wicon{height:64px;display:flex;align-items:flex-end;justify-content:center}
 .addtile .wicon svg{width:auto;display:block}
 .rtimes{margin-top:12px;display:flex;flex-direction:column;gap:10px}
@@ -588,7 +590,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v45';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v46';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1731,7 +1733,21 @@ async function startBarScan() {
 
 /* ================= Water ================= */
 const waterLog = () => (db.water = db.water || {});
-const waterGoal = () => db.settings.waterGoal || (db.profile ? clamp(Math.round(currentWeight() * 35 / 250) * 250, 1500, 4500) : 2500);
+/* Personal water goal: about 33 ml per kg of body weight, plus extra for regular training, for goals that
+   need more water (high protein, keto, building muscle) and for the exercise logged that day.
+   Rounded to 250 ml. People can still set their own amount. */
+function waterAuto(d = sel) {
+  const p = db.profile; if (!p) return { total: 2500, parts: [] };
+  const w = currentWeight(), parts = [[T('Body weight {w} kg', { w }), Math.round(w * 33)]];
+  const train = { '0-2': 0, '3-5': 350, '6+': 600 }[p.workouts] || 0;
+  if (train) parts.push([T('Training {n}× a week', { n: p.workouts }), train]);
+  const pl = planOf(p);
+  if (['protein', 'keto', 'bulk', 'lean', 'dirty', 'recomp'].includes(pl.id) || p.goal === 'lean') parts.push([T('Your goal: {g}', { g: T(pl.name) }), 250]);
+  const burned = dayBurned(d), ex = Math.min(1000, Math.round(burned * 0.6));
+  if (ex) parts.push([T('Exercise that day ({n} kcal)', { n: r0(burned) }), ex]);
+  return { total: clamp(Math.round(parts.reduce((a, x) => a + x[1], 0) / 250) * 250, 1500, 5000), parts };
+}
+const waterGoal = (d = sel) => db.settings.waterGoal || waterAuto(d).total;
 const waterOn = d => num(waterLog()[d]);
 const fmtL = ml => (ml >= 1000 ? (Math.round(ml / 10) / 100).toLocaleString(LOC) + ' L' : ml + ' ml');
 function addWater(ml, d = sel) {
@@ -1740,7 +1756,7 @@ function addWater(ml, d = sel) {
   save(); if (tab === 'home') renderHome();
 }
 function waterCard(d) {
-  const ml = waterOn(d), goal = waterGoal();
+  const ml = waterOn(d), goal = waterGoal(d);
   return `<div class="card mini" id="waterCard"><div class="spread">${ring(38, 5, ml / goal, 'var(--water)', '<span style="font-size:15px">💧</span>')}
       <button class="mini-plus" id="wPlus" aria-label="+250 ml">＋</button></div>
     <div><div class="mini-v">${fmtL(ml)}</div><div class="mini-l">${T('Water')} · ${fmtL(goal)}</div></div></div>`;
@@ -1760,16 +1776,23 @@ const WATER_BOTTLE = `<svg viewBox="0 0 60 150" aria-hidden="true"><rect x="19" 
   <path d="M44 34c4 3 8 6 8 10v95a7 7 0 0 1-7 7h-2z" fill="#c9e1f3"/><rect x="8" y="52" width="44" height="30" fill="#5aa3e2"/><rect x="43" y="52" width="9" height="30" fill="#4a8fd6"/>
   <path d="M8 98h44M8 116h44M8 133h44" stroke="#b5d6ee" stroke-width="3"/></svg>`;
 function openWaterSheet() {
-  const goals = []; for (let g = 1500; g <= 4500; g += 250) goals.push(g);
+  const goals = [], auto = waterAuto(sel); for (let g = 1500; g <= 5000; g += 250) goals.push(g);
   sheet(`<h3>💧 ${T('Water')}</h3><p class="muted" style="margin-top:4px">${T('{a} of {b} today', { a: fmtL(waterOn(sel)), b: fmtL(waterGoal()) })}</p>
     <div class="addgrid">${[[150, WATER_GLASS, 32, N('Small glass')], [250, WATER_GLASS, 44, N('Glass')], [500, WATER_BOTTLE, 50, N('Bottle')], [750, WATER_BOTTLE, 64, N('Large bottle')]].map(([ml, svg, px, l]) =>
       `<button class="addtile" data-ml="${ml}"><span class="wicon">${svg.replace('<svg ', `<svg height="${px}" `)}</span>${T(l)}<small class="muted">+${ml} ml</small></button>`).join('')}</div>
     <div class="row" style="margin-top:14px"><input id="wCustom" inputmode="numeric" placeholder="${T('Other amount (ml)')}"><button class="btn sm" id="wAdd">${T('Add')}</button></div>
-    <label class="lbl">${T('Daily goal')}</label><select id="wGoal">${goals.map(g => `<option value="${g}" ${g === waterGoal() ? 'selected' : ''}>${fmtL(g)}</option>`).join('')}</select>
+    <label class="lbl">${T('Daily goal')}</label>
+    <select id="wGoal"><option value="auto" ${!db.settings.waterGoal ? 'selected' : ''}>✨ ${T('Personal')} · ${fmtL(auto.total)} (${T('recommended')})</option>
+      ${goals.map(g => `<option value="${g}" ${g === db.settings.waterGoal ? 'selected' : ''}>${fmtL(g)}</option>`).join('')}</select>
+    <div class="wwhy"><div class="small muted" style="font-weight:600;margin-bottom:4px">${db.settings.waterGoal ? T('Set by you. Your personal goal would be {n}:', { n: fmtL(auto.total) }) : T('Your personal goal adds up from:')}</div>
+      ${auto.parts.map(([l, ml], i) => `<div class="spread small"><span>${l}</span><b>${i ? '+' : ''}${fmtL(ml)}</b></div>`).join('')}</div>
     ${waterOn(sel) ? `<div class="row" style="margin-top:14px"><button class="btn outline grow" id="wLess">− 250 ml</button><button class="btn outline grow" id="wReset" style="color:var(--bad)">${T('Reset for this day')}</button></div>` : ''}`, s => {
     s.querySelectorAll('[data-ml]').forEach(b => b.onclick = () => { addWater(+b.dataset.ml); closeSheet(); toast(`💧 +${b.dataset.ml} ml`); });
     s.querySelector('#wAdd').onclick = () => { const v = r0(num(s.querySelector('#wCustom').value)); if (v > 0 && v <= 5000) { addWater(v); closeSheet(); toast(`💧 +${v} ml`); } };
-    s.querySelector('#wGoal').onchange = e => { db.settings.waterGoal = +e.target.value; save(); if (tab === 'home') renderHome(); toast(T('✓ Saved')); };
+    s.querySelector('#wGoal').onchange = e => {
+      if (e.target.value === 'auto') delete db.settings.waterGoal; else db.settings.waterGoal = +e.target.value;
+      save(); if (tab === 'home') renderHome(); toast(T('✓ Saved')); openWaterSheet();
+    };
     if (s.querySelector('#wReset')) s.querySelector('#wReset').onclick = () => { addWater(-waterOn(sel)); closeSheet(); };
     if (s.querySelector('#wLess')) s.querySelector('#wLess').onclick = () => { addWater(-Math.min(250, waterOn(sel))); closeSheet(); };
   });
@@ -2558,7 +2581,7 @@ Carbs: ${r0(tot.carbs)} of ${g.carbs} g → ${left('carbs')}
 Fats: ${r0(tot.fat)} of ${g.fat} g → ${left('fat')}
 Calories burned today: ${g.burned} kcal → ${g.extra} kcal added to today's goal (mode "${db.settings.burnMode}"; normal training of ~${g.included} kcal/day is already part of the base goal)
 Health score today: ${healthAvg(todayMeals) ?? 'no meals yet'}/10
-Water today: ${waterOn(today)} of ${waterGoal()} ml
+Water today: ${waterOn(today)} of ${waterGoal(today)} ml (${db.settings.waterGoal ? 'goal set by the user' : 'personal goal from body weight, training, goal and the exercise of today'})
 Sugar ${r0(dayExtras(today).sugar)} g, fiber ${r0(dayExtras(today).fiber)} g, sodium ${r0(dayExtras(today).sodium)} mg today (known for ${dayExtras(today).known} of ${dayExtras(today).meals} meals)${pend ? `\nStill analysing: ${pend} food photo(s), not counted yet` : ''}
 
 === TODAY'S MEALS ===

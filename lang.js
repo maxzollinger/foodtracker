@@ -620,7 +620,15 @@ window.I18N = {
 "No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.":"Keine Werbung, kein Tracking, kein Verkauf von Daten und keine E-Mails. Deine E-Mail-Adresse ist nur der Name deines Kontos.",
 "Deleting":"Löschen",
 "Settings → Delete all data removes everything on this phone and your account backup on the server.":"Einstellungen → Alle Daten löschen entfernt alles auf diesem Handy und dein Konto-Backup auf dem Server.",
-"Questions? Ask the person who shared the app with you.":"Fragen? Frag die Person, die dir die App geschickt hat."
+"Questions? Ask the person who shared the app with you.":"Fragen? Frag die Person, die dir die App geschickt hat.",
+"Body weight {w} kg":"Körpergewicht {w} kg",
+"Training {n}× a week":"Training {n}× pro Woche",
+"Your goal: {g}":"Dein Ziel: {g}",
+"Exercise that day ({n} kcal)":"Sport an dem Tag ({n} kcal)",
+"Personal":"Persönlich",
+"recommended":"empfohlen",
+"Set by you. Your personal goal would be {n}:":"Von dir eingestellt. Dein persönliches Ziel wäre {n}:",
+"Your personal goal adds up from:":"Dein persönliches Ziel setzt sich so zusammen:"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1242,7 +1250,15 @@ window.I18N = {
 "No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.":"Sin anuncios, sin rastreo, sin venta de datos y sin emails. Tu email es solo el nombre de tu cuenta.",
 "Deleting":"Borrar",
 "Settings → Delete all data removes everything on this phone and your account backup on the server.":"Ajustes → Borrar todos los datos elimina todo en este móvil y la copia de tu cuenta en el servidor.",
-"Questions? Ask the person who shared the app with you.":"¿Preguntas? Pregunta a la persona que te compartió la app."
+"Questions? Ask the person who shared the app with you.":"¿Preguntas? Pregunta a la persona que te compartió la app.",
+"Body weight {w} kg":"Peso corporal {w} kg",
+"Training {n}× a week":"Entreno {n}× por semana",
+"Your goal: {g}":"Tu objetivo: {g}",
+"Exercise that day ({n} kcal)":"Ejercicio ese día ({n} kcal)",
+"Personal":"Personal",
+"recommended":"recomendado",
+"Set by you. Your personal goal would be {n}:":"Elegido por ti. Tu objetivo personal sería {n}:",
+"Your personal goal adds up from:":"Tu objetivo personal se compone de:"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -1864,7 +1880,15 @@ window.I18N = {
 "No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.":"Pas de pub, pas de pistage, pas de vente de données et pas d'e-mails. Ton adresse e-mail est seulement le nom de ton compte.",
 "Deleting":"Suppression",
 "Settings → Delete all data removes everything on this phone and your account backup on the server.":"Réglages → Supprimer toutes les données efface tout sur ce téléphone et la sauvegarde de ton compte sur le serveur.",
-"Questions? Ask the person who shared the app with you.":"Des questions ? Demande à la personne qui t'a partagé l'app."
+"Questions? Ask the person who shared the app with you.":"Des questions ? Demande à la personne qui t'a partagé l'app.",
+"Body weight {w} kg":"Poids {w} kg",
+"Training {n}× a week":"Entraînement {n}× par semaine",
+"Your goal: {g}":"Ton objectif : {g}",
+"Exercise that day ({n} kcal)":"Sport ce jour-là ({n} kcal)",
+"Personal":"Personnel",
+"recommended":"recommandé",
+"Set by you. Your personal goal would be {n}:":"Choisi par toi. Ton objectif personnel serait {n} :",
+"Your personal goal adds up from:":"Ton objectif personnel se compose de :"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -2486,7 +2510,15 @@ window.I18N = {
 "No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.":"Niente pubblicità, niente tracciamento, nessuna vendita di dati e nessuna email. La tua email è solo il nome del tuo account.",
 "Deleting":"Eliminazione",
 "Settings → Delete all data removes everything on this phone and your account backup on the server.":"Impostazioni → Elimina tutti i dati cancella tutto su questo telefono e il backup del tuo account sul server.",
-"Questions? Ask the person who shared the app with you.":"Domande? Chiedi alla persona che ti ha condiviso l'app."
+"Questions? Ask the person who shared the app with you.":"Domande? Chiedi alla persona che ti ha condiviso l'app.",
+"Body weight {w} kg":"Peso corporeo {w} kg",
+"Training {n}× a week":"Allenamento {n}× a settimana",
+"Your goal: {g}":"Il tuo obiettivo: {g}",
+"Exercise that day ({n} kcal)":"Sport quel giorno ({n} kcal)",
+"Personal":"Personale",
+"recommended":"consigliato",
+"Set by you. Your personal goal would be {n}:":"Impostato da te. Il tuo obiettivo personale sarebbe {n}:",
+"Your personal goal adds up from:":"Il tuo obiettivo personale è dato da:"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -3108,7 +3140,15 @@ window.I18N = {
 "No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.":"広告なし、追跡なし、データの販売なし、メールの送信なし。メールアドレスはアカウント名としてだけ使われます。",
 "Deleting":"削除",
 "Settings → Delete all data removes everything on this phone and your account backup on the server.":"設定 → すべてのデータを削除 で、このスマホのデータとサーバー上のアカウントのバックアップがすべて消えます。",
-"Questions? Ask the person who shared the app with you.":"質問は、アプリを共有してくれた人に聞いてください。"
+"Questions? Ask the person who shared the app with you.":"質問は、アプリを共有してくれた人に聞いてください。",
+"Body weight {w} kg":"体重 {w} kg",
+"Training {n}× a week":"週 {n} 回のトレーニング",
+"Your goal: {g}":"目標：{g}",
+"Exercise that day ({n} kcal)":"その日の運動（{n} kcal）",
+"Personal":"パーソナル",
+"recommended":"おすすめ",
+"Set by you. Your personal goal would be {n}:":"自分で設定中。パーソナル目標は {n} です：",
+"Your personal goal adds up from:":"パーソナル目標の内訳："
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -3730,7 +3770,15 @@ window.I18N = {
 "No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.":"Geen advertenties, geen tracking, geen verkoop van gegevens en geen e-mails. Je e-mailadres is alleen de naam van je account.",
 "Deleting":"Verwijderen",
 "Settings → Delete all data removes everything on this phone and your account backup on the server.":"Instellingen → Alle gegevens verwijderen wist alles op deze telefoon en de back-up van je account op de server.",
-"Questions? Ask the person who shared the app with you.":"Vragen? Vraag het aan de persoon die de app met je deelde."
+"Questions? Ask the person who shared the app with you.":"Vragen? Vraag het aan de persoon die de app met je deelde.",
+"Body weight {w} kg":"Lichaamsgewicht {w} kg",
+"Training {n}× a week":"Training {n}× per week",
+"Your goal: {g}":"Je doel: {g}",
+"Exercise that day ({n} kcal)":"Sport die dag ({n} kcal)",
+"Personal":"Persoonlijk",
+"recommended":"aanbevolen",
+"Set by you. Your personal goal would be {n}:":"Door jou ingesteld. Je persoonlijke doel zou {n} zijn:",
+"Your personal goal adds up from:":"Je persoonlijke doel is opgebouwd uit:"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -4352,7 +4400,15 @@ window.I18N = {
 "No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.":"Brak reklam, śledzenia, sprzedaży danych i e-maili. Twój e-mail to tylko nazwa twojego konta.",
 "Deleting":"Usuwanie",
 "Settings → Delete all data removes everything on this phone and your account backup on the server.":"Ustawienia → Usuń wszystkie dane usuwa wszystko z tego telefonu oraz kopię twojego konta na serwerze.",
-"Questions? Ask the person who shared the app with you.":"Pytania? Zapytaj osobę, która udostępniła ci aplikację."
+"Questions? Ask the person who shared the app with you.":"Pytania? Zapytaj osobę, która udostępniła ci aplikację.",
+"Body weight {w} kg":"Masa ciała {w} kg",
+"Training {n}× a week":"Trening {n}× w tygodniu",
+"Your goal: {g}":"Twój cel: {g}",
+"Exercise that day ({n} kcal)":"Ćwiczenia tego dnia ({n} kcal)",
+"Personal":"Osobisty",
+"recommended":"zalecane",
+"Set by you. Your personal goal would be {n}:":"Ustawione przez ciebie. Twój osobisty cel to {n}:",
+"Your personal goal adds up from:":"Twój osobisty cel składa się z:"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -4974,7 +5030,15 @@ window.I18N = {
 "No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.":"Sem anúncios, sem rastreio, sem venda de dados e sem emails. O teu email é só o nome da tua conta.",
 "Deleting":"Apagar",
 "Settings → Delete all data removes everything on this phone and your account backup on the server.":"Definições → Apagar todos os dados remove tudo deste telemóvel e a cópia da tua conta no servidor.",
-"Questions? Ask the person who shared the app with you.":"Dúvidas? Pergunta à pessoa que te partilhou a app."
+"Questions? Ask the person who shared the app with you.":"Dúvidas? Pergunta à pessoa que te partilhou a app.",
+"Body weight {w} kg":"Peso corporal {w} kg",
+"Training {n}× a week":"Treino {n}× por semana",
+"Your goal: {g}":"O teu objetivo: {g}",
+"Exercise that day ({n} kcal)":"Exercício nesse dia ({n} kcal)",
+"Personal":"Pessoal",
+"recommended":"recomendado",
+"Set by you. Your personal goal would be {n}:":"Definido por ti. O teu objetivo pessoal seria {n}:",
+"Your personal goal adds up from:":"O teu objetivo pessoal resulta de:"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -5596,7 +5660,15 @@ window.I18N = {
 "No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.":"Никакой рекламы, слежки, продажи данных и писем. Твой email — это только имя аккаунта.",
 "Deleting":"Удаление",
 "Settings → Delete all data removes everything on this phone and your account backup on the server.":"Настройки → Удалить все данные удаляет всё на этом телефоне и копию твоего аккаунта на сервере.",
-"Questions? Ask the person who shared the app with you.":"Вопросы? Спроси человека, который поделился с тобой приложением."
+"Questions? Ask the person who shared the app with you.":"Вопросы? Спроси человека, который поделился с тобой приложением.",
+"Body weight {w} kg":"Вес тела {w} кг",
+"Training {n}× a week":"Тренировки {n} раз в неделю",
+"Your goal: {g}":"Твоя цель: {g}",
+"Exercise that day ({n} kcal)":"Спорт в этот день ({n} ккал)",
+"Personal":"Личная",
+"recommended":"рекомендуется",
+"Set by you. Your personal goal would be {n}:":"Задано тобой. Твоя личная цель была бы {n}:",
+"Your personal goal adds up from:":"Твоя личная цель складывается из:"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -6218,7 +6290,15 @@ window.I18N = {
 "No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.":"Reklam yok, takip yok, veri satışı yok ve e-posta yok. E-posta adresin yalnızca hesabının adıdır.",
 "Deleting":"Silme",
 "Settings → Delete all data removes everything on this phone and your account backup on the server.":"Ayarlar → Tüm verileri sil, bu telefondaki her şeyi ve sunucudaki hesap yedeğini kaldırır.",
-"Questions? Ask the person who shared the app with you.":"Sorun mu var? Uygulamayı seninle paylaşan kişiye sor."
+"Questions? Ask the person who shared the app with you.":"Sorun mu var? Uygulamayı seninle paylaşan kişiye sor.",
+"Body weight {w} kg":"Vücut ağırlığı {w} kg",
+"Training {n}× a week":"Haftada {n} kez antrenman",
+"Your goal: {g}":"Hedefin: {g}",
+"Exercise that day ({n} kcal)":"O günkü egzersiz ({n} kcal)",
+"Personal":"Kişisel",
+"recommended":"önerilen",
+"Set by you. Your personal goal would be {n}:":"Senin ayarın. Kişisel hedefin {n} olurdu:",
+"Your personal goal adds up from:":"Kişisel hedefin şunlardan oluşur:"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -6840,6 +6920,14 @@ window.I18N = {
 "No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.":"没有广告、没有追踪、不出售数据，也不发邮件。你的邮箱只是账户的名字。",
 "Deleting":"删除",
 "Settings → Delete all data removes everything on this phone and your account backup on the server.":"设置 → 删除所有数据 会清除这部手机上的一切以及服务器上的账户备份。",
-"Questions? Ask the person who shared the app with you.":"有问题？问问把应用分享给你的人。"
+"Questions? Ask the person who shared the app with you.":"有问题？问问把应用分享给你的人。",
+"Body weight {w} kg":"体重 {w} 公斤",
+"Training {n}× a week":"每周训练 {n} 次",
+"Your goal: {g}":"你的目标：{g}",
+"Exercise that day ({n} kcal)":"当天运动（{n} 千卡）",
+"Personal":"个性化",
+"recommended":"推荐",
+"Set by you. Your personal goal would be {n}:":"由你设置。你的个性化目标应为 {n}：",
+"Your personal goal adds up from:":"你的个性化目标由以下组成："
 }
 };
