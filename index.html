@@ -225,6 +225,8 @@ input[type=range]{-webkit-appearance:none;appearance:none;background:transparent
 input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--track)}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:var(--ink);margin-top:-11px;border:3px solid var(--card);box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .tip{background:var(--chip);border-radius:16px;padding:14px 16px;font-size:14px;margin-top:16px}
+.askbell{width:76px;height:76px;margin:0 auto;border-radius:24px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:38px;animation:bellIn .6s cubic-bezier(.2,1.4,.4,1)}
+@keyframes bellIn{from{transform:scale(.5) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
 .plan4{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .plan4 .card{margin:0;display:flex;flex-direction:column;align-items:center;gap:10px;padding:16px 10px}
 
@@ -465,6 +467,17 @@ function migrate(d) {
 }
 function save() { if (!LS.set('ft_data', JSON.stringify(db))) toast(T('Could not save. Is your phone storage full?')); if (typeof saveReminderTexts === 'function') saveReminderTexts(); }
 const getKey = () => LS.get('ft_key', '');
+/* Sharing with friends & family: a small free server (Cloudflare Worker, see server/worker.js) holds the
+   owner's Google AI key, so everyone gets AI without setup. It also keeps each phone's notification address. */
+const SERVER_URL = 'https://foodtracker.max-zollinger.workers.dev';   // e.g. https://foodtracker.<name>.workers.dev  (empty = everyone needs their own key)
+const SHARED = 'shared';
+const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
+// The owner's phone is the "admin" app (AI keys, Claude, technical settings). Friends get the simple app.
+// Phones that already had keys or reminders set up become admin automatically; tapping the note at the
+// bottom of Settings 7 times switches admin mode on or off.
+if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
+const isAdmin = () => LS.get('ft_admin', '0') === '1';
+const APP_VERSION = 'foodtracker-v32';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -880,7 +893,7 @@ function renderHome() {
     <div style="margin-top:16px"><button class="btn sm" style="margin:0 auto" onclick="openAddMenu()">＋ ${T('Add food')}</button></div></div>`;
 
   $('#view').innerHTML = `
-    <div class="top"><div class="brand"><img src="icon-180.png" alt="">FoodTracker</div>
+    <div class="top"><div class="brand"><img src="icon-180.png" alt="">Food Tracker</div>
       <div class="row" style="gap:8px"><button class="themebtn" id="themeBtn" aria-label="${T('Light / dark mode')}">${isDark() ? '☀️' : '🌙'}</button><div class="streak">🔥 ${st}</div></div></div>
     <div class="week"><button class="nav" id="wPrev">‹</button><div class="days">${week}</div><button class="nav" id="wNext" ${weekOff >= 0 ? 'style="visibility:hidden"' : ''}>›</button></div>
     ${planChip()}
@@ -999,7 +1012,7 @@ Write "name", every ingredient name and "notes" in ${langInfo().ai}.`;
    Parts format: [{ text }, { image: base64jpeg }]. Tries every free Google model in turn (each has its
    own daily limit), skipping ones that are rate-limited, then Claude if a Claude key is set. */
 const getClaudeKey = () => LS.get('ft_claude_key', '');
-const hasAI = () => !!(getKey() || getClaudeKey());
+const hasAI = () => !!(geminiKey() || getClaudeKey());
 let lastAI = '';
 const GEMINI = [
   { id: 'gemini-3.5-flash-lite' },                                   // fastest, minimal thinking by default
@@ -1029,7 +1042,7 @@ function normMsgs(msgs) {
 async function askAI(parts, opt = {}) {
   const json = opt.json !== false;
   const msgs = normMsgs([...(opt.history || []), { role: 'user', parts }]);
-  const g = getKey(), c = getClaudeKey();
+  const g = geminiKey(), c = getClaudeKey();
   if (!g && !c) throw new Error('NOKEY');
   const prov = [];
   if (g) prov.push(() => geminiChain(g, msgs, opt.system, json, opt.onText));
@@ -1072,8 +1085,11 @@ async function geminiOnce(key, model, msgs, system, json, onText) {
   const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), 30000);
   let res;
   try {
-    res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:${onText ? 'streamGenerateContent?alt=sse' : 'generateContent'}`, {
-      method: 'POST', signal: ctl.signal, headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key }, body: JSON.stringify(body) });
+    const viaServer = key === SHARED, method = onText ? 'streamGenerateContent' : 'generateContent';
+    const url = viaServer ? `${SERVER_URL}/gemini/${encodeURIComponent(model)}:${method}`
+      : `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:${method}${onText ? '?alt=sse' : ''}`;
+    res = await fetch(url, { method: 'POST', signal: ctl.signal,
+      headers: { 'Content-Type': 'application/json', ...(viaServer ? {} : { 'x-goog-api-key': key }) }, body: JSON.stringify(body) });
   } catch (e) { return { ok: false, status: e.name === 'AbortError' ? 504 : 0, msg: e.name === 'AbortError' ? 'took too long' : 'no connection' }; }
   finally { clearTimeout(timer); }
   if (!res.ok) {
@@ -1105,13 +1121,13 @@ async function geminiChain(key, msgs, system, json, onText) {
   if (last && list.includes(last)) list = [last, ...list.filter(x => x !== last)];
   if (custom) list = [custom, ...list.filter(x => x !== custom)];
   const ready = list.filter(m => !(cool[m] > now));
-  let err = aiErr(getClaudeKey() ? T('All free Google AI models are busy right now. Try again in a minute.') : T('All free Google AI models are busy right now. Try again in a minute, or add a Claude key in Settings.'));
+  let err = aiErr(getClaudeKey() || !isAdmin() ? T('All free Google AI models are busy right now. Try again in a minute.') : T('All free Google AI models are busy right now. Try again in a minute, or add a Claude key in Settings.'));
   let offline = 0;
   for (const model of (ready.length ? ready : list)) {
     const r = await geminiOnce(key, model, msgs, system, json, onText);
     if (r.ok) { LS.set('ft_lastModel', model); lastAI = model; return r.text; }
     if (r.status === 0 && ++offline >= 2) throw aiErr(T('No connection to the AI. Check your internet.'));
-    if (/api[_ ]?key|API_KEY_INVALID|unauthenticated/i.test(r.msg) || r.status === 401) throw aiErr(T('Your Google AI key was rejected. Check it in Settings.'), true);
+    if (key !== SHARED && (/api[_ ]?key|API_KEY_INVALID|unauthenticated/i.test(r.msg) || r.status === 401)) throw aiErr(T('Your Google AI key was rejected. Check it in Settings.'), true);
     let wait = 0;
     if (r.status === 429) wait = /day|PerDay/i.test(r.msg) ? untilQuotaReset() : 60e3;
     else if (r.status === 404 || r.status === 403 || (r.status === 400 && /not (found|supported|available)|no longer|deprecat|access/i.test(r.msg))) wait = 7 * 864e5;
@@ -1857,7 +1873,7 @@ if (window.visualViewport) { visualViewport.addEventListener('resize', fitChat);
 let rec = null;
 async function startVoice() {
   if (rec) return;
-  if (!getKey()) return toast(T('Voice input needs your free Google AI key (Settings).'));
+  if (!geminiKey()) return toast(T('Voice input needs your free Google AI key (Settings).'));
   if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) return toast(T('Voice input is not supported on this device.'));
   closeChatMenu();
   let stream;
@@ -1893,7 +1909,7 @@ async function finishVoice(keep) {
   try {
     const wav = await toWav16k(new Blob(r.chunks, { type: r.mr.mimeType || 'audio/mp4' }));
     const prompt = 'Transcribe this voice message word for word, in the language that is spoken. Return only the transcript text, nothing else.';
-    const text = (await geminiChain(getKey(), [{ role: 'user', parts: [{ text: prompt }, { inline: { mime: 'audio/wav', data: wav } }] }], '', false, null)).trim().replace(/^["“]|["”]$/g, '');
+    const text = (await geminiChain(geminiKey(), [{ role: 'user', parts: [{ text: prompt }, { inline: { mime: 'audio/wav', data: wav } }] }], '', false, null)).trim().replace(/^["“]|["”]$/g, '');
     if (!text) throw new Error(T('Could not understand the recording. Please try again.'));
     bar.classList.remove('recording');   // show the text box again before sizing it
     const ta = $('#cIn'); ta.value = (ta.value.trim() ? ta.value.trim() + ' ' : '') + text; ta.oninput();
@@ -2008,8 +2024,8 @@ async function enableReminders() {
     if (perm !== 'granted') return toast(T('Notifications are blocked. Allow them in iPhone Settings → FoodTracker → Notifications.'));
     const reg = await navigator.serviceWorker.ready;
     const sub = await reg.pushManager.getSubscription() || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(VAPID_PUBLIC) });
-    LS.set('ft_push', JSON.stringify(sub)); saveReminderTexts();
-    toast(T('✓ Notifications allowed')); renderSettings();
+    LS.set('ft_push', JSON.stringify(sub)); saveReminderTexts(); syncPush();
+    toast(T('✓ Notifications allowed')); if (tab === 'settings') renderSettings();
   } catch (e) { toast(T('Could not turn on notifications.') + ' ' + (e.message || '')); }
 }
 function remindersCard() {
@@ -2019,11 +2035,13 @@ function remindersCard() {
     body = `<div class="tip">${T('Open FoodTracker from its icon on your Home Screen to turn this on. iPhone needs iOS 16.4 or newer.')}</div>`;
   } else if (perm !== 'granted' || !sub) {
     body = `<button class="btn" id="rOn" style="margin-top:12px">🔔 ${T('Turn on notifications')}</button>`;
+  } else if (!isAdmin()) {
+    body = `<p class="small" style="margin:10px 0 0;color:var(--good);font-weight:600">✓ ${T('Notifications are allowed on this phone.')}</p>`;
   } else {
     body = `<p class="small" style="margin:10px 0 0;color:var(--good);font-weight:600">✓ ${T('Notifications are allowed on this phone.')}</p>
-      <p class="small muted" style="margin:8px 0 0">${T('One-time setup: copy this code and save it on GitHub as the secret PUSH_SUBSCRIPTION (see the setup guide).')}</p>
-      <div class="code">${esc(sub)}</div>
-      <div class="row" style="margin-top:10px"><button class="btn sm grow" id="rCopy">📋 ${T('Copy code')}</button><button class="btn sm outline grow" id="rTest">${T('Test')}</button></div>`;
+      ${SERVER_URL ? '' : `<p class="small muted" style="margin:8px 0 0">${T('One-time setup: copy this code and save it on GitHub as the secret PUSH_SUBSCRIPTION (see the setup guide).')}</p>
+      <div class="code">${esc(sub)}</div>`}
+      <div class="row" style="margin-top:10px">${SERVER_URL ? '' : `<button class="btn sm grow" id="rCopy">📋 ${T('Copy code')}</button>`}<button class="btn sm outline grow" id="rTest">${T('Test')}</button></div>`;
   }
   return `<div class="card"><b>🔔 ${T('Notifications')}</b>
     <p class="small muted" style="margin:4px 0 0">${T('Every evening at about 20:00: log your calories burned. Every Sunday morning: log your weight.')}</p>${body}</div>`;
@@ -2041,6 +2059,84 @@ function bindReminders() {
     setTimeout(() => reg.showNotification(w.title, { body: w.body, icon: 'icon-180.png', tag: 'weight', data: { open: 'weight' } }), 1500);
   };
 }
+// Sends this phone's notification address to the server (again whenever it changes)
+async function syncPush() {
+  try {
+    if (!SERVER_URL || !pushSupported() || Notification.permission !== 'granted') return;
+    const reg = await navigator.serviceWorker.ready;
+    const sub = await reg.pushManager.getSubscription() || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(VAPID_PUBLIC) });
+    const js = JSON.stringify(sub); LS.set('ft_push', js);
+    if (LS.get('ft_push_sent', '') === js) return;
+    const r = await fetch(SERVER_URL + '/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sub }) });
+    if (r.ok) LS.set('ft_push_sent', js);
+  } catch {}
+}
+// Friendly question to turn on reminders: right after setup, then at most twice more, a few days apart
+function askReminders(force) {
+  if (!db.profile || !pushSupported() || (isIOS() && !isStandalone()) || Notification.permission !== 'default' || $('.backdrop') || $('#onb')) return;
+  const st = JSON.parse(LS.get('ft_push_ask', '{"n":0,"t":0}'));
+  if (!force && (st.n >= 3 || Date.now() - st.t < 3 * 864e5)) return;
+  LS.set('ft_push_ask', JSON.stringify({ n: st.n + 1, t: Date.now() }));
+  sheet(`<div style="text-align:center;padding:8px 4px 4px">
+      <div class="askbell">🔔</div>
+      <h3 style="margin:14px 0 6px">${T('Turn on reminders')}</h3>
+      <p class="muted" style="margin:0 0 22px">${T('A short reminder in the evening to log your calories burned, and on Sunday to weigh in.')}</p>
+      <button class="btn" id="askYes">${T('Allow')}</button>
+      <button class="btn outline" id="askNo" style="margin-top:10px">${T('Not now')}</button></div>`, sh => {
+    sh.querySelector('#askYes').onclick = () => { closeSheet(); enableReminders(); };
+    sh.querySelector('#askNo').onclick = dismissSheet;
+  });
+}
+// Share the app link (admin)
+async function shareApp() {
+  const url = location.origin + location.pathname.replace(/index\.html$/, '');
+  try { if (navigator.share) return await navigator.share({ title: 'Food Tracker', text: T('Track your food with AI. Free:'), url }); } catch { return; }
+  try { await navigator.clipboard.writeText(url); toast(T('✓ Copied')); } catch { toast(url); }
+}
+
+/* ---------- Install guide: on a phone browser, first add the app to the Home Screen ----------
+   Only the Home Screen app can get notifications, and its data is separate from Safari's. */
+let installEvt = null;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; const b = $('#instBtn'); if (b) b.style.display = ''; });
+function showInstall() {
+  const android = /Android/i.test(navigator.userAgent);
+  if (isStandalone() || !(isIOS() || android) || sessionStorage.getItem('ft_skip_install')) return false;
+  const share = '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-5px"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1"/></svg>';
+  const steps = android
+    ? [T('Open the browser menu <b>⋮</b> and tap <b>Install app</b>'), T('Open <b>Food Tracker</b> from your Home Screen')]
+    : [T('Tap the <b>Share</b> button at the bottom of Safari') + ' ' + share, T('Scroll down and tap <b>Add to Home Screen</b>'), T('Open <b>Food Tracker</b> from your Home Screen')];
+  const pg = document.createElement('div'); pg.id = 'install'; pg.className = 'page'; pg.style.zIndex = 60;
+  pg.innerHTML = `<div class="onb" style="justify-content:center;text-align:center">
+    <img src="icon-180.png" alt="" style="width:96px;height:96px;border-radius:24px;margin:0 auto 22px;box-shadow:0 10px 30px rgba(0,0,0,.25)">
+    <h1 style="margin:0 0 8px">${T('Add Food Tracker to your Home Screen')}</h1>
+    <p class="sub" style="margin:0 0 26px">${T('It works like a normal app, and only then can it send you reminders.')}</p>
+    <div class="list" style="text-align:left">${steps.map((t, i) => `<div class="li"><span class="ic" style="font-weight:800">${i + 1}</span><span class="grow">${t}</span></div>`).join('')}</div>
+    <button class="btn" id="instBtn" style="margin-top:8px;${installEvt ? '' : 'display:none'}">${T('Install app')}</button>
+    <button class="small muted" id="instSkip" style="margin-top:22px;padding:10px">${T('Continue in the browser')}</button></div>`;
+  document.body.appendChild(pg);
+  pg.querySelector('#instBtn').onclick = async () => { if (!installEvt) return; installEvt.prompt(); try { await installEvt.userChoice; } catch {} installEvt = null; };
+  pg.querySelector('#instSkip').onclick = () => { sessionStorage.setItem('ft_skip_install', '1'); pg.remove(); };
+  return true;
+}
+
+/* ---------- Silent updates: when the app comes back to the screen, load a new version if there is one ---------- */
+let updReady = false, updChecked = 0;
+const safeToReload = () => !$('.backdrop') && !$('.page') && !document.body.classList.contains('typing') && !pending.length && !rec && !$('.msg .caret');
+async function checkUpdate() {
+  if (Date.now() - updChecked < 60e3 || !location.protocol.startsWith('http')) return;
+  updChecked = Date.now();
+  try {
+    const t = await (await fetch('sw.js?u=' + Date.now(), { cache: 'no-store' })).text();
+    const v = (t.match(/CACHE = '([^']+)'/) || [])[1];
+    // Only one try per new version, so a half-finished upload can never cause repeated reloads
+    if (v && v !== APP_VERSION && LS.get('ft_upd_tried', '') !== v) { LS.set('ft_upd_tried', v); updReady = true; navigator.serviceWorker?.getRegistration().then(r => r && r.update()).catch(() => {}); if (safeToReload()) location.reload(); }
+  } catch {}
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') { checkUpdate(); syncPush(); }
+  else if (updReady) location.reload();   // the app is in the background: nobody sees the reload
+});
+
 // Opening the app from a notification: ?open=burn or ?open=weight
 function handleOpen(what) {
   if (!what || !db.profile) return;
@@ -2071,7 +2167,9 @@ function renderSettings() {
     <div class="card"><b>🌓 ${T('Appearance')}</b>
       <div class="seg">${[['auto', N('Automatic')], ['light', N('Light')], ['dark', N('Dark')]].map(([v, l]) => `<button data-th="${v}" class="${th === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div></div>
     ${remindersCard()}
-    <div class="h2">AI</div>
+    ${isAdmin() && SERVER_URL ? `<button class="card li" id="sShare" style="border-radius:22px"><span class="ic">📤</span><span class="grow"><b>${T('Share Food Tracker')}</b><br><span class="small muted">${T('Send the app to friends and family')}</span></span><span class="chev">›</span></button>` : ''}
+    ${!isAdmin() && SERVER_URL ? `<div class="card"><b>✨ AI</b><p class="small muted" style="margin:4px 0 0">${T('AI is included. No setup needed.')} ${T('Photos and messages you send to the AI are processed by Google Gemini.')}</p></div>` : ''}
+    ${isAdmin() || !SERVER_URL ? `<div class="h2">AI</div>
     <div class="card">
       <b>Google Gemini · ${T('free')}</b>
       <p class="small muted" style="margin:4px 0 6px">${T('Open <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener"><b>aistudio.google.com/apikey</b></a>, sign in with Google, tap <b>Create API key</b> and paste it here. The app automatically switches between {n} free models, so you rarely hit a limit.', { n: GEMINI.length })}</p>
@@ -2089,14 +2187,19 @@ function renderSettings() {
       <details style="margin-top:12px"><summary class="small muted">${T('Advanced')}</summary>
         <label class="lbl">${T('Force a Gemini model (optional)')}</label><input id="kModel" value="${esc(LS.get('ft_model', ''))}" placeholder="${T('automatic')}"></details>
       <div class="row" style="margin-top:14px"><button class="btn" id="kSave">${T('Save')}</button><button class="btn outline" id="kTest">${T('Test')}</button></div>
-      <p class="small" id="kMsg" style="margin:10px 0 0;text-align:center">${hasAI() ? '✓ ' + T('AI is on') : T('No key yet')}</p></div>
+      <p class="small" id="kMsg" style="margin:10px 0 0;text-align:center">${hasAI() ? '✓ ' + T('AI is on') : T('No key yet')}</p></div>` : ''}
     <div class="h2">${T('Your data')}</div>
     <div class="list">
       <button class="li" id="dExp"><span class="ic">⬇️</span><span class="grow">${T('Backup data')}</span><span class="chev">›</span></button>
       <button class="li" id="dImp"><span class="ic">⬆️</span><span class="grow">${T('Restore backup')}</span><span class="chev">›</span></button>
       <button class="li" id="dDel" style="color:var(--bad)"><span class="ic">🗑</span><span class="grow">${T('Delete all data')}</span></button>
     </div>
-    <p class="small muted" style="text-align:center;margin:20px 10px 10px">${T('Your data is saved only on this phone. Nutrition values are estimates, not medical advice.')}</p>`;
+    <p class="small muted" id="sNote" style="text-align:center;margin:20px 10px 10px">${T('Your data is saved only on this phone. Nutrition values are estimates, not medical advice.')}${isAdmin() ? '<br>Admin' : ''}</p>`;
+  // Hidden switch: tap the note 7 times to turn admin mode on/off
+  let taps = 0, tapT;
+  $('#sNote').onclick = () => { clearTimeout(tapT); tapT = setTimeout(() => taps = 0, 2500);
+    if (++taps >= 7) { taps = 0; LS.set('ft_admin', isAdmin() ? '0' : '1'); toast(isAdmin() ? 'Admin mode on' : 'Admin mode off'); renderSettings(); } };
+  if ($('#sShare')) $('#sShare').onclick = shareApp;
   $('#sPers').onclick = openPersonalSheet;
   if ($('#sGoal')) $('#sGoal').onclick = openMainGoalSheet;
   $('#sGoals').onclick = openGoalsSheet;
@@ -2104,17 +2207,17 @@ function renderSettings() {
   $('#sLang').onclick = () => openLangSheet();
   document.querySelectorAll('[data-th]').forEach(b => b.onclick = () => { setTheme(b.dataset.th); renderSettings(); });
   bindReminders();
-  $('#kSave').onclick = () => {
+  if ($('#kSave')) $('#kSave').onclick = () => {
     const set = (k, v) => v ? LS.set(k, v) : LS.del(k);
     set('ft_key', $('#kKey').value.trim()); set('ft_claude_key', $('#kClaude').value.trim()); set('ft_model', $('#kModel').value.trim());
     LS.set('ft_claude_model', $('#kCModel').value); LS.set('ft_ai_first', $('#kFirst').value);
     LS.del('ft_cool');   // new key or settings: give every model a fresh chance
     $('#kMsg').textContent = hasAI() ? '✓ ' + T('Saved') : T('No key saved'); toast(T('✓ Saved'));
   };
-  $('#kTest').onclick = async () => {
+  if ($('#kTest')) $('#kTest').onclick = async () => {
     $('#kSave').click(); $('#kMsg').innerHTML = `<span class="spin"></span> ${T('Testing…')}`;
     const ping = [{ role: 'user', parts: [{ text: 'Return JSON {"ok": true}' }] }], out = [];
-    if (getKey()) try { await geminiChain(getKey(), ping, '', true); out.push('✓ ' + T('Gemini works') + ' (' + lastAI + ')'); } catch (e) { out.push('✕ Gemini: ' + e.message); }
+    if (geminiKey()) try { await geminiChain(geminiKey(), ping, '', true); out.push('✓ ' + T('Gemini works') + ' (' + lastAI + ')'); } catch (e) { out.push('✕ Gemini: ' + e.message); }
     if (getClaudeKey()) try { await claudeCall(getClaudeKey(), ping, '', true); out.push('✓ ' + T('Claude works')); } catch (e) { out.push('✕ Claude: ' + e.message); }
     $('#kMsg').innerHTML = out.length ? out.map(esc).join('<br>') : T('Enter a key first');
   };
@@ -2259,6 +2362,7 @@ function obSkip(i) {
   if (s === 'carbs') return p.plan !== 'keto';
   if (s === 'fasting') return p.plan !== 'if';
   if (s === 'target' || s === 'speed') return p.goal === 'maintain';
+  if (s === 'ai') return !!SERVER_URL;
   return false;
 }
 function obMove(d) { let i = ob.step + d; while (i > 0 && i < OB.length - 1 && obSkip(i)) i += d; ob.step = clamp(i, 0, OB.length - 1); renderOb(); }
@@ -2389,6 +2493,7 @@ function finishOnboarding() {
   if (!db.weights.length || currentWeight() !== p.weight) { db.weights = db.weights.filter(w => w.date !== iso()); db.weights.push({ date: iso(), kg: p.weight }); }
   LS.set('ft_lang', LANG);
   save(); ob = null; $('#onb')?.remove(); go('home'); toast('🎉 ' + T('Your plan is ready'));
+  setTimeout(() => askReminders(true), 1800);
 }
 
 /* ================= Utils ================= */
@@ -2429,6 +2534,7 @@ measureTabbar();
 if (db.profile) save();   // keep any migration changes
 go('home');
 if (!db.profile) startOnboarding();
+showInstall();
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
   navigator.serviceWorker.addEventListener('message', e => handleOpen(e.data && e.data.open));
@@ -2437,6 +2543,8 @@ saveReminderTexts();
 setInterval(() => { const c = $('#fastCard'); if (c && tab === 'home') c.outerHTML = fastingHTML(); }, 30000);
 const openParam = new URLSearchParams(location.search).get('open');
 if (openParam) { history.replaceState(null, '', location.pathname); handleOpen(openParam); }
+syncPush();
+setTimeout(() => askReminders(false), 2500);
 </script>
 </body>
 </html>
