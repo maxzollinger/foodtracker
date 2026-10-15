@@ -102,6 +102,11 @@ a{color:inherit}
 .hcard .spread>span:first-child{white-space:nowrap}
 .burncard .ic{width:48px;height:48px;border-radius:14px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:24px;flex:none}
 .quick{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}
+.planchip{display:inline-flex;align-items:center;gap:6px;max-width:100%;background:var(--card);box-shadow:var(--shadow);border-radius:999px;padding:8px 14px;font-size:14px;margin:0 0 12px;white-space:nowrap;overflow:hidden}
+.planchip .muted{overflow:hidden;text-overflow:ellipsis}
+.frow{margin-top:12px}
+.frow .spread{font-size:14px}
+.opt.cmp{padding:14px 16px;font-size:16px;margin-bottom:8px}
 .hcard .hscale{height:10px;border-radius:5px;background:linear-gradient(90deg,#ff5a4f 0%,#f5b83d 45%,#34c759 75%,#1fa64a 100%);position:relative;margin:14px 0 8px}
 .hcard .hscale b{position:absolute;top:-6px;width:22px;height:22px;border-radius:50%;background:var(--card);border:4px solid var(--text);transform:translateX(-50%);transition:left .6s ease}
 
@@ -313,6 +318,10 @@ function migrate(d) {
     if (pr.goal === 'gain') { pr.goal = 'lean'; pr.pace = Math.min(parseFloat(pr.pace) || 0.25, 0.25); d.overrides = {}; }
     d.settings.leanV1 = true;
   }
+  // 10 main goals (2026-10-15): map the old goal to the matching new one; nothing else changes
+  if (pr && !pr.plan) pr.plan = { lose: 'cut', maintain: 'maintain', lean: 'lean', gain: 'bulk' }[pr.goal] || 'maintain';
+  if (pr && !pr.fast) pr.fast = { h: 16, start: '12:00' };
+  if (pr && !pr.carbs) pr.carbs = 'keto';
   if (!d.settings.burnV3) { d.settings.burnMode = 'smart'; d.settings.burnV3 = true; }
   d.settings.burnMode = d.settings.burnMode || 'smart';
   d.exercises = d.exercises || [];
@@ -449,7 +458,48 @@ const ACT = { '0-2': 1.375, '3-5': 1.55, '6+': 1.725 };
 // "lean" = build lean muscle: a small surplus so most of the gain is muscle, not fat.
 const isGain = g => g === 'gain' || g === 'lean';
 const LEAN_MAX = 0.5;   // kg/week; faster than this mostly adds fat
-const GOALS = [['lose', N('Lose weight')], ['maintain', N('Maintain')], ['lean', N('Build lean muscle')], ['gain', N('Gain weight (fast)')]];
+/* The 10 main goals. "dir" is the weight direction the rest of the app works with (profile.goal:
+   lose / maintain / lean / gain). Diet-style goals (dir: null) let the user pick the weight direction. */
+const PLANS = [
+  { id: 'cut', ic: '🔥', name: N('Lose weight'), sub: N('Cutting / fat loss: eat in a calorie deficit'), dir: 'lose' },
+  { id: 'maintain', ic: '⚖️', name: N('Maintain weight'), sub: N('Eat at maintenance'), dir: 'maintain' },
+  { id: 'bulk', ic: '💪', name: N('Build muscle (bulk)'), sub: N('Calorie surplus to gain weight and muscle'), dir: 'gain' },
+  { id: 'lean', ic: '🥩', name: N('Lean bulk'), sub: N('Small surplus, mostly whole foods, little fat'), dir: 'lean' },
+  { id: 'dirty', ic: '🍔', name: N('Dirty bulk'), sub: N('Big surplus, fast gain, more fat'), dir: 'gain' },
+  { id: 'recomp', ic: '🔄', name: N('Recomp'), sub: N('Lose fat and build muscle at the same time'), dir: 'maintain' },
+  { id: 'healthy', ic: '🥗', name: N('Eat healthier'), sub: N('Less sugar, salt and processed food'), dir: null },
+  { id: 'protein', ic: '🍗', name: N('High protein'), sub: N('Hit a daily protein target'), dir: null },
+  { id: 'keto', ic: '🥑', name: N('Keto / low carb'), sub: N('Very few carbs, more fat'), dir: null },
+  { id: 'if', ic: '⏱️', name: N('Intermittent fasting'), sub: N('Eat within a daily time window (16:8 etc.)'), dir: null }
+];
+const planOf = p => PLANS.find(x => x.id === (p && p.plan)) || PLANS[1];
+const DIRS = [['lose', N('Lose weight')], ['maintain', N('Keep my weight')], ['lean', N('Gain weight')]];
+const FASTS = [[14, '14:10'], [16, '16:8'], [18, '18:6'], [20, '20:4']];
+const needsTarget = p => p.goal !== 'maintain';
+// Speed limits per goal in kg/week: [min, default, max]
+function paceRange(p) {
+  const id = planOf(p).id;
+  if (p.goal === 'lean') return [0.1, 0.25, LEAN_MAX];
+  if (id === 'bulk') return [0.1, 0.35, 0.75];
+  if (id === 'dirty') return [0.25, 0.75, 1];
+  return [0.1, 0.5, 1];
+}
+// Picking a goal sets the weight direction, a sensible goal weight and a speed inside the allowed range
+function applyPlan(p, id, w) {
+  const pl = PLANS.find(x => x.id === id);
+  p.plan = id;
+  if (pl.dir) p.goal = pl.dir;
+  else if (!['lose', 'maintain', 'lean'].includes(p.goal)) p.goal = p.goal === 'gain' ? 'lean' : 'maintain';
+  p.pace = paceRange(p)[1];   // each goal starts at its typical speed (adjustable)
+  fixTarget(p, w);
+}
+function fixTarget(p, w) {
+  if (p.goal === 'maintain') p.targetWeight = w;
+  else if (p.goal === 'lose' && !(p.targetWeight < w)) p.targetWeight = Math.round((w - 5) * 2) / 2;
+  else if (isGain(p.goal) && !(p.targetWeight > w)) p.targetWeight = Math.round((w + 5) * 2) / 2;
+  const [mn, df, mx] = paceRange(p);
+  if (!(p.pace >= mn && p.pace <= mx)) p.pace = df;
+}
 function age(p) { const b = new Date(p.birth), n = new Date(); let a = n.getFullYear() - b.getFullYear(); if (n < new Date(n.getFullYear(), b.getMonth(), b.getDate())) a--; return a || 30; }
 function currentWeight() {
   if (db.weights.length) return [...db.weights].sort((a, b) => a.date.localeCompare(b.date)).at(-1).kg;
@@ -457,15 +507,25 @@ function currentWeight() {
 }
 function calcTargets(p, w) {
   const bmr = 10 * w + 6.25 * p.height - 5 * age(p) + (p.sex === 'm' ? 5 : p.sex === 'f' ? -161 : -78);
-  const tdee = bmr * (ACT[p.workouts] || 1.375);
+  const tdee = bmr * (ACT[p.workouts] || 1.375), plan = planOf(p).id;
   let kcal = tdee;
   if (p.goal === 'lose') kcal -= p.pace * 7700 / 7;
   if (p.goal === 'gain') kcal += p.pace * 7700 / 7;
   if (p.goal === 'lean') kcal += Math.min(num(p.pace) || 0.25, LEAN_MAX) * 7700 / 7;
+  if (plan === 'recomp') kcal = tdee - Math.min(300, tdee * 0.1);   // small deficit; high protein + training do the rest
   kcal = Math.max(kcal, p.sex === 'm' ? 1500 : 1200);
-  const protein = w * (p.goal === 'lose' || p.goal === 'lean' ? 2.0 : p.goal === 'gain' ? 1.8 : 1.6);
-  const fat = kcal * 0.27 / 9;
-  const carbs = Math.max(0, (kcal - protein * 4 - fat * 9) / 4);
+  let perKg = p.goal === 'lose' || p.goal === 'lean' ? 2.0 : p.goal === 'gain' ? 1.8 : 1.6;
+  if (plan === 'cut' || plan === 'recomp' || plan === 'protein') perKg = 2.2;
+  if (plan === 'dirty') perKg = 1.6;
+  const protein = w * perKg;
+  let fat, carbs;
+  if (plan === 'keto') {
+    carbs = p.carbs === 'lowcarb' ? 100 : 30;
+    fat = Math.max(0, (kcal - protein * 4 - carbs * 4) / 9);
+  } else {
+    fat = kcal * (plan === 'healthy' || plan === 'dirty' ? 0.3 : 0.27) / 9;
+    carbs = Math.max(0, (kcal - protein * 4 - fat * 9) / 4);
+  }
   return { kcal: r0(kcal), protein: r0(protein), carbs: r0(carbs), fat: r0(fat), tdee: r0(tdee), bmr: r0(bmr) };
 }
 function targets() {
@@ -495,7 +555,8 @@ function includedExercise() { const t = targets(), p = db.profile; return p ? r0
 function dayGoals(date) {
   const t = targets(), burned = r0(dayBurned(date)), mode = db.settings.burnMode, included = includedExercise();
   const extra = !burned || mode === 'off' ? 0 : mode === 'all' ? burned : Math.max(0, r0(burned * 0.75 - included));
-  return { ...t, kcal: t.kcal + extra, carbs: t.carbs + r0(extra * 0.75 / 4), fat: t.fat + r0(extra * 0.25 / 9), burned, extra, included };
+  const keto = db.profile && planOf(db.profile).id === 'keto';
+  return { ...t, kcal: t.kcal + extra, carbs: t.carbs + (keto ? 0 : r0(extra * 0.75 / 4)), fat: t.fat + r0(extra * (keto ? 1 : 0.25) / 9), burned, extra, included };
 }
 /* Health score (1-10). AI gives one per meal; meals without one (manual entries, older meals)
    get an estimate from their macros. The day score is a calorie-weighted average, so a big
@@ -523,6 +584,72 @@ function healthCard(date) {
       <span>${avg === null ? `<span class="muted" style="font-weight:600">${T('No meals yet')}</span>`
         : `<span style="color:${healthColor(avg)};font-weight:700;margin-right:8px">${healthLabel(avg)}</span><b style="font-size:22px">${avg}</b><span class="muted" style="font-weight:600">/10</span>`}</span></div>
     <div class="hscale" style="margin-bottom:4px">${avg === null ? '' : `<b style="left:${(avg - 1) / 9 * 100}%"></b>`}</div></div>`;
+}
+// Sugar, fibre and sodium for a day (only meals analysed since these were added carry them)
+function dayExtras(date) {
+  const x = { sugar: 0, fiber: 0, sodium: 0, known: 0, meals: 0 };
+  for (const m of db.meals) if (m.date === date) {
+    x.meals++;
+    let has = false;
+    for (const it of m.items) for (const k of ['sugar', 'fiber', 'sodium']) if (it[k] != null && it[k] !== '') { x[k] += num(it[k]) * (m.servings || 1); has = true; }
+    if (has) x.known++;
+  }
+  return x;
+}
+// Intermittent fasting: where are we in the day's fasting / eating window?
+function fastState(p) {
+  const f = (p && p.fast) || { h: 16, start: '12:00' }, win = 24 - f.h, [sh, sm] = f.start.split(':').map(Number);
+  const now = new Date(), mins = now.getHours() * 60 + now.getMinutes(), s = sh * 60 + sm, e = (s + win * 60) % 1440;
+  const inside = t => s < e ? (t >= s && t < e) : (t >= s || t < e);
+  const until = x => ((x - mins) % 1440 + 1440) % 1440;
+  const hm = v => `${Math.floor(v / 60)}h ${String(v % 60).padStart(2, '0')}m`;
+  const fmt = x => `${String(Math.floor(x / 60)).padStart(2, '0')}:${String(x % 60).padStart(2, '0')}`;
+  return { h: f.h, win, inWin: inside(mins), inside, startStr: fmt(s), endStr: fmt(e), toEnd: hm(until(e)), toStart: hm(until(s)),
+    fasted: hm(f.h * 60 - until(s)), pct: inside(mins) ? 1 - until(e) / (win * 60) : 1 - until(s) / (f.h * 60) };
+}
+function fastingHTML() {
+  const f = fastState(db.profile);
+  const outside = db.meals.filter(m => m.date === iso() && /^\d\d:\d\d/.test(m.time || '') && !f.inside(+m.time.slice(0, 2) * 60 + +m.time.slice(3, 5))).length;
+  return `<div class="card" id="fastCard"><div class="spread"><b>⏱️ ${T('Intermittent fasting')} ${f.h}:${f.win}</b><span class="etime">${f.startStr}–${f.endStr}</span></div>
+    <div style="font-size:22px;font-weight:800;margin-top:8px">${f.inWin ? '🍽️ ' + T('Eating window open') : '🌙 ' + T('Fasting')}</div>
+    <div class="small muted" style="margin-top:2px">${f.inWin ? T('Closes at {t} · {d} left', { t: f.endStr, d: f.toEnd }) : T('{d} fasted · window opens at {t} (in {r})', { d: f.fasted, t: f.startStr, r: f.toStart })}</div>
+    <div class="hbar"><i style="width:${r0(f.pct * 100)}%;background:${f.inWin ? 'var(--good)' : 'var(--flame)'}"></i></div>
+    ${outside ? `<p class="small" style="color:var(--bad);margin:8px 0 0">${T('Meals outside your eating window today: {n}', { n: outside })}</p>` : ''}</div>`;
+}
+// The extra Home card that fits the chosen goal
+function focusCard(date, t, tot) {
+  const p = db.profile; if (!p) return '';
+  const id = planOf(p).id, bar = (v, max, color) => `<div class="hbar"><i style="width:${clamp(v / max * 100, 0, 100)}%;background:${color}"></i></div>`;
+  if (id === 'if') return date === iso() ? fastingHTML() : '';
+  if (id === 'healthy') {
+    const x = dayExtras(date), sugarMax = r0(t.kcal * 0.1 / 4);
+    const row = (ic, label, v, lim, unit, isMax) => `<div class="frow"><div class="spread"><span>${ic} ${label}</span><span><b>${r0(v)}</b> <span class="muted">/ ${isMax ? T('max') + ' ' : ''}${lim} ${unit}</span></span></div>
+      ${bar(v, lim, isMax ? (v > lim ? 'var(--bad)' : 'var(--good)') : (v >= lim ? 'var(--good)' : 'var(--carbs)'))}</div>`;
+    return `<div class="card"><b>🥗 ${T('Healthy eating')}</b>
+      ${row('🍬', T('Sugar'), x.sugar, sugarMax, 'g', true)}${row('🌾', T('Fiber'), x.fiber, 30, 'g', false)}${row('🧂', T('Sodium'), x.sodium, 2000, 'mg', true)}
+      ${x.meals > x.known ? `<p class="small muted" style="margin:10px 0 0">${T('Meals logged before this goal have no sugar, fiber or sodium data.')}</p>` : ''}</div>`;
+  }
+  if (id === 'keto') {
+    const v = tot.carbs, lim = t.carbs, over = v > lim;
+    return `<div class="card"><div class="spread"><b>🥑 ${T('Carb limit')}</b><span><b style="${over ? 'color:var(--bad)' : ''}">${r0(v)}</b> <span class="muted">/ ${lim} g</span></span></div>${bar(v, lim, over ? 'var(--bad)' : 'var(--good)')}
+      <p class="small muted" style="margin:8px 0 0">${over ? T('You are over your carb limit today.') : p.carbs === 'lowcarb' ? T('Stay under {n} g of carbs today.', { n: lim }) : T('Stay under {n} g of carbs to keep ketosis.', { n: lim })}</p></div>`;
+  }
+  if (id === 'protein' || id === 'recomp') {
+    const v = tot.protein, g = t.protein, left = r0(g - v);
+    return `<div class="card"><div class="spread"><b>${id === 'recomp' ? '🔄 ' + T('Recomp') : '🍗 ' + T('Protein target')}</b><span><b>${r0(v)}</b> <span class="muted">/ ${g} g</span></span></div>${bar(v, g, 'var(--protein)')}
+      <p class="small muted" style="margin:8px 0 0">${left > 0 ? T('{n} g protein to go today.', { n: left }) : T('Protein goal reached! 🎉')}${id === 'recomp' ? ' ' + T('Train with weights; your weight may stay similar while your body changes.') : ''}</p></div>`;
+  }
+  return '';
+}
+// Small "your goal" pill on Home
+function planChip() {
+  const p = db.profile; if (!p) return '';
+  const pl = planOf(p), t = targets(), diff = r0(t.kcal - t.tdee);
+  let detail;
+  if (pl.id === 'keto') detail = T('max {n} g carbs', { n: t.carbs });
+  else if (pl.id === 'if') { const f = fastState(p); detail = `${f.h}:${f.win} · ${f.startStr}–${f.endStr}`; }
+  else detail = diff > 30 ? T('+{n} kcal/day surplus', { n: diff }) : diff < -30 ? T('{n} kcal/day deficit', { n: diff }) : T('maintenance calories');
+  return `<button class="planchip" id="planChip"><span>${pl.ic}</span><b>${T(pl.name)}</b><span class="muted">· ${detail}</span></button>`;
 }
 function streak() {
   const has = new Set(db.meals.map(m => m.date));
@@ -608,9 +735,11 @@ function renderHome() {
     <div class="top"><div class="brand"><img src="icon-180.png" alt="">FoodTracker</div>
       <div class="row" style="gap:8px"><button class="themebtn" id="themeBtn" aria-label="${T('Light / dark mode')}">${isDark() ? '☀️' : '🌙'}</button><div class="streak">🔥 ${st}</div></div></div>
     <div class="week"><button class="nav" id="wPrev">‹</button><div class="days">${week}</div><button class="nav" id="wNext" ${weekOff >= 0 ? 'style="visibility:hidden"' : ''}>›</button></div>
+    ${planChip()}
     ${!hasAI() ? `<button class="card" style="width:100%;text-align:left;display:flex;gap:12px;align-items:center" onclick="go('settings')"><span style="font-size:26px">✨</span><span class="grow"><b>${T('Turn on AI food scanning')}</b><br><span class="small muted">${T('Add your free Google AI key in Settings')}</span></span><span class="muted">›</span></button>` : ''}
     <button class="card calcard" data-toggle style="width:100%;text-align:left"><div>${calBig}</div>${ring(104, 9, tot.kcal / goalK, left < 0 ? 'var(--bad)' : 'var(--ink)', '<span style="font-size:28px">🔥</span>')}</button>
     <div class="macros">${macros}</div>
+    ${focusCard(sel, t, tot)}
     ${healthCard(sel)}
     <div class="card burncard"><div class="ic">🏃</div><div class="grow"><div class="small muted" style="font-weight:600">${T('Calories burned')}</div>
       <div style="font-size:24px;font-weight:800;letter-spacing:-.02em">${burned}<small class="muted" style="font-size:14px;font-weight:600"> kcal</small></div></div>
@@ -622,6 +751,7 @@ function renderHome() {
   document.querySelectorAll('[data-toggle]').forEach(b => b.onclick = () => { calMode = calMode === 'left' ? 'eaten' : 'left'; renderHome(); });
   $('#themeBtn').onclick = () => { setTheme(isDark() ? 'light' : 'dark'); renderHome(); };
   $('#burnAdd').onclick = openBurnSheet;
+  if ($('#planChip')) $('#planChip').onclick = openMainGoalSheet;
   $('#wPrev').onclick = () => { weekOff--; renderHome(); };
   $('#wNext').onclick = () => { if (weekOff < 0) { weekOff++; renderHome(); } };
   hydratePhotos($('#view'));
@@ -686,8 +816,8 @@ function openWeightSheet() {
 const foodPrompt = () => `You are an expert nutritionist powering a calorie tracking app.
 Identify every food and drink in the meal. Estimate each portion in grams using visual cues (plate size, cutlery, hands, packaging). Include cooking oils, sauces and dressings.
 Return ONLY JSON in this exact shape:
-{"name": "short appetising meal name", "items": [{"name": "ingredient", "grams": 0, "kcal": 0, "protein": 0, "carbs": 0, "fat": 0}], "health_score": 7, "notes": "short"}
-Numbers are for the whole portion (not per 100 g); macros in grams. health_score is an integer 1-10 (10 = very healthy: whole foods, high protein and fibre, low sugar). If there is no food, return "items": [] and explain in notes.
+{"name": "short appetising meal name", "items": [{"name": "ingredient", "grams": 0, "kcal": 0, "protein": 0, "carbs": 0, "fat": 0, "sugar": 0, "fiber": 0, "sodium": 0}], "health_score": 7, "notes": "short"}
+Numbers are for the whole portion (not per 100 g); macros, sugar and fiber in grams, sodium in milligrams. health_score is an integer 1-10 (10 = very healthy: whole foods, high protein and fibre, low sugar). If there is no food, return "items": [] and explain in notes.
 Write "name", every ingredient name and "notes" in ${langInfo().ai}.`;
 
 /* --- AI engine ---
@@ -859,7 +989,8 @@ async function claudeCall(key, msgs, system, json, onText) {
 }
 const normItems = items => (items || []).map(it => ({
   name: String(it.name || T('Food')), grams: r0(num(it.grams)), kcal: r0(num(it.kcal)),
-  protein: r1(num(it.protein)), carbs: r1(num(it.carbs)), fat: r1(num(it.fat))
+  protein: r1(num(it.protein)), carbs: r1(num(it.carbs)), fat: r1(num(it.fat)),
+  sugar: it.sugar == null ? null : r1(num(it.sugar)), fiber: it.fiber == null ? null : r1(num(it.fiber)), sodium: it.sodium == null ? null : r0(num(it.sodium))
 }));
 const healthOf = v => { const n = r0(num(v)); return n >= 1 && n <= 10 ? n : null; };
 
@@ -963,7 +1094,9 @@ async function lookupBarcode(code) {
     const ns = { a: 9, b: 7, c: 5, d: 3, e: 2 }[p.nutriscore_grade] || null;
     closeSheet();
     openNewMeal({ id: uid(), date: sel, time: nowTime(), name, servings: 1, health: ns, source: 'barcode', photo: false,
-      items: [{ name, grams: r0(g), kcal: r0(kcal100 * f), protein: r1(num(n.proteins_100g) * f), carbs: r1(num(n.carbohydrates_100g) * f), fat: r1(num(n.fat_100g) * f) }] });
+      items: [{ name, grams: r0(g), kcal: r0(kcal100 * f), protein: r1(num(n.proteins_100g) * f), carbs: r1(num(n.carbohydrates_100g) * f), fat: r1(num(n.fat_100g) * f),
+        sugar: 'sugars_100g' in n ? r1(num(n.sugars_100g) * f) : null, fiber: 'fiber_100g' in n ? r1(num(n.fiber_100g) * f) : null,
+        sodium: 'sodium_100g' in n ? r0(num(n.sodium_100g) * 1000 * f) : null }] });
   } catch { bMsg(T('No internet connection?'), true); }
 }
 
@@ -1204,7 +1337,8 @@ function renderProgress() {
   document.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { nutWeek = +b.dataset.w; renderProgress(); });
 }
 function expectedText(p, cur) {
-  if (!p || p.goal === 'maintain' || !cur) return '';
+  if (!p || !cur) return '';
+  if (p.goal === 'maintain') return planOf(p).id === 'recomp' ? `<div class="tip">🔄 ${T('Recomp: your weight may stay about the same while you lose fat and build muscle. Judge progress by strength, the mirror and how your clothes fit.')}</div>` : '';
   const rem = p.targetWeight - cur;
   if ((p.goal === 'lose' && rem >= 0) || (isGain(p.goal) && rem <= 0)) return `<div class="tip">🎉 ${T('You reached your goal weight! Update your goal in Settings.')}</div>`;
   let check = '';
@@ -1252,6 +1386,11 @@ let chat;
 try { chat = JSON.parse(LS.get('ft_chat', '[]')) || []; } catch { chat = []; }
 let chatBusy = false, chatImg = null;
 const saveChat = () => { chat = chat.slice(-80); if (!LS.set('ft_chat', JSON.stringify(chat))) { chat = chat.slice(-30).map(m => ({ ...m, img: null })); LS.set('ft_chat', JSON.stringify(chat)); } };
+// One extra suggestion that fits the chosen goal
+const PLAN_CHIP = { cut: N('What are filling low-calorie meals?'), bulk: N('How do I eat enough to gain weight?'), dirty: N('Give me easy high-calorie meals'),
+  recomp: N('How do I make my recomp work?'), healthy: N('How can I eat healthier today?'), protein: N('Give me high-protein meal ideas'),
+  keto: N('Give me a keto meal idea for today'), if: N('What should I eat when my eating window opens?') };
+const chipsFor = () => { const c = PLAN_CHIP[planOf(db.profile).id]; return c ? [c, ...CHIPS] : CHIPS; };
 const CHIPS = [N('What should I eat next to hit my goals today?'), N('How much protein do I still need today?'), N('Give me a high-protein snack that fits my day'),
   N('How was my week?'), N('Make me a meal plan for tomorrow'), N('Am I on track with my goal?')];
 
@@ -1341,14 +1480,16 @@ Protein: ${r0(tot.protein)} of ${g.protein} g → ${left('protein')}
 Carbs: ${r0(tot.carbs)} of ${g.carbs} g → ${left('carbs')}
 Fats: ${r0(tot.fat)} of ${g.fat} g → ${left('fat')}
 Calories burned today: ${g.burned} kcal → ${g.extra} kcal added to today's goal (mode "${db.settings.burnMode}"; normal training of ~${g.included} kcal/day is already part of the base goal)
-Health score today: ${healthAvg(todayMeals) ?? 'no meals yet'}/10${pend ? `\nStill analysing: ${pend} food photo(s), not counted yet` : ''}
+Health score today: ${healthAvg(todayMeals) ?? 'no meals yet'}/10
+Sugar ${r0(dayExtras(today).sugar)} g, fiber ${r0(dayExtras(today).fiber)} g, sodium ${r0(dayExtras(today).sodium)} mg today (known for ${dayExtras(today).known} of ${dayExtras(today).meals} meals)${pend ? `\nStill analysing: ${pend} food photo(s), not counted yet` : ''}
 
 === TODAY'S MEALS ===
 ${todayMeals.map(meal).join('\n') || '- nothing logged yet'}
 ${todayEx.length ? `\n=== TODAY'S EXERCISE ===\n${todayEx.map(e => `- ${e.time || ''} ${e.name}: ${r0(e.kcal)} kcal${e.minutes ? `, ${e.minutes} min` : ''}`).join('\n')}\n` : ''}
 === PROFILE & GOAL ===
 ${p ? `${{ m: 'Male', f: 'Female', o: 'Other' }[p.sex]}, ${age(p)} years, ${p.height} cm, ${cur} kg (BMI ${r1(cur / Math.pow(p.height / 100, 2))}), ${p.workouts} workouts per week.` : 'No profile yet.'}
-Goal: ${goalTxt}${eta ? `. Expected to reach it around ${eta}` : ''}.
+Main goal chosen in the app: ${p ? `${planOf(p).name} (${planOf(p).sub})` : 'none'}${p && planOf(p).id === 'keto' ? `; daily carb limit ${base.carbs} g` : ''}${p && planOf(p).id === 'if' ? `; fasting ${fastState(p).h}:${fastState(p).win}, eating window ${fastState(p).startStr}-${fastState(p).endStr}, right now ${fastState(p).inWin ? 'INSIDE the eating window' : 'FASTING (outside the window)'}` : ''}.
+Weight goal: ${goalTxt}${eta ? `. Expected to reach it around ${eta}` : ''}.
 Real weight change over the last 4 weeks: ${rate === null ? 'not enough weigh-ins yet (needs 2+ weeks)' : `${rate > 0 ? '+' : ''}${rate} kg/week`}
 Base daily targets (before burned calories): ${base.kcal} kcal, ${base.protein} g protein, ${base.carbs} g carbs, ${base.fat} g fat${Object.keys(db.overrides).length ? ' (some set manually by the user)' : ''}. Maintenance (TDEE) ≈ ${base.tdee ?? '?'} kcal.
 
@@ -1361,6 +1502,18 @@ ${ws.slice(-15).map(w => `${fmtD(w.date)}: ${w.kg} kg`).join('; ') || 'no entrie
 Logging streak: ${streak()} days. Total meals ever logged: ${db.meals.length}.`;
 }
 
+const PLAN_COACH = {
+  cut: 'Their main goal is fat loss: keep protein high to protect muscle, suggest filling high-volume low-calorie foods and keep them inside the calorie goal.',
+  maintain: 'Their main goal is to maintain weight: balanced, sustainable meals around maintenance calories.',
+  bulk: 'Their main goal is a bulk: help them reach the calorie surplus every day with protein-rich meals, plus progressive strength training.',
+  lean: 'Their main goal is a lean bulk: prioritise the protein goal, protein spread over 3-5 meals, mostly whole foods, progressive strength training and sleep. Discourage dirty bulking and big calorie overshoots.',
+  dirty: 'Their main goal is a dirty bulk: a big surplus is fine and convenient calorie-dense foods are OK, but still help them hit protein and be honest that faster gain means more fat.',
+  recomp: 'Their main goal is body recomposition: slight deficit, very high protein, progressive strength training and sleep. The scale may barely move; judge progress by strength, measurements and the mirror.',
+  healthy: 'Their main goal is to eat healthier: favour whole foods, vegetables and fibre (about 30 g/day); limit added sugar, salt (under 2000 mg sodium/day) and ultra-processed food. Use their sugar, fiber and sodium numbers.',
+  protein: 'Their main goal is high protein: make sure they hit the protein target every day; suggest protein-dense foods and spreading protein over the day.',
+  keto: 'They eat keto / low carb: keep total carbs under their daily carb limit; suggest low-carb foods (meat, fish, eggs, dairy, nuts, low-starch vegetables) and avoid bread, pasta, rice, potatoes and sugar.',
+  if: 'They do intermittent fasting: only suggest eating inside their eating window. If they are fasting right now, tell them when the window opens and what to eat then (water, black coffee and unsweetened tea are fine while fasting).'
+};
 function coachSystem() {
   const mem = memList();
   return `You are the personal AI nutrition coach inside the user's FoodTracker app. You can see the user's complete, live app data below. It is refreshed automatically every time the user sends a message, so it is always 100% up to date.
@@ -1372,7 +1525,7 @@ RULES
 - When suggesting food, give concrete foods with grams plus calories and protein, and make them fit exactly what is left today. Vary suggestions; look at what they ate recently.
 - Use metric units. The app is set to ${langInfo().ai}: answer in ${langInfo().ai} unless the user writes in another language, then answer in theirs.
 - You are not a doctor. For medical conditions, medication, pregnancy or signs of an eating disorder, recommend a professional.
-${db.profile?.goal === 'lean' ? '- Their goal is lean muscle: prioritise the protein goal, protein spread over 3-5 meals, mostly whole foods, progressive strength training and sleep. Discourage dirty bulking and big calorie overshoots.\n' : ''}
+${db.profile ? '- ' + PLAN_COACH[planOf(db.profile).id] + '\n' : ''}
 MEMORY
 - Below is what you remember about the user from earlier chats. Use it naturally.
 - When the user tells you something lasting about themselves (food likes/dislikes, allergies, diet style, training schedule, budget, cooking habits, routines, injuries, preferences for how you answer), add one short fact at the very END of your reply like this: <memory>Is lactose intolerant</memory>. One tag per fact, only for new lasting facts, never for today's numbers.
@@ -1404,7 +1557,7 @@ function renderChat(animLast) {
   let bar = $('.chatbar');
   if (!bar) {
     bar = document.createElement('div'); bar.className = 'chatbar';
-    bar.innerHTML = `<div class="in"><div class="chips">${CHIPS.map(c => `<button>${esc(T(c))}</button>`).join('')}</div><div id="cAttach"></div>
+    bar.innerHTML = `<div class="in"><div class="chips">${chipsFor().map(c => `<button>${esc(T(c))}</button>`).join('')}</div><div id="cAttach"></div>
       <div class="composer"><button class="cbtn" id="cPhoto" aria-label="${T('Add photo')}">📷</button>
       <textarea id="cIn" rows="1" placeholder="${T('Ask your coach…')}"></textarea><button class="cbtn send" id="cSend" aria-label="${T('Send')}">↑</button></div></div>`;
     document.body.appendChild(bar);
@@ -1553,6 +1706,7 @@ function renderSettings() {
       <div><b>${age(p)}</b><span class="small muted">${T('Age')}</span></div><div><b>${p.height} cm</b><span class="small muted">${T('Height')}</span></div><div><b>${currentWeight()} kg</b><span class="small muted">${T('Weight')}</span></div></div></div>` : ''}
     <div class="h2">${T('Customization')}</div>
     <div class="list">
+      ${p ? `<button class="li" id="sGoal"><span class="ic">${planOf(p).ic}</span><span class="grow">${T('Your goal')}<br><span class="small muted">${T(planOf(p).name)}</span></span><span class="chev">›</span></button>` : ''}
       <button class="li" id="sPers"><span class="ic">👤</span><span class="grow">${T('Personal details')}</span><span class="chev">›</span></button>
       <button class="li" id="sGoals"><span class="ic">🎯</span><span class="grow">${T('Adjust macronutrients')}<br><span class="small muted">${t.kcal} kcal · ${t.protein}g P · ${t.carbs}g C · ${t.fat}g F</span></span><span class="chev">›</span></button>
       <button class="li" id="sRedo"><span class="ic">🔁</span><span class="grow">${T('Redo setup questions')}</span><span class="chev">›</span></button>
@@ -1597,6 +1751,7 @@ function renderSettings() {
     </div>
     <p class="small muted" style="text-align:center;margin:20px 10px 10px">${T('Your data is saved only on this phone. Nutrition values are estimates, not medical advice.')}</p>`;
   $('#sPers').onclick = openPersonalSheet;
+  if ($('#sGoal')) $('#sGoal').onclick = openMainGoalSheet;
   $('#sGoals').onclick = openGoalsSheet;
   $('#sRedo').onclick = startOnboarding;
   $('#sLang').onclick = () => openLangSheet();
@@ -1637,70 +1792,93 @@ $('#fileImport').onchange = async e => {
     db = migrate(Object.assign(EMPTY(), d)); save(); toast(T('✓ Backup restored')); go('home');
   } catch { toast(T('This is not a valid backup file')); }
 };
-function profileFields(p, w) {
-  const opt = (arr, v) => arr.map(([k, l]) => `<option value="${k}" ${String(v) === String(k) ? 'selected' : ''}>${l}</option>`).join('');
-  // Every speed the setup slider can produce, plus the user's current one
-  const paces = [...new Set([0.1, 0.2, 0.25, 0.3, 0.4, 0.5, 0.6, 0.7, 0.75, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, num(p.pace) || 0.5])].sort((a, b) => a - b);
-  return `<div class="row"><div class="grow"><label class="lbl">${T('Gender')}</label><select id="pSex">${opt([['m', T('Male')], ['f', T('Female')], ['o', T('Other')]], p.sex)}</select></div>
-    <div class="grow"><label class="lbl">${T('Birthday')}</label><input id="pBirth" type="date" value="${p.birth}"></div></div>
-    <div class="row"><div class="grow"><label class="lbl">${T('Height (cm)')}</label><input id="pH" inputmode="numeric" value="${p.height}"></div>
-    <div class="grow"><label class="lbl">${T('Current weight (kg)')}</label><input id="pWt" inputmode="decimal" value="${w}"></div></div>
-    <label class="lbl">${T('Workouts / week')}</label><select id="pW">${opt([['0-2', '0–2 · ' + T('now and then')], ['3-5', '3–5 · ' + T('a few per week')], ['6+', '6+ · ' + T('dedicated athlete')]], p.workouts)}</select>
-    <div class="row"><div class="grow"><label class="lbl">${T('Goal weight (kg)')}</label><input id="pT" inputmode="decimal" value="${p.targetWeight || w}"></div>
-    <div class="grow"><label class="lbl">${T('Speed (kg / week)')}</label><select id="pPace" ${p.goal === 'maintain' ? 'disabled' : ''}>${opt(paces.map(v => [v, v + ' kg']), num(p.pace) || 0.5)}</select></div></div>
-    <label class="lbl">${T('Goal')}</label><select id="pGoal">${opt(GOALS.map(([k, l]) => [k, T(l)]), p.goal)}</select>`;
+// Shared preview under the goal / personal-details forms: what the daily goals will become
+function goalPreview(el, p, w, custom) {
+  const t = calcTargets(p, w);
+  let when = '';
+  if (needsTarget(p) && Math.abs(p.targetWeight - w) >= 0.1 && (p.goal === 'lose') === (p.targetWeight < w)) {
+    const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(p.targetWeight - w) / p.pace * 7));
+    when = '<br>' + T('Goal weight around <b>{d}</b>', { d: fmtLong(d) });
+  }
+  el.innerHTML = T('New daily goals: <b>{k} kcal</b> · {p} g protein · {c} g carbs · {f} g fat', { k: t.kcal, p: t.protein, c: t.carbs, f: t.fat }) + when +
+    (custom ? `<br><span class="muted">${T('Your custom macro numbers will be replaced by these.')}</span>` : '');
 }
+const fastPicker = f => `<div class="row"><div class="grow"><label class="lbl">${T('Fasting rhythm')}</label><select id="fH">${FASTS.map(([h, l]) => `<option value="${h}" ${h === f.h ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
+  <div class="grow"><label class="lbl">${T('Eating window starts')}</label><select id="fS">${[...Array(13)].map((_, i) => { const t = String(i + 6).padStart(2, '0') + ':00'; return `<option ${t === f.start ? 'selected' : ''}>${t}</option>`; }).join('')}</select></div></div>`;
+function bindFast(root, f, cb) {
+  root.querySelector('#fH').onchange = e => { f.h = +e.target.value; cb(); };
+  root.querySelector('#fS').onchange = e => { f.start = e.target.value; cb(); };
+}
+
 function openPersonalSheet() {
   if (!db.profile) return startOnboarding();
-  const custom = Object.keys(db.overrides).length > 0;
-  sheet(`<h3>${T('Personal details')}</h3>${profileFields(db.profile, currentWeight())}
+  const p0 = db.profile, w0 = currentWeight(), custom = Object.keys(db.overrides).length > 0;
+  const opt = (arr, v) => arr.map(([k, l]) => `<option value="${k}" ${String(v) === String(k) ? 'selected' : ''}>${l}</option>`).join('');
+  sheet(`<h3>${T('Personal details')}</h3>
+    <div class="row"><div class="grow"><label class="lbl">${T('Gender')}</label><select id="pSex">${opt([['m', T('Male')], ['f', T('Female')], ['o', T('Other')]], p0.sex)}</select></div>
+    <div class="grow"><label class="lbl">${T('Birthday')}</label><input id="pBirth" type="date" value="${p0.birth}"></div></div>
+    <div class="row"><div class="grow"><label class="lbl">${T('Height (cm)')}</label><input id="pH" inputmode="numeric" value="${p0.height}"></div>
+    <div class="grow"><label class="lbl">${T('Current weight (kg)')}</label><input id="pWt" inputmode="decimal" value="${w0}"></div></div>
+    <label class="lbl">${T('Workouts / week')}</label><select id="pW">${opt([['0-2', '0–2 · ' + T('now and then')], ['3-5', '3–5 · ' + T('a few per week')], ['6+', '6+ · ' + T('dedicated athlete')]], p0.workouts)}</select>
     <div class="tip" id="pPrev"></div>
     <button class="btn" id="pSave" style="margin-top:16px">${T('Save & update goals')}</button>`, s => {
-    const read = () => {
-      const w = r1(num(s.querySelector('#pWt').value)), tw = r1(num(s.querySelector('#pT').value));
-      return { ...db.profile, sex: s.querySelector('#pSex').value, birth: s.querySelector('#pBirth').value || db.profile.birth,
-        height: num(s.querySelector('#pH').value) || db.profile.height, workouts: s.querySelector('#pW').value,
-        goal: s.querySelector('#pGoal').value, targetWeight: tw || w, pace: num(s.querySelector('#pPace').value) || 0.5, _w: w || currentWeight() };
-    };
-    const preview = () => {
-      const p = read(), t = calcTargets(p, p._w);
-      let when = '';
-      if (p.goal !== 'maintain' && Math.abs(p.targetWeight - p._w) >= 0.1) {
-        const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(p.targetWeight - p._w) / p.pace * 7));
-        when = '<br>' + T('Goal weight around <b>{d}</b>', { d: fmtLong(d) });
-      }
-      s.querySelector('#pPrev').innerHTML = T('New daily goals: <b>{k} kcal</b> · {p} g protein · {c} g carbs · {f} g fat', { k: t.kcal, p: t.protein, c: t.carbs, f: t.fat }) + when +
-        (custom ? `<br><span class="muted">${T('Your custom macro numbers will be replaced by these.')}</span>` : '');
-    };
-    // Goal follows the goal weight automatically (and the other way round for "Maintain")
-    const syncGoal = () => {
-      const w = num(s.querySelector('#pWt').value), tw = num(s.querySelector('#pT').value), g = s.querySelector('#pGoal');
-      if (w && tw) g.value = tw < w - 0.4 ? 'lose' : tw > w + 0.4 ? (isGain(g.value) ? g.value : 'lean') : 'maintain';
-      s.querySelector('#pPace').disabled = g.value === 'maintain';
-    };
-    s.querySelector('#pT').addEventListener('input', syncGoal);
-    s.querySelector('#pWt').addEventListener('input', syncGoal);
-    s.querySelector('#pGoal').addEventListener('change', e => {
-      const w = num(s.querySelector('#pWt').value), t = s.querySelector('#pT');
-      if (e.target.value === 'maintain') t.value = w;
-      else if (e.target.value === 'lose' && num(t.value) >= w) t.value = r1(w - 5);
-      else if (isGain(e.target.value) && num(t.value) <= w) t.value = r1(w + 5);
-      if (e.target.value === 'lean' && num(s.querySelector('#pPace').value) > LEAN_MAX) s.querySelector('#pPace').value = 0.25;
-      s.querySelector('#pPace').disabled = e.target.value === 'maintain';
-    });
+    const read = () => ({ ...p0, sex: s.querySelector('#pSex').value, birth: s.querySelector('#pBirth').value || p0.birth,
+      height: num(s.querySelector('#pH').value) || p0.height, workouts: s.querySelector('#pW').value });
+    const w = () => r1(num(s.querySelector('#pWt').value)) || w0;
+    const preview = () => goalPreview(s.querySelector('#pPrev'), read(), w(), custom);
     s.querySelectorAll('input,select').forEach(el => { el.addEventListener('input', preview); el.addEventListener('change', preview); });
     preview();
     s.querySelector('#pSave').onclick = () => {
-      const p = read();
-      if (p.height < 120 || p.height > 230 || p._w < 30 || p._w > 300) return toast(T('Please check height and weight'));
-      if (Math.abs(p._w - currentWeight()) >= 0.05) { db.weights = db.weights.filter(x => x.date !== iso()); db.weights.push({ date: iso(), kg: p._w }); }
-      delete p._w;
-      if (p.goal === 'maintain') p.targetWeight = currentWeight();
-      if (p.goal === 'lean' && p.pace > LEAN_MAX) p.pace = LEAN_MAX;
+      const p = read(), kg = w();
+      if (p.height < 120 || p.height > 230 || kg < 30 || kg > 300) return toast(T('Please check height and weight'));
+      if (Math.abs(kg - currentWeight()) >= 0.05) { db.weights = db.weights.filter(x => x.date !== iso()); db.weights.push({ date: iso(), kg }); }
+      fixTarget(p, kg);                    // keep goal weight on the right side of the new weight
       db.profile = p; db.overrides = {};   // goals follow the new details
       save(); closeSheet();
       const t = targets(); toast(T('✓ Updated: {k} kcal · {p} g protein', { k: t.kcal, p: t.protein })); renderSettings();
     };
+  });
+}
+
+// Settings → Your goal: pick one of the 10 goals; the whole app follows. Past days are not changed.
+function openMainGoalSheet() {
+  if (!db.profile) return startOnboarding();
+  const w = currentWeight(), d = clone(db.profile), custom = Object.keys(db.overrides).length > 0;
+  d.fast = d.fast || { h: 16, start: '12:00' }; d.carbs = d.carbs || 'keto';
+  sheet(`<h3>🎯 ${T('Your goal')}</h3><p class="muted" style="margin-top:4px">${T('Everything in the app adapts to it. Your past days stay as they are.')}</p><div id="gBody"></div>`, s => {
+    const fill = () => {
+      const pl = planOf(d), [mn, , mx] = paceRange(d), paces = [];
+      for (let v = mn; v <= mx + 1e-9; v += 0.05) paces.push(Math.round(v * 100) / 100);
+      if (!paces.includes(d.pace)) paces.push(d.pace), paces.sort((a, b) => a - b);
+      s.querySelector('#gBody').innerHTML = `
+        <div style="margin-top:12px">${PLANS.map(x => `<button class="opt cmp ${x.id === d.plan ? 'on' : ''}" data-plan="${x.id}">${x.ic} ${T(x.name)}<small>${T(x.sub)}</small></button>`).join('')}</div>
+        ${pl.dir === null ? `<label class="lbl">${T('And your weight?')}</label><div class="seg">${DIRS.map(([v, l]) => `<button data-dir="${v}" class="${d.goal === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>` : ''}
+        ${pl.id === 'keto' ? `<label class="lbl">${T('How strict?')}</label><div class="seg">${[['keto', N('Keto (max 30 g carbs)')], ['lowcarb', N('Low carb (max 100 g carbs)')]].map(([v, l]) => `<button data-carb="${v}" class="${d.carbs === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>` : ''}
+        ${pl.id === 'if' ? fastPicker(d.fast) : ''}
+        ${needsTarget(d) ? `<div class="row"><div class="grow"><label class="lbl">${T('Goal weight (kg)')}</label><input id="gT" inputmode="decimal" value="${d.targetWeight}"></div>
+          <div class="grow"><label class="lbl">${T('Speed (kg / week)')}</label><select id="gP">${paces.map(v => `<option value="${v}" ${v === d.pace ? 'selected' : ''}>${v} kg</option>`).join('')}</select></div></div>` : ''}
+        <div class="tip" id="gPrev"></div>
+        <button class="btn" id="gGo" style="margin-top:16px">${T('Save & update goals')}</button>`;
+      const box = s.querySelector('#gBody'), preview = () => goalPreview(box.querySelector('#gPrev'), d, w, custom);
+      box.querySelectorAll('[data-plan]').forEach(b => b.onclick = () => { applyPlan(d, b.dataset.plan, w); fill(); });
+      box.querySelectorAll('[data-dir]').forEach(b => b.onclick = () => { d.goal = b.dataset.dir; d.pace = paceRange(d)[1]; fixTarget(d, w); fill(); });
+      box.querySelectorAll('[data-carb]').forEach(b => b.onclick = () => { d.carbs = b.dataset.carb; fill(); });
+      if (box.querySelector('#fH')) bindFast(box, d.fast, preview);
+      if (box.querySelector('#gT')) box.querySelector('#gT').oninput = e => { d.targetWeight = r1(num(e.target.value)); preview(); };
+      if (box.querySelector('#gP')) box.querySelector('#gP').onchange = e => { d.pace = +e.target.value; preview(); };
+      box.querySelector('#gGo').onclick = () => {
+        if (needsTarget(d)) {
+          if (d.goal === 'lose' && !(d.targetWeight < w)) return toast(T('Your goal weight must be below your current {w} kg', { w }));
+          if (isGain(d.goal) && !(d.targetWeight > w)) return toast(T('Your goal weight must be above your current {w} kg', { w }));
+        } else d.targetWeight = w;
+        db.profile = d; db.overrides = {};
+        save(); closeSheet();
+        const t = targets(); toast(T('✓ Updated: {k} kcal · {p} g protein', { k: t.kcal, p: t.protein }));
+        render();
+      };
+      preview();
+    };
+    fill();
   });
 }
 function openGoalsSheet() {
@@ -1720,15 +1898,37 @@ function openGoalsSheet() {
 
 /* ================= Onboarding ================= */
 let ob = null;
-const OB = ['intro', 'gender', 'workouts', 'body', 'birth', 'goal', 'target', 'speed', 'ai', 'plan'];
+const OB = ['intro', 'gender', 'workouts', 'body', 'birth', 'goal', 'dir', 'carbs', 'fasting', 'target', 'speed', 'ai', 'ready'];
 function startOnboarding() {
   const base = db.profile ? clone(db.profile) : {};
-  ob = { step: 0, p: Object.assign({ sex: '', workouts: '', height: 175, weight: 75, birth: '', goal: '', targetWeight: null, pace: 0.5 }, base) };
+  ob = { step: 0, p: Object.assign({ sex: '', workouts: '', height: 175, weight: 75, birth: '', plan: '', goal: '', targetWeight: null, pace: 0.5,
+    carbs: 'keto', fast: { h: 16, start: '12:00' } }, base) };
   if (db.profile) ob.p.weight = currentWeight();
   closeSheet(); renderOb();
 }
-const obSkip = i => ob.p.goal === 'maintain' && (OB[i] === 'target' || OB[i] === 'speed');
+// Steps that don't apply to the chosen goal are skipped
+function obSkip(i) {
+  const s = OB[i], p = ob.p;
+  if (s === 'dir') return planOf(p).dir !== null;
+  if (s === 'carbs') return p.plan !== 'keto';
+  if (s === 'fasting') return p.plan !== 'if';
+  if (s === 'target' || s === 'speed') return p.goal === 'maintain';
+  return false;
+}
 function obMove(d) { let i = ob.step + d; while (i > 0 && i < OB.length - 1 && obSkip(i)) i += d; ob.step = clamp(i, 0, OB.length - 1); renderOb(); }
+// Goal-specific tips on the "plan is ready" screen
+function planTips(p) {
+  const t = [], id = planOf(p).id;
+  t.push('📷 ' + T('Snap every meal, even snacks'));
+  if (id === 'keto') t.push('🥑 ' + T('Keep carbs under {n} g a day', { n: p.carbs === 'lowcarb' ? 100 : 30 }));
+  if (id === 'if') { const f = fastState(p); t.push('⏱️ ' + T('Eat only between {a} and {b}', { a: f.startStr, b: f.endStr })); }
+  if (id === 'healthy') t.push('🥗 ' + T('Aim for 30 g fiber a day and less sugar and salt'));
+  t.push('🍗 ' + T('Hit your protein goal every day'));
+  if (['lean', 'bulk', 'dirty', 'recomp'].includes(id) || p.goal === 'lean') t.push('🏋️ ' + T('Train with weights 3–5× a week and get stronger over time'));
+  if (id === 'recomp') t.push('🔄 ' + T('Your weight may stay similar while your body changes'));
+  t.push('⚖️ ' + T('Weigh yourself in the morning a few times a week'));
+  return t;
+}
 function renderOb() {
   let pg = $('#onb');
   if (!pg) { pg = document.createElement('div'); pg.id = 'onb'; pg.className = 'page'; pg.style.zIndex = 45; document.body.appendChild(pg); }
@@ -1757,24 +1957,30 @@ function renderOb() {
     body = `<div class="row"><div class="grow"><label class="lbl">${T('Height')}</label><select id="obH">${h}</select></div><div class="grow"><label class="lbl">${T('Weight')}</label><select id="obW">${kgOpts(Math.round(p.weight * 2) / 2, 35, 250)}</select></div></div>`; }
   if (s === 'birth') { title = T('When were you born?'); sub = calib;
     body = `<input type="date" id="obB" value="${p.birth}" max="${addDays(iso(), -365 * 12)}" min="1920-01-01" style="font-size:20px;text-align:center;padding:18px">`; ok = !!p.birth; }
-  if (s === 'goal') { title = T('What is your goal?'); sub = T('This helps us generate a plan for your calorie intake.');
-    body = opts('goal', [['lose', T('Lose weight')], ['maintain', T('Maintain')], ['lean', T('Build lean muscle'), T('Gain slowly, mostly muscle, little fat')], ['gain', T('Gain weight (fast)'), T('Gain quickly, more fat along the way')]]); ok = !!p.goal; }
+  if (s === 'goal') { title = T('What is your main goal?'); sub = T('Everything in the app adapts to it. You can change it any time in Settings.');
+    body = PLANS.map(x => `<button class="opt cmp ${p.plan === x.id ? 'on' : ''}" data-plan="${x.id}">${x.ic} ${T(x.name)}<small>${T(x.sub)}</small></button>`).join(''); ok = !!p.plan; }
+  if (s === 'dir') { title = T('What about your weight?'); sub = T('{goal} works with any weight goal.', { goal: T(planOf(p).name) });
+    body = opts('goal', [['lose', T('Lose weight')], ['maintain', T('Keep my weight')], ['lean', T('Gain weight'), T('Slowly, mostly muscle')]]); ok = ['lose', 'maintain', 'lean'].includes(p.goal); }
+  if (s === 'carbs') { title = T('How strict do you want to be?');
+    body = opts('carbs', [['keto', T('Keto'), T('Max 30 g carbs a day')], ['lowcarb', T('Low carb'), T('Max 100 g carbs a day')]]); }
+  if (s === 'fasting') { const f = fastState(p); title = T('Choose your fasting rhythm'); sub = T('You only eat inside your eating window.');
+    body = fastPicker(p.fast) + `<div class="tip">${T('Eating window: {a} – {b}', { a: f.startStr, b: f.endStr })}</div>`; }
   if (s === 'target') {
-    if (!p.targetWeight) p.targetWeight = Math.round((p.goal === 'lose' ? p.weight - 5 : p.weight + 5) * 2) / 2;
+    fixTarget(p, p.weight);
     title = T('What is your desired weight?');
     const diff = r1(p.targetWeight - p.weight);
     ok = p.goal === 'lose' ? diff < 0 : diff > 0;
-    body = `<div style="text-align:center"><div class="muted" style="font-weight:600">${T(GOALS.find(g => g[0] === p.goal)[1])}</div>
+    body = `<div style="text-align:center"><div class="muted" style="font-weight:600">${planOf(p).ic} ${T(planOf(p).name)}</div>
       <div class="speedv">${p.targetWeight} kg</div><div class="small ${ok ? 'muted' : ''}" style="${ok ? '' : 'color:var(--bad)'}">${ok ? T('{d} kg from now', { d: (diff > 0 ? '+' : '') + diff }) : (p.goal === 'lose' ? T('Must be below your current {w} kg', { w: p.weight }) : T('Must be above your current {w} kg', { w: p.weight }))}</div></div>
       <select id="obT" style="margin-top:22px">${kgOpts(p.targetWeight, 35, 250)}</select>`;
   }
   if (s === 'speed') {
     title = T('How fast do you want to reach your goal?');
-    const lean = p.goal === 'lean', max = lean ? LEAN_MAX : 1.5;
-    if (lean && (p.pace > LEAN_MAX || !p.pace)) p.pace = 0.25;
+    const [mn, df, mx] = paceRange(p);
+    if (!(p.pace >= mn && p.pace <= mx)) p.pace = df;
     body = `<div style="text-align:center"><div class="muted" style="font-weight:600">${p.goal === 'lose' ? T('Loss speed per week') : T('Gain speed per week')}</div><div class="speedv" id="obSv">${p.pace} kg</div></div>
       <div class="animals"><span>🦥</span><span>🐇</span><span>🐆</span></div>
-      <input type="range" id="obS" min="0.1" max="${max}" step="${lean ? 0.05 : 0.1}" value="${p.pace}"><div class="spread small muted"><span>0.1 kg</span><span>${lean ? '0.3' : '0.8'} kg</span><span>${max} kg</span></div>
+      <input type="range" id="obS" min="${mn}" max="${mx}" step="0.05" value="${p.pace}"><div class="spread small muted"><span>${mn} kg</span><span>${df} kg</span><span>${mx} kg</span></div>
       <div class="tip" id="obTip"></div>`;
   }
   if (s === 'ai') {
@@ -1784,16 +1990,17 @@ function renderOb() {
       <p class="small muted">${T('The key stays only on this phone. You can also add it later in Settings.')}</p>`;
     cta = getKey() ? T('Continue') : T('Save & continue');
   }
-  if (s === 'plan') {
+  if (s === 'ready') {
     const t = calcTargets(p, p.weight);
     let reach = '';
-    if (p.goal !== 'maintain') { const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(p.targetWeight - p.weight) / p.pace * 7));
+    if (needsTarget(p)) { const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(p.targetWeight - p.weight) / p.pace * 7));
       reach = `<div class="tip" style="text-align:center;margin:0 0 18px">${p.goal === 'lose' ? T('You should lose:') : T('You should gain:')}<br><b style="font-size:18px">${T('{n} kg by {d}', { n: r1(Math.abs(p.targetWeight - p.weight)), d: fmtLong(d) })}</b></div>`; }
     title = T('Congratulations, your custom plan is ready!');
+    sub = `${planOf(p).ic} ${T(planOf(p).name)}`;
     body = `${reach}<b>${T('Daily recommendation')}</b><p class="small muted" style="margin:2px 0 12px">${T('You can edit this any time in Settings.')}</p>
       <div class="plan4">${[['🔥', T('Calories'), t.kcal, '', 'var(--ink)'], ['🌾', T('Carbs'), t.carbs, 'g', 'var(--carbs)'], ['🍗', T('Protein'), t.protein, 'g', 'var(--protein)'], ['🥑', T('Fats'), t.fat, 'g', 'var(--fat)']]
         .map(([ic, l, v, u, c]) => `<div class="card"><span class="small" style="font-weight:600">${ic} ${l}</span>${ring(80, 7, 0.75, c, `<b style="font-size:17px">${v}${u}</b>`)}</div>`).join('')}</div>
-      <div class="tip"><b>${T('How to reach your goals')}</b><br>📷 ${T('Snap every meal, even snacks')}<br>🍗 ${T('Hit your protein goal every day')}<br>${p.goal === 'lean' ? '🏋️ ' + T('Train with weights 3–5× a week and get stronger over time') + '<br>' : ''}⚖️ ${T('Weigh yourself in the morning a few times a week')}</div>`;
+      <div class="tip"><b>${T('How to reach your goals')}</b><br>${planTips(p).join('<br>')}</div>`;
     cta = T("Let's get started!");
   }
   const pct = ob.step / (OB.length - 1) * 100;
@@ -1803,7 +2010,9 @@ function renderOb() {
     <button class="btn" id="obNext" ${ok ? '' : 'disabled'} style="margin-top:20px">${cta}</button></div>`;
   pg.scrollTo(0, 0);
   pg.querySelector('#obBack').onclick = () => obMove(-1);
-  pg.querySelectorAll('[data-set]').forEach(b => b.onclick = () => { p[b.dataset.set] = b.dataset.v; if (b.dataset.set === 'goal') p.targetWeight = null; renderOb(); });
+  pg.querySelectorAll('[data-plan]').forEach(b => b.onclick = () => { applyPlan(p, b.dataset.plan, p.weight); renderOb(); });
+  pg.querySelectorAll('[data-set]').forEach(b => b.onclick = () => { p[b.dataset.set] = b.dataset.v; if (b.dataset.set === 'goal') { p.pace = paceRange(p)[1]; fixTarget(p, p.weight); } renderOb(); });
+  if (pg.querySelector('#fH')) bindFast(pg, p.fast, renderOb);
   const bind = (id, fn) => { const el = pg.querySelector(id); if (el) el.onchange = el.oninput = () => fn(el); };
   bind('#obH', el => p.height = +el.value);
   bind('#obW', el => p.weight = +el.value);
@@ -1813,13 +2022,14 @@ function renderOb() {
     const t = pg.querySelector('#obTip'); if (!t) return;
     t.innerHTML = p.goal === 'lean'
       ? (p.pace <= 0.15 ? '🐢 ' + T('Very slow. Almost no fat gain, but muscle also comes slowly.') : p.pace <= 0.35 ? '✅ ' + T('<b>Recommended.</b> Mostly muscle, very little fat.') : '⚡ ' + T('Upper limit. A bit more fat will come along with the muscle.'))
+      : p.plan === 'dirty' ? '🍔 ' + T('Dirty bulk: you gain fast, but a good part of it will be fat.')
       : p.pace <= 0.3 ? '🐢 ' + T('Slow and steady. Very easy to keep up.') : p.pace <= 0.8 ? '✅ ' + T('<b>Recommended.</b> The best balance of speed and comfort.') : '⚡ ' + T('Fast. You may feel very tired. Make sure to eat enough protein.');
   };
   bind('#obS', el => { p.pace = +el.value; pg.querySelector('#obSv').textContent = p.pace + ' kg'; tip(); });
   tip();
   pg.querySelector('#obNext').onclick = () => {
     if (s === 'ai') { const k = pg.querySelector('#obK').value.trim(); if (k) LS.set('ft_key', k); }
-    if (s === 'plan') return finishOnboarding();
+    if (s === 'ready') return finishOnboarding();
     obMove(1);
   };
 }
@@ -1865,6 +2075,7 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   navigator.serviceWorker.addEventListener('message', e => handleOpen(e.data && e.data.open));
 }
 saveReminderTexts();
+setInterval(() => { const c = $('#fastCard'); if (c && tab === 'home') c.outerHTML = fastingHTML(); }, 30000);
 const openParam = new URLSearchParams(location.search).get('open');
 if (openParam) { history.replaceState(null, '', location.pathname); handleOpen(openParam); }
 </script>
