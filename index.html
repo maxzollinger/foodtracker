@@ -664,7 +664,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v51';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v52';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2110,7 +2110,7 @@ Write my WEEKLY CHECK-IN for this week. First line: a short title starting with 
 }
 
 /* ================= Reminder times (per person) ================= */
-const PUSH_DEF = { burn: 20, wDay: 0, wTime: 9 };
+const PUSH_DEF = { burn: 20, wDay: 0, wTime: 9, ci: 18, fo: 1 };
 const pushPrefs = () => { try { return { ...PUSH_DEF, ...JSON.parse(LS.get('ft_push_prefs', '{}')) }; } catch { return { ...PUSH_DEF }; } };
 const userTZ = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Zurich'; } catch { return 'Europe/Zurich'; } };
 function reminderTimesHTML() {
@@ -2122,13 +2122,18 @@ function reminderTimesHTML() {
     <div class="spread"><span>🏃 ${T('Calories burned')}</span><select id="rBurn" class="rsel">${hourOpts(p.burn, true)}</select></div>
     <div class="spread"><span>⚖️ ${T('Weigh-in')}</span><span class="row" style="gap:6px">
       <select id="rWDay" class="rsel"><option value="-1" ${p.wDay < 0 ? 'selected' : ''}>${T('Off')}</option>${[1, 2, 3, 4, 5, 6, 0].map(i => `<option value="${i}" ${i === p.wDay ? 'selected' : ''}>${dayName(i)}</option>`).join('')}</select>
-      ${p.wDay >= 0 ? `<select id="rWTime" class="rsel">${hourOpts(p.wTime, false)}</select>` : ''}</span></div></div>`;
+      ${p.wDay >= 0 ? `<select id="rWTime" class="rsel">${hourOpts(p.wTime, false)}</select>` : ''}</span></div>
+    <div class="spread"><span>📊 ${T('Weekly check-in')}</span><span class="row" style="gap:6px"><span class="small muted">${dayName(0)}</span><select id="rCi" class="rsel">${hourOpts(p.ci, true)}</select></span></div>
+    ${db.profile && planOf(db.profile).id === 'if' ? `<div class="spread"><span>⏱️ ${T('Eating window')}</span><select id="rFo" class="rsel"><option value="1" ${p.fo ? 'selected' : ''}>${T('On')}</option><option value="0" ${p.fo ? '' : 'selected'}>${T('Off')}</option></select></div>
+    <div class="small muted" style="margin-top:-4px">${T('When it opens, and 30 minutes before it closes.')}</div>` : ''}</div>`;
 }
 function bindReminderTimes() {
   const set = (k, v) => { const p = pushPrefs(); p[k] = +v; LS.set('ft_push_prefs', JSON.stringify(p)); syncPush(); toast(T('✓ Saved')); renderSettings(); };
   if ($('#rBurn')) $('#rBurn').onchange = e => set('burn', e.target.value);
   if ($('#rWDay')) $('#rWDay').onchange = e => set('wDay', e.target.value);
   if ($('#rWTime')) $('#rWTime').onchange = e => set('wTime', e.target.value);
+  if ($('#rCi')) $('#rCi').onchange = e => set('ci', e.target.value);
+  if ($('#rFo')) $('#rFo').onchange = e => set('fo', e.target.value);
 }
 
 /* ================= Exercise ================= */
@@ -3179,7 +3184,8 @@ const pushSupported = () => 'serviceWorker' in navigator && 'PushManager' in win
 function b64ToBytes(b) { const p = '='.repeat((4 - b.length % 4) % 4), raw = atob((b + p).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from(raw, c => c.charCodeAt(0)); }
 // The service worker shows the notifications in the app's language; it reads the texts from here.
 // Minimal look: just the short message in bold; iPhone adds "from <app name>" below it by itself.
-const reminderData = () => ({ burn: T('Calories burned today?'), weight: T('Weekly weigh-in') });
+const reminderData = () => ({ burn: T('Calories burned today?'), weight: T('Weekly weigh-in'), checkin: T('Your weekly check-in is ready 📊'),
+  fastOpen: T('Your eating window is open now ⏱️'), fastClose: T('Your eating window closes in 30 min ⏱️') });
 const reminderContent = (R, kind) => ({ title: R[kind], body: '' });
 let remT;
 function saveReminderTexts() {
@@ -3239,7 +3245,9 @@ async function syncPush() {
     const reg = await navigator.serviceWorker.ready;
     const sub = await reg.pushManager.getSubscription() || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(VAPID_PUBLIC) });
     const js = JSON.stringify(sub); LS.set('ft_push', js);
-    const prefs = { ...pushPrefs(), tz: userTZ() }, sent = js + JSON.stringify(prefs);   // resend when the address, times or time zone change
+    const pf = db.profile, fasting = pf && planOf(pf).id === 'if' && pf.fast;
+    const prefs = { ...pushPrefs(), tz: userTZ(), fo: fasting && pushPrefs().fo ? 1 : 0, fs: fasting ? pf.fast.start : '', fh: fasting ? pf.fast.h : 0 },
+      sent = js + JSON.stringify(prefs);   // resend when the address, times or time zone change
     if (LS.get('ft_push_sent', '') === sent) return;
     const r = await fetch(SERVER_URL + '/subscribe', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ sub, prefs }) });
     if (r.ok) LS.set('ft_push_sent', sent);
@@ -3318,6 +3326,7 @@ function handleOpen(what) {
   if (tab !== 'home') go('home'); else renderHome();
   if (what === 'burn') openBurnSheet();
   if (what === 'weight') openWeightSheet();
+  if (what === 'checkin') { go('chat'); weeklyCheckin(); }
 }
 
 /* ================= Settings ================= */

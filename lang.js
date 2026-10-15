@@ -700,7 +700,14 @@ window.I18N = {
 "Maintenance mode on":"Gewicht-halten-Modus an",
 "Your calories are now set to keep {w} kg.":"Deine Kalorien halten jetzt {w} kg.",
 "Goal reached!":"Ziel erreicht!",
-"1 rest day a week is fine":"1 Pausentag pro Woche ist okay"
+"1 rest day a week is fine":"1 Pausentag pro Woche ist okay",
+"Weekly check-in":"Wöchentlicher Check-in",
+"Eating window":"Essensfenster",
+"On":"An",
+"When it opens, and 30 minutes before it closes.":"Wenn es öffnet und 30 Minuten bevor es schließt.",
+"Your weekly check-in is ready 📊":"Dein wöchentlicher Check-in ist bereit 📊",
+"Your eating window is open now ⏱️":"Dein Essensfenster ist jetzt offen ⏱️",
+"Your eating window closes in 30 min ⏱️":"Dein Essensfenster schließt in 30 Min. ⏱️"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1402,7 +1409,14 @@ window.I18N = {
 "Maintenance mode on":"Modo mantenimiento activado",
 "Your calories are now set to keep {w} kg.":"Tus calorías ahora mantienen {w} kg.",
 "Goal reached!":"¡Objetivo alcanzado!",
-"1 rest day a week is fine":"1 día de descanso por semana está bien"
+"1 rest day a week is fine":"1 día de descanso por semana está bien",
+"Weekly check-in":"Resumen semanal",
+"Eating window":"Ventana de comidas",
+"On":"Activado",
+"When it opens, and 30 minutes before it closes.":"Cuando se abre y 30 minutos antes de que se cierre.",
+"Your weekly check-in is ready 📊":"Tu resumen semanal está listo 📊",
+"Your eating window is open now ⏱️":"Tu ventana de comidas está abierta ⏱️",
+"Your eating window closes in 30 min ⏱️":"Tu ventana de comidas se cierra en 30 min ⏱️"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -2104,7 +2118,14 @@ window.I18N = {
 "Maintenance mode on":"Mode maintien activé",
 "Your calories are now set to keep {w} kg.":"Tes calories maintiennent maintenant {w} kg.",
 "Goal reached!":"Objectif atteint !",
-"1 rest day a week is fine":"1 jour de repos par semaine, c'est ok"
+"1 rest day a week is fine":"1 jour de repos par semaine, c'est ok",
+"Weekly check-in":"Bilan de la semaine",
+"Eating window":"Fenêtre alimentaire",
+"On":"Activé",
+"When it opens, and 30 minutes before it closes.":"À l'ouverture, et 30 minutes avant la fermeture.",
+"Your weekly check-in is ready 📊":"Ton bilan de la semaine est prêt 📊",
+"Your eating window is open now ⏱️":"Ta fenêtre alimentaire est ouverte ⏱️",
+"Your eating window closes in 30 min ⏱️":"Ta fenêtre alimentaire se ferme dans 30 min ⏱️"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -2806,7 +2827,14 @@ window.I18N = {
 "Maintenance mode on":"Modalità mantenimento attiva",
 "Your calories are now set to keep {w} kg.":"Le tue calorie ora mantengono {w} kg.",
 "Goal reached!":"Obiettivo raggiunto!",
-"1 rest day a week is fine":"1 giorno di riposo a settimana va bene"
+"1 rest day a week is fine":"1 giorno di riposo a settimana va bene",
+"Weekly check-in":"Check-in settimanale",
+"Eating window":"Finestra dei pasti",
+"On":"Attivo",
+"When it opens, and 30 minutes before it closes.":"Quando si apre e 30 minuti prima che si chiuda.",
+"Your weekly check-in is ready 📊":"Il tuo check-in settimanale è pronto 📊",
+"Your eating window is open now ⏱️":"La tua finestra dei pasti è aperta ⏱️",
+"Your eating window closes in 30 min ⏱️":"La tua finestra dei pasti si chiude tra 30 min ⏱️"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -3508,7 +3536,14 @@ window.I18N = {
 "Maintenance mode on":"維持モードをオン",
 "Your calories are now set to keep {w} kg.":"カロリーが {w} kg をキープする設定になりました。",
 "Goal reached!":"目標達成！",
-"1 rest day a week is fine":"週 1 日の休みは OK"
+"1 rest day a week is fine":"週 1 日の休みは OK",
+"Weekly check-in":"週のチェックイン",
+"Eating window":"食事の時間帯",
+"On":"オン",
+"When it opens, and 30 minutes before it closes.":"始まったときと、終わる 30 分前。",
+"Your weekly check-in is ready 📊":"今週のチェックインが届きました 📊",
+"Your eating window is open now ⏱️":"食事の時間帯が始まりました ⏱️",
+"Your eating window closes in 30 min ⏱️":"食事の時間帯はあと 30 分で終わります ⏱️"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -4210,7 +4245,14 @@ window.I18N = {
 "Maintenance mode on":"Onderhoudsmodus aan",
 "Your calories are now set to keep {w} kg.":"Je calorieën houden nu {w} kg vast.",
 "Goal reached!":"Doel bereikt!",
-"1 rest day a week is fine":"1 rustdag per week is prima"
+"1 rest day a week is fine":"1 rustdag per week is prima",
+"Weekly check-in":"Wekelijkse check-in",
+"Eating window":"Eetvenster",
+"On":"Aan",
+"When it opens, and 30 minutes before it closes.":"Als het opent en 30 minuten voordat het sluit.",
+"Your weekly check-in is ready 📊":"Je wekelijkse check-in staat klaar 📊",
+"Your eating window is open now ⏱️":"Je eetvenster is nu open ⏱️",
+"Your eating window closes in 30 min ⏱️":"Je eetvenster sluit over 30 min ⏱️"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -4912,7 +4954,14 @@ window.I18N = {
 "Maintenance mode on":"Tryb utrzymania włączony",
 "Your calories are now set to keep {w} kg.":"Twoje kalorie utrzymują teraz {w} kg.",
 "Goal reached!":"Cel osiągnięty!",
-"1 rest day a week is fine":"1 dzień przerwy w tygodniu jest okej"
+"1 rest day a week is fine":"1 dzień przerwy w tygodniu jest okej",
+"Weekly check-in":"Cotygodniowe podsumowanie",
+"Eating window":"Okno jedzenia",
+"On":"Wł.",
+"When it opens, and 30 minutes before it closes.":"Gdy się otwiera i 30 minut przed zamknięciem.",
+"Your weekly check-in is ready 📊":"Twoje cotygodniowe podsumowanie jest gotowe 📊",
+"Your eating window is open now ⏱️":"Twoje okno jedzenia jest teraz otwarte ⏱️",
+"Your eating window closes in 30 min ⏱️":"Twoje okno jedzenia zamyka się za 30 min ⏱️"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -5614,7 +5663,14 @@ window.I18N = {
 "Maintenance mode on":"Modo manutenção ativo",
 "Your calories are now set to keep {w} kg.":"As tuas calorias mantêm agora {w} kg.",
 "Goal reached!":"Meta atingida!",
-"1 rest day a week is fine":"1 dia de descanso por semana não faz mal"
+"1 rest day a week is fine":"1 dia de descanso por semana não faz mal",
+"Weekly check-in":"Resumo semanal",
+"Eating window":"Janela alimentar",
+"On":"Ligado",
+"When it opens, and 30 minutes before it closes.":"Quando abre e 30 minutos antes de fechar.",
+"Your weekly check-in is ready 📊":"O teu resumo semanal está pronto 📊",
+"Your eating window is open now ⏱️":"A tua janela alimentar está aberta ⏱️",
+"Your eating window closes in 30 min ⏱️":"A tua janela alimentar fecha em 30 min ⏱️"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -6316,7 +6372,14 @@ window.I18N = {
 "Maintenance mode on":"Режим поддержания включён",
 "Your calories are now set to keep {w} kg.":"Твои калории теперь держат {w} кг.",
 "Goal reached!":"Цель достигнута!",
-"1 rest day a week is fine":"1 день отдыха в неделю — нормально"
+"1 rest day a week is fine":"1 день отдыха в неделю — нормально",
+"Weekly check-in":"Недельный отчёт",
+"Eating window":"Окно питания",
+"On":"Вкл.",
+"When it opens, and 30 minutes before it closes.":"Когда оно открывается и за 30 минут до закрытия.",
+"Your weekly check-in is ready 📊":"Твой недельный отчёт готов 📊",
+"Your eating window is open now ⏱️":"Твоё окно питания открыто ⏱️",
+"Your eating window closes in 30 min ⏱️":"Твоё окно питания закроется через 30 мин ⏱️"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -7018,7 +7081,14 @@ window.I18N = {
 "Maintenance mode on":"Koruma modu açık",
 "Your calories are now set to keep {w} kg.":"Kalorilerin artık {w} kg'ı koruyor.",
 "Goal reached!":"Hedefe ulaşıldı!",
-"1 rest day a week is fine":"Haftada 1 dinlenme günü sorun değil"
+"1 rest day a week is fine":"Haftada 1 dinlenme günü sorun değil",
+"Weekly check-in":"Haftalık değerlendirme",
+"Eating window":"Yemek penceresi",
+"On":"Açık",
+"When it opens, and 30 minutes before it closes.":"Açıldığında ve kapanmadan 30 dakika önce.",
+"Your weekly check-in is ready 📊":"Haftalık değerlendirmen hazır 📊",
+"Your eating window is open now ⏱️":"Yemek pencereni şimdi açık ⏱️",
+"Your eating window closes in 30 min ⏱️":"Yemek pencereni 30 dk içinde kapanıyor ⏱️"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -7720,6 +7790,13 @@ window.I18N = {
 "Maintenance mode on":"维持模式已开启",
 "Your calories are now set to keep {w} kg.":"你的热量现在用于保持 {w} 公斤。",
 "Goal reached!":"目标达成！",
-"1 rest day a week is fine":"每周休息 1 天没关系"
+"1 rest day a week is fine":"每周休息 1 天没关系",
+"Weekly check-in":"每周总结",
+"Eating window":"进食窗口",
+"On":"开启",
+"When it opens, and 30 minutes before it closes.":"窗口开启时，以及关闭前 30 分钟。",
+"Your weekly check-in is ready 📊":"你的每周总结已准备好 📊",
+"Your eating window is open now ⏱️":"你的进食窗口现在开启了 ⏱️",
+"Your eating window closes in 30 min ⏱️":"你的进食窗口将在 30 分钟后关闭 ⏱️"
 }
 };

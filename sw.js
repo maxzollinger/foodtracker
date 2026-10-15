@@ -1,6 +1,6 @@
 // Offline support: keeps the app shell cached, always tries the network first so updates arrive.
 // Also shows the reminder notifications that the GitHub workflow sends.
-const CACHE = 'foodtracker-v51';
+const CACHE = 'foodtracker-v52';
 const KEEP = [CACHE, 'ft-meta'];   // ft-meta holds the notification texts in the app's language
 const ASSETS = ['./', './index.html', './lang.js', './manifest.json', './icon-180.png', './icon-512.png'];
 
@@ -25,7 +25,8 @@ self.addEventListener('fetch', e => {
 });
 
 // Minimal look: just the short message in bold; iPhone adds "from <app name>" below it by itself
-const DEFAULT_TEXTS = { burn: 'Calories burned today?', weight: 'Weekly weigh-in' };
+const DEFAULT_TEXTS = { burn: 'Calories burned today?', weight: 'Weekly weigh-in', checkin: 'Your weekly check-in is ready 📊',
+  fastOpen: 'Your eating window is open now ⏱️', fastClose: 'Your eating window closes in 30 min ⏱️' };
 function content(R, kind) {
   const v = R && R[kind];
   return { body: '', title: typeof v === 'string' ? v : v && v.title ? v.title.replace(/^\p{Extended_Pictographic}\uFE0F?\s*/u, '') : DEFAULT_TEXTS[kind] };
@@ -34,7 +35,7 @@ function content(R, kind) {
 self.addEventListener('push', e => {
   let data = {};
   try { data = e.data ? e.data.json() : {}; } catch {}
-  const kind = data.open === 'weight' ? 'weight' : 'burn';
+  const kind = DEFAULT_TEXTS[data.open] ? data.open : 'burn';
   e.waitUntil((async () => {
     let R = DEFAULT_TEXTS;
     try { const r = await (await caches.open('ft-meta')).match('./reminder-texts'); if (r) R = await r.json(); } catch {}
