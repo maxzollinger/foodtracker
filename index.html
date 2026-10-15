@@ -244,6 +244,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 body.chatting{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
 body.chatting .fab{display:none}
 body.typing .tabbar{display:none}
+#chatScreen{position:fixed;left:0;right:0;top:0;height:100%;z-index:5;display:flex;flex-direction:column;background:var(--bg)}
+body.chatting{overflow:hidden;padding-bottom:0}
+.chathead{flex:none;width:100%}
+.msgscroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.msgscroll .wrap{padding-bottom:14px}
+#chatScreen .chatbar{position:relative;left:auto;right:auto;bottom:auto;flex:none;padding:8px 14px calc(74px + env(safe-area-inset-bottom))}
+body.typing #chatScreen .chatbar{padding-bottom:8px}
 body.typing .chatbar{bottom:0;padding-bottom:6px}
 .chatbar.hasText .chips{display:none}
 
@@ -703,7 +710,7 @@ function go(t) {
   document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
   document.body.classList.toggle('chatting', t === 'chat');
   document.body.classList.remove('typing');
-  $('.chatbar')?.remove();
+  $('#chatScreen')?.remove();
   document.body.style.paddingBottom = '';
   if (rec) finishVoice(false);
   window.scrollTo(0, 0);
@@ -1637,19 +1644,33 @@ const CICON = {
   file: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/></svg>',
   mic: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/></svg>'
 };
+/* The chat is its own screen: a fixed header, a scroll area for the messages and the bar at the bottom.
+   Only the messages scroll, so the bar never moves and the scroll line stays next to the messages. */
+const chatEl = () => $('#msgScroll');
+const chatNear = () => { const e = chatEl(); return !e || e.scrollTop + e.clientHeight >= e.scrollHeight - 220; };
+const chatToBottom = smooth => { const e = chatEl(); if (e) e.scrollTo({ top: e.scrollHeight, behavior: smooth ? 'smooth' : 'auto' }); };
 function renderChat(animLast) {
   const n = memList().length;
-  $('#view').innerHTML = `
-    <div class="top"><div class="brand">${T('AI Coach')}</div><button class="chipbtn" id="cMem" aria-label="${T('Memory')}">🧠${n ? ' ' + n : ''}</button></div>
+  $('#view').innerHTML = '';
+  let scr = $('#chatScreen');
+  if (!scr) {
+    scr = document.createElement('div'); scr.id = 'chatScreen';
+    scr.innerHTML = `<div class="wrap chathead"><div class="top"><div class="brand">${T('AI Coach')}</div><button class="chipbtn" id="cMem" aria-label="${T('Memory')}"></button></div></div>
+      <div class="msgscroll" id="msgScroll"><div class="wrap" id="chatBody"></div></div>`;
+    document.body.appendChild(scr);
+    chatEl().addEventListener('scroll', updateDown, { passive: true });
+    buildChatbar(scr);
+  }
+  $('#cMem').textContent = '🧠' + (n ? ' ' + n : '');
+  $('#chatBody').innerHTML = `
     ${!chat.length ? `<div class="empty" style="margin-top:14px"><div style="font-size:40px">🥗</div><b>${T('Ask me anything')}</b>
       <span class="muted">${T('I always see your latest numbers, meals, goals and progress, and I remember what you tell me.')}</span></div>` : ''}
     <div class="msgs" id="msgs">${chat.map((m, i) => chatBubble(m, animLast && i === chat.length - 1)).join('')}${chatBusy ? '<div class="msg ai new" id="live"><span class="dots"><span></span><span></span><span></span></span></div>' : ''}</div>`;
-  if (!$('.chatbar')) buildChatbar();
   renderAttach();
   $('#cMem').onclick = openMemorySheet;
-  requestAnimationFrame(() => { chatPad(); window.scrollTo(0, document.body.scrollHeight); requestAnimationFrame(updateDown); });
+  fitChat(); chatToBottom(); requestAnimationFrame(() => { chatToBottom(); updateDown(); });
 }
-function buildChatbar() {
+function buildChatbar(scr) {
   const bar = document.createElement('div'); bar.className = 'chatbar';
   bar.innerHTML = `<div class="in">
     <button class="downbtn" id="cDown" aria-label="${T('Jump to the latest message')}">↓</button>
@@ -1665,13 +1686,13 @@ function buildChatbar() {
         <button class="cbtn mic" id="cMic" aria-label="${T('Speak')}">${CICON.mic}</button><button class="cbtn send" id="cSend" aria-label="${T('Send')}">↑</button></div></div>
     <div class="recbar"><button class="cbtn" id="cRecX" aria-label="${T('Close')}">✕</button><div class="wave" id="cWave"></div><button class="cbtn ok" id="cRecOk" aria-label="${T('Done')}">✓</button></div>
   </div>`;
-  document.body.appendChild(bar);
+  scr.appendChild(bar);
   const ta = bar.querySelector('#cIn');
   ta.oninput = () => { ta.style.height = '40px'; ta.style.height = Math.min(ta.scrollHeight, 120) + 'px'; updateSendState(); };
   // While typing, hide the tab bar so there's more room for the conversation
   let blurT;
-  ta.addEventListener('focus', () => { clearTimeout(blurT); closeChatMenu(); document.body.classList.add('typing'); setTimeout(() => { chatPad(); window.scrollTo(0, document.body.scrollHeight); }, 250); });
-  ta.addEventListener('blur', () => { blurT = setTimeout(() => { document.body.classList.remove('typing'); chatPad(); }, 120); });
+  ta.addEventListener('focus', () => { clearTimeout(blurT); closeChatMenu(); document.body.classList.add('typing'); fitChat(); setTimeout(() => { fitChat(); chatToBottom(); }, 300); });
+  ta.addEventListener('blur', () => { blurT = setTimeout(() => { document.body.classList.remove('typing'); fitChat(); }, 120); });
   // Tapping send keeps the keyboard open (no layout jump under your finger)
   bar.querySelector('#cSend').addEventListener('pointerdown', e => { if (document.activeElement === ta) e.preventDefault(); });
   bar.querySelectorAll('.chips button').forEach(b => b.onclick = () => sendChat(b.textContent));
@@ -1688,7 +1709,7 @@ function buildChatbar() {
   bar.querySelector('#cMic').onclick = startVoice;
   bar.querySelector('#cRecX').onclick = () => finishVoice(false);
   bar.querySelector('#cRecOk').onclick = () => finishVoice(true);
-  bar.querySelector('#cDown').onclick = () => { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); setTimeout(updateDown, 700); };
+  bar.querySelector('#cDown').onclick = () => { chatToBottom(true); setTimeout(updateDown, 700); };
   if (window.ResizeObserver) new ResizeObserver(chatPad).observe(bar);
   updateSendState();
 }
@@ -1696,23 +1717,22 @@ function closeChatMenu() { const bar = $('.chatbar'); if (bar && bar.classList.c
 document.addEventListener('click', e => { if (!e.target.closest('#cMenu') && !e.target.closest('#cPlus')) closeChatMenu(); });
 // Mic when empty, send arrow when there's something to send
 function updateSendState() { const bar = $('.chatbar'); if (bar) bar.classList.toggle('hasText', !!($('#cIn').value.trim() || chatImg)); }
-// Keep exactly enough room under the messages for the bar, so no text hides behind it
-function chatPad() {
-  const bar = $('.chatbar');
-  if (!bar || tab !== 'chat') { document.body.style.paddingBottom = ''; return; }
-  document.body.style.paddingBottom = Math.max(0, window.innerHeight - bar.getBoundingClientRect().top + 16) + 'px';
+// When the keyboard opens, the chat screen shrinks to the visible area, so the bar sits right on the keyboard
+function fitChat() {
+  const scr = $('#chatScreen'), vv = window.visualViewport;
+  if (!scr) return;
+  if (vv && document.body.classList.contains('typing')) { scr.style.height = vv.height + 'px'; scr.style.transform = `translateY(${vv.offsetTop}px)`; }
+  else { scr.style.height = ''; scr.style.transform = ''; }
   updateDown();
 }
+const chatPad = () => updateDown();
 // "↓" only shows when you've scrolled up away from the latest message
 function updateDown() {
-  const b = $('#cDown'); if (!b) return;
-  b.classList.toggle('show', tab === 'chat' && window.innerHeight + window.scrollY < document.body.scrollHeight - 160);
+  const b = $('#cDown'), e = chatEl(); if (!b || !e) return;
+  b.classList.toggle('show', tab === 'chat' && e.scrollTop + e.clientHeight < e.scrollHeight - 160);
 }
-window.addEventListener('scroll', updateDown, { passive: true });
-document.addEventListener('scroll', updateDown, { passive: true });
 setInterval(() => { if (tab === 'chat') updateDown(); }, 1000);   // safety net if a scroll event is missed
-window.addEventListener('resize', chatPad);
-if (window.visualViewport) visualViewport.addEventListener('resize', () => setTimeout(chatPad, 50));
+if (window.visualViewport) { visualViewport.addEventListener('resize', fitChat); visualViewport.addEventListener('scroll', fitChat); }
 
 /* --- Voice input: record, show a live sound wave, then turn it into text with Gemini --- */
 let rec = null;
@@ -1808,7 +1828,7 @@ async function sendChat(text) {
   /* Calm typing: the stream fills `target` as fast as the AI sends it; the bubble shows it word by
      word at a steady reading pace (a bit quicker when a lot is waiting, so long answers don't drag). */
   let target = '', shown = 0, done = false;
-  const near = () => window.innerHeight + window.scrollY >= document.body.scrollHeight - 220;
+  const near = chatNear;
   const nextWordEnd = (s, from) => { const m = /\S+\s*/y; m.lastIndex = from; return m.exec(s) ? m.lastIndex : s.length; };
   const typer = setInterval(() => {
     const live = $('#live'), clean = stripTags(target);
@@ -1817,7 +1837,7 @@ async function sendChat(text) {
     for (let i = 0, n = backlog > 120 ? 3 : backlog > 50 ? 2 : 1; i < n; i++) shown = nextWordEnd(clean, shown);
     const stick = near();
     live.innerHTML = md(tidyPartial(clean.slice(0, shown))).replace(/(<\/(p|li)>(<\/[uo]l>)?)$/, '<span class="caret"></span>$1');
-    if (stick) window.scrollTo({ top: document.body.scrollHeight });
+    if (stick) chatToBottom();
   }, 55);
 
   let entry;
@@ -1838,7 +1858,7 @@ async function sendChat(text) {
   chat.push(entry); chatBusy = false; saveChat();
   if (tab === 'chat') {
     const live = $('#live');
-    if (live) { const stick = near(); live.outerHTML = chatBubble(entry); if (stick) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }
+    if (live) { const stick = near(); live.outerHTML = chatBubble(entry); if (stick) chatToBottom(true); }
     else renderChat(true);
   }
 }
