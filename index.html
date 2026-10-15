@@ -39,7 +39,14 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--text);
   font:16px/1.35 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Noto Sans",sans-serif;-webkit-font-smoothing:antialiased}
-body{padding-bottom:calc(96px + env(safe-area-inset-bottom));transition:background .25s}
+body{transition:background .25s;overflow:hidden;height:100%}
+html{height:100%;overflow:hidden}
+#scroller{position:fixed;left:0;right:0;top:0;bottom:var(--tabh,82px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+#scroller #view{padding-bottom:36px}
+/* Soft fade at the bottom edge so the page blends into the tab bar instead of stopping at a hard line */
+#scroller,.msgscroll{-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - 28px),transparent)}
+.tabbar{border-top-color:transparent}
+body.chatting #scroller{display:none}
 button{font:inherit;color:inherit;border:0;background:none;cursor:pointer;padding:0}
 input,select,textarea{font:inherit;font-size:16px;color:var(--text);width:100%;padding:14px 16px;border-radius:14px;
   border:0;background:var(--chip);outline:none}
@@ -382,7 +389,7 @@ body.typing .chatbar{bottom:0;padding-bottom:6px}
   </script>
 </div>
 
-<div class="wrap" id="view"></div>
+<div id="scroller"><div class="wrap" id="view"></div></div>
 
 <nav class="tabbar"><div class="in">
   <button class="tab on" data-tab="home"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2 2.8 11h2.7v9h5v-6h3v6h5v-9h2.7z"/></svg><span data-i18n="Home">Home</span></button>
@@ -774,7 +781,7 @@ function go(t) {
   $('#chatScreen')?.remove();
   document.body.style.paddingBottom = '';
   if (rec) finishVoice(false);
-  window.scrollTo(0, 0);
+  $('#scroller').scrollTop = 0;
   render();
 }
 function render() { ({ home: renderHome, progress: renderProgress, chat: renderChat, settings: renderSettings })[tab](); }
@@ -2336,6 +2343,9 @@ function finishOnboarding() {
 }
 
 /* ================= Utils ================= */
+// The page area ends exactly where the tab bar starts (so the scroll line never runs behind it)
+function measureTabbar() { const t = $('.tabbar'); if (t && t.offsetHeight) document.documentElement.style.setProperty('--tabh', t.offsetHeight + 'px'); }
+window.addEventListener('resize', measureTabbar);
 // The iPhone shows its photo/file menu next to the (invisible) file input, so move the input
 // to where the menu should appear before opening it
 function openPicker(sel, anchor) {
@@ -2366,6 +2376,7 @@ function loadScript(src) {
 /* ================= Start ================= */
 applyTheme();
 i18nStatic();
+measureTabbar();
 if (db.profile) save();   // keep any migration changes
 go('home');
 if (!db.profile) startOnboarding();
