@@ -176,6 +176,16 @@ a{color:inherit}
 .addgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
 .addtile{background:var(--chip);border-radius:20px;padding:20px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:600;text-align:center}
 .addtile span{font-size:30px}
+.addtile.wide{grid-column:1/-1;flex-direction:row;justify-content:center;padding:16px 12px}
+.addtile.wide span{font-size:24px}
+.fav-row{gap:8px}
+.fav-ic{width:34px;height:34px;flex:none;font-size:18px;display:flex;align-items:center;justify-content:center}
+.fav-add{width:40px;height:40px;padding:0;flex:none;font-size:20px}
+.bkcode{margin:14px 0;padding:14px 10px;border-radius:14px;background:var(--chip);font:800 20px/1.2 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.06em;text-align:center;user-select:all;-webkit-user-select:all}
+.barlive{margin-top:14px;border-radius:18px;overflow:hidden;background:#000;min-height:140px;position:relative}
+.barlive video{width:100%!important;height:auto!important;display:block;object-fit:cover}
+.mp-ate{margin-top:8px;padding:7px 12px;border-radius:999px;background:var(--chip);font-size:13px;font-weight:700}
+.mp-ate.done{background:color-mix(in srgb,var(--good) 18%,transparent);color:var(--good)}
 
 /* Detail */
 .hero{height:330px;background:var(--chip);position:relative;display:flex;align-items:center;justify-content:center;font-size:90px}
@@ -532,7 +542,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v37';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v38';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1017,6 +1027,7 @@ function dismissSheet() {
 
 function openAddMenu() {
   sheet(`<h3>${T('Add')}</h3><div class="addgrid">
+    <button class="addtile wide" id="aFav"><span>⭐</span>${T('Favorites & recent')}</button>
     <button class="addtile" id="aScan"><span>📷</span>${T('Scan food')}</button>
     <button class="addtile" id="aBar"><span>🏷️</span>${T('Barcode')}</button>
     <button class="addtile" id="aLib"><span>🖼️</span>${T('Upload photo')}</button>
@@ -1026,6 +1037,7 @@ function openAddMenu() {
     s.querySelector('#aScan').onclick = () => { closeSheet(); $('#fileCam').click(); };
     s.querySelector('#aLib').onclick = () => { closeSheet(); openPicker('#fileLib', $('#fab')); };
     s.querySelector('#aBar').onclick = openBarcodeSheet;
+    s.querySelector('#aFav').onclick = openFavorites;
     s.querySelector('#aText').onclick = openDescribeSheet;
     s.querySelector('#aEx').onclick = () => openExercise(null);
     s.querySelector('#aMan').onclick = () => {
@@ -1334,12 +1346,14 @@ function openDescribeSheet() {
 
 /* ================= Barcode ================= */
 function openBarcodeSheet() {
-  sheet(`<h3>${T('Scan barcode')}</h3><p class="muted" style="margin-top:4px">${T('Take a sharp, close photo of the barcode on the package.')}</p>
-    <button class="btn" id="bShot">📷 ${T('Take photo of barcode')}</button>
-    <div class="lbl" style="text-align:center;margin:16px 0 8px">${T('or type the number')}</div>
-    <div class="row"><input id="bCode" inputmode="numeric" placeholder="4008400402222"><button class="btn sm" id="bLook">${T('Find')}</button></div>
-    <p class="small" id="bMsg" style="min-height:20px;margin:12px 0 0;text-align:center"></p>`, s => {
-    s.querySelector('#bShot').onclick = () => $('#fileBar').click();
+  sheet(`<h3>${T('Scan barcode')}</h3><p class="muted" style="margin-top:4px">${T('Hold the barcode inside the frame. It scans by itself.')}</p>
+    <div id="bLive" class="barlive"><div class="small" style="padding:46px 10px;text-align:center;color:#bbb"><span class="spin"></span> ${T('Starting camera…')}</div></div>
+    <p class="small" id="bMsg" style="min-height:20px;margin:10px 0 0;text-align:center"></p>
+    <button class="btn outline" id="bShot" style="margin-top:6px">📷 ${T('Take photo of barcode')}</button>
+    <div class="lbl" style="text-align:center;margin:14px 0 8px">${T('or type the number')}</div>
+    <div class="row"><input id="bCode" inputmode="numeric" placeholder="4008400402222"><button class="btn sm" id="bLook">${T('Find')}</button></div>`, s => {
+    startBarScan();
+    s.querySelector('#bShot').onclick = () => { stopBarScan(); $('#fileBar').click(); };
     s.querySelector('#bLook').onclick = () => { const c = s.querySelector('#bCode').value.replace(/\D/g, ''); if (c) lookupBarcode(c); };
   });
 }
@@ -1376,6 +1390,205 @@ async function lookupBarcode(code) {
         sugar: 'sugars_100g' in n ? r1(num(n.sugars_100g) * f) : null, fiber: 'fiber_100g' in n ? r1(num(n.fiber_100g) * f) : null,
         sodium: 'sodium_100g' in n ? r0(num(n.sodium_100g) * 1000 * f) : null }] });
   } catch { bMsg(T('No internet connection?'), true); }
+}
+
+/* ================= Favorites & eat again ================= */
+const favs = () => (db.favorites = db.favorites || []);
+const favKey = n => String(n || '').trim().toLowerCase();
+const isFav = m => !!favKey(m.name) && favs().some(f => favKey(f.name) === favKey(m.name));
+function toggleFav(m) {
+  if (!favKey(m.name)) return toast(T('Give the meal a name first'));
+  if (isFav(m)) { db.favorites = favs().filter(f => favKey(f.name) !== favKey(m.name)); toast(T('Removed from favorites')); }
+  else {
+    favs().unshift({ id: uid(), name: m.name.trim(), servings: m.servings || 1, health: m.health ?? null, photoOf: m.photo ? m.id : null,
+      items: m.items.map(({ base, ...it }) => ({ ...it })) });
+    toast('⭐ ' + T('Saved to favorites'));
+  }
+  save();
+}
+// Logs a copy of a favorite or an earlier meal for the selected day, right now (with its photo)
+async function eatAgain(src) {
+  const m = { id: uid(), date: sel, time: nowTime(), name: src.name, servings: src.servings || 1, health: src.health ?? null, source: 'again', photo: false,
+    items: clone(src.items).map(({ base, ...it }) => it) };
+  const pid = src.photoOf || (src.photo && src.date ? src.id : null);
+  if (pid) { try { const ph = photoCache[pid] || await idb.get(pid); if (ph) { await idb.set(m.id, ph); photoCache[m.id] = ph; m.photo = true; } } catch {} }
+  db.meals.push(m); save(); toast(T('✓ {name} logged', { name: m.name }));
+  if (tab === 'home') renderHome();
+}
+function openFavorites() {
+  const recent = [], seen = new Set(favs().map(f => favKey(f.name)));
+  for (const m of [...db.meals].sort((a, b) => (b.date + (b.time || '')).localeCompare(a.date + (a.time || '')))) {
+    const k = favKey(m.name); if (!k || seen.has(k)) continue;
+    seen.add(k); recent.push(m); if (recent.length >= 15) break;
+  }
+  const row = (m, kind) => { const t = mealTotals(m); return `<div class="li fav-row"><span class="grow"><b>${esc(m.name)}</b><br>
+      <span class="small muted">${r0(t.kcal)} kcal · P ${r0(t.protein)} g · C ${r0(t.carbs)} g · F ${r0(t.fat)} g</span></span>
+      ${kind === 'fav' ? `<button class="fav-ic muted" data-unfav="${m.id}" aria-label="${T('Remove')}">✕</button>` : `<button class="fav-ic" data-star="${m.id}" aria-label="${T('Save to favorites')}">☆</button>`}
+      <button class="btn sm fav-add" data-again="${kind}:${m.id}" aria-label="${T('Add')}">＋</button></div>`; };
+  sheet(`<h3>⭐ ${T('Favorites & recent')}</h3>
+    <p class="muted" style="margin-top:4px">${T('Tap ＋ to log it again ({d}).', { d: sel === iso() ? T('Today') : fmtDate(sel) })}</p>
+    <div class="h2" style="margin-top:16px">${T('Favorites')}</div>
+    ${favs().length ? `<div class="list" style="box-shadow:none;background:var(--chip)">${favs().map(f => row(f, 'fav')).join('')}</div>`
+      : `<p class="small muted">${T('No favorites yet. Tap ☆ next to a recent meal, or open a logged meal and tap ☆.')}</p>`}
+    <div class="h2">${T('Recent')}</div>
+    ${recent.length ? `<div class="list" style="box-shadow:none;background:var(--chip)">${recent.map(m => row(m, 'rec')).join('')}</div>` : `<p class="small muted">${T('Nothing logged yet.')}</p>`}`, s => {
+    s.querySelectorAll('[data-again]').forEach(b => b.onclick = () => {
+      const [k, id] = b.dataset.again.split(':'), src = (k === 'fav' ? favs() : db.meals).find(x => x.id === id);
+      if (src) { closeSheet(); eatAgain(src); }
+    });
+    s.querySelectorAll('[data-unfav]').forEach(b => b.onclick = () => { db.favorites = favs().filter(f => f.id !== b.dataset.unfav); save(); openFavorites(); });
+    s.querySelectorAll('[data-star]').forEach(b => b.onclick = () => { const m = db.meals.find(x => x.id === b.dataset.star); if (m) { toggleFav(m); openFavorites(); } });
+  });
+}
+
+/* ================= Automatic backup =================
+   Once a day the app saves an encrypted copy of the data on the Food Tracker server. Only this phone knows
+   the backup code that unlocks it, so nobody else (not even the app owner) can read it. Meal photos stay on
+   the phone. With the code, everything comes back, e.g. on a new phone. */
+const B32 = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';   // no 0/O, 1/I/L mix-ups
+const fmtCode = c => normCode(c).replace(/(.{4})(?=.)/g, '$1-');
+const normCode = c => String(c || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+const newBackupCode = () => fmtCode([...crypto.getRandomValues(new Uint8Array(16))].map(b => B32[b % B32.length]).join(''));
+const sha = async s => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)))].map(b => b.toString(16).padStart(2, '0')).join('');
+async function backupKeys(code) {
+  const c = normCode(code), raw = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('ft-key:' + c));
+  return { id: await sha('ft-id:' + c), auth: await sha('ft-auth:' + c), key: await crypto.subtle.importKey('raw', raw, 'AES-GCM', false, ['encrypt', 'decrypt']) };
+}
+const b64 = bytes => { let s = ''; for (let i = 0; i < bytes.length; i += 0x8000) s += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000)); return btoa(s); };
+const unb64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+async function zipText(str) {
+  if (!window.CompressionStream) return { z: false, bytes: new TextEncoder().encode(str) };
+  return { z: true, bytes: new Uint8Array(await new Response(new Blob([str]).stream().pipeThrough(new CompressionStream('gzip'))).arrayBuffer()) };
+}
+async function unzipText(bytes, z) {
+  if (!z) return new TextDecoder().decode(bytes);
+  return new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('gzip'))).text();
+}
+async function runBackup(manual) {
+  if (!SERVER_URL || !db.profile || !window.crypto || !crypto.subtle) return false;
+  try {
+    let code = LS.get('ft_bk_code', ''); if (!code) { code = newBackupCode(); LS.set('ft_bk_code', code); }
+    const k = await backupKeys(code), iv = crypto.getRandomValues(new Uint8Array(12));
+    const payload = JSON.stringify({ v: 1, t: Date.now(), data: LS.get('ft_data', ''), chat: LS.get('ft_chat', ''), lang: LS.get('ft_lang', ''), theme: LS.get('ft_theme', '') });
+    const zz = await zipText(payload);
+    const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, k.key, zz.bytes));
+    const r = await fetch(SERVER_URL + '/backup', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: k.id, auth: k.auth, data: (zz.z ? 'z' : 'p') + '.' + b64(iv) + '.' + b64(ct) }) });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    LS.set('ft_bk_last', String(Date.now()));
+    if (manual) toast('✓ ' + T('Backup saved'));
+    if (tab === 'settings' && !$('.backdrop')) renderSettings();
+    return true;
+  } catch { if (manual) toast(T('Backup failed. Check your internet and try again.')); return false; }
+}
+let bkRunning = false;
+async function autoBackup() {
+  if (bkRunning || Date.now() - +LS.get('ft_bk_last', 0) < 20 * 3600e3) return;
+  bkRunning = true;
+  const ok = await runBackup(false);
+  bkRunning = false;
+  if (ok) showBackupCode(false);
+}
+async function restoreBackup(code) {
+  const k = await backupKeys(code);
+  const r = await fetch(SERVER_URL + '/backup/restore', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: k.id, auth: k.auth }) });
+  if (r.status === 404) throw new Error(T('No backup found for this code.'));
+  if (!r.ok) throw new Error(T('Restore failed. Check your internet and try again.'));
+  const [z, iv, ct] = (await r.json()).data.split('.');
+  const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(iv) }, k.key, unb64(ct));
+  return JSON.parse(await unzipText(new Uint8Array(plain), z === 'z'));
+}
+async function deleteBackup() {
+  const code = LS.get('ft_bk_code', ''); if (!code || !SERVER_URL) return;
+  try { const k = await backupKeys(code); await fetch(SERVER_URL + '/backup/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: k.id, auth: k.auth }) }); } catch {}
+  ['ft_bk_code', 'ft_bk_last', 'ft_bk_seen'].forEach(x => LS.del(x));
+}
+// The code is shown once after the first backup (and any time in Settings)
+function showBackupCode(force) {
+  const code = LS.get('ft_bk_code', '');
+  if (!code || (!force && (LS.get('ft_bk_seen', '') || $('.backdrop') || $('#onb') || $('.page')))) return;
+  LS.set('ft_bk_seen', '1');
+  sheet(`<div style="text-align:center"><div class="askbell">☁️</div><h3 style="margin:14px 0 6px">${T('Your backup code')}</h3>
+    <p class="muted" style="margin:0">${T('Your data is now backed up automatically every day. If you ever get a new phone, this code brings everything back.')}</p>
+    <div class="bkcode">${code}</div>
+    <p class="small muted" style="margin:0 0 16px">${T("Keep this code safe, e.g. in your Notes or as a screenshot. Without it the backup can't be opened.")}</p>
+    <button class="btn" id="bkC">📋 ${T('Copy code')}</button><button class="btn outline" id="bkOk" style="margin-top:10px">${T('Done')}</button></div>`, s => {
+    s.querySelector('#bkC').onclick = async () => { try { await navigator.clipboard.writeText(code); toast(T('✓ Copied')); } catch { toast(code); } };
+    s.querySelector('#bkOk').onclick = dismissSheet;
+  });
+}
+function openRestoreSheet() {
+  sheet(`<h3>☁️ ${T('Restore from backup')}</h3>
+    <p class="muted" style="margin-top:4px">${T('Enter your backup code. Your meals, weights, goals, meal plans and coach chat come back. Meal photos are not part of the backup.')}</p>
+    <input id="rsCode" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" style="text-align:center;font-weight:700;letter-spacing:.06em;margin-top:12px">
+    <button class="btn" id="rsGo" style="margin-top:14px">${T('Restore')}</button>
+    <p class="small" id="rsMsg" style="text-align:center;min-height:20px;margin:10px 0 0"></p>`, s => {
+    s.querySelector('#rsGo').onclick = async () => {
+      const code = s.querySelector('#rsCode').value, msg = s.querySelector('#rsMsg');
+      msg.style.color = '';
+      if (normCode(code).length !== 16) { msg.textContent = T('The code has 16 letters and numbers.'); return; }
+      msg.innerHTML = `<span class="spin"></span> ${T('Restoring…')}`;
+      try {
+        const p = await restoreBackup(code);
+        if (db.meals.length && !confirm(T('Replace the data on this phone with the backup?'))) { msg.textContent = ''; return; }
+        if (p.data) LS.set('ft_data', p.data);
+        if (p.chat) LS.set('ft_chat', p.chat);
+        if (p.lang) LS.set('ft_lang', p.lang);
+        if (p.theme) LS.set('ft_theme', p.theme);
+        LS.set('ft_bk_code', fmtCode(code)); LS.set('ft_bk_last', String(Date.now())); LS.set('ft_bk_seen', '1');
+        sessionStorage.setItem('ft_restored', '1');
+        location.reload();
+      } catch (e) { msg.textContent = e.message || T('Restore failed. Check your internet and try again.'); msg.style.color = 'var(--bad)'; }
+    };
+  });
+}
+function backupCard() {
+  if (!SERVER_URL) return '';
+  const code = LS.get('ft_bk_code', ''), last = +LS.get('ft_bk_last', 0);
+  const when = last ? `${fmtDate(iso(new Date(last)))} ${new Date(last).toLocaleTimeString(LOC, { hour: '2-digit', minute: '2-digit' })}` : '';
+  return `<div class="card"><b>☁️ ${T('Automatic backup')}</b>
+    <p class="small muted" style="margin:4px 0 10px">${T('Once a day your data is saved encrypted. With your backup code you get everything back, e.g. on a new phone.')}</p>
+    <div class="spread"><span class="small" style="${last ? 'color:var(--good);font-weight:600' : ''}">${last ? '✓ ' + T('Last backup: {d}', { d: when }) : T('No backup yet')}</span>
+      <button class="chipbtn" id="bkNow">${T('Back up now')}</button></div>
+    ${code ? `<div class="bkcode">${code}</div>
+      <p class="small muted" style="margin:0 0 10px">${T("Keep this code safe, e.g. in your Notes or as a screenshot. Without it the backup can't be opened.")}</p>` : ''}
+    <div class="row">${code ? `<button class="btn sm outline grow" id="bkCopy">📋 ${T('Copy code')}</button>` : ''}<button class="btn sm outline grow" id="bkRestore">${code ? T('Restore') : T('Restore with a code')}</button></div></div>`;
+}
+function bindBackupCard() {
+  if (!$('#bkNow')) return;
+  $('#bkNow').onclick = () => { $('#bkNow').innerHTML = '<span class="spin"></span>'; runBackup(true).then(() => { if (tab === 'settings') renderSettings(); }); };
+  if ($('#bkCopy')) $('#bkCopy').onclick = async () => { try { await navigator.clipboard.writeText(LS.get('ft_bk_code', '')); toast(T('✓ Copied')); } catch { toast(LS.get('ft_bk_code', '')); } };
+  $('#bkRestore').onclick = openRestoreSheet;
+}
+
+/* ================= Live barcode scanning ================= */
+let barScanner = null;
+async function stopBarScan() { const sc = barScanner; barScanner = null; if (sc) { try { await sc.stop(); } catch {} try { sc.clear(); } catch {} } }
+async function startBarScan() {
+  try {
+    await loadScript('https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js');
+    const box = $('#bLive'); if (!box || barScanner) return;
+    box.innerHTML = '';
+    const F = Html5QrcodeSupportedFormats;
+    const sc = new Html5Qrcode('bLive', { formatsToSupport: [F.EAN_13, F.EAN_8, F.UPC_A, F.UPC_E, F.CODE_128], useBarCodeDetectorIfSupported: true, verbose: false });
+    barScanner = sc;
+    // Stop the camera as soon as the sheet closes
+    const watch = setInterval(() => { if (!$('#bLive')) { clearInterval(watch); stopBarScan(); } }, 400);
+    await sc.start({ facingMode: 'environment' },
+      { fps: 12, aspectRatio: 1.3333, qrbox: (w, h) => ({ width: Math.round(Math.min(w * 0.86, 320)), height: Math.round(Math.min(h * 0.5, 150)) }) },
+      text => {
+        const code = String(text).replace(/\D/g, '');
+        if (!code || !barScanner) return;
+        if (navigator.vibrate) navigator.vibrate(40);
+        stopBarScan();
+        if ($('#bCode')) $('#bCode').value = code;
+        lookupBarcode(code).then(() => setTimeout(() => { if ($('#bLive') && !barScanner) startBarScan(); }, 2500));
+      }, () => {});
+  } catch {
+    stopBarScan();
+    const box = $('#bLive');
+    if (box) box.innerHTML = `<div class="small muted" style="padding:26px 14px;text-align:center">${T('Camera not available. Take a photo of the barcode or type the number.')}</div>`;
+  }
 }
 
 /* ================= Exercise ================= */
@@ -1497,7 +1710,7 @@ function planBrief(plan, withList) {
   if (withList) s += '\nGrocery list: ' + plan.groceries.map(g => `${g.cat}: ${g.items.map(i => `${i.name} ${i.qty}`).join(', ')}`).join(' | ');
   return s;
 }
-const cleanMeal = m => ({ type: String(m.type || ''), name: String(m.name || ''), desc: String(m.desc || ''), min: r0(num(m.min)),
+const cleanMeal = m => ({ type: String(m.type || ''), name: String(m.name || ''), desc: String(m.desc || ''), min: r0(num(m.min)), g: r0(num(m.g)),
   kcal: r0(num(m.kcal)), protein: r0(num(m.protein)), carbs: r0(num(m.carbs)), fat: r0(num(m.fat)) });
 const cleanGroceries = gs => gs.map(g => ({ cat: String(g.cat || ''), items: (g.items || []).filter(i => i && i.name)
   .map(i => ({ name: String(i.name), qty: String(i.qty || ''), have: false })) })).filter(g => g.items.length);
@@ -1528,7 +1741,7 @@ ${change && old ? `- The user wants to CHANGE the current plan: "${change}". Kee
 - Write all names, descriptions, section names and tips in ${langInfo().ai}. Nutrition numbers are per person, per serving.
 
 Return JSON only:
-{"days":[{"meals":[{"type":"Breakfast","name":"","desc":"one short sentence: main ingredients and how it is made","min":15,"kcal":0,"protein":0,"carbs":0,"fat":0}]}],"groceries":[{"cat":"","items":[{"name":"","qty":""}]}],"prep":[""]}`;
+{"days":[{"meals":[{"type":"Breakfast","name":"","desc":"one short sentence: main ingredients and how it is made","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0}]}],"groceries":[{"cat":"","items":[{"name":"","qty":""}]}],"prep":[""]}`;
   try {
     const r = await askAI([{ text: prompt }], { timeout: 120000 });
     if (!r || !Array.isArray(r.days) || r.days.length < 7 || !Array.isArray(r.groceries)) throw new Error(T('The AI answer was incomplete. Please try again.'));
@@ -1554,7 +1767,7 @@ ${planGoalText()}
 Preferences: ${prefsText(mealPrefs())}
 
 Replace ONLY this meal: ${engDay(plan.start, di)}, ${m.type} "${m.name}" (${m.kcal} kcal, ${m.protein} g protein). Give a different, tasty meal of the same type with about the same calories and protein that is not already in the plan. Then return the complete updated grocery list (remove what is no longer needed, add what the new meal needs, keep the same sections). Write in ${langInfo().ai}.
-Return JSON only: {"meal":{"type":"","name":"","desc":"","min":15,"kcal":0,"protein":0,"carbs":0,"fat":0},"groceries":[{"cat":"","items":[{"name":"","qty":""}]}]}`;
+Return JSON only: {"meal":{"type":"","name":"","desc":"","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0},"groceries":[{"cat":"","items":[{"name":"","qty":""}]}]}`;
   try {
     const r = await askAI([{ text: prompt }], { timeout: 90000 });
     if (!r || !r.meal || !r.meal.name) throw new Error(T('The AI answer was incomplete. Please try again.'));
@@ -1567,6 +1780,16 @@ Return JSON only: {"meal":{"type":"","name":"","desc":"","min":15,"kcal":0,"prot
     save(); toast('✓ ' + T('Meal swapped'));
   } catch (e) { toast(aiMsg(e)); }
   mpBusy = null; renderMealPlan(); if (tab === 'home') renderHome();
+}
+
+// "I ate this": logs a planned meal in one tap (on its planned day, or today if that day is still ahead)
+function logPlanMeal(di, mi) {
+  const plan = curPlan(); if (!plan) return;
+  const m = plan.days[di].meals[mi], day = addDays(cycleStart(plan), di), date = day > iso() ? iso() : day;
+  if (m.ate === day && !confirm(T('Already logged. Log it again?'))) return;
+  db.meals.push({ id: uid(), date, time: nowTime(), name: m.name, servings: 1, health: null, source: 'plan', photo: false,
+    items: [{ name: m.name, grams: m.g || 0, kcal: m.kcal, protein: m.protein, carbs: m.carbs, fat: m.fat }] });
+  m.ate = day; save(); toast(T('✓ {name} logged', { name: m.name })); renderMealPlan();
 }
 
 // Home card
@@ -1606,7 +1829,8 @@ function renderMealPlan() {
       const tk = d.meals.reduce((a, m) => a + m.kcal, 0), tp = d.meals.reduce((a, m) => a + m.protein, 0);
       return `<div class="card mp-day ${isToday ? 'today' : ''}"><div class="spread mp-dayhead"><b>${esc(fmtDate(date, { weekday: 'long', day: 'numeric', month: 'short' }))}${isToday ? ` · ${T('Today')}` : ''}</b><span class="small muted">${tk} kcal · ${tp} g P</span></div>
         ${d.meals.map((m, mi) => `<div class="mp-meal"><div class="grow"><div class="mp-type">${esc(m.type)}${m.min ? ` · ${m.min} min` : ''}</div><div class="mp-name">${esc(m.name)}</div>
-          ${m.desc ? `<div class="small muted">${esc(m.desc)}</div>` : ''}<div class="mp-mac">${m.kcal} kcal · P ${m.protein} g · C ${m.carbs} g · F ${m.fat} g</div></div>
+          ${m.desc ? `<div class="small muted">${esc(m.desc)}</div>` : ''}<div class="mp-mac">${m.kcal} kcal · P ${m.protein} g · C ${m.carbs} g · F ${m.fat} g</div>
+          <button class="mp-ate ${m.ate === date ? 'done' : ''}" data-ate="${di}-${mi}">${m.ate === date ? '✓ ' + T('Logged') : '＋ ' + T('I ate this')}</button></div>
           <button class="mp-swap" data-sw="${di}-${mi}" aria-label="${T('Swap meal')}">${mpBusy === di + '-' + mi ? '<span class="spin"></span>' : '🔄'}</button></div>`).join('')}</div>`;
     }).join('') + (plan.prep.length ? `<div class="card"><b>🥡 ${T('Meal prep tips')}</b><ul class="mp-tips">${plan.prep.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : '');
     body = `<button class="btn" id="mpCoach" style="font-size:15px;padding-left:12px;padding-right:12px">👨‍🍳 ${T('Get cooking & prep help from your coach')}</button>
@@ -1631,6 +1855,7 @@ function renderMealPlan() {
     const it = plan.groceries[b.dataset.gi].items[b.dataset.ii]; it.have = !it.have; save(); renderMealPlan();
   });
   pg.querySelectorAll('[data-sw]').forEach(b => b.onclick = () => { const [di, mi] = b.dataset.sw.split('-').map(Number); swapMeal(di, mi); });
+  pg.querySelectorAll('[data-ate]').forEach(b => b.onclick = () => { const [di, mi] = b.dataset.ate.split('-').map(Number); logPlanMeal(di, mi); });
 }
 
 function openMealPrefs(thenGenerate) {
@@ -1777,7 +2002,7 @@ function renderDetail() {
   if (!pg) { pg = document.createElement('div'); pg.id = 'detail'; pg.className = 'page'; document.body.appendChild(pg); document.body.style.overflow = 'hidden'; }
   pg.innerHTML = `
     <div class="hero ${m.photo ? '' : 'short'}">${m.photo ? `<img data-photo="${m.id}" alt="">` : ''}
-      <div class="herobar"><button class="circ" id="dBack">‹</button>${det.isNew ? '' : '<button class="circ" id="dDel">🗑</button>'}</div></div>
+      <div class="herobar"><button class="circ" id="dBack">‹</button><span class="row" style="gap:10px"><button class="circ" id="dFav" aria-label="${T('Save to favorites')}">${isFav(m) ? '★' : '☆'}</button>${det.isNew ? '' : '<button class="circ" id="dDel">🗑</button>'}</span></div></div>
     <div class="dbody">
       <div class="spread"><span class="etime">${esc(fmtDate(m.date, { weekday: 'short', day: 'numeric', month: 'short' }))} · ${esc(m.time || '')}</span></div>
       <div class="spread" style="margin:8px 0 14px"><textarea class="tinput grow" id="dName" rows="1" placeholder="${T('Meal name')}">${esc(m.name)}</textarea>
@@ -1791,6 +2016,7 @@ function renderDetail() {
   renderDetTotals(); renderIngredients();
   pg.querySelector('#dBack').onclick = () => closeDetail(!det.isNew);
   if (pg.querySelector('#dDel')) pg.querySelector('#dDel').onclick = deleteMeal;
+  pg.querySelector('#dFav').onclick = () => { toggleFav(m); pg.querySelector('#dFav').textContent = isFav(m) ? '★' : '☆'; };
   // The name box grows so long names are shown in full
   const nameBox = pg.querySelector('#dName'), fit = () => { nameBox.style.height = 'auto'; nameBox.style.height = nameBox.scrollHeight + 'px'; };
   nameBox.oninput = e => { m.name = e.target.value.replace(/\n/g, ' '); fit(); };
@@ -1826,7 +2052,7 @@ function renderIngredients() {
   const box = $('#dIng'), m = det.m;
   const flabel = { kcal: N('Calories'), protein: N('Protein'), carbs: N('Carbs'), fat: N('Fats') };
   box.innerHTML = m.items.map((it, i) => `<div class="ing" data-i="${i}">
-    <button class="ing-head"><span><b data-h="name">${esc(it.name || T('New ingredient'))}</b><br><span class="small muted" data-h="grams">${it.grams} g</span></span>
+    <button class="ing-head"><span><b data-h="name">${esc(it.name || T('New ingredient'))}</b><br><span class="small muted" data-h="grams">${num(it.grams) ? it.grams + ' g' : ''}</span></span>
       <span style="font-weight:600"><span data-h="kcal">${r0(it.kcal)}</span> kcal <span class="muted">${det.open === i ? '⌃' : '›'}</span></span></button>
     ${det.open === i ? `<div class="ing-edit">
       <div class="row"><input data-f="name" value="${esc(it.name)}" placeholder="${T('Ingredient')}" class="grow"><input data-f="grams" inputmode="decimal" value="${it.grams}" style="width:90px;text-align:right"><span class="muted">g</span></div>
@@ -1843,7 +2069,7 @@ function renderIngredients() {
       const k = it.grams / it.base.grams;   // scale nutrition with portion size
       for (const x of ['kcal', 'protein', 'carbs', 'fat']) { it[x] = x === 'kcal' ? r0(it.base[x] * k) : r1(it.base[x] * k); card.querySelector(`[data-f="${x}"]`).value = it[x]; }
     } else setBase(it);
-    card.querySelector('[data-h=grams]').textContent = it.grams + ' g';
+    card.querySelector('[data-h=grams]').textContent = num(it.grams) ? it.grams + ' g' : '';
     card.querySelector('[data-h=kcal]').textContent = r0(it.kcal);
     renderDetTotals();
   });
@@ -2533,7 +2759,7 @@ async function checkUpdate() {
   } catch {}
 }
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') { checkUpdate(); syncPush(); setTimeout(checkPlanWeek, 800); }
+  if (document.visibilityState === 'visible') { checkUpdate(); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); }
   else if (updReady) location.reload();   // the app is in the background: nobody sees the reload
 });
 
@@ -2589,6 +2815,7 @@ function renderSettings() {
       <div class="row" style="margin-top:14px"><button class="btn" id="kSave">${T('Save')}</button><button class="btn outline" id="kTest">${T('Test')}</button></div>
       <p class="small" id="kMsg" style="margin:10px 0 0;text-align:center">${hasAI() ? '✓ ' + T('AI is on') : T('No key yet')}</p></div>` : ''}
     <div class="h2">${T('Your data')}</div>
+    ${backupCard()}
     <div class="list">
       <button class="li" id="dExp"><span class="ic">⬇️</span><span class="grow">${T('Backup data')}</span><span class="chev">›</span></button>
       <button class="li" id="dImp"><span class="ic">⬆️</span><span class="grow">${T('Restore backup')}</span><span class="chev">›</span></button>
@@ -2607,6 +2834,7 @@ function renderSettings() {
   $('#sLang').onclick = () => openLangSheet();
   document.querySelectorAll('[data-th]').forEach(b => b.onclick = () => { setTheme(b.dataset.th); renderSettings(); });
   bindReminders();
+  bindBackupCard();
   if ($('#kSave')) $('#kSave').onclick = () => {
     const set = (k, v) => v ? LS.set(k, v) : LS.del(k);
     set('ft_key', $('#kKey').value.trim()); set('ft_claude_key', $('#kClaude').value.trim()); set('ft_model', $('#kModel').value.trim());
@@ -2629,7 +2857,7 @@ function renderSettings() {
   $('#dImp').onclick = () => $('#fileImport').click();
   $('#dDel').onclick = async () => {
     if (!confirm(T('Delete ALL meals, weights and goals? This cannot be undone.'))) return;
-    db = EMPTY(); save(); await idb.clear(); toast(T('All data deleted')); startOnboarding();
+    await deleteBackup(); db = EMPTY(); save(); await idb.clear(); toast(T('All data deleted')); startOnboarding();
   };
 }
 $('#fileImport').onchange = async e => {
@@ -2795,8 +3023,10 @@ function renderOb() {
         <h1 style="margin-top:30px">${T('Calorie tracking<br>made easy')}</h1>
         <p class="muted" style="max-width:300px">${T('Just snap a photo of your meal and let AI do the rest.')}</p></div>
       <div class="langpick"><button id="obLang" class="lp-btn">🌐 <span class="lp-flag">${langInfo().f}</span> ${langInfo().n} <span class="lp-change">⌄</span></button></div>
-      <button class="btn" id="obNext">${T('Get started')}</button></div>`;
+      <button class="btn" id="obNext">${T('Get started')}</button>
+      ${SERVER_URL && !db.profile ? `<button class="small muted" id="obRestore" style="margin-top:14px;padding:6px">${T('Already used Food Tracker? Restore your backup')}</button>` : ''}</div>`;
     pg.querySelector('#obNext').onclick = () => obMove(1);
+    if (pg.querySelector('#obRestore')) pg.querySelector('#obRestore').onclick = openRestoreSheet;
     pg.querySelector('#obLang').onclick = () => openLangSheet(renderOb);
     // Redoing the setup from Settings can be cancelled; nothing is changed until the last step
     if (pg.querySelector('#obCancel')) pg.querySelector('#obCancel').onclick = () => { ob = null; $('#onb')?.remove(); render(); };
@@ -2948,6 +3178,9 @@ syncPush();
 setTimeout(() => askReminders(false), 2500);
 setTimeout(checkPlanWeek, 4800);
 setInterval(checkPlanWeek, 5 * 60e3);
+setTimeout(autoBackup, 9000);
+setInterval(autoBackup, 60 * 60e3);
+if (sessionStorage.getItem('ft_restored')) { sessionStorage.removeItem('ft_restored'); setTimeout(() => toast('✓ ' + T('Backup restored')), 4500); }
 </script>
 </body>
 </html>
