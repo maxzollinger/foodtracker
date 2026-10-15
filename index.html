@@ -14,7 +14,7 @@
 <link rel="manifest" href="manifest.json">
 <script>
   // Apply the saved light/dark choice before anything is drawn (no flash)
-  try { const t = localStorage.getItem('ft_theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch {}
+  try { const t = localStorage.getItem('ft_theme') || 'dark'; if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch {}
 </script>
 <style>
 :root{
@@ -532,7 +532,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v36';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v37';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -612,7 +612,7 @@ function openLangSheet(after) {
 }
 
 /* ================= Light / dark mode ================= */
-const getTheme = () => LS.get('ft_theme', 'auto');
+const getTheme = () => LS.get('ft_theme', 'dark');   // dark until the user picks something else
 const isDark = () => getTheme() === 'dark' || (getTheme() === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
 function applyTheme() {
   const t = getTheme(), root = document.documentElement;
@@ -772,7 +772,8 @@ function estimateHealth(m) {
 const mealHealth = m => m.health || estimateHealth(m);
 function healthAvg(meals) {
   let sum = 0, w = 0;
-  for (const m of meals) { const h = mealHealth(m); if (!h) continue; const k = Math.max(mealTotals(m).kcal, 50); sum += h * k; w += k; }
+  // Each meal counts by its calories: a 600 kcal dinner weighs 60× more than a 10 kcal crisp
+  for (const m of meals) { const h = mealHealth(m); if (!h) continue; const k = Math.max(mealTotals(m).kcal, 5); sum += h * k; w += k; }
   return w ? r1(sum / w) : null;
 }
 const healthLabel = h => T(h >= 8 ? N('Excellent') : h >= 6.5 ? N('Good') : h >= 5 ? N('Okay') : h >= 3.5 ? N('Could be better') : N('Poor'));
