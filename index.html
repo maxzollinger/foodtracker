@@ -145,6 +145,19 @@ a{color:inherit}
 .fab{width:60px;height:60px;border-radius:50%;background:var(--ink);color:var(--on-ink);display:flex;align-items:center;justify-content:center;
   box-shadow:0 6px 18px rgba(0,0,0,.25);margin:-26px 0 0 18px;flex:none}
 .fab svg{width:28px;height:28px}
+/* Smooth page switches: the new page fades and glides in; tab icons react to taps */
+.tab{transition:color .25s ease}
+.tab svg{transition:transform .18s ease}
+.tab:active svg{transform:scale(.86)}
+.fab{animation:fabIn .3s cubic-bezier(.2,1.4,.4,1)}
+.fab:active{transform:scale(.92)}
+@keyframes fabIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:none}}
+#view.pagein{animation:pageIn .32s cubic-bezier(.2,.8,.2,1)}
+#chatScreen.pagein{animation:pageFade .26s ease}
+#chatScreen.pagein #msgScroll{animation:pageIn .32s cubic-bezier(.2,.8,.2,1)}
+@keyframes pageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes pageFade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){#view.pagein,#chatScreen.pagein,#chatScreen.pagein #msgScroll,.fab{animation:none}}
 
 /* Sheets & pages */
 .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:50;display:flex;align-items:flex-end;animation:fade .2s}
@@ -788,6 +801,8 @@ function go(t) {
   if (rec) finishVoice(false);
   $('#scroller').scrollTop = 0;
   render();
+  const v = t === 'chat' ? $('#chatScreen') : $('#view');
+  if (v) { v.classList.remove('pagein'); void v.offsetWidth; v.classList.add('pagein'); }
 }
 function render() { ({ home: renderHome, progress: renderProgress, chat: renderChat, settings: renderSettings })[tab](); }
 document.querySelectorAll('.tab').forEach(b => b.onclick = () => go(b.dataset.tab));
