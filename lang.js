@@ -426,7 +426,10 @@ window.I18N = {
 "Microphone access was blocked. Allow it in iPhone Settings → FoodTracker.":"Mikrofonzugriff wurde blockiert. Erlaube ihn in den iPhone-Einstellungen → FoodTracker.",
 "Transcribing…":"Wird umgewandelt…",
 "Could not understand the recording. Please try again.":"Die Aufnahme wurde nicht verstanden. Bitte versuch es nochmal.",
-"What do you think about this file?":"Was hältst du von dieser Datei?"
+"What do you think about this file?":"Was hältst du von dieser Datei?",
+"{a} / {b} kcal eaten · {p} / {q} g protein":"{a} / {b} kcal gegessen · {p} / {q} g Protein",
+"Last {w} kg · Goal {g} kg":"Zuletzt {w} kg · Ziel {g} kg",
+"Last {w} kg":"Zuletzt {w} kg"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -854,7 +857,10 @@ window.I18N = {
 "Microphone access was blocked. Allow it in iPhone Settings → FoodTracker.":"El acceso al micrófono está bloqueado. Permítelo en Ajustes del iPhone → FoodTracker.",
 "Transcribing…":"Transcribiendo…",
 "Could not understand the recording. Please try again.":"No se entendió la grabación. Inténtalo de nuevo.",
-"What do you think about this file?":"¿Qué opinas de este archivo?"
+"What do you think about this file?":"¿Qué opinas de este archivo?",
+"{a} / {b} kcal eaten · {p} / {q} g protein":"{a} / {b} kcal comidas · {p} / {q} g de proteína",
+"Last {w} kg · Goal {g} kg":"Último {w} kg · Meta {g} kg",
+"Last {w} kg":"Último {w} kg"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -1282,7 +1288,10 @@ window.I18N = {
 "Microphone access was blocked. Allow it in iPhone Settings → FoodTracker.":"L'accès au micro est bloqué. Autorise-le dans Réglages de l'iPhone → FoodTracker.",
 "Transcribing…":"Transcription…",
 "Could not understand the recording. Please try again.":"Enregistrement incompris. Réessaie.",
-"What do you think about this file?":"Que penses-tu de ce fichier ?"
+"What do you think about this file?":"Que penses-tu de ce fichier ?",
+"{a} / {b} kcal eaten · {p} / {q} g protein":"{a} / {b} kcal mangées · {p} / {q} g de protéines",
+"Last {w} kg · Goal {g} kg":"Dernier {w} kg · Objectif {g} kg",
+"Last {w} kg":"Dernier {w} kg"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -1710,7 +1719,10 @@ window.I18N = {
 "Microphone access was blocked. Allow it in iPhone Settings → FoodTracker.":"L'accesso al microfono è bloccato. Consentilo in Impostazioni iPhone → FoodTracker.",
 "Transcribing…":"Trascrizione…",
 "Could not understand the recording. Please try again.":"Registrazione non compresa. Riprova.",
-"What do you think about this file?":"Cosa ne pensi di questo file?"
+"What do you think about this file?":"Cosa ne pensi di questo file?",
+"{a} / {b} kcal eaten · {p} / {q} g protein":"{a} / {b} kcal mangiate · {p} / {q} g di proteine",
+"Last {w} kg · Goal {g} kg":"Ultimo {w} kg · Obiettivo {g} kg",
+"Last {w} kg":"Ultimo {w} kg"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -2138,7 +2150,10 @@ window.I18N = {
 "Microphone access was blocked. Allow it in iPhone Settings → FoodTracker.":"マイクへのアクセスがブロックされています。iPhone の設定 → FoodTracker で許可してください。",
 "Transcribing…":"文字起こし中…",
 "Could not understand the recording. Please try again.":"録音を聞き取れませんでした。もう一度お試しください。",
-"What do you think about this file?":"このファイルについてどう思う？"
+"What do you think about this file?":"このファイルについてどう思う？",
+"{a} / {b} kcal eaten · {p} / {q} g protein":"摂取 {a} / {b} kcal · タンパク質 {p} / {q} g",
+"Last {w} kg · Goal {g} kg":"前回 {w} kg · 目標 {g} kg",
+"Last {w} kg":"前回 {w} kg"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -2566,7 +2581,10 @@ window.I18N = {
 "Microphone access was blocked. Allow it in iPhone Settings → FoodTracker.":"Microfoontoegang is geblokkeerd. Sta het toe in iPhone-instellingen → FoodTracker.",
 "Transcribing…":"Bezig met omzetten…",
 "Could not understand the recording. Please try again.":"De opname werd niet begrepen. Probeer het opnieuw.",
-"What do you think about this file?":"Wat vind je van dit bestand?"
+"What do you think about this file?":"Wat vind je van dit bestand?",
+"{a} / {b} kcal eaten · {p} / {q} g protein":"{a} / {b} kcal gegeten · {p} / {q} g eiwit",
+"Last {w} kg · Goal {g} kg":"Laatst {w} kg · Doel {g} kg",
+"Last {w} kg":"Laatst {w} kg"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -2994,7 +3012,10 @@ window.I18N = {
 "Microphone access was blocked. Allow it in iPhone Settings → FoodTracker.":"Dostęp do mikrofonu jest zablokowany. Zezwól w Ustawieniach iPhone'a → FoodTracker.",
 "Transcribing…":"Przepisywanie…",
 "Could not understand the recording. Please try again.":"Nie udało się zrozumieć nagrania. Spróbuj ponownie.",
-"What do you think about this file?":"Co myślisz o tym pliku?"
+"What do you think about this file?":"Co myślisz o tym pliku?",
+"{a} / {b} kcal eaten · {p} / {q} g protein":"{a} / {b} kcal zjedzone · {p} / {q} g białka",
+"Last {w} kg · Goal {g} kg":"Ostatnio {w} kg · Cel {g} kg",
+"Last {w} kg":"Ostatnio {w} kg"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -3422,7 +3443,10 @@ window.I18N = {
 "Microphone access was blocked. Allow it in iPhone Settings → FoodTracker.":"O acesso ao microfone está bloqueado. Permite-o em Definições do iPhone → FoodTracker.",
 "Transcribing…":"A transcrever…",
 "Could not understand the recording. Please try again.":"Não foi possível perceber a gravação. Tenta de novo.",
-"What do you think about this file?":"O que achas deste ficheiro?"
+"What do you think about this file?":"O que achas deste ficheiro?",
+"{a} / {b} kcal eaten · {p} / {q} g protein":"{a} / {b} kcal ingeridas · {p} / {q} g de proteína",
+"Last {w} kg · Goal {g} kg":"Último {w} kg · Meta {g} kg",
+"Last {w} kg":"Último {w} kg"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -3850,7 +3874,10 @@ window.I18N = {
 "Microphone access was blocked. Allow it in iPhone Settings → FoodTracker.":"Доступ к микрофону заблокирован. Разреши его в Настройках iPhone → FoodTracker.",
 "Transcribing…":"Расшифровка…",
 "Could not understand the recording. Please try again.":"Не удалось разобрать запись. Попробуй ещё раз.",
-"What do you think about this file?":"Что думаешь об этом файле?"
+"What do you think about this file?":"Что думаешь об этом файле?",
+"{a} / {b} kcal eaten · {p} / {q} g protein":"{a} / {b} ккал съедено · {p} / {q} г белка",
+"Last {w} kg · Goal {g} kg":"Последний {w} кг · Цель {g} кг",
+"Last {w} kg":"Последний {w} кг"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -4278,7 +4305,10 @@ window.I18N = {
 "Microphone access was blocked. Allow it in iPhone Settings → FoodTracker.":"Mikrofon erişimi engellendi. iPhone Ayarları → FoodTracker'dan izin ver.",
 "Transcribing…":"Yazıya dökülüyor…",
 "Could not understand the recording. Please try again.":"Kayıt anlaşılamadı. Lütfen tekrar dene.",
-"What do you think about this file?":"Bu dosya hakkında ne düşünüyorsun?"
+"What do you think about this file?":"Bu dosya hakkında ne düşünüyorsun?",
+"{a} / {b} kcal eaten · {p} / {q} g protein":"{a} / {b} kcal yendi · {p} / {q} g protein",
+"Last {w} kg · Goal {g} kg":"Son {w} kg · Hedef {g} kg",
+"Last {w} kg":"Son {w} kg"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -4706,6 +4736,9 @@ window.I18N = {
 "Microphone access was blocked. Allow it in iPhone Settings → FoodTracker.":"麦克风权限被阻止。请在 iPhone 设置 → FoodTracker 中允许。",
 "Transcribing…":"正在转写…",
 "Could not understand the recording. Please try again.":"无法识别录音，请重试。",
-"What do you think about this file?":"你觉得这个文件怎么样？"
+"What do you think about this file?":"你觉得这个文件怎么样？",
+"{a} / {b} kcal eaten · {p} / {q} g protein":"已摄入 {a} / {b} 千卡 · 蛋白质 {p} / {q} 克",
+"Last {w} kg · Goal {g} kg":"上次 {w} 公斤 · 目标 {g} 公斤",
+"Last {w} kg":"上次 {w} 公斤"
 }
 };
