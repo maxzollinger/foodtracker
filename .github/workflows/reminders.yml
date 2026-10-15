@@ -1,0 +1,37 @@
+# Sends FoodTracker reminders to your iPhone (free, runs on GitHub).
+# Needs two repository secrets: PUSH_SUBSCRIPTION (code from the app) and VAPID_PRIVATE_KEY.
+# Times are UTC: 18:00 UTC = 20:00 in Central European summer time, 19:00 in winter.
+name: FoodTracker reminders
+
+on:
+  schedule:
+    - cron: '0 18 * * *'   # every evening: log calories burned
+    - cron: '0 7 * * 0'    # every Sunday morning: log your weight
+  workflow_dispatch:       # "Run workflow" button for testing
+    inputs:
+      reminder:
+        description: Which reminder to send
+        type: choice
+        options: [burn, weight]
+        default: burn
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send reminder
+        env:
+          PUSH_SUBSCRIPTION: ${{ secrets.PUSH_SUBSCRIPTION }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          VAPID_PUBLIC_KEY: BNwyCPM2UJcV1DRBWLwm8YLYND0WVMM_Tk2vgLuuoc4gLhM-v-uU37EdwkgiSoHSDe4YmZ-NxDzvzT7782XRjxM
+          REMINDER: ${{ github.event_name == 'workflow_dispatch' && inputs.reminder || (github.event.schedule == '0 7 * * 0' && 'weight' || 'burn') }}
+        run: |
+          npm install --no-save --silent web-push@3.6.7
+          node -e '
+            const webpush = require("web-push");
+            webpush.setVapidDetails("https://maxzollinger.github.io/foodtracker/", process.env.VAPID_PUBLIC_KEY, process.env.VAPID_PRIVATE_KEY);
+            const sub = JSON.parse(process.env.PUSH_SUBSCRIPTION);
+            webpush.sendNotification(sub, JSON.stringify({ open: process.env.REMINDER }), { TTL: 6 * 3600 })
+              .then(r => console.log("Sent", process.env.REMINDER, r.statusCode))
+              .catch(e => { console.error("Failed", e.statusCode, e.body); process.exit(1); });
+          '
