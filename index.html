@@ -680,7 +680,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v70';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v71';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1858,14 +1858,17 @@ function nextCel() {
 }
 
 // Progress towards the weight goal (start = weight when the goal was set, or the first weigh-in)
-// Trend weight: each weigh-in moves the trend only part of the way (more after longer gaps), so daily
-// water swings of 1-2 kg don't make progress jump back and forth. Like a smoothed moving average.
+// Trend weight, made for one weigh-in a week: a straight line through the weigh-ins of the last 6 weeks,
+// read at the latest one. One heavy or light morning barely moves it, and unlike an average it doesn't lag
+// behind real progress. With fewer than 3 weigh-ins it is simply the latest weight.
 function trendWeight() {
   const ws = [...db.weights].sort((a, b) => a.date.localeCompare(b.date));
   if (!ws.length) return currentWeight();
-  let t = ws[0].kg, prev = ws[0].date;
-  for (const w of ws.slice(1)) { const gap = Math.max(1, daysBetween(prev, w.date)); t += (w.kg - t) * (1 - Math.pow(0.85, gap)); prev = w.date; }
-  return Math.round(t * 100) / 100;
+  const last = ws.at(-1), rec = ws.filter(w => daysBetween(w.date, last.date) <= 42);
+  if (rec.length < 3 || daysBetween(rec[0].date, last.date) < 10) return last.kg;
+  const xs = rec.map(w => -daysBetween(w.date, last.date)), mx = xs.reduce((a, b) => a + b) / xs.length, my = rec.reduce((a, w) => a + w.kg, 0) / rec.length;
+  const slope = xs.reduce((a, x, k) => a + (x - mx) * (rec[k].kg - my), 0) / xs.reduce((a, x) => a + (x - mx) ** 2, 0);
+  return Math.round((my - slope * mx) * 100) / 100;
 }
 // Progress towards the weight goal, based on the trend: how far along, kilos and weeks to go, and whether
 // that's on schedule for the chosen pace (start = weight and day the goal was set, or the first weigh-in)
@@ -1876,7 +1879,8 @@ function goalProgress() {
   const tgt = p.targetWeight, up = tgt > start, done = up ? cur - start : start - cur, total = Math.abs(tgt - start);
   const toGo = Math.max(0, up ? tgt - cur : cur - tgt), weeks = p.pace > 0 ? Math.ceil(toGo / p.pace) : null;
   const days = Math.max(0, daysBetween(startDate, iso())), shouldBe = Math.min(total, (p.pace || 0) * days / 7), diff = done - shouldBe;
-  const status = days < 10 ? 'new' : diff > 0.4 ? 'ahead' : diff < -0.6 ? 'behind' : 'on';
+  const since = ws.filter(w => w.date > startDate).length;   // weekly weigh-ins since the start
+  const status = days < 14 || since < 2 ? 'new' : diff > 0.4 ? 'ahead' : diff < -0.6 ? 'behind' : 'on';
   return { start, cur, tgt, kgDone: r1(Math.max(0, done)), pct: total ? clamp(done / total * 100, 0, 100) : 100, reached: up ? cur >= tgt : cur <= tgt,
     toGo: r1(toGo), weeks, status, shouldBe: r1(up ? start + shouldBe : start - shouldBe), days };
 }
@@ -1935,7 +1939,7 @@ async function syncDone() {
   const today = iso(), sent = JSON.parse(LS.get('ft_done_sent', '{}')), todo = [];
   if (dayBurned(today) > 0) todo.push(['burn', today]);
   const lastW = db.weights.map(w => w.date).sort().pop();
-  if (lastW && daysBetween(lastW, today) <= 2) todo.push(['weight', lastW]);
+  if (lastW && daysBetween(lastW, today) <= 3) todo.push(['weight', lastW]);
   if (LS.get('ft_checkin', '') === today) todo.push(['checkin', today]);
   for (const [kind, date] of todo) {
     if (sent[kind] === date) continue;
@@ -2093,7 +2097,7 @@ const TOUR_STEPS = [
   { tab: 'home', sel: '#mpCard', title: N('Meal plan & groceries'), text: N('Your weekly meal plan and shopping list, made for your goal. A new one comes every Saturday.') },
   { tab: 'home', sel: '#fab', title: N('Log your food'), text: N('The most important button: take a photo of your meal, scan a barcode, describe it in words, or pick a favorite.') },
   { tab: 'home', sel: '.tab[data-tab="progress"]', title: N('Progress'), text: N('Next stop: your progress.') },
-  { tab: 'progress', sel: '.two', title: N('Weight and streak'), text: N('Log your weight here, about 3 times a week in the morning. The streak counts the days you log food.') },
+  { tab: 'progress', sel: '.two', title: N('Weight and streak'), text: N('Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.') },
   { tab: 'progress', sel: '#goalCard', title: N('Goal progress'), text: N('Your weight trend, how much is left, and when you will reach your goal.') },
   { tab: 'progress', sel: '#badgeCard', title: N('Badges'), text: N('Earn badges for streaks, protein, water and milestones. Tap one to see what it is for.') },
   { tab: 'progress', sel: '.tab[data-tab="chat"]', title: N('Coach'), text: N('Now your personal AI coach.') },
@@ -2935,7 +2939,7 @@ function renderProgress() {
     <div class="card" id="goalCard"><div class="spread"><b style="font-size:17px">${T('Goal progress')}</b>${p && p.goal !== 'maintain' ? `<span class="etime">🚩 ${T('{n}% of goal', { n: r0(pct) })}</span>` : ''}</div>
       ${p && p.goal !== 'maintain' ? `<div class="hbar" style="margin:12px 0 8px"><i style="width:${pct}%;background:var(--ink)"></i></div>` : '<div style="height:12px"></div>'}
       ${gpr ? `<div class="small" style="margin:0 0 14px;line-height:1.5"><b>${goalLine(gpr)}</b><br><span class="muted">${T('Trend {w} kg', { w: r1(gpr.cur) })}${gpr.status !== 'new' && !gpr.reached ? ' · ' + T('on plan today: {w} kg', { w: gpr.shouldBe }) : ''}</span></div>` : ''}
-      ${wsR.length >= 2 ? weightChart(wsR, p && p.goal !== 'maintain' ? p.targetWeight : null) : `<p class="muted small" style="text-align:center;padding:24px 0">${T('Log your weight a few times to see your chart.')}</p>`}
+      ${wsR.length >= 2 ? weightChart(wsR, p && p.goal !== 'maintain' ? p.targetWeight : null) : `<p class="muted small" style="text-align:center;padding:24px 0">${T('Log your weight once a week to see your chart.')}</p>`}
       <div class="pills" style="margin-top:12px">${[[90, N('90 D')], [180, N('6 M')], [365, N('1 Y')], [0, N('All')]].map(([v, l]) => `<button data-r="${v}" class="${progRange === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>
       ${expectedText(p, gpr ? gpr.cur : cur)}
     </div>
@@ -3111,6 +3115,7 @@ ${p ? `${{ m: 'Male', f: 'Female', o: 'Other' }[p.sex]}, ${age(p)} years, ${p.he
 Main goal chosen in the app: ${p ? `${planOf(p).name} (${planOf(p).sub})` : 'none'}${p && planOf(p).id === 'keto' ? `; daily carb limit ${base.carbs} g` : ''}${p && planOf(p).id === 'if' ? `; fasting ${fastState(p).h}:${fastState(p).win}, eating window ${fastState(p).startStr}-${fastState(p).endStr}, right now ${fastState(p).inWin ? 'INSIDE the eating window' : 'FASTING (outside the window)'}` : ''}.
 Weight goal: ${goalTxt}${eta ? `. Expected to reach it around ${eta}` : ''}.
 Real weight change over the last 4 weeks: ${rate === null ? 'not enough weigh-ins yet (needs 2+ weeks)' : `${rate > 0 ? '+' : ''}${rate} kg/week`}
+The app asks the user to weigh in once a week (morning, before breakfast). Never ask them to weigh more often; judge progress over weeks, not single weigh-ins.
 Base daily targets (before burned calories): ${base.kcal} kcal, ${base.protein} g protein, ${base.carbs} g carbs, ${base.fat} g fat${Object.keys(db.overrides).length ? ' (some set manually by the user)' : ''}. Maintenance (TDEE) ≈ ${base.tdee ?? '?'} kcal.
 
 === PREVIOUS 14 DAYS ===
@@ -3855,7 +3860,7 @@ function planTips(p) {
   t.push('🍗 ' + T('Hit your protein goal every day'));
   if (['lean', 'bulk', 'dirty', 'recomp'].includes(id) || p.goal === 'lean') t.push('🏋️ ' + T('Train with weights 3–5× a week and get stronger over time'));
   if (id === 'recomp') t.push('🔄 ' + T('Your weight may stay similar while your body changes'));
-  t.push('⚖️ ' + T('Weigh yourself in the morning a few times a week'));
+  t.push('⚖️ ' + T('Weigh yourself once a week, in the morning before breakfast'));
   return t;
 }
 function renderOb() {

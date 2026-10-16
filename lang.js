@@ -795,7 +795,10 @@ window.I18N = {
 "Create an account so your data is backed up every day and comes back on a new phone.":"Erstelle ein Konto, damit deine Daten jeden Tag gesichert werden und auf einem neuen Handy zurückkommen.",
 "What happens with your data, explained simply.":"Was mit deinen Daten passiert, einfach erklärt.",
 "Start by logging your next meal with the + button. Enjoy!":"Trage zuerst deine nächste Mahlzeit mit dem +-Knopf ein. Viel Spaß!",
-"Back":"Zurück"
+"Back":"Zurück",
+"Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Trage hier einmal pro Woche dein Gewicht ein, morgens vor dem Frühstück. Die Serie zählt die Tage, an denen du Essen einträgst.",
+"Weigh yourself once a week, in the morning before breakfast":"Wiege dich einmal pro Woche, morgens vor dem Frühstück",
+"Log your weight once a week to see your chart.":"Trage einmal pro Woche dein Gewicht ein, um dein Diagramm zu sehen."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1592,7 +1595,10 @@ window.I18N = {
 "Create an account so your data is backed up every day and comes back on a new phone.":"Crea una cuenta para que tus datos se guarden cada día y vuelvan en un móvil nuevo.",
 "What happens with your data, explained simply.":"Qué pasa con tus datos, explicado de forma sencilla.",
 "Start by logging your next meal with the + button. Enjoy!":"Empieza registrando tu próxima comida con el botón +. ¡Disfruta!",
-"Back":"Atrás"
+"Back":"Atrás",
+"Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Registra tu peso aquí una vez por semana, por la mañana antes del desayuno. La racha cuenta los días que registras comida.",
+"Weigh yourself once a week, in the morning before breakfast":"Pésate una vez por semana, por la mañana antes del desayuno",
+"Log your weight once a week to see your chart.":"Registra tu peso una vez por semana para ver tu gráfico."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -2389,7 +2395,10 @@ window.I18N = {
 "Create an account so your data is backed up every day and comes back on a new phone.":"Crée un compte pour sauvegarder tes données chaque jour et les récupérer sur un nouveau téléphone.",
 "What happens with your data, explained simply.":"Ce qui arrive à tes données, expliqué simplement.",
 "Start by logging your next meal with the + button. Enjoy!":"Commence par noter ton prochain repas avec le bouton +. Profite bien !",
-"Back":"Retour"
+"Back":"Retour",
+"Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Note ton poids ici une fois par semaine, le matin avant le petit-déjeuner. La série compte les jours où tu notes tes repas.",
+"Weigh yourself once a week, in the morning before breakfast":"Pèse-toi une fois par semaine, le matin avant le petit-déjeuner",
+"Log your weight once a week to see your chart.":"Note ton poids une fois par semaine pour voir ton graphique."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -3186,7 +3195,10 @@ window.I18N = {
 "Create an account so your data is backed up every day and comes back on a new phone.":"Crea un account così i tuoi dati vengono salvati ogni giorno e tornano su un nuovo telefono.",
 "What happens with your data, explained simply.":"Cosa succede ai tuoi dati, spiegato in modo semplice.",
 "Start by logging your next meal with the + button. Enjoy!":"Inizia registrando il prossimo pasto con il pulsante +. Buon divertimento!",
-"Back":"Indietro"
+"Back":"Indietro",
+"Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Registra qui il tuo peso una volta a settimana, al mattino prima di colazione. La serie conta i giorni in cui registri il cibo.",
+"Weigh yourself once a week, in the morning before breakfast":"Pesati una volta a settimana, al mattino prima di colazione",
+"Log your weight once a week to see your chart.":"Registra il tuo peso una volta a settimana per vedere il grafico."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -3983,7 +3995,10 @@ window.I18N = {
 "Create an account so your data is backed up every day and comes back on a new phone.":"アカウントを作成すると、データが毎日バックアップされ、新しいスマホでも戻せます。",
 "What happens with your data, explained simply.":"データの扱いをわかりやすく説明しています。",
 "Start by logging your next meal with the + button. Enjoy!":"まずは + ボタンで次の食事を記録しましょう。楽しんでください！",
-"Back":"戻る"
+"Back":"戻る",
+"Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"体重は週に1回、朝食前の朝にここで記録しましょう。連続記録は食事を記録した日数です。",
+"Weigh yourself once a week, in the morning before breakfast":"週に1回、朝食前の朝に体重を測りましょう",
+"Log your weight once a week to see your chart.":"週に1回体重を記録するとグラフが表示されます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -4780,7 +4795,10 @@ window.I18N = {
 "Create an account so your data is backed up every day and comes back on a new phone.":"Maak een account zodat je gegevens elke dag worden opgeslagen en terugkomen op een nieuwe telefoon.",
 "What happens with your data, explained simply.":"Wat er met je gegevens gebeurt, eenvoudig uitgelegd.",
 "Start by logging your next meal with the + button. Enjoy!":"Begin met het invoeren van je volgende maaltijd met de +-knop. Veel plezier!",
-"Back":"Terug"
+"Back":"Terug",
+"Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Log hier één keer per week je gewicht, 's ochtends voor het ontbijt. De reeks telt de dagen dat je eten logt.",
+"Weigh yourself once a week, in the morning before breakfast":"Weeg jezelf één keer per week, 's ochtends voor het ontbijt",
+"Log your weight once a week to see your chart.":"Log één keer per week je gewicht om je grafiek te zien."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -5577,7 +5595,10 @@ window.I18N = {
 "Create an account so your data is backed up every day and comes back on a new phone.":"Utwórz konto, by twoje dane były codziennie zapisywane i wracały na nowym telefonie.",
 "What happens with your data, explained simply.":"Co dzieje się z twoimi danymi, w prostych słowach.",
 "Start by logging your next meal with the + button. Enjoy!":"Zacznij od zapisania kolejnego posiłku przyciskiem +. Miłego korzystania!",
-"Back":"Wstecz"
+"Back":"Wstecz",
+"Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Zapisuj tu swoją wagę raz w tygodniu, rano przed śniadaniem. Seria liczy dni, w których zapisujesz jedzenie.",
+"Weigh yourself once a week, in the morning before breakfast":"Waż się raz w tygodniu, rano przed śniadaniem",
+"Log your weight once a week to see your chart.":"Zapisuj wagę raz w tygodniu, aby zobaczyć wykres."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -6374,7 +6395,10 @@ window.I18N = {
 "Create an account so your data is backed up every day and comes back on a new phone.":"Cria uma conta para os teus dados serem guardados todos os dias e voltarem num telemóvel novo.",
 "What happens with your data, explained simply.":"O que acontece aos teus dados, explicado de forma simples.",
 "Start by logging your next meal with the + button. Enjoy!":"Começa por registar a tua próxima refeição com o botão +. Aproveita!",
-"Back":"Voltar"
+"Back":"Voltar",
+"Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Registe aqui o seu peso uma vez por semana, de manhã antes do pequeno-almoço. A sequência conta os dias em que regista comida.",
+"Weigh yourself once a week, in the morning before breakfast":"Pese-se uma vez por semana, de manhã antes do pequeno-almoço",
+"Log your weight once a week to see your chart.":"Registe o seu peso uma vez por semana para ver o gráfico."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -7171,7 +7195,10 @@ window.I18N = {
 "Create an account so your data is backed up every day and comes back on a new phone.":"Создай аккаунт, чтобы данные сохранялись каждый день и вернулись на новом телефоне.",
 "What happens with your data, explained simply.":"Что происходит с твоими данными — простыми словами.",
 "Start by logging your next meal with the + button. Enjoy!":"Начни с того, что запишешь следующий приём пищи кнопкой +. Приятного пользования!",
-"Back":"Назад"
+"Back":"Назад",
+"Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Записывайте здесь вес раз в неделю, утром до завтрака. Серия считает дни, когда вы записываете еду.",
+"Weigh yourself once a week, in the morning before breakfast":"Взвешивайтесь раз в неделю, утром до завтрака",
+"Log your weight once a week to see your chart.":"Записывайте вес раз в неделю, чтобы видеть график."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -7968,7 +7995,10 @@ window.I18N = {
 "Create an account so your data is backed up every day and comes back on a new phone.":"Verilerin her gün yedeklensin ve yeni telefonda geri gelsin diye bir hesap oluştur.",
 "What happens with your data, explained simply.":"Verilerine ne olduğu, basitçe anlatıldı.",
 "Start by logging your next meal with the + button. Enjoy!":"İlk iş + düğmesiyle sıradaki öğününü kaydet. Keyfini çıkar!",
-"Back":"Geri"
+"Back":"Geri",
+"Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Kilonu burada haftada bir kez, sabah kahvaltıdan önce kaydet. Seri, yemek kaydettiğin günleri sayar.",
+"Weigh yourself once a week, in the morning before breakfast":"Haftada bir kez, sabah kahvaltıdan önce tartıl",
+"Log your weight once a week to see your chart.":"Grafiğini görmek için haftada bir kez kilonu kaydet."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -8765,6 +8795,9 @@ window.I18N = {
 "Create an account so your data is backed up every day and comes back on a new phone.":"创建账户，你的数据每天都会备份，换新手机也能找回。",
 "What happens with your data, explained simply.":"简单说明你的数据会怎样处理。",
 "Start by logging your next meal with the + button. Enjoy!":"先用 + 按钮记录你的下一餐吧。祝你使用愉快！",
-"Back":"返回"
+"Back":"返回",
+"Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"每周在这里记录一次体重，早上早餐前。连续天数统计你记录饮食的天数。",
+"Weigh yourself once a week, in the morning before breakfast":"每周称一次体重，早上早餐前",
+"Log your weight once a week to see your chart.":"每周记录一次体重即可查看图表。"
 }
 };
