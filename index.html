@@ -732,7 +732,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v75';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v76';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3317,7 +3317,11 @@ function coachContext() {
   let eta = '';
   if (p && p.goal !== 'maintain' && Math.abs(p.targetWeight - cur) >= 0.1) { const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(p.targetWeight - cur) / p.pace * 7)); eta = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }); }
   const pend = pending.filter(x => x.status === 'analyzing').length;
-  return `=== HOME SCREEN: TODAY (${dt(today).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}) ===
+  const now = new Date(), hh = now.getHours();
+  return `=== RIGHT NOW ===
+Local time for the user: ${now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}, ${now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} (${hh < 5 ? 'night' : hh < 11 ? 'morning' : hh < 14 ? 'midday' : hh < 18 ? 'afternoon' : hh < 22 ? 'evening' : 'late evening'}). This data was read from the app at this exact moment, just now.
+
+=== HOME SCREEN: TODAY (${dt(today).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}) ===
 Calories: ${r0(tot.kcal)} eaten of ${g.kcal} kcal goal → ${left('kcal')}
 Protein: ${r0(tot.protein)} of ${g.protein} g → ${left('protein')}
 Carbs: ${r0(tot.carbs)} of ${g.carbs} g → ${left('carbs')}
@@ -3359,13 +3363,23 @@ const PLAN_COACH = {
   keto: 'They eat keto / low carb: keep total carbs under their daily carb limit; suggest low-carb foods (meat, fish, eggs, dairy, nuts, low-starch vegetables) and avoid bread, pasta, rice, potatoes and sugar.',
   if: 'They do intermittent fasting: only suggest eating inside their eating window. If they are fasting right now, tell them when the window opens and what to eat then (water, black coffee and unsweetened tea are fine while fasting).'
 };
+// What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
+const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
+- Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Tap a logged meal to see, edit, delete, save it as a favorite, or ask you about it.
+- Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only.
+- Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for).
+- Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Every Sunday a weekly check-in appears here. You remember lasting facts about them.
+- Settings: Your goal, Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, Sunday check-in, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone; "Back up now"); Privacy; Delete all data.
+- The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
   const mem = memList();
   return `You are the personal AI nutrition coach inside the user's FoodTracker app. You can see the user's complete, live app data below. It is refreshed automatically every time the user sends a message, so it is always 100% up to date.
 
 RULES
 - Always base answers on the live data below. NEVER say you can't see their data and NEVER ask for a screenshot: you already have everything the app shows, and more.
-- Earlier messages in this chat may mention older numbers. Always trust the data below over anything said earlier.
+- Earlier messages in this chat may mention older numbers or an older time. They are out of date: the user may have logged, edited or deleted things since. Always use ONLY the live data below for numbers, meals and the time of day.
+- Use the current time: e.g. suggest breakfast in the morning and a light dinner in the evening, and say what is still possible today.
+- When they ask how to do something in the app, explain it step by step using THE APP below.
 - Be practical, specific and encouraging. Keep answers short and easy to read on a phone: short paragraphs or bullet points, no tables.
 - When suggesting food, give concrete foods with grams plus calories and protein, and make them fit exactly what is left today. Vary suggestions; look at what they ate recently.
 - Use metric units. The app is set to ${langInfo().ai}: answer in ${langInfo().ai} unless the user writes in another language, then answer in theirs.
@@ -3378,6 +3392,9 @@ MEMORY
 - When the user tells you something lasting about themselves (food likes/dislikes, allergies, diet style, training schedule, budget, cooking habits, routines, injuries, preferences for how you answer), add one short fact at the very END of your reply like this: <memory>Is lactose intolerant</memory>. One tag per fact, only for new lasting facts, never for today's numbers.
 - If a remembered fact is no longer true, add <forget>the old fact</forget> (and a new <memory> if needed).
 - The user doesn't see these tags.
+
+THE APP
+${APP_GUIDE}
 
 WHAT YOU REMEMBER ABOUT THE USER
 ${mem.length ? mem.map(m => `- ${m.text}`).join('\n') : '- nothing yet'}
@@ -3794,6 +3811,14 @@ async function checkUpdate() {
     if (v && v !== APP_VERSION && LS.get('ft_upd_tried', '') !== v) { LS.set('ft_upd_tried', v); updReady = true; navigator.serviceWorker?.getRegistration().then(r => r && r.update()).catch(() => {}); if (safeToReload()) location.reload(); }
   } catch {}
 }
+let lastTouch = Date.now();
+['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, () => { lastTouch = Date.now(); }, { passive: true, capture: true }));
+setInterval(() => {
+  if (document.visibilityState !== 'visible') return;
+  if (!updReady) checkUpdate();
+  else if (Date.now() - lastTouch > 45e3 && safeToReload()) kvWait().then(() => location.reload());   // nobody is using it right now
+}, 5 * 60e3);
+setInterval(() => { if (updReady && document.visibilityState === 'visible' && Date.now() - lastTouch > 45e3 && safeToReload()) kvWait().then(() => location.reload()); }, 20e3);
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') { checkUpdate(); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); setTimeout(askAccount, 5000); setTimeout(weeklyCheckin, 1500); setTimeout(syncDone, 2500); }
   else { if (!rec) micOff(); cameraOff(); if (updReady) kvWait().then(() => location.reload()); }   // in the background: nobody sees the reload
