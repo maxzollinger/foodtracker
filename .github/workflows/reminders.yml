@@ -68,7 +68,7 @@ jobs:
                 const inWin = h => id ? L.hour >= h && L.hour < h + 3 : L.hour === h;
                 // Nothing is sent for things already done: burned calories logged today, weight logged in the last 3 days, check-in already seen
                 if (p.burn >= 0 && inWin(p.burn) && last.burn !== L.date && done.burn !== L.date) due.push('burn');
-                if (p.wDay >= 0 && L.wd === p.wDay && inWin(p.wTime) && last.weight !== L.date && daysSince(done.weight) > 2) due.push('weight');
+                if (p.wDay >= 0 && L.wd === p.wDay && inWin(p.wTime) && last.weight !== L.date && daysSince(done.weight) > 3) due.push('weight');
                 if (id && p.ci >= 0 && L.wd === 0 && inWin(p.ci) && last.checkin !== L.date && done.checkin !== L.date) due.push('checkin');
                 // Eating window (intermittent fasting): when it opens, and 30 minutes before it closes
                 if (id && p.fo && /^\d{2}:\d{2}$/.test(p.fs) && p.fh > 0) {
