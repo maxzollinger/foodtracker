@@ -368,6 +368,19 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .gp-big{font-size:28px;font-weight:800;text-align:center;margin-bottom:10px;letter-spacing:-.02em}
 .gp-big span{color:var(--flame)}
 .gp .opt{text-align:left}
+.tour{display:flex;flex-direction:column;overflow:hidden;background:radial-gradient(120% 70% at 50% 30%,color-mix(in srgb,var(--flame) 12%,var(--bg)) 0%,var(--bg) 65%)}
+.tour.out{opacity:0;transition:opacity .25s}
+.tour-skip{position:absolute;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:2;padding:8px 14px;border-radius:999px;background:var(--chip);font-weight:600;font-size:14px;color:var(--muted)}
+.tour-track{flex:1;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.tour-track::-webkit-scrollbar{display:none}
+.tour-slide{flex:0 0 100%;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 30px 20px;max-width:560px;margin:0 auto;box-sizing:border-box}
+.tour-ic{width:116px;height:116px;border-radius:34px;background:var(--card);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;font-size:60px;margin-bottom:28px}
+.tour-slide h1{margin:0 0 12px;font-size:28px;line-height:1.15}
+.tour-slide p{margin:0;font-size:17px;line-height:1.5;color:var(--muted);max-width:420px}
+.tour-foot{padding:10px 22px calc(22px + env(safe-area-inset-bottom));max-width:560px;width:100%;margin:0 auto;box-sizing:border-box}
+.tour-dots{display:flex;justify-content:center;gap:7px;margin-bottom:18px}
+.tour-dots i{width:7px;height:7px;border-radius:4px;background:var(--line);transition:width .25s,background .25s}
+.tour-dots i.on{width:22px;background:var(--ink)}
 .inpop{position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));z-index:70;max-width:536px;margin:0 auto;display:flex;align-items:center;gap:12px;
   padding:12px 10px 12px 14px;border-radius:20px;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   box-shadow:0 12px 34px rgba(0,0,0,.28),inset 0 0 0 1px var(--line);animation:popIn .5s cubic-bezier(.2,1.2,.4,1)}
@@ -671,7 +684,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v68';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v69';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2068,6 +2081,36 @@ function showMoved() {
   };
 }
 
+
+/* ================= App tour =================
+   A short swipeable rundown, shown once right after the first setup (can be skipped, and replayed
+   from Settings). */
+const TOUR = [
+  ['👋', N('Welcome to Food Tracker'), N('Your personal nutrition coach. Here is a 30-second tour of how everything works.')],
+  ['📷', N('Log food in seconds'), N('Tap the big + on Home: take a photo of your meal, scan a barcode, describe it in words, or pick a favorite. The AI does the counting.')],
+  ['🎯', N('Your daily goals'), N('Home shows calories and protein, carbs and fat left for today, plus your health score, water and calories burned. Everything is made for your goal.')],
+  ['💬', N('Your AI coach'), N('Ask the coach anything: what to eat next, what to order from a menu photo, how to prep. It knows your day and your goal, and sends a check-in every Sunday.')],
+  ['🛒', N('Meal plan & groceries'), N('Get a tasty weekly meal plan with one shopping list, made for your goal. A new one comes every Saturday, and you can change any meal.')],
+  ['📈', N('Progress & badges'), N('Weigh yourself 3 times a week in the morning. Progress shows your trend, how much is left and if you are on track, and you earn badges along the way.')],
+  ['🚀', N("You're all set"), N('In Settings you can turn on reminders, create an account to back up your data, and change language and units. Enjoy!')]
+];
+function openTour(onDone) {
+  $('#tour')?.remove();
+  const pg = document.createElement('div'); pg.id = 'tour'; pg.className = 'page tour'; pg.style.zIndex = 85;
+  pg.innerHTML = `<button class="tour-skip" id="tourSkip">${T('Skip')}</button>
+    <div class="tour-track" id="tourTrack">${TOUR.map(([ic, t, d]) => `<section class="tour-slide"><div class="tour-ic">${ic}</div><h1>${T(t)}</h1><p>${T(d)}</p></section>`).join('')}</div>
+    <div class="tour-foot"><div class="tour-dots">${TOUR.map((_, i) => `<i data-i="${i}"></i>`).join('')}</div>
+      <button class="btn" id="tourNext">${T('Next')}</button></div>`;
+  document.body.appendChild(pg);
+  const track = pg.querySelector('#tourTrack'), dots = [...pg.querySelectorAll('.tour-dots i')], next = pg.querySelector('#tourNext');
+  const idx = () => Math.round(track.scrollLeft / track.clientWidth);
+  const update = () => { const i = idx(); dots.forEach((d, k) => d.classList.toggle('on', k === i)); next.textContent = i === TOUR.length - 1 ? T("Let's go") : T('Next'); };
+  const finish = () => { LS.set('ft_tour', '1'); pg.classList.add('out'); setTimeout(() => { pg.remove(); if (onDone) onDone(); }, 250); };
+  track.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
+  next.onclick = () => { const i = idx(); if (i >= TOUR.length - 1) finish(); else track.scrollTo({ left: (i + 1) * track.clientWidth, behavior: 'smooth' }); };
+  pg.querySelector('#tourSkip').onclick = finish;
+  update();
+}
 /* ================= Privacy ================= */
 function openPrivacy() {
   const sec = (ic, title, text) => `<div class="priv"><div class="priv-ic">${ic}</div><div><b>${title}</b><p>${text}</p></div></div>`;
@@ -3511,6 +3554,7 @@ function renderSettings() {
     <div class="list">
       <button class="li" id="sLang"><span class="ic">🌐</span><span class="grow">${T('Language')}</span><span class="val">${langInfo().f} ${langInfo().n}</span><span class="chev">›</span></button>
       <button class="li" id="sUnits"><span class="ic">📏</span><span class="grow">${T('Units')}</span><span class="val">${unitsName()}</span><span class="chev">›</span></button>
+      <button class="li" id="sTour"><span class="ic">📖</span><span class="grow">${T('App tour')}</span><span class="chev">›</span></button>
     </div>
     <div class="card"><b>🌓 ${T('Appearance')}</b>
       <div class="seg">${[['auto', N('Automatic')], ['light', N('Light')], ['dark', N('Dark')]].map(([v, l]) => `<button data-th="${v}" class="${th === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div></div>
@@ -3556,6 +3600,7 @@ function renderSettings() {
   $('#sRedo').onclick = startOnboarding;
   $('#sLang').onclick = () => openLangSheet();
   $('#sUnits').onclick = openUnitsSheet;
+  $('#sTour').onclick = () => openTour();
   document.querySelectorAll('[data-th]').forEach(b => b.onclick = () => { setTheme(b.dataset.th); renderSettings(); });
   bindReminders();
   bindBackupCard();
@@ -3890,7 +3935,8 @@ function finishOnboarding() {
   if (!db.weights.length || currentWeight() !== p.weight) { db.weights = db.weights.filter(w => w.date !== iso()); db.weights.push({ date: iso(), kg: p.weight }); }
   LS.set('ft_lang', LANG);
   save(); ob = null; $('#onb')?.remove(); go('home'); toast('🎉 ' + T('Your plan is ready'));
-  setTimeout(() => askReminders(true), 1800);
+  if (!LS.get('ft_tour', '')) setTimeout(() => openTour(() => setTimeout(() => askReminders(true), 600)), 700);
+  else setTimeout(() => askReminders(true), 1800);
 }
 
 /* ================= Utils ================= */
