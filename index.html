@@ -680,7 +680,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v71';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v72';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1658,7 +1658,7 @@ function openFavorites() {
    People sign up with their email and a password (the iPhone can save it in its Keychain, so there's
    nothing to remember). Once a day the app saves an encrypted copy of the data on the Food Tracker server.
    The key comes from the password and never leaves the phone, so nobody else (not even the app owner)
-   can read it. Meal photos stay on the phone. Signing in on a new phone brings everything back.
+   can read it. Meal photos are saved too (see photoSync). Signing in on a new phone brings everything back.
    The email is only a name for the account: no emails are ever sent. */
 const acct = () => { try { return JSON.parse(LS.get('ft_acct', 'null')); } catch { return null; } };
 const sha = async s => [...new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)))].map(b => b.toString(16).padStart(2, '0')).join('');
@@ -1695,6 +1695,7 @@ async function runBackup(manual, a = acct()) {
       body: (zz.z ? 'z' : 'p') + '.' + b64(iv) + '.' + b64(ct) });
     if (!r.ok) throw new Error('HTTP ' + r.status);
     LS.set('ft_bk_last', String(Date.now()));
+    if (!OLD_HOME) LS.set('ft_bk_o', '1');
     if (manual) toast('✓ ' + T('Backup saved'));
     if (tab === 'settings' && !$('.backdrop')) renderSettings();
     return true;
@@ -1702,8 +1703,9 @@ async function runBackup(manual, a = acct()) {
 }
 let bkRunning = false;
 async function autoBackup() {
-  if (bkRunning || !acct() || Date.now() - +LS.get('ft_bk_last', 0) < 20 * 3600e3) return;
+  if (bkRunning || !acct() || (Date.now() - +LS.get('ft_bk_last', 0) < 20 * 3600e3 && (OLD_HOME || LS.get('ft_bk_o', '')))) return;
   bkRunning = true; await runBackup(false); bkRunning = false;
+  photoSync(false);
 }
 // Reads the account's saved data. Errors: 'none' (no account with this email), 'wrong' (wrong password)
 async function fetchAccountData(a) {
@@ -1728,7 +1730,10 @@ function applyAccountData(p) {
 }
 async function deleteBackup() {   // used by "Delete all data": the account and its saved data are removed too
   const a = acct();
-  if (a && SERVER_URL) { try { await post('/backup/delete', { id: a.id, auth: a.auth }); } catch {} }
+  if (a && SERVER_URL) {
+    try { await fetch(SERVER_URL + '/photos/delete', { method: 'POST', headers: { 'Content-Type': 'text/plain', 'X-Id': a.id, 'X-Auth': a.auth } }); } catch {}
+    try { await post('/backup/delete', { id: a.id, auth: a.auth }); } catch {}
+  }
   ['ft_acct', 'ft_bk_last', 'ft_acct_ask'].forEach(x => LS.del(x));
 }
 // Backup codes from the first version: the old copy is removed once an account exists
@@ -1739,6 +1744,73 @@ async function dropOldCode() {
     await post('/backup/delete', { id: await sha('ft-id:' + c), auth: await sha('ft-auth:' + c) });
   } catch {}
   ['ft_bk_code', 'ft_bk_seen'].forEach(x => LS.del(x));
+}
+
+/* Meal photos in the account: one encrypted bundle per month on the server (e.g. "2026-10"). Syncing works
+   both ways: photos missing on this phone come back, and photos the server doesn't have yet are added.
+   Bundles are only ever made bigger, never replaced with less. Only the phone can open them. */
+const OLD_HOME = location.hostname === 'maxzollinger.github.io';
+let phBusy = false;
+const photoHash = async ids => (await sha([...ids].sort().join(','))).slice(0, 16);
+async function sealText(str, key) {
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(str)));
+  return 'p.' + b64(iv) + '.' + b64(ct);
+}
+async function openText(box, key) {
+  const [, iv, ct] = box.split('.');
+  return new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(iv) }, key, unb64(ct)));
+}
+async function photoSync(force, onStatus = () => {}) {
+  const a = acct();
+  if (phBusy || !SERVER_URL || !a || !db.profile || !window.crypto || !crypto.subtle) return null;
+  if (!force && Date.now() - +LS.get('ft_ph_sync', 0) < 3 * 3600e3) return null;
+  phBusy = true;
+  const H = { 'Content-Type': 'text/plain', 'X-Id': a.id, 'X-Auth': a.auth }, call = (path, body, extra = {}) => fetch(SERVER_URL + path, { method: 'POST', headers: { ...H, ...extra }, body });
+  let up = 0, got = 0, total = 0;
+  try {
+    let r = await call('/photos/list');
+    if (r.status === 404 && await runBackup(false)) r = await call('/photos/list');   // the account's first backup isn't there yet
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const server = Object.fromEntries((await r.json()).map(x => [x.m, x])), byMonth = {};
+    let seen = {}; try { seen = JSON.parse(LS.get('ft_ph_seen', '{}')) || {}; } catch {}
+    for (const m of db.meals) if (m.photo && /^\d{4}-\d{2}/.test(m.date || '')) (byMonth[m.date.slice(0, 7)] ||= []).push(m.id);
+    const key = await aesKey(a.key);
+    for (const mo of [...new Set([...Object.keys(byMonth), ...Object.keys(server)])].sort().reverse()) {
+      const mine = new Set(byMonth[mo] || []), local = {};
+      for (const id of mine) { const ph = photoCache[id] || await idb.get(id); if (ph) local[id] = ph; }
+      const s = server[mo], ids0 = Object.keys(local);
+      if (!s && !ids0.length) continue;
+      // Nothing to do when the server has exactly these photos, or everything here is already there
+      // and nothing the server has is missing here
+      const known = s && seen[mo] && seen[mo].h === s.h ? new Set(seen[mo].ids) : null;
+      if (s && (s.h === await photoHash(ids0) || known && ids0.every(id => known.has(id)) && [...mine].every(id => local[id] || !known.has(id)))) { total += known ? known.size : ids0.length; continue; }
+      const merged = { ...local };
+      if (s) {
+        onStatus('down');
+        const g = await call('/photos/get?m=' + mo);
+        if (!g.ok) throw new Error('HTTP ' + g.status);
+        const remote = JSON.parse(await openText(await g.text(), key));
+        for (const [id, ph] of Object.entries(remote)) {
+          if (merged[id] || typeof ph !== 'string' || !ph.startsWith('data:image/')) continue;
+          merged[id] = ph;
+          if (mine.has(id)) { await idb.set(id, ph); photoCache[id] = ph; got++; }
+        }
+        seen[mo] = { h: s.h, ids: Object.keys(remote) };
+      }
+      const ids = Object.keys(merged), h = await photoHash(ids); total += ids.length;
+      if (s && s.h === h) continue;
+      onStatus('up');
+      const box = await sealText(JSON.stringify(merged), key);
+      if (box.length > 20e6) continue;   // far more photos than anyone takes in a month
+      const u = await call('/photos/put?m=' + mo, box, { 'X-Hash': h, 'X-Count': String(ids.length) });
+      if (!u.ok) throw new Error('HTTP ' + u.status);
+      up += Math.max(0, ids.length - (s ? +s.n || 0 : 0)); seen[mo] = { h, ids };
+    }
+    LS.set('ft_ph_seen', JSON.stringify(seen)); LS.set('ft_ph_sync', String(Date.now()));
+    if (got) { if (!$('.backdrop') && !$('#moved')) render(); toast('✓ ' + T('{n} meal photos are back', { n: got })); }
+    return { up, got, total };
+  } catch { return null; } finally { phBusy = false; }
 }
 
 // One sheet for both: create an account, or sign in on a new phone
@@ -1809,13 +1881,13 @@ function backupCard() {
     <p class="small" style="margin:6px 0 2px">👤 <b>${esc(a.email)}</b></p>
     <div class="spread" style="margin-top:6px"><span class="small" style="${last ? 'color:var(--good);font-weight:600' : ''}">${last ? '✓ ' + T('Last backup: {d}', { d: when }) : T('No backup yet')}</span>
       <button class="chipbtn" id="bkNow">${T('Back up now')}</button></div>
-    <p class="small muted" style="margin:8px 0 10px">${T('Backed up automatically every day, encrypted. On a new phone, sign in with this email and password.')}</p>
+    <p class="small muted" style="margin:8px 0 10px">${T('Backed up automatically every day, encrypted, including your meal photos. On a new phone, sign in with this email and password.')}</p>
     <button class="btn sm outline" id="acOut">${T('Sign out')}</button></div>`;
 }
 function bindBackupCard() {
   if ($('#acUp')) $('#acUp').onclick = () => openAccountSheet('signup');
   if ($('#acIn')) $('#acIn').onclick = () => openAccountSheet('login');
-  if ($('#bkNow')) $('#bkNow').onclick = () => { $('#bkNow').innerHTML = '<span class="spin"></span>'; runBackup(true).then(() => { if (tab === 'settings') renderSettings(); }); };
+  if ($('#bkNow')) $('#bkNow').onclick = () => { $('#bkNow').innerHTML = '<span class="spin"></span>'; runBackup(true).then(() => photoSync(true)).then(() => { if (tab === 'settings') renderSettings(); }); };
   if ($('#acOut')) $('#acOut').onclick = () => {
     if (!confirm(T('Sign out? Your data stays on this phone, but it is no longer backed up.'))) return;
     ['ft_acct', 'ft_bk_last'].forEach(x => LS.del(x)); toast(T('Signed out')); renderSettings();
@@ -2063,6 +2135,7 @@ function showMoved() {
         ${has && !a ? `<button class="btn sm" id="mvAcc">${T('Create account')}</button>` : '<b style="color:var(--good)">✓</b>'}</div>
       <div class="li"><span class="ic" style="font-weight:800">2</span><span class="grow">${T('Open the new address in Safari and add it to your Home Screen.')}</span></div>
       <div class="li"><span class="ic" style="font-weight:800">3</span><span class="grow">${T('Sign in there, then delete this old icon.')}</span></div></div>
+    <p class="small" id="mvPh" style="margin:12px 0 0;min-height:18px"></p>
     <a class="btn" id="mvGo" href="${NEW_HOME}" target="_blank" rel="noopener" style="margin-top:16px;text-decoration:none">${T('Open the new Food Tracker')}</a>
     <p class="small muted" style="margin:10px 0 0">${T('Or type this in Safari:')} <b>foodtrackerapp.pages.dev</b></p>
     <button class="small muted" id="mvLater" style="margin-top:18px;padding:8px">${T('Later')}</button></div>`;
@@ -2073,7 +2146,16 @@ function showMoved() {
     clearInterval(movedWatch); movedWatch = setInterval(() => { if (acct() && !$('.backdrop')) { clearInterval(movedWatch); showMoved(); } }, 700);
   };
   // The link opens right away (iPhone blocks pages opened after waiting); saving happens on its own
-  if (acct() && Date.now() - +LS.get('ft_bk_last', 0) > 3600e3) runBackup(false);
+  const saved = acct() && Date.now() - +LS.get('ft_bk_last', 0) > 3600e3 ? runBackup(false) : Promise.resolve();
+  if (acct() && db.meals.some(m => m.photo)) {
+    const st = pg.querySelector('#mvPh');
+    st.textContent = '📷 ' + T('Saving your meal photos… please keep this open.');
+    saved.then(() => photoSync(true)).then(res => {
+      if (!pg.isConnected) return;
+      st.textContent = res ? '✓ ' + T('Your meal photos are saved ({n}).', { n: res.total }) : T('Photos could not be saved. Check your internet.');
+      st.style.color = res ? 'var(--good)' : ''; st.style.fontWeight = '600';
+    });
+  }
   pg.querySelector('#mvGo').onclick = e => {
     if (has && !acct() && !confirm(T('You have no account yet, so your data would not come along. Open the new address anyway?'))) { e.preventDefault(); return; }
     // This old copy stops getting reminders (turn them on again in the new app)
@@ -2169,7 +2251,7 @@ function openPrivacy() {
   sheet(`<h3>🔒 ${T('Privacy')}</h3>
     <p class="muted" style="margin:4px 0 14px">${T('Food Tracker is a private app shared among friends and family. This is exactly what happens with your data.')}</p>
     ${sec('📱', T('On your phone'), T('Your meals, photos, weights, goals, meal plans and coach chats are stored on your phone.'))}
-    ${sec('☁️', T('Account & backup'), T("If you create an account, a copy of your data is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner. Meal photos are not part of the backup."))}
+    ${sec('☁️', T('Account & backup'), T("If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner."))}
     ${sec('✨', T('AI'), T('When you scan food, chat with the coach, use voice input or create a meal plan, that photo, text or recording is sent through the Food Tracker server to Google Gemini to get an answer. The server does not keep it. Google handles it under the Gemini API terms, so please don\'t send very sensitive things like medical documents.'))}
     ${sec('🔔', T('Notifications'), T("If you turn on reminders, the server keeps your phone's notification address, your reminder times and your time zone. Nothing else."))}
     ${sec('🏷️', T('Barcodes'), T('When you scan a barcode, only its number is sent to Open Food Facts, a free food database, to find the product.'))}
@@ -4053,7 +4135,9 @@ setInterval(autoBackup, 60 * 60e3);
 setTimeout(askAccount, 11000);
 setTimeout(weeklyCheckin, 6500);
 setInterval(weeklyCheckin, 30 * 60e3);
-if (sessionStorage.getItem('ft_restored')) { sessionStorage.removeItem('ft_restored'); setTimeout(() => toast('✓ ' + T('Signed in. Your data is back.')), 4500); }
+setTimeout(() => photoSync(false), 12000);
+setInterval(() => photoSync(false), 3 * 3600e3);
+if (sessionStorage.getItem('ft_restored')) { setTimeout(() => photoSync(true), 3000); sessionStorage.removeItem('ft_restored'); setTimeout(() => toast('✓ ' + T('Signed in. Your data is back.')), 4500); }
 </script>
 <script>
 /* Starts the app. Meals, chats and settings are kept in two places: the quick small storage

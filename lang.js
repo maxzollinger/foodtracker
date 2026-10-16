@@ -798,7 +798,13 @@ window.I18N = {
 "Back":"Zurück",
 "Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Trage hier einmal pro Woche dein Gewicht ein, morgens vor dem Frühstück. Die Serie zählt die Tage, an denen du Essen einträgst.",
 "Weigh yourself once a week, in the morning before breakfast":"Wiege dich einmal pro Woche, morgens vor dem Frühstück",
-"Log your weight once a week to see your chart.":"Trage einmal pro Woche dein Gewicht ein, um dein Diagramm zu sehen."
+"Log your weight once a week to see your chart.":"Trage einmal pro Woche dein Gewicht ein, um dein Diagramm zu sehen.",
+"{n} meal photos are back":"{n} Essensfotos sind zurück",
+"Saving your meal photos… please keep this open.":"Deine Essensfotos werden gespeichert… bitte lass das hier offen.",
+"Your meal photos are saved ({n}).":"Deine Essensfotos sind gespeichert ({n}).",
+"Photos could not be saved. Check your internet.":"Die Fotos konnten nicht gespeichert werden. Prüfe deine Internetverbindung.",
+"If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner.":"Wenn du ein Konto erstellst, wird einmal am Tag eine Kopie deiner Daten und Essensfotos auf dem Food-Tracker-Server gespeichert. Sie wird mit deinem Passwort verschlüsselt, bevor sie dein Handy verlässt, sodass niemand sonst sie lesen kann, nicht einmal der Betreiber der App.",
+"Backed up automatically every day, encrypted, including your meal photos. On a new phone, sign in with this email and password.":"Jeden Tag automatisch und verschlüsselt gesichert, auch deine Essensfotos. Auf einem neuen Handy meldest du dich mit dieser E-Mail und diesem Passwort an."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1598,7 +1604,13 @@ window.I18N = {
 "Back":"Atrás",
 "Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Registra tu peso aquí una vez por semana, por la mañana antes del desayuno. La racha cuenta los días que registras comida.",
 "Weigh yourself once a week, in the morning before breakfast":"Pésate una vez por semana, por la mañana antes del desayuno",
-"Log your weight once a week to see your chart.":"Registra tu peso una vez por semana para ver tu gráfico."
+"Log your weight once a week to see your chart.":"Registra tu peso una vez por semana para ver tu gráfico.",
+"{n} meal photos are back":"{n} fotos de comidas han vuelto",
+"Saving your meal photos… please keep this open.":"Guardando tus fotos de comidas… mantén esto abierto.",
+"Your meal photos are saved ({n}).":"Tus fotos de comidas están guardadas ({n}).",
+"Photos could not be saved. Check your internet.":"No se pudieron guardar las fotos. Revisa tu conexión a internet.",
+"If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner.":"Si creas una cuenta, una copia de tus datos y fotos de comidas se guarda una vez al día en el servidor de Food Tracker. Se cifra con tu contraseña antes de salir de tu teléfono, así que nadie más puede leerla, ni siquiera el dueño de la app.",
+"Backed up automatically every day, encrypted, including your meal photos. On a new phone, sign in with this email and password.":"Copia de seguridad automática cada día, cifrada, incluidas tus fotos de comidas. En un teléfono nuevo, inicia sesión con este correo y contraseña."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -2398,7 +2410,13 @@ window.I18N = {
 "Back":"Retour",
 "Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Note ton poids ici une fois par semaine, le matin avant le petit-déjeuner. La série compte les jours où tu notes tes repas.",
 "Weigh yourself once a week, in the morning before breakfast":"Pèse-toi une fois par semaine, le matin avant le petit-déjeuner",
-"Log your weight once a week to see your chart.":"Note ton poids une fois par semaine pour voir ton graphique."
+"Log your weight once a week to see your chart.":"Note ton poids une fois par semaine pour voir ton graphique.",
+"{n} meal photos are back":"{n} photos de repas sont de retour",
+"Saving your meal photos… please keep this open.":"Sauvegarde de tes photos de repas… garde cette page ouverte.",
+"Your meal photos are saved ({n}).":"Tes photos de repas sont sauvegardées ({n}).",
+"Photos could not be saved. Check your internet.":"Les photos n'ont pas pu être sauvegardées. Vérifie ta connexion internet.",
+"If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner.":"Si tu crées un compte, une copie de tes données et de tes photos de repas est sauvegardée une fois par jour sur le serveur Food Tracker. Elle est chiffrée avec ton mot de passe avant de quitter ton téléphone, donc personne d'autre ne peut la lire, pas même le propriétaire de l'app.",
+"Backed up automatically every day, encrypted, including your meal photos. On a new phone, sign in with this email and password.":"Sauvegardé automatiquement chaque jour, chiffré, y compris tes photos de repas. Sur un nouveau téléphone, connecte-toi avec cet e-mail et ce mot de passe."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -3198,7 +3216,13 @@ window.I18N = {
 "Back":"Indietro",
 "Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Registra qui il tuo peso una volta a settimana, al mattino prima di colazione. La serie conta i giorni in cui registri il cibo.",
 "Weigh yourself once a week, in the morning before breakfast":"Pesati una volta a settimana, al mattino prima di colazione",
-"Log your weight once a week to see your chart.":"Registra il tuo peso una volta a settimana per vedere il grafico."
+"Log your weight once a week to see your chart.":"Registra il tuo peso una volta a settimana per vedere il grafico.",
+"{n} meal photos are back":"{n} foto dei pasti sono tornate",
+"Saving your meal photos… please keep this open.":"Salvataggio delle foto dei pasti… tieni aperta questa pagina.",
+"Your meal photos are saved ({n}).":"Le foto dei tuoi pasti sono salvate ({n}).",
+"Photos could not be saved. Check your internet.":"Non è stato possibile salvare le foto. Controlla la connessione internet.",
+"If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner.":"Se crei un account, una copia dei tuoi dati e delle foto dei pasti viene salvata una volta al giorno sul server di Food Tracker. Viene cifrata con la tua password prima di lasciare il telefono, quindi nessun altro può leggerla, nemmeno il proprietario dell'app.",
+"Backed up automatically every day, encrypted, including your meal photos. On a new phone, sign in with this email and password.":"Backup automatico ogni giorno, cifrato, incluse le foto dei pasti. Su un nuovo telefono, accedi con questa email e password."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -3998,7 +4022,13 @@ window.I18N = {
 "Back":"戻る",
 "Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"体重は週に1回、朝食前の朝にここで記録しましょう。連続記録は食事を記録した日数です。",
 "Weigh yourself once a week, in the morning before breakfast":"週に1回、朝食前の朝に体重を測りましょう",
-"Log your weight once a week to see your chart.":"週に1回体重を記録するとグラフが表示されます。"
+"Log your weight once a week to see your chart.":"週に1回体重を記録するとグラフが表示されます。",
+"{n} meal photos are back":"食事の写真 {n} 枚が戻りました",
+"Saving your meal photos… please keep this open.":"食事の写真を保存中… この画面を開いたままにしてください。",
+"Your meal photos are saved ({n}).":"食事の写真を保存しました（{n} 枚）。",
+"Photos could not be saved. Check your internet.":"写真を保存できませんでした。インターネット接続を確認してください。",
+"If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner.":"アカウントを作成すると、データと食事の写真のコピーが 1 日 1 回 Food Tracker のサーバーに保存されます。スマホから送られる前にパスワードで暗号化されるため、アプリの運営者を含め誰も読むことはできません。",
+"Backed up automatically every day, encrypted, including your meal photos. On a new phone, sign in with this email and password.":"毎日自動で暗号化してバックアップされます（食事の写真も含む）。新しいスマホでは、このメールアドレスとパスワードでログインしてください。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -4798,7 +4828,13 @@ window.I18N = {
 "Back":"Terug",
 "Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Log hier één keer per week je gewicht, 's ochtends voor het ontbijt. De reeks telt de dagen dat je eten logt.",
 "Weigh yourself once a week, in the morning before breakfast":"Weeg jezelf één keer per week, 's ochtends voor het ontbijt",
-"Log your weight once a week to see your chart.":"Log één keer per week je gewicht om je grafiek te zien."
+"Log your weight once a week to see your chart.":"Log één keer per week je gewicht om je grafiek te zien.",
+"{n} meal photos are back":"{n} maaltijdfoto's zijn terug",
+"Saving your meal photos… please keep this open.":"Je maaltijdfoto's worden opgeslagen… houd dit open.",
+"Your meal photos are saved ({n}).":"Je maaltijdfoto's zijn opgeslagen ({n}).",
+"Photos could not be saved. Check your internet.":"De foto's konden niet worden opgeslagen. Controleer je internet.",
+"If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner.":"Als je een account maakt, wordt één keer per dag een kopie van je gegevens en maaltijdfoto's op de Food Tracker-server bewaard. Die wordt met je wachtwoord versleuteld voordat hij je telefoon verlaat, dus niemand anders kan hem lezen, zelfs de eigenaar van de app niet.",
+"Backed up automatically every day, encrypted, including your meal photos. On a new phone, sign in with this email and password.":"Elke dag automatisch en versleuteld geback-upt, inclusief je maaltijdfoto's. Log op een nieuwe telefoon in met dit e-mailadres en wachtwoord."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -5598,7 +5634,13 @@ window.I18N = {
 "Back":"Wstecz",
 "Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Zapisuj tu swoją wagę raz w tygodniu, rano przed śniadaniem. Seria liczy dni, w których zapisujesz jedzenie.",
 "Weigh yourself once a week, in the morning before breakfast":"Waż się raz w tygodniu, rano przed śniadaniem",
-"Log your weight once a week to see your chart.":"Zapisuj wagę raz w tygodniu, aby zobaczyć wykres."
+"Log your weight once a week to see your chart.":"Zapisuj wagę raz w tygodniu, aby zobaczyć wykres.",
+"{n} meal photos are back":"Wróciło {n} zdjęć posiłków",
+"Saving your meal photos… please keep this open.":"Zapisywanie zdjęć posiłków… nie zamykaj tego ekranu.",
+"Your meal photos are saved ({n}).":"Zdjęcia posiłków są zapisane ({n}).",
+"Photos could not be saved. Check your internet.":"Nie udało się zapisać zdjęć. Sprawdź połączenie z internetem.",
+"If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner.":"Jeśli założysz konto, kopia Twoich danych i zdjęć posiłków jest zapisywana raz dziennie na serwerze Food Tracker. Jest szyfrowana Twoim hasłem, zanim opuści telefon, więc nikt inny nie może jej odczytać, nawet właściciel aplikacji.",
+"Backed up automatically every day, encrypted, including your meal photos. On a new phone, sign in with this email and password.":"Kopia zapasowa tworzona automatycznie każdego dnia, zaszyfrowana, razem ze zdjęciami posiłków. Na nowym telefonie zaloguj się tym e-mailem i hasłem."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -6398,7 +6440,13 @@ window.I18N = {
 "Back":"Voltar",
 "Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Registe aqui o seu peso uma vez por semana, de manhã antes do pequeno-almoço. A sequência conta os dias em que regista comida.",
 "Weigh yourself once a week, in the morning before breakfast":"Pese-se uma vez por semana, de manhã antes do pequeno-almoço",
-"Log your weight once a week to see your chart.":"Registe o seu peso uma vez por semana para ver o gráfico."
+"Log your weight once a week to see your chart.":"Registe o seu peso uma vez por semana para ver o gráfico.",
+"{n} meal photos are back":"{n} fotos de refeições estão de volta",
+"Saving your meal photos… please keep this open.":"A guardar as suas fotos de refeições… mantenha isto aberto.",
+"Your meal photos are saved ({n}).":"As suas fotos de refeições estão guardadas ({n}).",
+"Photos could not be saved. Check your internet.":"Não foi possível guardar as fotos. Verifique a sua ligação à internet.",
+"If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner.":"Se criar uma conta, uma cópia dos seus dados e fotos de refeições é guardada uma vez por dia no servidor do Food Tracker. É encriptada com a sua palavra-passe antes de sair do telemóvel, por isso mais ninguém a consegue ler, nem o dono da app.",
+"Backed up automatically every day, encrypted, including your meal photos. On a new phone, sign in with this email and password.":"Cópia de segurança automática todos os dias, encriptada, incluindo as fotos das refeições. Num telemóvel novo, inicie sessão com este e-mail e palavra-passe."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -7198,7 +7246,13 @@ window.I18N = {
 "Back":"Назад",
 "Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Записывайте здесь вес раз в неделю, утром до завтрака. Серия считает дни, когда вы записываете еду.",
 "Weigh yourself once a week, in the morning before breakfast":"Взвешивайтесь раз в неделю, утром до завтрака",
-"Log your weight once a week to see your chart.":"Записывайте вес раз в неделю, чтобы видеть график."
+"Log your weight once a week to see your chart.":"Записывайте вес раз в неделю, чтобы видеть график.",
+"{n} meal photos are back":"Вернулось фото блюд: {n}",
+"Saving your meal photos… please keep this open.":"Сохраняем фото блюд… пожалуйста, не закрывайте это окно.",
+"Your meal photos are saved ({n}).":"Фото блюд сохранены ({n}).",
+"Photos could not be saved. Check your internet.":"Не удалось сохранить фото. Проверьте подключение к интернету.",
+"If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner.":"Если вы создадите аккаунт, копия ваших данных и фото блюд раз в день сохраняется на сервере Food Tracker. Она шифруется вашим паролем ещё на телефоне, поэтому никто другой не может её прочитать, даже владелец приложения.",
+"Backed up automatically every day, encrypted, including your meal photos. On a new phone, sign in with this email and password.":"Автоматическая зашифрованная копия каждый день, включая фото блюд. На новом телефоне войдите с этой почтой и паролем."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -7998,7 +8052,13 @@ window.I18N = {
 "Back":"Geri",
 "Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"Kilonu burada haftada bir kez, sabah kahvaltıdan önce kaydet. Seri, yemek kaydettiğin günleri sayar.",
 "Weigh yourself once a week, in the morning before breakfast":"Haftada bir kez, sabah kahvaltıdan önce tartıl",
-"Log your weight once a week to see your chart.":"Grafiğini görmek için haftada bir kez kilonu kaydet."
+"Log your weight once a week to see your chart.":"Grafiğini görmek için haftada bir kez kilonu kaydet.",
+"{n} meal photos are back":"{n} yemek fotoğrafı geri geldi",
+"Saving your meal photos… please keep this open.":"Yemek fotoğrafların kaydediliyor… lütfen bu ekranı açık tut.",
+"Your meal photos are saved ({n}).":"Yemek fotoğrafların kaydedildi ({n}).",
+"Photos could not be saved. Check your internet.":"Fotoğraflar kaydedilemedi. İnternet bağlantını kontrol et.",
+"If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner.":"Bir hesap oluşturursan, verilerinin ve yemek fotoğraflarının bir kopyası günde bir kez Food Tracker sunucusuna kaydedilir. Telefonundan çıkmadan önce şifrenle şifrelenir, bu yüzden uygulamanın sahibi dahil kimse okuyamaz.",
+"Backed up automatically every day, encrypted, including your meal photos. On a new phone, sign in with this email and password.":"Her gün otomatik ve şifreli olarak yedeklenir, yemek fotoğrafların da dahil. Yeni bir telefonda bu e-posta ve şifreyle giriş yap."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -8798,6 +8858,12 @@ window.I18N = {
 "Back":"返回",
 "Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.":"每周在这里记录一次体重，早上早餐前。连续天数统计你记录饮食的天数。",
 "Weigh yourself once a week, in the morning before breakfast":"每周称一次体重，早上早餐前",
-"Log your weight once a week to see your chart.":"每周记录一次体重即可查看图表。"
+"Log your weight once a week to see your chart.":"每周记录一次体重即可查看图表。",
+"{n} meal photos are back":"{n} 张餐食照片已恢复",
+"Saving your meal photos… please keep this open.":"正在保存你的餐食照片… 请保持此页面打开。",
+"Your meal photos are saved ({n}).":"你的餐食照片已保存（{n} 张）。",
+"Photos could not be saved. Check your internet.":"照片无法保存。请检查网络连接。",
+"If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner.":"如果你创建账户，你的数据和餐食照片每天会在 Food Tracker 服务器上保存一份副本。数据在离开手机前会用你的密码加密，所以任何人都无法读取，包括应用的所有者。",
+"Backed up automatically every day, encrypted, including your meal photos. On a new phone, sign in with this email and password.":"每天自动加密备份，包括你的餐食照片。在新手机上，用这个邮箱和密码登录即可。"
 }
 };
