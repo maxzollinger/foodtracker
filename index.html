@@ -741,7 +741,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v85';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v86';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2474,7 +2474,7 @@ async function openSetupPage() {
   let pg = $('#setupPg');
   if (!pg) { pg = document.createElement('div'); pg.id = 'setupPg'; pg.className = 'page'; document.body.appendChild(pg); document.body.style.overflow = 'hidden'; }
   const b = setupBrand(st), bn = b.id === 'other' ? T('Your app') : b.name, steps = setupSteps(st), cur = steps.findIndex(x => !st.done[x]);
-  const code = healthCode(), push = SERVER_URL + '/health/push', link = shortcutURL(), y = pg.scrollTop;
+  const code = healthCode(), push = SERVER_URL + '/health/push', pushURL = `${push}?code=${code}&kcal=`, link = shortcutURL(), y = pg.scrollTop;
   const today = db.exercises.find(e => e.id === 'auto-' + iso()), L = linkInfo();
   const sub = (n, t, extra = '') => `<div class="row" style="align-items:flex-start;gap:10px;margin:10px 0"><b style="flex:none;width:22px;height:22px;border-radius:50%;background:var(--chip);font-size:12px;display:flex;align-items:center;justify-content:center">${n}</b><div class="grow small" style="line-height:1.5">${t}${extra}</div></div>`;
   const copyBtn = (id, label) => `<button class="chipbtn" id="${id}" style="margin-top:6px">${label}</button>`;
@@ -2502,11 +2502,9 @@ async function openSetupPage() {
           [T('Tap <b>Search Actions</b> (bottom), type <b>Health Samples</b> and tap <b>Find Health Samples</b>.')],
           [T('In that action: tap <b>Type</b> → <b>Active Energy</b>. Tap <b>Add Filter</b> → <b>Start Date</b> · <b>is today</b>. Then tap <b>Group By</b> (under <b>Show More</b>) → <b>Day</b>.')],
           [T('Search <b>Calculate Statistics</b>, tap it and choose <b>Sum</b>.')],
-          [T('Search <b>Get Contents of URL</b> and tap it. Tap <b>URL</b> and paste this address:'), `<div style="font-family:ui-monospace,monospace;font-size:12px;word-break:break-all;margin-top:4px">${push}</div>${copyBtn('spUrl', T('Copy address'))}`],
-          [T('Tap the small arrow in that action: <b>Method</b> → <b>POST</b>, <b>Request Body</b> → <b>JSON</b>.')],
-          [T('Tap <b>Add new field</b> → <b>Text</b>. Key: <b>code</b>. Value: paste your code.'), `<div style="font-family:ui-monospace,monospace;font-size:13px;margin-top:4px">${code}</div>${copyBtn('spCode', T('Copy code'))}`],
-          [T('Tap <b>Add new field</b> → <b>Number</b>. Key: <b>kcal</b>. Value: tap it → <b>Select Variable</b> → tap <b>Statistics</b>.')],
-          [T('Tap <b>Done</b> (top right).')]
+          [T('Search <b>Get Contents of URL</b> and tap it. Tap the blue <b>URL</b> and paste this address (your code is already in it):'), `<div style="font-family:ui-monospace,monospace;font-size:12px;word-break:break-all;margin-top:4px">${pushURL}</div>${copyBtn('spUrl', T('Copy address'))}`],
+          [T('Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.'), `<p class="small muted" style="margin:6px 0 0">${T('No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.')}</p>`],
+          [T('Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.')]
         ].map(([t, x], i) => sub(i + 1, t, x || '')).join('')}
         <button class="btn" data-done="shortcut" style="margin-top:8px">${T('I built it, next step')}</button>`,
     run: today && L && L.ok
@@ -2555,10 +2553,10 @@ async function openSetupPage() {
   pg.querySelectorAll('[data-done]').forEach(x => x.onclick = () => { st.done[x.dataset.done] = true; delete st.show; delete st.mismatch; saveSetup(st); pg.scrollTop = 0; openSetupPage(); });
   pg.querySelectorAll('[data-redo]').forEach(x => x.onclick = () => { st.show = st.show === x.dataset.redo ? '' : x.dataset.redo; saveSetup(st); openSetupPage(); });
   pg.querySelectorAll('#spCode').forEach(x => x.onclick = () => copy(code));
-  if (pg.querySelector('#spUrl')) pg.querySelector('#spUrl').onclick = () => copy(push);
+  if (pg.querySelector('#spUrl')) pg.querySelector('#spUrl').onclick = () => copy(pushURL);
   if (pg.querySelector('#spAdd')) pg.querySelector('#spAdd').onclick = () => copy(code, true);
   if (pg.querySelector('#spDiff')) pg.querySelector('#spDiff').onclick = () => { st.mismatch = true; saveSetup(st); openSetupPage(); };
-  if (steps[cur] === 'shortcut') copy(code, true);   // ready to paste
+  if (steps[cur] === 'shortcut') copy(link ? code : pushURL, true);   // ready to paste
   if (pg.querySelector('#spRun')) pg.querySelector('#spRun').onclick = () => { if (!linkInfo() || linkInfo().p !== 'apple') LS.set('ft_link', JSON.stringify({ p: 'apple' })); st.ranAt = Date.now(); saveSetup(st); };
   if (pg.querySelector('#spSign')) pg.querySelector('#spSign').onclick = () => watchPickup();
   // Waiting steps check by themselves while the page is open

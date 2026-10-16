@@ -1016,7 +1016,11 @@ window.I18N = {
 "Paste the iCloud link of your shared Shortcut (https://www.icloud.com/shortcuts/…). Leave empty to remove it.":"Füge den iCloud-Link deines geteilten Kurzbefehls ein (https://www.icloud.com/shortcuts/…). Leer lassen zum Entfernen.",
 "That is not a Shortcut link.":"Das ist kein Kurzbefehl-Link.",
 "Saved. Everyone now gets the Add button.":"Gespeichert. Alle bekommen jetzt den Hinzufügen-Knopf.",
-"Finish connecting {name}":"{name} fertig verbinden"
+"Finish connecting {name}":"{name} fertig verbinden",
+"Search <b>Get Contents of URL</b> and tap it. Tap the blue <b>URL</b> and paste this address (your code is already in it):":"Suche <b>Get Contents of URL</b> und tippe darauf. Tippe auf das blaue <b>URL</b> und füge diese Adresse ein (dein Code ist schon drin):",
+"Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Tippe direkt nach dem Einfügen in der Leiste über der Tastatur auf <b>Statistics</b>. Die Adresse endet jetzt mit <b>kcal=</b> und einer blauen <b>Statistics</b>-Blase.",
+"No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Kein <b>Statistics</b> über der Tastatur? Tippe ganz ans Ende der Adresse, dann auf <b>Select Variable</b> (oder lange drücken → <b>Variable einfügen</b>) und tippe auf <b>Statistics</b>.",
+"Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Tippe oben auf <b>Fertig</b> oder <b>✕</b>. Es speichert von selbst."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2034,7 +2038,11 @@ window.I18N = {
 "Paste the iCloud link of your shared Shortcut (https://www.icloud.com/shortcuts/…). Leave empty to remove it.":"Pega el enlace de iCloud de tu atajo compartido (https://www.icloud.com/shortcuts/…). Déjalo vacío para quitarlo.",
 "That is not a Shortcut link.":"Eso no es un enlace de atajo.",
 "Saved. Everyone now gets the Add button.":"Guardado. Ahora todos tienen el botón Añadir.",
-"Finish connecting {name}":"Terminar de conectar {name}"
+"Finish connecting {name}":"Terminar de conectar {name}",
+"Search <b>Get Contents of URL</b> and tap it. Tap the blue <b>URL</b> and paste this address (your code is already in it):":"Busca <b>Get Contents of URL</b> y tócalo. Toca la <b>URL</b> azul y pega esta dirección (tu código ya está dentro):",
+"Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Justo después de pegar, toca <b>Statistics</b> en la barra encima del teclado. La dirección ahora termina en <b>kcal=</b> y una burbuja azul <b>Statistics</b>.",
+"No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"¿No ves <b>Statistics</b> encima del teclado? Toca justo al final de la dirección, luego <b>Select Variable</b> (o mantén pulsado → <b>Insertar variable</b>) y toca <b>Statistics</b>.",
+"Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Toca <b>OK</b> o <b>✕</b> arriba. Se guarda solo."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3052,7 +3060,11 @@ window.I18N = {
 "Paste the iCloud link of your shared Shortcut (https://www.icloud.com/shortcuts/…). Leave empty to remove it.":"Colle le lien iCloud de ton raccourci partagé (https://www.icloud.com/shortcuts/…). Laisse vide pour le retirer.",
 "That is not a Shortcut link.":"Ce n'est pas un lien de raccourci.",
 "Saved. Everyone now gets the Add button.":"Enregistré. Tout le monde a maintenant le bouton Ajouter.",
-"Finish connecting {name}":"Finir de connecter {name}"
+"Finish connecting {name}":"Finir de connecter {name}",
+"Search <b>Get Contents of URL</b> and tap it. Tap the blue <b>URL</b> and paste this address (your code is already in it):":"Cherche <b>Get Contents of URL</b> et touche-le. Touche l'<b>URL</b> bleue et colle cette adresse (ton code est déjà dedans) :",
+"Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Juste après avoir collé, touche <b>Statistics</b> dans la barre au-dessus du clavier. L'adresse se termine maintenant par <b>kcal=</b> et une bulle bleue <b>Statistics</b>.",
+"No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Pas de <b>Statistics</b> au-dessus du clavier ? Touche tout à la fin de l'adresse, puis <b>Select Variable</b> (ou appui long → <b>Insérer une variable</b>) et touche <b>Statistics</b>.",
+"Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Touche <b>OK</b> ou <b>✕</b> en haut. Ça s'enregistre tout seul."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -4070,7 +4082,11 @@ window.I18N = {
 "Paste the iCloud link of your shared Shortcut (https://www.icloud.com/shortcuts/…). Leave empty to remove it.":"Incolla il link iCloud del tuo comando rapido condiviso (https://www.icloud.com/shortcuts/…). Lascia vuoto per rimuoverlo.",
 "That is not a Shortcut link.":"Questo non è un link di comando rapido.",
 "Saved. Everyone now gets the Add button.":"Salvato. Ora tutti hanno il pulsante Aggiungi.",
-"Finish connecting {name}":"Finisci di collegare {name}"
+"Finish connecting {name}":"Finisci di collegare {name}",
+"Search <b>Get Contents of URL</b> and tap it. Tap the blue <b>URL</b> and paste this address (your code is already in it):":"Cerca <b>Get Contents of URL</b> e toccalo. Tocca l'<b>URL</b> blu e incolla questo indirizzo (il tuo codice è già dentro):",
+"Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Subito dopo aver incollato, tocca <b>Statistics</b> nella barra sopra la tastiera. L'indirizzo ora finisce con <b>kcal=</b> e una bolla blu <b>Statistics</b>.",
+"No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Non vedi <b>Statistics</b> sopra la tastiera? Tocca alla fine dell'indirizzo, poi <b>Select Variable</b> (o tieni premuto → <b>Inserisci variabile</b>) e tocca <b>Statistics</b>.",
+"Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Tocca <b>Fine</b> o <b>✕</b> in alto. Si salva da solo."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -5088,7 +5104,11 @@ window.I18N = {
 "Paste the iCloud link of your shared Shortcut (https://www.icloud.com/shortcuts/…). Leave empty to remove it.":"共有ショートカットの iCloud リンクを貼り付けてください（https://www.icloud.com/shortcuts/…）。空にすると削除します。",
 "That is not a Shortcut link.":"これはショートカットのリンクではありません。",
 "Saved. Everyone now gets the Add button.":"保存しました。全員に追加ボタンが表示されます。",
-"Finish connecting {name}":"{name} の連携を完了する"
+"Finish connecting {name}":"{name} の連携を完了する",
+"Search <b>Get Contents of URL</b> and tap it. Tap the blue <b>URL</b> and paste this address (your code is already in it):":"<b>Get Contents of URL</b> を検索してタップ。青い <b>URL</b> をタップしてこのアドレスを貼り付け（コードは含まれています）：",
+"Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"貼り付けた直後に、キーボード上のバーにある <b>Statistics</b> をタップ。アドレスの最後が <b>kcal=</b> と青い <b>Statistics</b> になります。",
+"No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"キーボード上に <b>Statistics</b> がない？アドレスの一番最後をタップし、<b>Select Variable</b>（または長押し → <b>変数を挿入</b>）で <b>Statistics</b> をタップ。",
+"Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"上の <b>完了</b> または <b>✕</b> をタップ。自動で保存されます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -6106,7 +6126,11 @@ window.I18N = {
 "Paste the iCloud link of your shared Shortcut (https://www.icloud.com/shortcuts/…). Leave empty to remove it.":"Plak de iCloud-link van je gedeelde opdracht (https://www.icloud.com/shortcuts/…). Laat leeg om te verwijderen.",
 "That is not a Shortcut link.":"Dat is geen opdracht-link.",
 "Saved. Everyone now gets the Add button.":"Opgeslagen. Iedereen krijgt nu de knop Toevoegen.",
-"Finish connecting {name}":"Koppelen van {name} afronden"
+"Finish connecting {name}":"Koppelen van {name} afronden",
+"Search <b>Get Contents of URL</b> and tap it. Tap the blue <b>URL</b> and paste this address (your code is already in it):":"Zoek <b>Get Contents of URL</b> en tik erop. Tik op de blauwe <b>URL</b> en plak dit adres (je code zit er al in):",
+"Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Tik direct na het plakken op <b>Statistics</b> in de balk boven het toetsenbord. Het adres eindigt nu op <b>kcal=</b> en een blauwe <b>Statistics</b>-bel.",
+"No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Geen <b>Statistics</b> boven het toetsenbord? Tik helemaal aan het eind van het adres, dan op <b>Select Variable</b> (of houd ingedrukt → <b>Voeg variabele in</b>) en tik op <b>Statistics</b>.",
+"Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Tik bovenaan op <b>Gereed</b> of <b>✕</b>. Het bewaart vanzelf."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -7124,7 +7148,11 @@ window.I18N = {
 "Paste the iCloud link of your shared Shortcut (https://www.icloud.com/shortcuts/…). Leave empty to remove it.":"Wklej link iCloud swojego udostępnionego skrótu (https://www.icloud.com/shortcuts/…). Zostaw puste, aby usunąć.",
 "That is not a Shortcut link.":"To nie jest link do skrótu.",
 "Saved. Everyone now gets the Add button.":"Zapisano. Wszyscy mają teraz przycisk Dodaj.",
-"Finish connecting {name}":"Dokończ łączenie {name}"
+"Finish connecting {name}":"Dokończ łączenie {name}",
+"Search <b>Get Contents of URL</b> and tap it. Tap the blue <b>URL</b> and paste this address (your code is already in it):":"Wyszukaj <b>Get Contents of URL</b> i stuknij. Stuknij niebieski <b>URL</b> i wklej ten adres (Twój kod już w nim jest):",
+"Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Zaraz po wklejeniu stuknij <b>Statistics</b> na pasku nad klawiaturą. Adres kończy się teraz na <b>kcal=</b> i niebieskim dymkiem <b>Statistics</b>.",
+"No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Nie ma <b>Statistics</b> nad klawiaturą? Stuknij na samym końcu adresu, potem <b>Select Variable</b> (lub przytrzymaj → <b>Wstaw zmienną</b>) i stuknij <b>Statistics</b>.",
+"Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Stuknij <b>Gotowe</b> lub <b>✕</b> u góry. Zapisuje się samo."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -8142,7 +8170,11 @@ window.I18N = {
 "Paste the iCloud link of your shared Shortcut (https://www.icloud.com/shortcuts/…). Leave empty to remove it.":"Cole o link iCloud do seu atalho partilhado (https://www.icloud.com/shortcuts/…). Deixe vazio para remover.",
 "That is not a Shortcut link.":"Isso não é um link de atalho.",
 "Saved. Everyone now gets the Add button.":"Guardado. Agora todos têm o botão Adicionar.",
-"Finish connecting {name}":"Terminar de ligar {name}"
+"Finish connecting {name}":"Terminar de ligar {name}",
+"Search <b>Get Contents of URL</b> and tap it. Tap the blue <b>URL</b> and paste this address (your code is already in it):":"Procure <b>Get Contents of URL</b> e toque. Toque no <b>URL</b> azul e cole este endereço (o seu código já está nele):",
+"Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Logo depois de colar, toque em <b>Statistics</b> na barra acima do teclado. O endereço termina agora em <b>kcal=</b> e uma bolha azul <b>Statistics</b>.",
+"No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Não vê <b>Statistics</b> acima do teclado? Toque mesmo no fim do endereço, depois em <b>Select Variable</b> (ou mantenha premido → <b>Inserir variável</b>) e toque em <b>Statistics</b>.",
+"Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Toque em <b>OK</b> ou <b>✕</b> em cima. Guarda sozinho."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -9160,7 +9192,11 @@ window.I18N = {
 "Paste the iCloud link of your shared Shortcut (https://www.icloud.com/shortcuts/…). Leave empty to remove it.":"Вставьте ссылку iCloud на вашу общую команду (https://www.icloud.com/shortcuts/…). Оставьте пустым, чтобы удалить.",
 "That is not a Shortcut link.":"Это не ссылка на быструю команду.",
 "Saved. Everyone now gets the Add button.":"Сохранено. Теперь у всех есть кнопка «Добавить».",
-"Finish connecting {name}":"Завершить подключение {name}"
+"Finish connecting {name}":"Завершить подключение {name}",
+"Search <b>Get Contents of URL</b> and tap it. Tap the blue <b>URL</b> and paste this address (your code is already in it):":"Найдите <b>Get Contents of URL</b> и нажмите. Нажмите синий <b>URL</b> и вставьте адрес (ваш код уже в нём):",
+"Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Сразу после вставки нажмите <b>Statistics</b> на панели над клавиатурой. Адрес теперь заканчивается на <b>kcal=</b> и синий пузырёк <b>Statistics</b>.",
+"No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Нет <b>Statistics</b> над клавиатурой? Нажмите в самом конце адреса, затем <b>Select Variable</b> (или удерживайте → <b>Вставить переменную</b>) и нажмите <b>Statistics</b>.",
+"Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Нажмите <b>Готово</b> или <b>✕</b> вверху. Сохраняется само."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -10178,7 +10214,11 @@ window.I18N = {
 "Paste the iCloud link of your shared Shortcut (https://www.icloud.com/shortcuts/…). Leave empty to remove it.":"Paylaşılan kestirmenin iCloud bağlantısını yapıştır (https://www.icloud.com/shortcuts/…). Kaldırmak için boş bırak.",
 "That is not a Shortcut link.":"Bu bir kestirme bağlantısı değil.",
 "Saved. Everyone now gets the Add button.":"Kaydedildi. Artık herkes Ekle düğmesini görüyor.",
-"Finish connecting {name}":"{name} bağlantısını tamamla"
+"Finish connecting {name}":"{name} bağlantısını tamamla",
+"Search <b>Get Contents of URL</b> and tap it. Tap the blue <b>URL</b> and paste this address (your code is already in it):":"<b>Get Contents of URL</b>'yi ara ve dokun. Mavi <b>URL</b>'ye dokun ve bu adresi yapıştır (kodun zaten içinde):",
+"Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Yapıştırdıktan hemen sonra klavyenin üstündeki çubukta <b>Statistics</b>'e dokun. Adres artık <b>kcal=</b> ve mavi bir <b>Statistics</b> balonuyla bitiyor.",
+"No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Klavyenin üstünde <b>Statistics</b> yok mu? Adresin en sonuna dokun, sonra <b>Select Variable</b>'a (veya basılı tut → <b>Değişken Ekle</b>) ve <b>Statistics</b>'e dokun.",
+"Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Üstte <b>Bitti</b> veya <b>✕</b>'e dokun. Kendiliğinden kaydedilir."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -11196,6 +11236,10 @@ window.I18N = {
 "Paste the iCloud link of your shared Shortcut (https://www.icloud.com/shortcuts/…). Leave empty to remove it.":"粘贴你共享的快捷指令的 iCloud 链接（https://www.icloud.com/shortcuts/…）。留空则删除。",
 "That is not a Shortcut link.":"这不是快捷指令链接。",
 "Saved. Everyone now gets the Add button.":"已保存。现在所有人都能看到添加按钮。",
-"Finish connecting {name}":"完成连接 {name}"
+"Finish connecting {name}":"完成连接 {name}",
+"Search <b>Get Contents of URL</b> and tap it. Tap the blue <b>URL</b> and paste this address (your code is already in it):":"搜索 <b>Get Contents of URL</b> 并点它。点蓝色的 <b>URL</b> 并粘贴此地址（已包含你的代码）：",
+"Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"粘贴后立刻点键盘上方栏里的 <b>Statistics</b>。地址末尾现在是 <b>kcal=</b> 加一个蓝色的 <b>Statistics</b> 气泡。",
+"No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"键盘上方没有 <b>Statistics</b>？点地址的最末尾，再点 <b>Select Variable</b>（或长按 → <b>插入变量</b>），然后点 <b>Statistics</b>。",
+"Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"点顶部的 <b>完成</b> 或 <b>✕</b>。会自动保存。"
 }
 };
