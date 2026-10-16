@@ -719,7 +719,18 @@ window.I18N = {
 "You have no account yet, so your data would not come along. Open the new address anyway?":"Du hast noch kein Konto, deine Daten würden also nicht mitkommen. Trotzdem die neue Adresse öffnen?",
 "Or type this in Safari:":"Oder tippe das in Safari ein:",
 "Too many tries. Please wait a few minutes and try again.":"Zu viele Versuche. Bitte warte ein paar Minuten und versuch es nochmal.",
-"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker funktioniert wie eine normale App, direkt von deinem Home-Bildschirm."
+"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker funktioniert wie eine normale App, direkt von deinem Home-Bildschirm.",
+"Show less":"Weniger anzeigen",
+"Show all {n}":"Alle {n} anzeigen",
+"Whole day":"Ganzer Tag",
+"Workouts only":"Nur Workouts",
+"Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not \"total\").":"Trage die <b>aktiven</b> Kalorien deines ganzen Tages von deiner Uhr oder WHOOP ein: alle Bewegung, Workouts inklusive (nicht \"gesamt\").",
+"Enter the <b>active</b> calories of each workout (not \"total\").":"Trage die <b>aktiven</b> Kalorien jedes Workouts ein (nicht \"gesamt\").",
+"Your normal day and training are already in your goal, so only extra activity raises it.":"Dein normaler Tag und dein Training sind schon in deinem Ziel, nur zusätzliche Aktivität erhöht es.",
+"Extra activity that day ({n} kcal burned)":"Zusätzliche Aktivität an dem Tag ({n} kcal verbrannt)",
+"Activity of your day":"Aktivität deines Tages",
+"Describe your whole day (AI estimates the active calories)":"Beschreibe deinen ganzen Tag (die KI schätzt die aktiven Kalorien)",
+"e.g. 9000 steps, 1 h gym, cycled to work":"z. B. 9000 Schritte, 1 Std. Gym, mit dem Velo zur Arbeit"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1440,7 +1451,18 @@ window.I18N = {
 "You have no account yet, so your data would not come along. Open the new address anyway?":"Aún no tienes cuenta, así que tus datos no vendrían contigo. ¿Abrir la nueva dirección igualmente?",
 "Or type this in Safari:":"O escribe esto en Safari:",
 "Too many tries. Please wait a few minutes and try again.":"Demasiados intentos. Espera unos minutos e inténtalo de nuevo.",
-"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker funciona como una app normal, directamente desde tu pantalla de inicio."
+"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker funciona como una app normal, directamente desde tu pantalla de inicio.",
+"Show less":"Ver menos",
+"Show all {n}":"Ver las {n}",
+"Whole day":"Todo el día",
+"Workouts only":"Solo entrenos",
+"Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not \"total\").":"Introduce las calorías <b>activas</b> de todo tu día de tu reloj o WHOOP: todo el movimiento, entrenos incluidos (no \"total\").",
+"Enter the <b>active</b> calories of each workout (not \"total\").":"Introduce las calorías <b>activas</b> de cada entreno (no \"total\").",
+"Your normal day and training are already in your goal, so only extra activity raises it.":"Tu día normal y tu entreno ya están en tu objetivo; solo la actividad extra lo sube.",
+"Extra activity that day ({n} kcal burned)":"Actividad extra ese día ({n} kcal quemadas)",
+"Activity of your day":"Actividad de tu día",
+"Describe your whole day (AI estimates the active calories)":"Describe todo tu día (la IA estima las calorías activas)",
+"e.g. 9000 steps, 1 h gym, cycled to work":"p. ej. 9000 pasos, 1 h de gym, bici al trabajo"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -2161,7 +2183,18 @@ window.I18N = {
 "You have no account yet, so your data would not come along. Open the new address anyway?":"Tu n'as pas encore de compte, tes données ne viendraient donc pas avec toi. Ouvrir quand même la nouvelle adresse ?",
 "Or type this in Safari:":"Ou tape ceci dans Safari :",
 "Too many tries. Please wait a few minutes and try again.":"Trop d'essais. Attends quelques minutes et réessaie.",
-"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker fonctionne comme une vraie app, directement depuis ton écran d'accueil."
+"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker fonctionne comme une vraie app, directement depuis ton écran d'accueil.",
+"Show less":"Afficher moins",
+"Show all {n}":"Tout afficher ({n})",
+"Whole day":"Toute la journée",
+"Workouts only":"Entraînements seulement",
+"Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not \"total\").":"Saisis les calories <b>actives</b> de toute ta journée depuis ta montre ou WHOOP : tout mouvement, entraînements compris (pas \"total\").",
+"Enter the <b>active</b> calories of each workout (not \"total\").":"Saisis les calories <b>actives</b> de chaque entraînement (pas \"total\").",
+"Your normal day and training are already in your goal, so only extra activity raises it.":"Ta journée normale et ton entraînement sont déjà dans ton objectif, seule l'activité en plus l'augmente.",
+"Extra activity that day ({n} kcal burned)":"Activité en plus ce jour-là ({n} kcal brûlées)",
+"Activity of your day":"Activité de ta journée",
+"Describe your whole day (AI estimates the active calories)":"Décris toute ta journée (l'IA estime les calories actives)",
+"e.g. 9000 steps, 1 h gym, cycled to work":"ex. 9000 pas, 1 h de salle, vélo pour aller au travail"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -2882,7 +2915,18 @@ window.I18N = {
 "You have no account yet, so your data would not come along. Open the new address anyway?":"Non hai ancora un account, quindi i tuoi dati non verrebbero con te. Aprire comunque il nuovo indirizzo?",
 "Or type this in Safari:":"Oppure scrivi questo in Safari:",
 "Too many tries. Please wait a few minutes and try again.":"Troppi tentativi. Aspetta qualche minuto e riprova.",
-"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker funziona come una normale app, direttamente dalla schermata Home."
+"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker funziona come una normale app, direttamente dalla schermata Home.",
+"Show less":"Mostra meno",
+"Show all {n}":"Mostra tutti i {n}",
+"Whole day":"Tutto il giorno",
+"Workouts only":"Solo allenamenti",
+"Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not \"total\").":"Inserisci le calorie <b>attive</b> di tutta la giornata dal tuo orologio o WHOOP: ogni movimento, allenamenti inclusi (non \"totali\").",
+"Enter the <b>active</b> calories of each workout (not \"total\").":"Inserisci le calorie <b>attive</b> di ogni allenamento (non \"totali\").",
+"Your normal day and training are already in your goal, so only extra activity raises it.":"La tua giornata normale e l'allenamento sono già nel tuo obiettivo, solo l'attività extra lo aumenta.",
+"Extra activity that day ({n} kcal burned)":"Attività extra quel giorno ({n} kcal bruciate)",
+"Activity of your day":"Attività della tua giornata",
+"Describe your whole day (AI estimates the active calories)":"Descrivi tutta la giornata (l'IA stima le calorie attive)",
+"e.g. 9000 steps, 1 h gym, cycled to work":"es. 9000 passi, 1 ora di palestra, bici per andare al lavoro"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -3603,7 +3647,18 @@ window.I18N = {
 "You have no account yet, so your data would not come along. Open the new address anyway?":"まだアカウントがないため、データは移りません。それでも新しいアドレスを開きますか？",
 "Or type this in Safari:":"または Safari にこう入力してください：",
 "Too many tries. Please wait a few minutes and try again.":"試行回数が多すぎます。数分待ってからもう一度お試しください。",
-"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker はホーム画面から普通のアプリのように使えます。"
+"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker はホーム画面から普通のアプリのように使えます。",
+"Show less":"閉じる",
+"Show all {n}":"{n} 個すべて表示",
+"Whole day":"1 日全体",
+"Workouts only":"トレーニングのみ",
+"Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not \"total\").":"時計や WHOOP の 1 日全体の<b>アクティブ</b>カロリーを入力してください：すべての動き、トレーニングを含む（\"合計\"ではなく）。",
+"Enter the <b>active</b> calories of each workout (not \"total\").":"各トレーニングの<b>アクティブ</b>カロリーを入力してください（\"合計\"ではなく）。",
+"Your normal day and training are already in your goal, so only extra activity raises it.":"普段の 1 日とトレーニングはすでに目標に含まれているので、追加の活動だけが目標を上げます。",
+"Extra activity that day ({n} kcal burned)":"その日の追加の活動（{n} kcal 消費）",
+"Activity of your day":"1 日の活動",
+"Describe your whole day (AI estimates the active calories)":"1 日全体を説明してください（AI がアクティブカロリーを推定）",
+"e.g. 9000 steps, 1 h gym, cycled to work":"例：9000 歩、ジム 1 時間、自転車通勤"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -4324,7 +4379,18 @@ window.I18N = {
 "You have no account yet, so your data would not come along. Open the new address anyway?":"Je hebt nog geen account, dus je gegevens zouden niet meegaan. Toch het nieuwe adres openen?",
 "Or type this in Safari:":"Of typ dit in Safari:",
 "Too many tries. Please wait a few minutes and try again.":"Te veel pogingen. Wacht een paar minuten en probeer het opnieuw.",
-"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker werkt als een gewone app, direct vanaf je beginscherm."
+"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker werkt als een gewone app, direct vanaf je beginscherm.",
+"Show less":"Minder tonen",
+"Show all {n}":"Alle {n} tonen",
+"Whole day":"Hele dag",
+"Workouts only":"Alleen trainingen",
+"Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not \"total\").":"Vul de <b>actieve</b> calorieën van je hele dag in van je horloge of WHOOP: alle beweging, trainingen inbegrepen (niet \"totaal\").",
+"Enter the <b>active</b> calories of each workout (not \"total\").":"Vul de <b>actieve</b> calorieën van elke training in (niet \"totaal\").",
+"Your normal day and training are already in your goal, so only extra activity raises it.":"Je normale dag en training zitten al in je doel; alleen extra activiteit verhoogt het.",
+"Extra activity that day ({n} kcal burned)":"Extra activiteit die dag ({n} kcal verbrand)",
+"Activity of your day":"Activiteit van je dag",
+"Describe your whole day (AI estimates the active calories)":"Beschrijf je hele dag (AI schat de actieve calorieën)",
+"e.g. 9000 steps, 1 h gym, cycled to work":"bijv. 9000 stappen, 1 uur gym, gefietst naar werk"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -5045,7 +5111,18 @@ window.I18N = {
 "You have no account yet, so your data would not come along. Open the new address anyway?":"Nie masz jeszcze konta, więc twoje dane nie przejdą. Mimo to otworzyć nowy adres?",
 "Or type this in Safari:":"Albo wpisz to w Safari:",
 "Too many tries. Please wait a few minutes and try again.":"Za dużo prób. Poczekaj kilka minut i spróbuj ponownie.",
-"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker działa jak zwykła aplikacja, prosto z ekranu początkowego."
+"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker działa jak zwykła aplikacja, prosto z ekranu początkowego.",
+"Show less":"Pokaż mniej",
+"Show all {n}":"Pokaż wszystkie ({n})",
+"Whole day":"Cały dzień",
+"Workouts only":"Tylko treningi",
+"Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not \"total\").":"Wpisz <b>aktywne</b> kalorie z całego dnia z zegarka lub WHOOP: cały ruch, z treningami (nie \"łącznie\").",
+"Enter the <b>active</b> calories of each workout (not \"total\").":"Wpisz <b>aktywne</b> kalorie każdego treningu (nie \"łącznie\").",
+"Your normal day and training are already in your goal, so only extra activity raises it.":"Twój zwykły dzień i trening są już w celu; tylko dodatkowa aktywność go podnosi.",
+"Extra activity that day ({n} kcal burned)":"Dodatkowa aktywność tego dnia ({n} kcal spalone)",
+"Activity of your day":"Aktywność z całego dnia",
+"Describe your whole day (AI estimates the active calories)":"Opisz cały dzień (AI oszacuje aktywne kalorie)",
+"e.g. 9000 steps, 1 h gym, cycled to work":"np. 9000 kroków, 1 h siłowni, rowerem do pracy"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -5766,7 +5843,18 @@ window.I18N = {
 "You have no account yet, so your data would not come along. Open the new address anyway?":"Ainda não tens conta, por isso os teus dados não viriam contigo. Abrir o novo endereço na mesma?",
 "Or type this in Safari:":"Ou escreve isto no Safari:",
 "Too many tries. Please wait a few minutes and try again.":"Demasiadas tentativas. Espera alguns minutos e tenta de novo.",
-"Food Tracker works like a normal app, right from your Home Screen.":"O Food Tracker funciona como uma app normal, diretamente do teu ecrã principal."
+"Food Tracker works like a normal app, right from your Home Screen.":"O Food Tracker funciona como uma app normal, diretamente do teu ecrã principal.",
+"Show less":"Mostrar menos",
+"Show all {n}":"Mostrar todas ({n})",
+"Whole day":"Dia inteiro",
+"Workouts only":"Só treinos",
+"Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not \"total\").":"Introduz as calorias <b>ativas</b> do teu dia inteiro do relógio ou WHOOP: todo o movimento, treinos incluídos (não \"total\").",
+"Enter the <b>active</b> calories of each workout (not \"total\").":"Introduz as calorias <b>ativas</b> de cada treino (não \"total\").",
+"Your normal day and training are already in your goal, so only extra activity raises it.":"O teu dia normal e o treino já estão na tua meta; só a atividade extra a aumenta.",
+"Extra activity that day ({n} kcal burned)":"Atividade extra nesse dia ({n} kcal queimadas)",
+"Activity of your day":"Atividade do teu dia",
+"Describe your whole day (AI estimates the active calories)":"Descreve o teu dia inteiro (a IA estima as calorias ativas)",
+"e.g. 9000 steps, 1 h gym, cycled to work":"ex. 9000 passos, 1 h de ginásio, bicicleta para o trabalho"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -6487,7 +6575,18 @@ window.I18N = {
 "You have no account yet, so your data would not come along. Open the new address anyway?":"У тебя ещё нет аккаунта, поэтому данные не переедут. Всё равно открыть новый адрес?",
 "Or type this in Safari:":"Или введи это в Safari:",
 "Too many tries. Please wait a few minutes and try again.":"Слишком много попыток. Подожди несколько минут и попробуй снова.",
-"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker работает как обычное приложение — прямо с экрана «Домой»."
+"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker работает как обычное приложение — прямо с экрана «Домой».",
+"Show less":"Свернуть",
+"Show all {n}":"Показать все {n}",
+"Whole day":"Весь день",
+"Workouts only":"Только тренировки",
+"Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not \"total\").":"Введи <b>активные</b> калории за весь день с часов или WHOOP: всё движение, включая тренировки (не \"всего\").",
+"Enter the <b>active</b> calories of each workout (not \"total\").":"Введи <b>активные</b> калории каждой тренировки (не \"всего\").",
+"Your normal day and training are already in your goal, so only extra activity raises it.":"Обычный день и тренировки уже входят в цель; её повышает только дополнительная активность.",
+"Extra activity that day ({n} kcal burned)":"Дополнительная активность в этот день (сожжено {n} ккал)",
+"Activity of your day":"Активность за день",
+"Describe your whole day (AI estimates the active calories)":"Опиши весь день (ИИ оценит активные калории)",
+"e.g. 9000 steps, 1 h gym, cycled to work":"напр. 9000 шагов, 1 ч зал, на велосипеде на работу"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -7208,7 +7307,18 @@ window.I18N = {
 "You have no account yet, so your data would not come along. Open the new address anyway?":"Henüz hesabın yok, bu yüzden verilerin taşınmaz. Yine de yeni adresi açmak istiyor musun?",
 "Or type this in Safari:":"Ya da bunu Safari'ye yaz:",
 "Too many tries. Please wait a few minutes and try again.":"Çok fazla deneme. Lütfen birkaç dakika bekleyip tekrar dene.",
-"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker, ana ekranından normal bir uygulama gibi çalışır."
+"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker, ana ekranından normal bir uygulama gibi çalışır.",
+"Show less":"Daha az göster",
+"Show all {n}":"{n} rozetin hepsini göster",
+"Whole day":"Tüm gün",
+"Workouts only":"Sadece antrenmanlar",
+"Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not \"total\").":"Saatinden veya WHOOP'tan tüm gününün <b>aktif</b> kalorisini gir: tüm hareketler, antrenmanlar dahil (\"toplam\" değil).",
+"Enter the <b>active</b> calories of each workout (not \"total\").":"Her antrenmanın <b>aktif</b> kalorisini gir (\"toplam\" değil).",
+"Your normal day and training are already in your goal, so only extra activity raises it.":"Normal günün ve antrenmanın zaten hedefinde; sadece ekstra aktivite onu artırır.",
+"Extra activity that day ({n} kcal burned)":"O günkü ekstra aktivite ({n} kcal yakıldı)",
+"Activity of your day":"Gününün aktivitesi",
+"Describe your whole day (AI estimates the active calories)":"Tüm gününü anlat (yapay zekâ aktif kaloriyi tahmin eder)",
+"e.g. 9000 steps, 1 h gym, cycled to work":"ör. 9000 adım, 1 saat spor salonu, işe bisikletle"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -7929,6 +8039,17 @@ window.I18N = {
 "You have no account yet, so your data would not come along. Open the new address anyway?":"你还没有账户，所以数据不会一起带走。仍要打开新地址吗？",
 "Or type this in Safari:":"或者在 Safari 中输入：",
 "Too many tries. Please wait a few minutes and try again.":"尝试次数过多。请等几分钟后再试。",
-"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker 就像普通应用一样，直接从主屏幕打开。"
+"Food Tracker works like a normal app, right from your Home Screen.":"Food Tracker 就像普通应用一样，直接从主屏幕打开。",
+"Show less":"收起",
+"Show all {n}":"显示全部 {n} 个",
+"Whole day":"全天",
+"Workouts only":"仅训练",
+"Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not \"total\").":"填写手表或 WHOOP 上全天的<b>活动</b>热量：所有活动，包括训练（不是\"总\"热量）。",
+"Enter the <b>active</b> calories of each workout (not \"total\").":"填写每次训练的<b>活动</b>热量（不是\"总\"热量）。",
+"Your normal day and training are already in your goal, so only extra activity raises it.":"你的日常活动和训练已经算在目标里，只有额外的活动才会提高目标。",
+"Extra activity that day ({n} kcal burned)":"当天额外活动（消耗 {n} 千卡）",
+"Activity of your day":"全天活动",
+"Describe your whole day (AI estimates the active calories)":"描述你的一整天（AI 估算活动热量）",
+"e.g. 9000 steps, 1 h gym, cycled to work":"例如：9000 步、健身 1 小时、骑车上班"
 }
 };

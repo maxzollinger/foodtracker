@@ -670,7 +670,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v60';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v63';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -894,13 +894,17 @@ function dayTotals(date) {
 const dayBurned = date => db.exercises.filter(e => e.date === date).reduce((a, e) => a + num(e.kcal), 0);
 // Exercise the base goal already pays for each day: the step from "mostly sitting" (x1.2) to the chosen
 // workouts-per-week level. Logged workouts up to this amount don't raise the goal again.
-function includedExercise() { const t = targets(), p = db.profile; return p ? r0(t.bmr * ((ACT[p.workouts] || 1.375) - 1.2)) : 0; }
+// What people log: the active calories of the WHOLE day (watch/WHOOP: all movement incl. workouts; default)
+// or only their workouts. The base goal already contains normal daily movement and the usual training:
+// for a whole-day number that is everything above resting + digestion (x1.1), for workouts the step from x1.2.
+const burnWholeDay = () => (db.settings.burnType || 'day') === 'day';
+function includedExercise() { const t = targets(), p = db.profile; return p ? r0(t.bmr * ((ACT[p.workouts] || 1.375) - (burnWholeDay() ? 1.1 : 1.2))) : 0; }
 // The goals for one day. "smart": watches overestimate, so count 75% of what was logged, and only the part
 // beyond the training already in the base goal is added. "all": add everything. "off": never add.
 // Extra energy is given back mostly as carbs (75%) and some fat (25%); protein stays the same.
 function dayGoals(date) {
   const t = targets(), burned = r0(dayBurned(date)), mode = db.settings.burnMode, included = includedExercise();
-  const extra = !burned || mode === 'off' ? 0 : mode === 'all' ? burned : Math.max(0, r0(burned * 0.75 - included));
+  const extra = !burned || mode === 'off' ? 0 : mode === 'all' ? (burnWholeDay() ? Math.max(0, burned - included) : burned) : Math.max(0, r0(burned * 0.75 - included));
   const keto = db.profile && planOf(db.profile).id === 'keto';
   return { ...t, kcal: t.kcal + extra, carbs: t.carbs + (keto ? 0 : r0(extra * 0.75 / 4)), fat: t.fat + r0(extra * (keto ? 1 : 0.25) / 9), burned, extra, included };
 }
@@ -2055,12 +2059,15 @@ const waterLog = () => (db.water = db.water || {});
 function waterAuto(d = sel) {
   const p = db.profile; if (!p) return { total: 2500, parts: [] };
   const w = currentWeight(), parts = [[T('Body weight {w} kg', { w }), Math.round(w * 33)]];
-  const train = { '0-2': 0, '3-5': 350, '6+': 600 }[p.workouts] || 0;
-  if (train) parts.push([T('Training {n}× a week', { n: p.workouts }), train]);
+  // Training: the usual weekly allowance, or, on days with logged exercise, that exercise instead
+  // (not both, so the same training isn't counted twice). About 0.6 ml per burned kcal, at most +1 L.
+  const train = { '0-2': 0, '3-5': 350, '6+': 600 }[p.workouts] || 0, burned = dayBurned(d);
+  // Whole-day numbers: only activity beyond a normal day counts as extra; workouts count fully
+  const ex = Math.min(1000, Math.round(burnWholeDay() ? Math.max(0, burned - includedExercise()) * 0.8 : burned * 0.6));
+  if (ex > train) parts.push([burnWholeDay() ? T('Extra activity that day ({n} kcal burned)', { n: r0(burned) }) : T('Exercise that day ({n} kcal)', { n: r0(burned) }), ex]);
+  else if (train) parts.push([T('Training {n}× a week', { n: p.workouts }), train]);
   const pl = planOf(p);
   if (['protein', 'keto', 'bulk', 'lean', 'dirty', 'recomp'].includes(pl.id) || p.goal === 'lean') parts.push([T('Your goal: {g}', { g: T(pl.name) }), 250]);
-  const burned = dayBurned(d), ex = Math.min(1000, Math.round(burned * 0.6));
-  if (ex) parts.push([T('Exercise that day ({n} kcal)', { n: r0(burned) }), ex]);
   return { total: clamp(Math.round(parts.reduce((a, x) => a + x[1], 0) / 250) * 250, 1500, 5000), parts };
 }
 const waterGoal = (d = sel) => db.settings.waterGoal || waterAuto(d).total;
@@ -2145,7 +2152,7 @@ async function weeklyCheckin() {
   const stats = `Week ${days[0]} to ${sun}. Food logged on ${logged.length} of 7 days.
 Averages on logged days: ${avg(d => dayTotals(d).kcal)} kcal (goal ${avg(d => dayGoals(d).kcal)}), protein ${avg(d => dayTotals(d).protein)} g (goal ${avg(d => dayGoals(d).protein)}), carbs ${avg(d => dayTotals(d).carbs)} g, fat ${avg(d => dayTotals(d).fat)} g.
 Days within ±10% of the calorie goal: ${logged.filter(d => Math.abs(dayTotals(d).kcal - dayGoals(d).kcal) <= dayGoals(d).kcal * 0.1).length}. Days that hit the protein goal: ${logged.filter(d => dayTotals(d).protein >= dayGoals(d).protein * 0.95).length}.
-Health score of the week: ${healthAvg(db.meals.filter(m => days.includes(m.date))) ?? 'n/a'}/10. Calories burned (logged): ${days.reduce((a, d) => a + dayBurned(d), 0)} kcal.
+Health score of the week: ${healthAvg(db.meals.filter(m => days.includes(m.date))) ?? 'n/a'}/10. Calories burned (logged, ${burnWholeDay() ? 'whole-day active calories' : 'workouts only'}): ${days.reduce((a, d) => a + dayBurned(d), 0)} kcal in total.
 Weight: ${w1 == null ? 'no weigh-ins' : w0 == null || w0 === w1 ? `${w1} kg` : `${w0} → ${w1} kg (${w1 - w0 > 0 ? '+' : ''}${r1(w1 - w0)} kg this week)`}.
 Water: ${wd.length ? `${avg(d => waterOn(d))} ml on average on ${wd.length} days (goal ${waterGoal()} ml)` : 'not tracked'}.
 Best day: ${(() => { const sc = d => Math.min(1, dayTotals(d).protein / Math.max(1, dayGoals(d).protein)) - Math.abs(dayTotals(d).kcal - dayGoals(d).kcal) / Math.max(1, dayGoals(d).kcal); const b = [...logged].sort((x, y) => sc(y) - sc(x))[0]; return `${dt(b).toLocaleDateString('en-GB', { weekday: 'long' })} (${r0(dayTotals(b).kcal)} kcal, ${r0(dayTotals(b).protein)} g protein)`; })()}.`;
@@ -2200,7 +2207,9 @@ function burnNote(g) {
 }
 function openBurnSheet() {
   const already = r0(dayBurned(sel)), isToday = sel === iso();
-  sheet(`<h3>${T('Calories burned')}</h3><p class="muted" style="margin-top:4px">${T('Use <b>active</b> calories from your watch, gym machine or fitness app (not "total").')}${db.settings.burnMode === 'smart' ? ' ' + T('Your normal training is already in your goal, so only extra activity raises it.') : ''}</p>
+  sheet(`<h3>${T('Calories burned')}</h3>
+    <div class="seg" style="margin-top:10px">${[['day', N('Whole day')], ['workout', N('Workouts only')]].map(([v, l]) => `<button data-bt="${v}" class="${(db.settings.burnType || 'day') === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>
+    <p class="muted small" style="margin-top:8px">${burnWholeDay() ? T('Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not "total").') : T('Enter the <b>active</b> calories of each workout (not "total").')} ${T('Your normal day and training are already in your goal, so only extra activity raises it.')}</p>
     ${already ? `<p class="small" style="margin:0">${T('Already logged: <b>{n} kcal</b>. This adds on top.', { n: already })}</p>
       <div class="list" style="box-shadow:none;background:var(--chip);margin:10px 0 0">${db.exercises.filter(e => e.date === sel).map(e =>
         `<div class="li"><span class="ic">🏋️</span><span class="grow">${esc(e.name)}</span><b>${r0(e.kcal)} kcal</b><button class="muted" data-delex="${e.id}" aria-label="${T('Delete')}" style="padding:0 4px">✕</button></div>`).join('')}</div>` : ''}
@@ -2211,6 +2220,7 @@ function openBurnSheet() {
     <button class="btn outline" id="bAi" style="margin-top:10px">✨ ${T('Not sure? Let AI estimate it')}</button>`, s => {
     const inp = s.querySelector('#bKcal'); inp.focus();
     s.querySelectorAll('[data-q]').forEach(b => b.onclick = () => { inp.value = r0(num(inp.value) + +b.dataset.q); });
+    s.querySelectorAll('[data-bt]').forEach(b => b.onclick = () => { db.settings.burnType = b.dataset.bt; save(); openBurnSheet(); if (tab === 'home') renderHome(); });
     s.querySelector('#bAi').onclick = () => openExercise(null);
     s.querySelectorAll('[data-delex]').forEach(b => b.onclick = () => { db.exercises = db.exercises.filter(x => x.id !== b.dataset.delex); save(); renderHome(); openBurnSheet(); });
     s.querySelector('#bSave').onclick = () => {
@@ -2225,9 +2235,10 @@ function openBurnSheet() {
 }
 function openExercise(id) {
   const ex = id ? db.exercises.find(e => e.id === id) : null;
-  sheet(`<h3>${ex ? T('Exercise') : T('Log exercise')}</h3>
-    <label class="lbl">${T('Describe it (AI estimates calories)')}</label>
-    <div class="row"><input id="eTxt" placeholder="${T('e.g. 45 min weight training, intense')}"><button class="btn sm" id="eAi">✨</button></div>
+  const whole = burnWholeDay();
+  sheet(`<h3>${ex ? T('Exercise') : whole ? T('Activity of your day') : T('Log exercise')}</h3>
+    <label class="lbl">${whole ? T('Describe your whole day (AI estimates the active calories)') : T('Describe it (AI estimates calories)')}</label>
+    <div class="row"><input id="eTxt" placeholder="${whole ? T('e.g. 9000 steps, 1 h gym, cycled to work') : T('e.g. 45 min weight training, intense')}"><button class="btn sm" id="eAi">✨</button></div>
     <div class="row"><div class="grow"><label class="lbl">${T('Name')}</label><input id="eName" value="${esc(ex?.name || '')}" placeholder="${T('Running')}"></div>
       <div style="width:90px"><label class="lbl">${T('Minutes')}</label><input id="eMin" inputmode="numeric" value="${ex?.minutes || ''}"></div>
       <div style="width:100px"><label class="lbl">${T('Calories')}</label><input id="eKcal" inputmode="numeric" value="${ex ? r0(ex.kcal) : ''}"></div></div>
@@ -2238,7 +2249,9 @@ function openExercise(id) {
       const b = s.querySelector('#eAi'); b.innerHTML = '<span class="spin"></span>';
       try {
         const p = db.profile || {};
-        const r = await askAI([{ text: `Estimate calories burned. Person: ${currentWeight() || 75} kg, ${p.sex === 'f' ? 'female' : 'male'}. Activity: "${t}". Return ONLY JSON {"name": "short activity name in ${langInfo().ai}", "minutes": 0, "kcal": 0}` }]);
+        const r = await askAI([{ text: whole
+          ? `Estimate the ACTIVE calories (energy above resting, like a fitness watch's "active energy") burned over this person's WHOLE day, including normal walking and all workouts. Person: ${currentWeight() || 75} kg, ${p.sex === 'f' ? 'female' : 'male'}. Their day: "${t}". Return ONLY JSON {"name": "short summary of the day in ${langInfo().ai}", "minutes": 0, "kcal": 0} (minutes = total workout minutes, 0 if none)`
+          : `Estimate calories burned. Person: ${currentWeight() || 75} kg, ${p.sex === 'f' ? 'female' : 'male'}. Activity: "${t}". Return ONLY JSON {"name": "short activity name in ${langInfo().ai}", "minutes": 0, "kcal": 0}` }]);
         s.querySelector('#eName').value = r.name || t; s.querySelector('#eMin').value = r0(num(r.minutes)) || ''; s.querySelector('#eKcal').value = r0(num(r.kcal));
       } catch (e) { toast(aiMsg(e)); }
       b.textContent = '✨';
@@ -2904,7 +2917,7 @@ Calories: ${r0(tot.kcal)} eaten of ${g.kcal} kcal goal → ${left('kcal')}
 Protein: ${r0(tot.protein)} of ${g.protein} g → ${left('protein')}
 Carbs: ${r0(tot.carbs)} of ${g.carbs} g → ${left('carbs')}
 Fats: ${r0(tot.fat)} of ${g.fat} g → ${left('fat')}
-Calories burned today: ${g.burned} kcal → ${g.extra} kcal added to today's goal (mode "${db.settings.burnMode}"; normal training of ~${g.included} kcal/day is already part of the base goal)
+Calories burned today: ${g.burned} kcal (${burnWholeDay() ? 'active calories of the WHOLE day from their watch: all movement incl. workouts' : 'workouts only'}) → ${g.extra} kcal added to today's goal (mode "${db.settings.burnMode}"; ~${g.included} kcal/day of normal ${burnWholeDay() ? 'daily activity and training' : 'training'} is already part of the base goal)
 Health score today: ${healthAvg(todayMeals) ?? 'no meals yet'}/10
 Water today: ${waterOn(today)} of ${waterGoal(today)} ml (${db.settings.waterGoal ? 'goal set by the user' : 'personal goal from body weight, training, goal and the exercise of today'})
 Sugar ${r0(dayExtras(today).sugar)} g, fiber ${r0(dayExtras(today).fiber)} g, sodium ${r0(dayExtras(today).sodium)} mg today (known for ${dayExtras(today).known} of ${dayExtras(today).meals} meals)${pend ? `\nStill analysing: ${pend} food photo(s), not counted yet` : ''}
