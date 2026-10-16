@@ -848,7 +848,11 @@ window.I18N = {
 "Not sure what to ask? Tap a suggestion to start a conversation.":"Weißt du nicht, was du fragen sollst? Tippe auf einen Vorschlag, um zu starten.",
 "Photos and files":"Fotos und Dateien",
 "Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Tippe auf +, um Fotos oder Dateien zu senden, zum Beispiel eine Speisekarte oder ein Nährwertetikett. Der Coach liest sie und hilft dir bei der Wahl.",
-"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Schreib deine Frage oder tippe auf das Mikrofon, um zu sprechen. Jeden Sonntag erscheint hier dein Wochen-Check-in."
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Schreib deine Frage oder tippe auf das Mikrofon, um zu sprechen. Jeden Sonntag erscheint hier dein Wochen-Check-in.",
+"Portion eaten":"Gegessene Portion",
+"No internet. Saved, it will be analysed automatically.":"Kein Internet. Gespeichert, es wird automatisch analysiert.",
+"Waiting for internet":"Wartet auf Internet",
+"It will be analysed automatically as soon as you are online.":"Wird automatisch analysiert, sobald du online bist."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1698,7 +1702,11 @@ window.I18N = {
 "Not sure what to ask? Tap a suggestion to start a conversation.":"¿No sabes qué preguntar? Toca una sugerencia para empezar.",
 "Photos and files":"Fotos y archivos",
 "Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Toca + para enviar fotos o archivos, como la carta de un restaurante o una etiqueta nutricional. El coach los lee y te ayuda a elegir.",
-"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Escribe tu pregunta o toca el micrófono para hablar. Cada domingo aparece aquí tu resumen semanal."
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Escribe tu pregunta o toca el micrófono para hablar. Cada domingo aparece aquí tu resumen semanal.",
+"Portion eaten":"Porción comida",
+"No internet. Saved, it will be analysed automatically.":"Sin internet. Guardado, se analizará automáticamente.",
+"Waiting for internet":"Esperando internet",
+"It will be analysed automatically as soon as you are online.":"Se analizará automáticamente en cuanto tengas conexión."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -2548,7 +2556,11 @@ window.I18N = {
 "Not sure what to ask? Tap a suggestion to start a conversation.":"Tu ne sais pas quoi demander ? Touche une suggestion pour commencer.",
 "Photos and files":"Photos et fichiers",
 "Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Touche + pour envoyer des photos ou des fichiers, comme la carte d'un restaurant ou une étiquette nutritionnelle. Le coach les lit et t'aide à choisir.",
-"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Écris ta question ou touche le micro pour parler. Chaque dimanche, ton bilan de la semaine apparaît ici."
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Écris ta question ou touche le micro pour parler. Chaque dimanche, ton bilan de la semaine apparaît ici.",
+"Portion eaten":"Portion mangée",
+"No internet. Saved, it will be analysed automatically.":"Pas d'internet. Enregistré, ce sera analysé automatiquement.",
+"Waiting for internet":"En attente d'internet",
+"It will be analysed automatically as soon as you are online.":"Ce sera analysé automatiquement dès que tu seras en ligne."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -3398,7 +3410,11 @@ window.I18N = {
 "Not sure what to ask? Tap a suggestion to start a conversation.":"Non sai cosa chiedere? Tocca un suggerimento per iniziare.",
 "Photos and files":"Foto e file",
 "Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Tocca + per inviare foto o file, come il menu di un ristorante o un'etichetta nutrizionale. Il coach li legge e ti aiuta a scegliere.",
-"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Scrivi la tua domanda o tocca il microfono per parlare. Ogni domenica qui appare il tuo check-in settimanale."
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Scrivi la tua domanda o tocca il microfono per parlare. Ogni domenica qui appare il tuo check-in settimanale.",
+"Portion eaten":"Porzione mangiata",
+"No internet. Saved, it will be analysed automatically.":"Nessuna connessione. Salvato, verrà analizzato automaticamente.",
+"Waiting for internet":"In attesa di internet",
+"It will be analysed automatically as soon as you are online.":"Verrà analizzato automaticamente appena sei online."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -4248,7 +4264,11 @@ window.I18N = {
 "Not sure what to ask? Tap a suggestion to start a conversation.":"何を聞けばいいか迷ったら、おすすめをタップして始めましょう。",
 "Photos and files":"写真とファイル",
 "Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"+ をタップすると、レストランのメニューや栄養成分表示などの写真やファイルを送れます。コーチが読み取って選ぶのを手伝います。",
-"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"質問を入力するか、マイクをタップして話しかけましょう。毎週日曜日にここで週間チェックインが届きます。"
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"質問を入力するか、マイクをタップして話しかけましょう。毎週日曜日にここで週間チェックインが届きます。",
+"Portion eaten":"食べた量",
+"No internet. Saved, it will be analysed automatically.":"インターネットに接続されていません。保存したので、自動で分析されます。",
+"Waiting for internet":"インターネット接続を待っています",
+"It will be analysed automatically as soon as you are online.":"オンラインになると自動で分析されます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -5098,7 +5118,11 @@ window.I18N = {
 "Not sure what to ask? Tap a suggestion to start a conversation.":"Weet je niet wat je moet vragen? Tik op een suggestie om te beginnen.",
 "Photos and files":"Foto's en bestanden",
 "Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Tik op + om foto's of bestanden te sturen, zoals een restaurantmenu of een voedingsetiket. De coach leest ze en helpt je kiezen.",
-"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Typ je vraag of tik op de microfoon om te praten. Elke zondag verschijnt hier je wekelijkse check-in."
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Typ je vraag of tik op de microfoon om te praten. Elke zondag verschijnt hier je wekelijkse check-in.",
+"Portion eaten":"Gegeten portie",
+"No internet. Saved, it will be analysed automatically.":"Geen internet. Opgeslagen, het wordt automatisch geanalyseerd.",
+"Waiting for internet":"Wacht op internet",
+"It will be analysed automatically as soon as you are online.":"Wordt automatisch geanalyseerd zodra je online bent."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -5948,7 +5972,11 @@ window.I18N = {
 "Not sure what to ask? Tap a suggestion to start a conversation.":"Nie wiesz, o co zapytać? Stuknij sugestię, aby zacząć.",
 "Photos and files":"Zdjęcia i pliki",
 "Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Stuknij +, aby wysłać zdjęcia lub pliki, np. menu restauracji albo etykietę z wartościami odżywczymi. Coach je przeczyta i pomoże wybrać.",
-"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Wpisz pytanie albo stuknij mikrofon, aby mówić. W każdą niedzielę pojawia się tu Twoje tygodniowe podsumowanie."
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Wpisz pytanie albo stuknij mikrofon, aby mówić. W każdą niedzielę pojawia się tu Twoje tygodniowe podsumowanie.",
+"Portion eaten":"Zjedzona porcja",
+"No internet. Saved, it will be analysed automatically.":"Brak internetu. Zapisano, zostanie przeanalizowane automatycznie.",
+"Waiting for internet":"Czeka na internet",
+"It will be analysed automatically as soon as you are online.":"Zostanie przeanalizowane automatycznie, gdy będziesz online."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -6798,7 +6826,11 @@ window.I18N = {
 "Not sure what to ask? Tap a suggestion to start a conversation.":"Não sabe o que perguntar? Toque numa sugestão para começar.",
 "Photos and files":"Fotos e ficheiros",
 "Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Toque em + para enviar fotos ou ficheiros, como o menu de um restaurante ou um rótulo nutricional. O coach lê-os e ajuda-o a escolher.",
-"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Escreva a sua pergunta ou toque no microfone para falar. Todos os domingos o seu resumo semanal aparece aqui."
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Escreva a sua pergunta ou toque no microfone para falar. Todos os domingos o seu resumo semanal aparece aqui.",
+"Portion eaten":"Porção comida",
+"No internet. Saved, it will be analysed automatically.":"Sem internet. Guardado, será analisado automaticamente.",
+"Waiting for internet":"À espera de internet",
+"It will be analysed automatically as soon as you are online.":"Será analisado automaticamente assim que estiver online."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -7648,7 +7680,11 @@ window.I18N = {
 "Not sure what to ask? Tap a suggestion to start a conversation.":"Не знаете, что спросить? Нажмите на подсказку, чтобы начать.",
 "Photos and files":"Фото и файлы",
 "Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Нажмите +, чтобы отправить фото или файлы, например меню ресторана или этикетку с составом. Коуч прочитает их и поможет выбрать.",
-"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Напишите вопрос или нажмите на микрофон, чтобы говорить. Каждое воскресенье здесь появляется ваш недельный отчёт."
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Напишите вопрос или нажмите на микрофон, чтобы говорить. Каждое воскресенье здесь появляется ваш недельный отчёт.",
+"Portion eaten":"Съеденная порция",
+"No internet. Saved, it will be analysed automatically.":"Нет интернета. Сохранено, анализ запустится автоматически.",
+"Waiting for internet":"Ждём интернет",
+"It will be analysed automatically as soon as you are online.":"Анализ запустится автоматически, как только появится интернет."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -8498,7 +8534,11 @@ window.I18N = {
 "Not sure what to ask? Tap a suggestion to start a conversation.":"Ne soracağını bilmiyor musun? Başlamak için bir öneriye dokun.",
 "Photos and files":"Fotoğraflar ve dosyalar",
 "Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Restoran menüsü veya besin etiketi gibi fotoğraf ya da dosya göndermek için + simgesine dokun. Koç bunları okur ve seçmene yardım eder.",
-"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Sorunu yaz veya konuşmak için mikrofona dokun. Her pazar haftalık değerlendirmen burada görünür."
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Sorunu yaz veya konuşmak için mikrofona dokun. Her pazar haftalık değerlendirmen burada görünür.",
+"Portion eaten":"Yenen porsiyon",
+"No internet. Saved, it will be analysed automatically.":"İnternet yok. Kaydedildi, otomatik olarak analiz edilecek.",
+"Waiting for internet":"İnternet bekleniyor",
+"It will be analysed automatically as soon as you are online.":"Çevrimiçi olduğunda otomatik olarak analiz edilecek."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -9348,6 +9388,10 @@ window.I18N = {
 "Not sure what to ask? Tap a suggestion to start a conversation.":"不知道问什么？点一个建议开始对话。",
 "Photos and files":"照片和文件",
 "Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"点 + 可以发送照片或文件，比如餐厅菜单或营养标签。教练会读取并帮你选择。",
-"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"输入你的问题，或点麦克风说话。每周日你的每周回顾会显示在这里。"
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"输入你的问题，或点麦克风说话。每周日你的每周回顾会显示在这里。",
+"Portion eaten":"吃了多少",
+"No internet. Saved, it will be analysed automatically.":"没有网络。已保存，联网后会自动分析。",
+"Waiting for internet":"等待网络",
+"It will be analysed automatically as soon as you are online.":"联网后会自动分析。"
 }
 };

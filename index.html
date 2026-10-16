@@ -272,6 +272,15 @@ a{color:inherit}
 .stepper{display:flex;align-items:center;gap:4px;background:var(--card);border-radius:999px;padding:4px;box-shadow:inset 0 0 0 1.5px var(--line);flex:none}
 .stepper button{width:32px;height:32px;border-radius:50%;font-size:20px;font-weight:600}
 .stepper b{min-width:28px;text-align:center}
+.portion{display:flex;align-items:center;gap:10px;margin:0 0 14px}
+.pchips{display:flex;gap:6px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
+.pchips::-webkit-scrollbar{display:none}
+.stepper.sm{padding:2px}
+.stepper.sm button{width:28px;height:28px;font-size:18px}
+.stepper.sm b{min-width:40px;font-size:14px}
+.pchips button{flex:1 1 0;min-width:0;padding:8px 6px;border-radius:12px;background:var(--chip);font-weight:700;font-size:14px;transition:background .15s,color .15s}
+.pchips button.on{background:var(--ink);color:var(--on-ink)}
+.ptag{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;background:var(--chip);font-size:12px;font-weight:700;vertical-align:2px}
 .bigcal{display:flex;align-items:center;gap:14px;padding:16px 18px;width:100%;text-align:left}
 .bigcal .ic{width:48px;height:48px;border-radius:14px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:24px}
 .dmac{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -732,7 +741,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v79';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v80';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -758,6 +767,7 @@ const idb = (() => {
     set: (k, v) => run('readwrite', s => s.put(v, k)).catch(() => {}),
     del: k => run('readwrite', s => s.delete(k)).catch(() => {}),
     clear: () => run('readwrite', s => s.clear()).catch(() => {}),
+    kvGet: k => run('readonly', s => s.get(k), 'kv').catch(() => null),
     kvSet: (k, v) => run('readwrite', s => s.put(v, k), 'kv'),
     kvDel: k => run('readwrite', s => s.delete(k), 'kv')
   };
@@ -1028,6 +1038,8 @@ function targets() {
   for (const k of ['kcal', 'protein', 'carbs', 'fat']) if (num(db.overrides[k]) > 0) t[k] = r0(num(db.overrides[k]));
   return t;
 }
+const PORTIONS = [0.25, 0.5, 0.75, 1, 1.5, 2];
+const fmtPortion = v => ({ 0.25: '¼', 0.5: '½', 0.75: '¾', 1: '1×', 1.25: '1¼×', 1.5: '1½×', 1.75: '1¾×', 2: '2×' })[v] || `${+v.toFixed(2)}×`;
 function mealTotals(m) {
   const s = m.servings || 1, t = { kcal: 0, protein: 0, carbs: 0, fat: 0 };
   for (const it of m.items) for (const k in t) t[k] += num(it[k]) * s;
@@ -1233,9 +1245,12 @@ function renderHome() {
     if (en.kind === 'pending') {
       const p = en.p;
       return `<div class="entry"><div class="thumb">${p.preview ? `<img src="${p.preview}" alt="">` : '💬'}
-        ${p.status === 'analyzing' ? `<div class="ov" data-pct="${p.id}">${r0(p.pct)}%</div>` : ''}</div>
+        ${p.status === 'analyzing' ? `<div class="ov" data-pct="${p.id}">${r0(p.pct)}%</div>` : p.status === 'waiting' ? '<div class="ov">⏳</div>' : ''}</div>
         <div class="einfo">${p.status === 'analyzing'
           ? `<div class="ename">${T('Analyzing food…')}</div><div class="skel" style="width:80%"></div><div class="skel" style="width:55%"></div><div class="small muted">${T("We'll notify you when done")}</div>`
+          : p.status === 'waiting'
+          ? `<div class="ename">${T('Waiting for internet')}</div><div class="small muted">${T('It will be analysed automatically as soon as you are online.')}</div>
+             <div class="row"><button class="chipbtn" onclick="removePending('${p.id}')">${T('Remove')}</button></div>`
           : `<div class="ename" style="color:var(--bad)">${T("Couldn't analyze")}</div><div class="small muted">${esc(p.error)}</div>
              <div class="row"><button class="chipbtn" onclick="retryPending('${p.id}')">${T('Try again')}</button><button class="chipbtn" onclick="removePending('${p.id}')">${T('Remove')}</button></div>`}
         </div></div>`;
@@ -1248,7 +1263,7 @@ function renderHome() {
     }
     const m = en.m, mt = mealTotals(m);
     return `<button class="entry" onclick="openMeal('${m.id}')"><div class="thumb">${m.photo ? `<img data-photo="${m.id}" alt="">` : (m.source === 'barcode' ? '🏷️' : '🍽️')}</div>
-      <div class="einfo"><div class="spread"><span class="ename">${esc(m.name)}</span><span class="etime">${esc(m.time || '')}</span></div>
+      <div class="einfo"><div class="spread"><span class="ename">${esc(m.name)}${(m.servings || 1) !== 1 ? `<span class="ptag">${fmtPortion(m.servings)}</span>` : ''}</span><span class="etime">${esc(m.time || '')}</span></div>
       <div class="ecal">🔥 ${T('{n} calories', { n: r0(mt.kcal) })}</div>
       <div class="emac"><span>🍗 ${r0(mt.protein)}g</span><span>🌾 ${r0(mt.carbs)}g</span><span>🥑 ${r0(mt.fat)}g</span>${mealHealth(m) ? `<span style="color:${healthColor(mealHealth(m))}">💚 ${mealHealth(m)}</span>` : ''}</div></div></button>`;
   }).join('');
@@ -1558,13 +1573,35 @@ const normItems = items => (items || []).map(it => ({
 }));
 const healthOf = v => { const n = r0(num(v)); return n >= 1 && n <= 10 ? n : null; };
 
+/* Photos and descriptions waiting to be analysed are also kept on the phone (IndexedDB), so nothing is lost
+   without internet or when the app is closed. They're analysed automatically once the phone is online. */
+function savePendingQ() {
+  const q = pending.map(({ id, date, time, preview, parts, status, error }) => ({ id, date, time, preview, parts, status: status === 'error' ? 'error' : 'waiting', error }));
+  idb.kvSet('ft_pending', q).catch(() => {});
+}
+// Really offline? (the phone's own flag, plus a tiny request to the server to be sure)
+async function isOffline() {
+  if (!navigator.onLine) return true;
+  if (!SERVER_URL) return false;
+  try { await fetch(SERVER_URL + '/', { mode: 'no-cors', cache: 'no-store' }); return false; } catch { return true; }
+}
+let qBusy = false;
+async function processQueue() {
+  if (qBusy || !navigator.onLine || !pending.some(p => p.status === 'waiting')) return;
+  qBusy = true;
+  try {
+    for (const p of pending.filter(x => x.status === 'waiting')) { await runAnalysis(p); if (p.status === 'waiting') break; }   // still offline: try later
+  } finally { qBusy = false; }
+}
 function addPending(preview, parts) {
   const p = { id: uid(), date: sel, time: nowTime(), preview, parts, pct: 2, status: 'analyzing' };
-  pending.unshift(p);
+  pending.unshift(p); savePendingQ();
   if (tab !== 'home') go('home'); else renderHome();
+  if (!navigator.onLine) { p.status = 'waiting'; toast(T('No internet. Saved, it will be analysed automatically.')); renderHome(); return; }
   runAnalysis(p);
 }
 async function runAnalysis(p) {
+  if (!navigator.onLine) { p.status = 'waiting'; if (tab === 'home') renderHome(); return; }
   p.status = 'analyzing'; p.pct = 2;
   clearInterval(p.timer);
   p.timer = setInterval(() => {
@@ -1583,12 +1620,18 @@ async function runAnalysis(p) {
     clearInterval(p.timer); pending = pending.filter(x => x !== p);
     toast(T('✓ {name} logged', { name: m.name }));
   } catch (e) {
-    clearInterval(p.timer); p.status = 'error'; p.error = aiMsg(e);
+    clearInterval(p.timer);
+    if (e.message !== 'NOKEY' && await isOffline()) p.status = 'waiting';   // no internet: kept and tried again later
+    else { p.status = 'error'; p.error = aiMsg(e); }
   }
+  savePendingQ();
   if (tab === 'home') renderHome();
 }
 function retryPending(id) { const p = pending.find(x => x.id === id); if (p) runAnalysis(p); }
-function removePending(id) { pending = pending.filter(x => x.id !== id); renderHome(); }
+function removePending(id) { pending = pending.filter(x => x.id !== id); savePendingQ(); renderHome(); }
+// Back online, back in the app, or every half minute: analyse what is waiting
+window.addEventListener('online', () => setTimeout(processQueue, 800));
+setInterval(processQueue, 30e3);
 
 async function onFoodPhoto(file) {
   if (!file) return;
@@ -3048,8 +3091,10 @@ function renderDetail() {
       <div class="herobar"><button class="circ" id="dBack">‹</button><span class="row" style="gap:10px"><button class="circ" id="dFav" aria-label="${T('Save to favorites')}">${isFav(m) ? '★' : '☆'}</button>${det.isNew ? '' : '<button class="circ" id="dDel">🗑</button>'}</span></div></div>
     <div class="dbody">
       <div class="spread"><span class="etime">${esc(fmtDate(m.date, { weekday: 'short', day: 'numeric', month: 'short' }))} · ${esc(m.time || '')}</span></div>
-      <div class="spread" style="margin:8px 0 14px"><textarea class="tinput grow" id="dName" rows="1" placeholder="${T('Meal name')}">${esc(m.name)}</textarea>
-        <div class="stepper"><button id="sMinus">−</button><b id="sVal">${m.servings}</b><button id="sPlus">+</button></div></div>
+      <div class="spread" style="margin:8px 0 10px"><textarea class="tinput grow" id="dName" rows="1" placeholder="${T('Meal name')}">${esc(m.name)}</textarea></div>
+      <div class="spread" style="margin-bottom:8px"><span class="small muted" style="font-weight:600">${T('Portion eaten')}</span>
+        <div class="stepper sm"><button id="sMinus" aria-label="−">−</button><b id="sVal"></b><button id="sPlus" aria-label="+">+</button></div></div>
+      <div class="portion"><div class="pchips" id="pChips">${PORTIONS.map(v => `<button data-por="${v}">${fmtPortion(v)}</button>`).join('')}</div></div>
       <div id="dTot"></div>
       <div class="spread"><div class="h2">${T('Ingredients')}</div><button class="chipbtn" id="iAdd">＋ ${T('Add')}</button></div>
       <div id="dIng"></div>
@@ -3064,9 +3109,17 @@ function renderDetail() {
   const nameBox = pg.querySelector('#dName'), fit = () => { nameBox.style.height = 'auto'; nameBox.style.height = nameBox.scrollHeight + 'px'; };
   nameBox.oninput = e => { m.name = e.target.value.replace(/\n/g, ' '); fit(); };
   requestAnimationFrame(fit);
-  const stepS = d => { m.servings = Math.max(0.5, r1(m.servings + d)); pg.querySelector('#sVal').textContent = m.servings; renderDetTotals(); };
-  pg.querySelector('#sMinus').onclick = () => stepS(-0.5);
-  pg.querySelector('#sPlus').onclick = () => stepS(0.5);
+  // Portion eaten: the whole meal counts × this (½ = ate half), the ingredients stay as they are
+  const setPor = v => {
+    m.servings = Math.min(10, Math.max(0.25, Math.round(v * 4) / 4));
+    pg.querySelector('#sVal').textContent = fmtPortion(m.servings);
+    pg.querySelectorAll('[data-por]').forEach(b => b.classList.toggle('on', +b.dataset.por === m.servings));
+    renderDetTotals();
+  };
+  pg.querySelectorAll('[data-por]').forEach(b => b.onclick = () => setPor(+b.dataset.por));
+  pg.querySelector('#sMinus').onclick = () => setPor(m.servings - 0.25);
+  pg.querySelector('#sPlus').onclick = () => setPor(m.servings + 0.25);
+  setPor(m.servings || 1);
   pg.querySelector('#iAdd').onclick = () => { m.items.push(setBase({ name: '', grams: 100, kcal: 0, protein: 0, carbs: 0, fat: 0 })); det.open = m.items.length - 1; renderIngredients(); renderDetTotals(); };
   pg.querySelector('#dFix').onclick = openFixSheet;
   pg.querySelector('#dDone').onclick = () => closeDetail(true);
@@ -3400,7 +3453,7 @@ const PLAN_COACH = {
 };
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
-- Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Tap a logged meal to see, edit, delete, save it as a favorite, or ask you about it.
+- Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for).
 - Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Every Sunday a weekly check-in appears here. You remember lasting facts about them.
@@ -3855,7 +3908,7 @@ setInterval(() => {
 }, 5 * 60e3);
 setInterval(() => { if (updReady && document.visibilityState === 'visible' && Date.now() - lastTouch > 45e3 && safeToReload()) kvWait().then(() => location.reload()); }, 20e3);
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') { checkUpdate(); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); setTimeout(askAccount, 5000); setTimeout(weeklyCheckin, 1500); setTimeout(syncDone, 2500); }
+  if (document.visibilityState === 'visible') { checkUpdate(); setTimeout(processQueue, 1000); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); setTimeout(askAccount, 5000); setTimeout(weeklyCheckin, 1500); setTimeout(syncDone, 2500); }
   else { if (!rec) micOff(); cameraOff(); if (updReady) kvWait().then(() => location.reload()); }   // in the background: nobody sees the reload
 });
 
@@ -4337,6 +4390,12 @@ setInterval(autoBackup, 60 * 60e3);
 setTimeout(askAccount, 11000);
 setTimeout(weeklyCheckin, 6500);
 setInterval(weeklyCheckin, 30 * 60e3);
+idb.kvGet('ft_pending').then(q => {
+  if (!Array.isArray(q) || !q.length) return;
+  for (const x of q) if (x && x.id && !pending.some(p => p.id === x.id) && !db.meals.some(m => m.id === x.id)) pending.push({ ...x, pct: 2, status: x.status === 'error' ? 'error' : 'waiting' });
+  if (tab === 'home') renderHome();
+  setTimeout(processQueue, 1500);
+});
 setTimeout(() => photoSync(false), 12000);
 setTimeout(sayHello, 7000);
 setInterval(sayHello, 60 * 60e3);
