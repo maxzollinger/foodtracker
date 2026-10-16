@@ -680,7 +680,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v72';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v73';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2116,6 +2116,54 @@ function shareJourney(j) {
   else { const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); }
 }
 
+/* ================= Users count =================
+   Each phone says "hello" once a day with a random number, so the owner can see how many people use the
+   app. Nothing else is sent: no name, email or food data. The owner sees the totals in Settings (admin). */
+function sayHello() {
+  if (!SERVER_URL || !db.profile || OLD_HOME || !window.crypto) return;
+  const today = iso(); if (LS.get('ft_hello', '') === today) return;
+  let d = LS.get('ft_dev', '');
+  if (!/^[a-f0-9]{32}$/.test(d)) { d = hexOf(crypto.getRandomValues(new Uint8Array(16))); LS.set('ft_dev', d); }
+  fetch(SERVER_URL + '/hello', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ d }) })
+    .then(r => { if (r.ok) LS.set('ft_hello', today); }).catch(() => {});
+}
+function usersCard() {
+  if (!isAdmin() || !SERVER_URL) return '';
+  if (!LS.get('ft_admin_token', '')) return `<div class="card" id="usersCard"><b>👥 ${T('Users')}</b>
+    <p class="small muted" style="margin:4px 0 10px">${T('Paste your admin password (ADMIN_TOKEN) once to see how many people use the app.')}</p>
+    <input id="usTok" type="password" autocomplete="off" spellcheck="false" placeholder="ADMIN_TOKEN">
+    <button class="btn sm" id="usSave" style="margin-top:10px">${T('Save')}</button></div>`;
+  return `<div class="card" id="usersCard"><div class="spread"><b>👥 ${T('Users')}</b><button class="chipbtn" id="usRef" aria-label="${T('Refresh')}">↻</button></div>
+    <div id="usBody" style="margin-top:10px;text-align:center"><span class="spin"></span></div></div>`;
+}
+async function loadUsers() {
+  const box = $('#usBody'); if (!box) return;
+  box.innerHTML = '<span class="spin"></span>';
+  try {
+    const r = await fetch(SERVER_URL + '/stats', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + LS.get('ft_admin_token', '') } });
+    if (r.status === 403) {
+      box.innerHTML = `<p class="small" style="margin:0 0 10px">${T('Wrong admin password.')}</p><button class="btn sm outline" id="usChange">${T('Change password')}</button>`;
+      $('#usChange').onclick = () => { LS.del('ft_admin_token'); renderSettings(); };
+      return;
+    }
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const st = await r.json(), max = Math.max(1, ...st.days.map(x => x.n));
+    const tile = (n, l) => `<div style="background:var(--chip);border-radius:14px;padding:10px 6px"><div style="font-size:22px;font-weight:800">${n}</div><div class="small muted" style="font-weight:600;line-height:1.2">${l}</div></div>`;
+    box.innerHTML = `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        ${tile(st.total, T('Total users'))}${tile(st.today, T('Active today'))}${tile(st.week, T('This week'))}
+        ${tile(st.month, T('This month'))}${tile(st.newWeek, T('New this week'))}${tile(st.accounts, T('With account'))}</div>
+      <div class="small muted" style="margin:14px 0 6px;font-weight:600;text-align:left">${T('Active per day (last 14 days)')}</div>
+      <div style="display:flex;align-items:flex-end;gap:4px;height:70px">${st.days.map(x => `<div title="${x.d}: ${x.n}" style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:3px">
+        <span style="font-size:10px;color:var(--muted);font-weight:600">${x.n || ''}</span><div style="width:100%;max-width:16px;border-radius:5px;background:var(--ink);opacity:${x.d === st.date ? 1 : .55};height:${Math.max(3, x.n / max * 48)}px"></div></div>`).join('')}</div>
+      <p class="small muted" style="margin:10px 0 0;text-align:left">${T('🔔 {n} phones with reminders on.', { n: st.reminders })}</p>`;
+  } catch { box.innerHTML = `<p class="small muted" style="margin:0">${T('No connection')}</p>`; }
+}
+function bindUsersCard() {
+  if ($('#usSave')) $('#usSave').onclick = () => { const v = $('#usTok').value.trim(); if (v.length < 10) return; LS.set('ft_admin_token', v); renderSettings(); };
+  if ($('#usRef')) $('#usRef').onclick = loadUsers;
+  if ($('#usBody')) loadUsers();
+}
+
 /* ================= Moving to the new address =================
    The app now lives at NEW_HOME. On the old address (GitHub Pages) a screen helps people move over:
    their data travels through their account; the old phone stops getting reminders so nothing comes twice. */
@@ -2255,6 +2303,7 @@ function openPrivacy() {
     ${sec('✨', T('AI'), T('When you scan food, chat with the coach, use voice input or create a meal plan, that photo, text or recording is sent through the Food Tracker server to Google Gemini to get an answer. The server does not keep it. Google handles it under the Gemini API terms, so please don\'t send very sensitive things like medical documents.'))}
     ${sec('🔔', T('Notifications'), T("If you turn on reminders, the server keeps your phone's notification address, your reminder times and your time zone. Nothing else."))}
     ${sec('🏷️', T('Barcodes'), T('When you scan a barcode, only its number is sent to Open Food Facts, a free food database, to find the product.'))}
+    ${sec('📊', T('Usage count'), T('To know how many people use Food Tracker, the app sends a random number once a day. It is not linked to you, your email or your food. Only the number of users is counted.'))}
     ${sec('🚫', T('What never happens'), T('No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.'))}
     ${sec('🗑️', T('Deleting'), T('Settings → Delete all data removes everything on this phone and your account backup on the server.'))}
     <p class="small muted" style="text-align:center;margin:16px 0 0">${T('Questions? Ask the person who shared the app with you.')}</p>`);
@@ -3694,6 +3743,7 @@ function renderSettings() {
     <div class="card"><b>🌓 ${T('Appearance')}</b>
       <div class="seg">${[['auto', N('Automatic')], ['light', N('Light')], ['dark', N('Dark')]].map(([v, l]) => `<button data-th="${v}" class="${th === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div></div>
     ${remindersCard()}
+    ${usersCard()}
     ${isAdmin() && SERVER_URL ? `<button class="card li" id="sShare" style="border-radius:22px"><span class="ic">📤</span><span class="grow"><b>${T('Share Food Tracker')}</b><br><span class="small muted">${T('Send the app to friends and family')}</span></span><span class="chev">›</span></button>` : ''}
     ${!isAdmin() && SERVER_URL ? `<div class="card"><b>✨ AI</b><p class="small muted" style="margin:4px 0 0">${T('AI is included. No setup needed.')} ${T('Photos and messages you send to the AI are processed by Google Gemini.')}</p></div>` : ''}
     ${isAdmin() || !SERVER_URL ? `<div class="h2">AI</div>
@@ -3739,6 +3789,7 @@ function renderSettings() {
   document.querySelectorAll('[data-th]').forEach(b => b.onclick = () => { setTheme(b.dataset.th); renderSettings(); });
   bindReminders();
   bindBackupCard();
+  bindUsersCard();
   $('#sPriv').onclick = openPrivacy;
   if ($('#kSave')) $('#kSave').onclick = () => {
     const set = (k, v) => v ? LS.set(k, v) : LS.del(k);
@@ -4136,6 +4187,8 @@ setTimeout(askAccount, 11000);
 setTimeout(weeklyCheckin, 6500);
 setInterval(weeklyCheckin, 30 * 60e3);
 setTimeout(() => photoSync(false), 12000);
+setTimeout(sayHello, 7000);
+setInterval(sayHello, 60 * 60e3);
 setInterval(() => photoSync(false), 3 * 3600e3);
 if (sessionStorage.getItem('ft_restored')) { setTimeout(() => photoSync(true), 3000); sessionStorage.removeItem('ft_restored'); setTimeout(() => toast('✓ ' + T('Signed in. Your data is back.')), 4500); }
 </script>
