@@ -671,7 +671,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v67';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v68';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1916,7 +1916,26 @@ function badgeStats() {
   };
 }
 let badgeT;
-function scheduleBadges() { clearTimeout(badgeT); badgeT = setTimeout(checkRewards, 900); }
+function scheduleBadges() { clearTimeout(badgeT); badgeT = setTimeout(() => { checkRewards(); syncDone(); }, 900); }
+/* Reminders that are already done today aren't sent: the phone tells the server "done" (only which
+   reminder and the date, no numbers). Checked after every change and whenever the app opens. */
+async function syncDone() {
+  if (!SERVER_URL || !db.profile) return;
+  let sub; try { sub = JSON.parse(LS.get('ft_push', 'null')); } catch {}
+  if (!sub || !sub.endpoint) return;
+  const today = iso(), sent = JSON.parse(LS.get('ft_done_sent', '{}')), todo = [];
+  if (dayBurned(today) > 0) todo.push(['burn', today]);
+  const lastW = db.weights.map(w => w.date).sort().pop();
+  if (lastW && daysBetween(lastW, today) <= 2) todo.push(['weight', lastW]);
+  if (LS.get('ft_checkin', '') === today) todo.push(['checkin', today]);
+  for (const [kind, date] of todo) {
+    if (sent[kind] === date) continue;
+    try {
+      const r = await fetch(SERVER_URL + '/done', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ endpoint: sub.endpoint, kind, date }) });
+      if (r.ok || r.status === 404) { sent[kind] = date; LS.set('ft_done_sent', JSON.stringify(sent)); }
+    } catch {}
+  }
+}
 function checkRewards() {
   if (!db.profile || $('#onb')) return;
   const s = badgeStats(), got = earned(), first = !db.badgesInit, fresh = [];
@@ -2232,7 +2251,7 @@ Best day: ${(() => { const sc = d => Math.min(1, dayTotals(d).protein / Math.max
 Write my WEEKLY CHECK-IN for this week. First line: a short title starting with "📊". Then 3 to 5 short bullet points with the real numbers (one of them celebrates my best day): calories and protein vs my goals, consistency, weight trend compared with my goal, and anything that stands out. End with ONE concrete tip for next week, starting with "**Tip:**". Short, honest, warm and motivating. No memory tags.`;
   try {
     const text = await askAI([{ text: prompt }], { json: false, system: coachSystem() });
-    chat.push({ role: 'assistant', text: stripTags(text), t: Date.now(), checkin: true }); saveChat();
+    chat.push({ role: 'assistant', text: stripTags(text), t: Date.now(), checkin: true }); saveChat(); syncDone();
     if (tab === 'chat') renderChat(true);
     else inPop('📊', T('Your weekly check-in is here'), T('Your coach looked at your week and has one tip for the next.'), () => go('chat'));
   } catch { LS.set('ft_checkin', ''); }
@@ -3460,7 +3479,7 @@ async function checkUpdate() {
   } catch {}
 }
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') { checkUpdate(); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); setTimeout(askAccount, 5000); setTimeout(weeklyCheckin, 1500); }
+  if (document.visibilityState === 'visible') { checkUpdate(); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); setTimeout(askAccount, 5000); setTimeout(weeklyCheckin, 1500); setTimeout(syncDone, 2500); }
   else { if (!rec) micOff(); cameraOff(); if (updReady) kvWait().then(() => location.reload()); }   // in the background: nobody sees the reload
 });
 
@@ -3928,6 +3947,7 @@ syncPush();
 setTimeout(() => askReminders(false), 2500);
 setTimeout(checkPlanWeek, 4800);
 setTimeout(checkRewards, 5200);
+setTimeout(syncDone, 6000);
 setInterval(checkPlanWeek, 5 * 60e3);
 setTimeout(autoBackup, 9000);
 setInterval(autoBackup, 60 * 60e3);
