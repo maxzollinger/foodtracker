@@ -349,6 +349,9 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .badge.on .bic{filter:none;opacity:1}
 .badge .bname{font-size:10.5px;font-weight:700;text-align:center;line-height:1.2;color:var(--muted);overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .badge.on .bname{color:var(--text)}
+.bmore{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;margin-top:12px;padding:10px;border-radius:14px;background:var(--chip);font-size:14px;font-weight:700;color:var(--text)}
+.bmore svg{width:12px;height:8px;flex:none;transition:transform .2s}
+.bmore.open svg{transform:rotate(180deg)}
 .bbar{width:70%;height:4px;border-radius:2px;background:var(--track);overflow:hidden}
 .bbar i{display:block;height:100%;background:var(--flame);border-radius:2px}
 .bigbadge{width:96px;height:96px;margin:0 auto;border-radius:30px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:54px;filter:grayscale(1);opacity:.45}
@@ -667,7 +670,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v58';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v60';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1863,11 +1866,15 @@ function checkRewards() {
 // Badges on the Progress page
 function badgesCard() {
   if (!db.profile) return '';
-  const s = badgeStats(), got = earned(), n = BADGES.filter(b => got[b.id]).length;
+  const s = badgeStats(), got = earned(), n = BADGES.filter(b => got[b.id]).length, open = LS.get('ft_badges_open', '') === '1';
+  // Closed: 8 badges (newest earned first, then the ones you're closest to). Open: all of them.
+  const prog = b => { const [have, need] = b.need(s); return have / need; };
+  const shown = open ? BADGES : [...BADGES].sort((a, b) => (got[b.id] || '').localeCompare(got[a.id] || '') || (!!got[b.id] - !!got[a.id]) || prog(b) - prog(a)).slice(0, 8);
   return `<div class="card"><div class="spread"><b style="font-size:17px">🏅 ${T('Badges')}</b><span class="etime">${n} / ${BADGES.length}</span></div>
-    <div class="badges">${BADGES.map(b => { const [have, need] = b.need(s), on = !!got[b.id];
+    <div class="badges">${shown.map(b => { const [have, need] = b.need(s), on = !!got[b.id];
       return `<button class="badge ${on ? 'on' : ''}" data-badge="${b.id}"><span class="bic">${b.ic}</span><span class="bname">${T(b.name)}</span>
-        ${on ? '' : `<span class="bbar"><i style="width:${clamp(have / need * 100, 0, 100)}%"></i></span>`}</button>`; }).join('')}</div></div>`;
+        ${on ? '' : `<span class="bbar"><i style="width:${clamp(have / need * 100, 0, 100)}%"></i></span>`}</button>`; }).join('')}</div>
+    <button class="bmore ${open ? 'open' : ''}" id="badgeMore">${open ? T('Show less') : T('Show all {n}', { n: BADGES.length })}<svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1.5 1.75 6 6.25l4.5-4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>`;
 }
 function openBadge(id) {
   const b = BADGES.find(x => x.id === id), [have, need] = b.need(badgeStats()), when = earned()[id];
@@ -2749,6 +2756,7 @@ function renderProgress() {
       <div class="legend"><span style="--c:#5aa9f2">${T('Underweight')} &lt;18.5</span><span style="--c:var(--good)">${T('Healthy')} 18.5–24.9</span><span style="--c:#f5b83d">${T('Overweight')} 25–29.9</span><span style="--c:#ff5a4f">${T('Obese')} 30+</span></div></div>` : ''}
     ${ws.length ? `<div class="h2">${T('Weight history')}</div><div class="list">${ws.slice(-8).reverse().map(w => `<div class="li"><span class="grow">${fmtDate(w.date, { weekday: 'short', day: 'numeric', month: 'short' })}</span><b>${w.kg} kg</b><button class="muted" onclick="delWeight('${w.date}')" style="padding:0 4px">✕</button></div>`).join('')}</div>` : ''}`;
   document.querySelectorAll('[data-badge]').forEach(b => b.onclick = () => openBadge(b.dataset.badge));
+  if ($('#badgeMore')) $('#badgeMore').onclick = () => { LS.set('ft_badges_open', LS.get('ft_badges_open', '') === '1' ? '' : '1'); const y = $('#scroller').scrollTop; renderProgress(); $('#scroller').scrollTop = y; };
   $('#logW').onclick = openWeightSheet;
   document.querySelectorAll('[data-r]').forEach(b => b.onclick = () => { progRange = +b.dataset.r; renderProgress(); });
   document.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { nutWeek = +b.dataset.w; renderProgress(); });
