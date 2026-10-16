@@ -667,7 +667,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v55';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v56';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1621,7 +1621,8 @@ async function runBackup(manual, a = acct()) {
     const payload = JSON.stringify({ v: 1, t: Date.now(), data: LS.get('ft_data', ''), chat: LS.get('ft_chat', ''), lang: LS.get('ft_lang', ''), theme: LS.get('ft_theme', ''), push: LS.get('ft_push_prefs', '') });
     const zz = await zipText(payload);
     const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await aesKey(a.key), zz.bytes));
-    const r = await post('/backup', { id: a.id, auth: a.auth, data: (zz.z ? 'z' : 'p') + '.' + b64(iv) + '.' + b64(ct) });
+    const r = await fetch(SERVER_URL + '/backup', { method: 'POST', headers: { 'Content-Type': 'text/plain', 'X-Id': a.id, 'X-Auth': a.auth },
+      body: (zz.z ? 'z' : 'p') + '.' + b64(iv) + '.' + b64(ct) });
     if (!r.ok) throw new Error('HTTP ' + r.status);
     LS.set('ft_bk_last', String(Date.now()));
     if (manual) toast('✓ ' + T('Backup saved'));
@@ -1639,8 +1640,10 @@ async function fetchAccountData(a) {
   const r = await post('/backup/restore', { id: a.id, auth: a.auth });
   if (r.status === 404) throw new Error('none');
   if (r.status === 403) throw new Error('wrong');
+  if (r.status === 429) throw new Error('busy');
   if (!r.ok) throw new Error('net');
-  const [z, iv, ct] = (await r.json()).data.split('.');
+  const txt = await r.text(), box = txt.startsWith('{') ? JSON.parse(txt).data : txt;   // older backups were wrapped
+  const [z, iv, ct] = box.split('.');
   const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: unb64(iv) }, await aesKey(a.key), unb64(ct));
   return JSON.parse(await unzipText(new Uint8Array(plain), z === 'z'));
 }
@@ -1698,6 +1701,7 @@ function openAccountSheet(mode = 'signup') {
         catch (err) {
           if (err.message === 'wrong') return msg(up ? T('This email already has an account. Sign in instead, with the right password.') : T('Wrong password. Please try again.'), true);
           if (err.message === 'net') return msg(T('No connection. Check your internet and try again.'), true);
+          if (err.message === 'busy') return msg(T('Too many tries. Please wait a few minutes and try again.'), true);
           if (!up) return msg(T('No account with this email. Check it, or create a new account.'), true);
         }
         LS.set('ft_acct', JSON.stringify(a)); LS.set('ft_acct_ask', '1'); dropOldCode();
@@ -1955,7 +1959,7 @@ function showMoved() {
     clearInterval(movedWatch); movedWatch = setInterval(() => { if (acct() && !$('.backdrop')) { clearInterval(movedWatch); showMoved(); } }, 700);
   };
   // The link opens right away (iPhone blocks pages opened after waiting); saving happens on its own
-  if (acct()) runBackup(false);
+  if (acct() && Date.now() - +LS.get('ft_bk_last', 0) > 3600e3) runBackup(false);
   pg.querySelector('#mvGo').onclick = e => {
     if (has && !acct() && !confirm(T('You have no account yet, so your data would not come along. Open the new address anyway?'))) { e.preventDefault(); return; }
     // This old copy stops getting reminders (turn them on again in the new app)
