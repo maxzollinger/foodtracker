@@ -670,7 +670,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v64';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v65';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1208,7 +1208,6 @@ function numberSheet(title, value, unit, cb, step = 1) {
     s.querySelector('#nMinus').onclick = () => bump(-step);
     s.querySelector('#nPlus').onclick = () => bump(step);
     s.querySelector('#nSave').onclick = () => { closeSheet(); cb(num(inp.value)); };
-    inp.focus(); inp.select();
   });
 }
 function openWeightSheet() {
@@ -1489,7 +1488,7 @@ function openDescribeSheet() {
   sheet(`<h3>${T('Describe your food')}</h3><p class="muted" style="margin-top:4px">${T('The AI calculates the nutrition for you.')}</p>
     <textarea id="dTxt" placeholder="${T('e.g. 2 scrambled eggs, 1 slice of toast with butter and a cappuccino')}"></textarea>
     <button class="btn" id="dGo" style="margin-top:14px">${T('Analyze')}</button>`, s => {
-    const ta = s.querySelector('#dTxt'); ta.focus();
+    const ta = s.querySelector('#dTxt');
     s.querySelector('#dGo').onclick = () => {
       const t = ta.value.trim(); if (!t) return;
       closeSheet();
@@ -2222,7 +2221,7 @@ function openBurnSheet() {
     <label class="lbl">${T('What did you do? (optional)')}</label><input id="bName" placeholder="${T('e.g. Running, Gym, Steps')}">
     <button class="btn" id="bSave" style="margin-top:18px">${isToday ? T('Add to today') : T('Add to this day')}</button>
     <button class="btn outline" id="bAi" style="margin-top:10px">✨ ${T('Not sure? Let AI estimate it')}</button>`, s => {
-    const inp = s.querySelector('#bKcal'); inp.focus();
+    const inp = s.querySelector('#bKcal');
     s.querySelectorAll('[data-q]').forEach(b => b.onclick = () => { inp.value = r0(num(inp.value) + +b.dataset.q); });
     s.querySelectorAll('[data-bt]').forEach(b => b.onclick = () => { db.settings.burnType = b.dataset.bt; save(); openBurnSheet(); if (tab === 'home') renderHome(); });
     s.querySelector('#bAi').onclick = () => openExercise(null);
@@ -2685,7 +2684,6 @@ function openFixSheet() {
   sheet(`<h3>${T('Fix results')}</h3><p class="muted" style="margin-top:4px">${T("Tell the AI what's wrong and it will recalculate.")}</p>
     <textarea id="fTxt" placeholder="${T('e.g. It was brown rice, about 200 g. The chicken was fried in oil.')}"></textarea>
     <button class="btn" id="fGo" style="margin-top:14px">${T('Update')}</button>`, s => {
-    s.querySelector('#fTxt').focus();
     s.querySelector('#fGo').onclick = async () => {
       const t = s.querySelector('#fTxt').value.trim(); if (!t) return;
       const b = s.querySelector('#fGo'); b.disabled = true; b.innerHTML = `<span class="spin"></span> ${T('Updating…')}`;
