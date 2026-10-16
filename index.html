@@ -126,7 +126,7 @@ a{color:inherit}
 .hcard .spread>span:first-child{white-space:nowrap}
 .burncard .ic{width:48px;height:48px;border-radius:14px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:24px;flex:none}
 .quick{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}
-.planchip{display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px 6px;max-width:100%;background:var(--card);box-shadow:var(--shadow);border-radius:20px;padding:8px 14px;font-size:14px;margin:0 0 12px;text-align:left}
+.planchip{display:flex;width:100%;align-items:center;flex-wrap:wrap;gap:4px 8px;max-width:100%;background:var(--card);box-shadow:var(--shadow);border-radius:20px;padding:8px 14px;font-size:14px;margin:0 0 12px;text-align:left}
 .planchip>*{white-space:nowrap}
 .frow{margin-top:12px}
 .frow .spread{font-size:14px}
@@ -353,7 +353,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .bbar i{display:block;height:100%;background:var(--flame);border-radius:2px}
 .bigbadge{width:96px;height:96px;margin:0 auto;border-radius:30px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:54px;filter:grayscale(1);opacity:.45}
 .bigbadge.on{filter:none;opacity:1;animation:celIn .5s cubic-bezier(.2,1.4,.4,1)}
-.chipprog{display:inline-block;width:80px;height:5px;border-radius:3px;background:var(--track);overflow:hidden;margin-left:4px;vertical-align:middle}
+.chipprog{display:block;flex:1;min-width:60px;height:6px;border-radius:3px;background:var(--track);overflow:hidden;margin-left:4px;vertical-align:middle}
 .chipprog i{display:block;height:100%;background:var(--flame)}
 .chippct{font-size:12px}
 .gp{text-align:center;padding-top:calc(30px + env(safe-area-inset-top));padding-bottom:calc(20px + env(safe-area-inset-bottom))}
@@ -667,7 +667,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v56';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v57';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
