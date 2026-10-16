@@ -667,7 +667,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v57';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v58';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3336,13 +3336,11 @@ function showInstall() {
   pg.innerHTML = `<div class="onb" style="justify-content:center;text-align:center">
     <img src="icon-180.png" alt="" style="width:96px;height:96px;border-radius:24px;margin:0 auto 22px;box-shadow:0 10px 30px rgba(0,0,0,.25)">
     <h1 style="margin:0 0 8px">${T('Add Food Tracker to your Home Screen')}</h1>
-    <p class="sub" style="margin:0 0 26px">${T('It works like a normal app, and only then can it send you reminders.')}</p>
+    <p class="sub" style="margin:0 0 26px">${T('Food Tracker works like a normal app, right from your Home Screen.')}</p>
     <div class="list" style="text-align:left">${steps.map((t, i) => `<div class="li"><span class="ic" style="font-weight:800">${i + 1}</span><span class="grow">${t}</span></div>`).join('')}</div>
-    <button class="btn" id="instBtn" style="margin-top:8px;${installEvt ? '' : 'display:none'}">${T('Install app')}</button>
-    <button class="small muted" id="instSkip" style="margin-top:22px;padding:10px">${T('Continue in the browser')}</button></div>`;
+    <button class="btn" id="instBtn" style="margin-top:8px;${installEvt ? '' : 'display:none'}">${T('Install app')}</button></div>`;
   document.body.appendChild(pg);
   pg.querySelector('#instBtn').onclick = async () => { if (!installEvt) return; installEvt.prompt(); try { await installEvt.userChoice; } catch {} installEvt = null; };
-  pg.querySelector('#instSkip').onclick = () => { sessionStorage.setItem('ft_skip_install', '1'); pg.remove(); };
   return true;
 }
 
