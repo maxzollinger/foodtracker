@@ -737,7 +737,15 @@ window.I18N = {
 "Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Wähle, wie Gewicht, Größe und Getränke angezeigt werden. Deine Daten bleiben genau gleich.",
 "Body weight":"Körpergewicht",
 "Drinks":"Getränke",
-"Food is still shown in grams, like on nutrition labels.":"Essen wird weiterhin in Gramm angezeigt, wie auf Nährwertangaben."
+"Food is still shown in grams, like on nutrition labels.":"Essen wird weiterhin in Gramm angezeigt, wie auf Nährwertangaben.",
+"Just started":"Gerade gestartet",
+"On track":"Im Plan",
+"Ahead of plan":"Vor dem Plan",
+"A bit behind":"Etwas hinter dem Plan",
+"{w} kg to go":"noch {w} kg",
+"~{n} weeks":"~{n} Wochen",
+"Trend {w} kg":"Trend {w} kg",
+"on plan today: {w} kg":"laut Plan heute: {w} kg"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1476,7 +1484,15 @@ window.I18N = {
 "Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Elige cómo se muestran el peso, la altura y las bebidas. Tus datos siguen exactamente iguales.",
 "Body weight":"Peso corporal",
 "Drinks":"Bebidas",
-"Food is still shown in grams, like on nutrition labels.":"La comida se sigue mostrando en gramos, como en las etiquetas nutricionales."
+"Food is still shown in grams, like on nutrition labels.":"La comida se sigue mostrando en gramos, como en las etiquetas nutricionales.",
+"Just started":"Recién empezado",
+"On track":"Vas bien",
+"Ahead of plan":"Por delante del plan",
+"A bit behind":"Un poco atrasado",
+"{w} kg to go":"faltan {w} kg",
+"~{n} weeks":"~{n} semanas",
+"Trend {w} kg":"Tendencia {w} kg",
+"on plan today: {w} kg":"según el plan hoy: {w} kg"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -2215,7 +2231,15 @@ window.I18N = {
 "Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Choisis comment le poids, la taille et les boissons sont affichés. Tes données restent exactement les mêmes.",
 "Body weight":"Poids",
 "Drinks":"Boissons",
-"Food is still shown in grams, like on nutrition labels.":"Les aliments restent en grammes, comme sur les étiquettes nutritionnelles."
+"Food is still shown in grams, like on nutrition labels.":"Les aliments restent en grammes, comme sur les étiquettes nutritionnelles.",
+"Just started":"Tout juste commencé",
+"On track":"Dans les temps",
+"Ahead of plan":"En avance",
+"A bit behind":"Un peu en retard",
+"{w} kg to go":"encore {w} kg",
+"~{n} weeks":"~{n} semaines",
+"Trend {w} kg":"Tendance {w} kg",
+"on plan today: {w} kg":"prévu aujourd'hui : {w} kg"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -2954,7 +2978,15 @@ window.I18N = {
 "Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Scegli come vengono mostrati peso, altezza e bevande. I tuoi dati restano esattamente uguali.",
 "Body weight":"Peso corporeo",
 "Drinks":"Bevande",
-"Food is still shown in grams, like on nutrition labels.":"Il cibo resta in grammi, come sulle etichette nutrizionali."
+"Food is still shown in grams, like on nutrition labels.":"Il cibo resta in grammi, come sulle etichette nutrizionali.",
+"Just started":"Appena iniziato",
+"On track":"In linea",
+"Ahead of plan":"In anticipo",
+"A bit behind":"Un po' indietro",
+"{w} kg to go":"mancano {w} kg",
+"~{n} weeks":"~{n} settimane",
+"Trend {w} kg":"Tendenza {w} kg",
+"on plan today: {w} kg":"secondo il piano oggi: {w} kg"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -3693,7 +3725,15 @@ window.I18N = {
 "Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"体重・身長・飲み物の表示単位を選べます。データはそのままです。",
 "Body weight":"体重",
 "Drinks":"飲み物",
-"Food is still shown in grams, like on nutrition labels.":"食べ物は栄養表示と同じくグラムで表示されます。"
+"Food is still shown in grams, like on nutrition labels.":"食べ物は栄養表示と同じくグラムで表示されます。",
+"Just started":"始めたばかり",
+"On track":"順調",
+"Ahead of plan":"予定より早い",
+"A bit behind":"少し遅れ気味",
+"{w} kg to go":"あと {w} kg",
+"~{n} weeks":"約 {n} 週間",
+"Trend {w} kg":"トレンド {w} kg",
+"on plan today: {w} kg":"予定では今日：{w} kg"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -4432,7 +4472,15 @@ window.I18N = {
 "Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Kies hoe gewicht, lengte en drankjes worden getoond. Je gegevens blijven precies hetzelfde.",
 "Body weight":"Lichaamsgewicht",
 "Drinks":"Drankjes",
-"Food is still shown in grams, like on nutrition labels.":"Eten blijft in grammen, zoals op voedingsetiketten."
+"Food is still shown in grams, like on nutrition labels.":"Eten blijft in grammen, zoals op voedingsetiketten.",
+"Just started":"Net begonnen",
+"On track":"Op schema",
+"Ahead of plan":"Voor op schema",
+"A bit behind":"Iets achter",
+"{w} kg to go":"nog {w} kg",
+"~{n} weeks":"~{n} weken",
+"Trend {w} kg":"Trend {w} kg",
+"on plan today: {w} kg":"volgens plan vandaag: {w} kg"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -5171,7 +5219,15 @@ window.I18N = {
 "Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Wybierz, jak pokazywać wagę, wzrost i napoje. Twoje dane pozostają dokładnie takie same.",
 "Body weight":"Masa ciała",
 "Drinks":"Napoje",
-"Food is still shown in grams, like on nutrition labels.":"Jedzenie nadal jest w gramach, jak na etykietach."
+"Food is still shown in grams, like on nutrition labels.":"Jedzenie nadal jest w gramach, jak na etykietach.",
+"Just started":"Dopiero start",
+"On track":"Zgodnie z planem",
+"Ahead of plan":"Przed planem",
+"A bit behind":"Trochę za planem",
+"{w} kg to go":"zostało {w} kg",
+"~{n} weeks":"~{n} tyg.",
+"Trend {w} kg":"Trend {w} kg",
+"on plan today: {w} kg":"według planu dziś: {w} kg"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -5910,7 +5966,15 @@ window.I18N = {
 "Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Escolhe como o peso, a altura e as bebidas são mostrados. Os teus dados ficam exatamente iguais.",
 "Body weight":"Peso corporal",
 "Drinks":"Bebidas",
-"Food is still shown in grams, like on nutrition labels.":"A comida continua em gramas, como nos rótulos nutricionais."
+"Food is still shown in grams, like on nutrition labels.":"A comida continua em gramas, como nos rótulos nutricionais.",
+"Just started":"Acabou de começar",
+"On track":"No caminho certo",
+"Ahead of plan":"À frente do plano",
+"A bit behind":"Um pouco atrasado",
+"{w} kg to go":"faltam {w} kg",
+"~{n} weeks":"~{n} semanas",
+"Trend {w} kg":"Tendência {w} kg",
+"on plan today: {w} kg":"segundo o plano hoje: {w} kg"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -6649,7 +6713,15 @@ window.I18N = {
 "Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Выбери, как показывать вес, рост и напитки. Твои данные остаются прежними.",
 "Body weight":"Вес тела",
 "Drinks":"Напитки",
-"Food is still shown in grams, like on nutrition labels.":"Еда по-прежнему в граммах, как на этикетках."
+"Food is still shown in grams, like on nutrition labels.":"Еда по-прежнему в граммах, как на этикетках.",
+"Just started":"Только начали",
+"On track":"По плану",
+"Ahead of plan":"Опережаешь план",
+"A bit behind":"Немного отстаёшь",
+"{w} kg to go":"осталось {w} кг",
+"~{n} weeks":"~{n} нед.",
+"Trend {w} kg":"Тренд {w} кг",
+"on plan today: {w} kg":"по плану сегодня: {w} кг"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -7388,7 +7460,15 @@ window.I18N = {
 "Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Kilo, boy ve içeceklerin nasıl gösterileceğini seç. Verilerin tamamen aynı kalır.",
 "Body weight":"Vücut ağırlığı",
 "Drinks":"İçecekler",
-"Food is still shown in grams, like on nutrition labels.":"Yiyecekler besin etiketlerindeki gibi gram olarak gösterilmeye devam eder."
+"Food is still shown in grams, like on nutrition labels.":"Yiyecekler besin etiketlerindeki gibi gram olarak gösterilmeye devam eder.",
+"Just started":"Yeni başladı",
+"On track":"Planda",
+"Ahead of plan":"Planın önünde",
+"A bit behind":"Biraz geride",
+"{w} kg to go":"{w} kg kaldı",
+"~{n} weeks":"~{n} hafta",
+"Trend {w} kg":"Trend {w} kg",
+"on plan today: {w} kg":"plana göre bugün: {w} kg"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -8127,6 +8207,14 @@ window.I18N = {
 "Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"选择体重、身高和饮品的显示方式。你的数据完全不变。",
 "Body weight":"体重",
 "Drinks":"饮品",
-"Food is still shown in grams, like on nutrition labels.":"食物仍以克显示，和营养标签一样。"
+"Food is still shown in grams, like on nutrition labels.":"食物仍以克显示，和营养标签一样。",
+"Just started":"刚开始",
+"On track":"进度正常",
+"Ahead of plan":"领先计划",
+"A bit behind":"稍微落后",
+"{w} kg to go":"还差 {w} 公斤",
+"~{n} weeks":"约 {n} 周",
+"Trend {w} kg":"趋势 {w} 公斤",
+"on plan today: {w} kg":"按计划今天应为：{w} 公斤"
 }
 };
