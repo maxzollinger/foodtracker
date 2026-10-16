@@ -716,7 +716,8 @@ window.I18N = {
 "Open the new address in Safari and add it to your Home Screen.":"Öffne die neue Adresse in Safari und füge sie zum Home-Bildschirm hinzu.",
 "Sign in there, then delete this old icon.":"Melde dich dort an und lösche dann dieses alte Symbol.",
 "Open the new Food Tracker":"Neuen Food Tracker öffnen",
-"You have no account yet, so your data would not come along. Open the new address anyway?":"Du hast noch kein Konto, deine Daten würden also nicht mitkommen. Trotzdem die neue Adresse öffnen?"
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Du hast noch kein Konto, deine Daten würden also nicht mitkommen. Trotzdem die neue Adresse öffnen?",
+"Or type this in Safari:":"Oder tippe das in Safari ein:"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1434,7 +1435,8 @@ window.I18N = {
 "Open the new address in Safari and add it to your Home Screen.":"Abre la nueva dirección en Safari y añádela a tu pantalla de inicio.",
 "Sign in there, then delete this old icon.":"Inicia sesión allí y luego borra este icono antiguo.",
 "Open the new Food Tracker":"Abrir el nuevo Food Tracker",
-"You have no account yet, so your data would not come along. Open the new address anyway?":"Aún no tienes cuenta, así que tus datos no vendrían contigo. ¿Abrir la nueva dirección igualmente?"
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Aún no tienes cuenta, así que tus datos no vendrían contigo. ¿Abrir la nueva dirección igualmente?",
+"Or type this in Safari:":"O escribe esto en Safari:"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -2152,7 +2154,8 @@ window.I18N = {
 "Open the new address in Safari and add it to your Home Screen.":"Ouvre la nouvelle adresse dans Safari et ajoute-la à ton écran d'accueil.",
 "Sign in there, then delete this old icon.":"Connecte-toi là-bas, puis supprime cette ancienne icône.",
 "Open the new Food Tracker":"Ouvrir le nouveau Food Tracker",
-"You have no account yet, so your data would not come along. Open the new address anyway?":"Tu n'as pas encore de compte, tes données ne viendraient donc pas avec toi. Ouvrir quand même la nouvelle adresse ?"
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Tu n'as pas encore de compte, tes données ne viendraient donc pas avec toi. Ouvrir quand même la nouvelle adresse ?",
+"Or type this in Safari:":"Ou tape ceci dans Safari :"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -2870,7 +2873,8 @@ window.I18N = {
 "Open the new address in Safari and add it to your Home Screen.":"Apri il nuovo indirizzo in Safari e aggiungilo alla schermata Home.",
 "Sign in there, then delete this old icon.":"Accedi lì, poi elimina questa vecchia icona.",
 "Open the new Food Tracker":"Apri il nuovo Food Tracker",
-"You have no account yet, so your data would not come along. Open the new address anyway?":"Non hai ancora un account, quindi i tuoi dati non verrebbero con te. Aprire comunque il nuovo indirizzo?"
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Non hai ancora un account, quindi i tuoi dati non verrebbero con te. Aprire comunque il nuovo indirizzo?",
+"Or type this in Safari:":"Oppure scrivi questo in Safari:"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -3588,7 +3592,8 @@ window.I18N = {
 "Open the new address in Safari and add it to your Home Screen.":"新しいアドレスを Safari で開き、ホーム画面に追加してください。",
 "Sign in there, then delete this old icon.":"そこでログインしてから、この古いアイコンを削除してください。",
 "Open the new Food Tracker":"新しい Food Tracker を開く",
-"You have no account yet, so your data would not come along. Open the new address anyway?":"まだアカウントがないため、データは移りません。それでも新しいアドレスを開きますか？"
+"You have no account yet, so your data would not come along. Open the new address anyway?":"まだアカウントがないため、データは移りません。それでも新しいアドレスを開きますか？",
+"Or type this in Safari:":"または Safari にこう入力してください："
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -4306,7 +4311,8 @@ window.I18N = {
 "Open the new address in Safari and add it to your Home Screen.":"Open het nieuwe adres in Safari en zet het op je beginscherm.",
 "Sign in there, then delete this old icon.":"Log daar in en verwijder daarna dit oude icoon.",
 "Open the new Food Tracker":"Nieuwe Food Tracker openen",
-"You have no account yet, so your data would not come along. Open the new address anyway?":"Je hebt nog geen account, dus je gegevens zouden niet meegaan. Toch het nieuwe adres openen?"
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Je hebt nog geen account, dus je gegevens zouden niet meegaan. Toch het nieuwe adres openen?",
+"Or type this in Safari:":"Of typ dit in Safari:"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -5024,7 +5030,8 @@ window.I18N = {
 "Open the new address in Safari and add it to your Home Screen.":"Otwórz nowy adres w Safari i dodaj go do ekranu początkowego.",
 "Sign in there, then delete this old icon.":"Zaloguj się tam, a potem usuń tę starą ikonę.",
 "Open the new Food Tracker":"Otwórz nowy Food Tracker",
-"You have no account yet, so your data would not come along. Open the new address anyway?":"Nie masz jeszcze konta, więc twoje dane nie przejdą. Mimo to otworzyć nowy adres?"
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Nie masz jeszcze konta, więc twoje dane nie przejdą. Mimo to otworzyć nowy adres?",
+"Or type this in Safari:":"Albo wpisz to w Safari:"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -5742,7 +5749,8 @@ window.I18N = {
 "Open the new address in Safari and add it to your Home Screen.":"Abre o novo endereço no Safari e adiciona-o ao ecrã principal.",
 "Sign in there, then delete this old icon.":"Inicia sessão lá e depois apaga este ícone antigo.",
 "Open the new Food Tracker":"Abrir o novo Food Tracker",
-"You have no account yet, so your data would not come along. Open the new address anyway?":"Ainda não tens conta, por isso os teus dados não viriam contigo. Abrir o novo endereço na mesma?"
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Ainda não tens conta, por isso os teus dados não viriam contigo. Abrir o novo endereço na mesma?",
+"Or type this in Safari:":"Ou escreve isto no Safari:"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -6460,7 +6468,8 @@ window.I18N = {
 "Open the new address in Safari and add it to your Home Screen.":"Открой новый адрес в Safari и добавь его на экран «Домой».",
 "Sign in there, then delete this old icon.":"Войди там, а потом удали этот старый значок.",
 "Open the new Food Tracker":"Открыть новый Food Tracker",
-"You have no account yet, so your data would not come along. Open the new address anyway?":"У тебя ещё нет аккаунта, поэтому данные не переедут. Всё равно открыть новый адрес?"
+"You have no account yet, so your data would not come along. Open the new address anyway?":"У тебя ещё нет аккаунта, поэтому данные не переедут. Всё равно открыть новый адрес?",
+"Or type this in Safari:":"Или введи это в Safari:"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -7178,7 +7187,8 @@ window.I18N = {
 "Open the new address in Safari and add it to your Home Screen.":"Yeni adresi Safari'de aç ve ana ekranına ekle.",
 "Sign in there, then delete this old icon.":"Orada giriş yap, sonra bu eski simgeyi sil.",
 "Open the new Food Tracker":"Yeni Food Tracker'ı aç",
-"You have no account yet, so your data would not come along. Open the new address anyway?":"Henüz hesabın yok, bu yüzden verilerin taşınmaz. Yine de yeni adresi açmak istiyor musun?"
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Henüz hesabın yok, bu yüzden verilerin taşınmaz. Yine de yeni adresi açmak istiyor musun?",
+"Or type this in Safari:":"Ya da bunu Safari'ye yaz:"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -7896,6 +7906,7 @@ window.I18N = {
 "Open the new address in Safari and add it to your Home Screen.":"在 Safari 中打开新地址并添加到主屏幕。",
 "Sign in there, then delete this old icon.":"在那里登录，然后删除这个旧图标。",
 "Open the new Food Tracker":"打开新的 Food Tracker",
-"You have no account yet, so your data would not come along. Open the new address anyway?":"你还没有账户，所以数据不会一起带走。仍要打开新地址吗？"
+"You have no account yet, so your data would not come along. Open the new address anyway?":"你还没有账户，所以数据不会一起带走。仍要打开新地址吗？",
+"Or type this in Safari:":"或者在 Safari 中输入："
 }
 };

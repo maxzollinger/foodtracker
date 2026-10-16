@@ -667,7 +667,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v54';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v55';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1945,7 +1945,8 @@ function showMoved() {
         ${has && !a ? `<button class="btn sm" id="mvAcc">${T('Create account')}</button>` : '<b style="color:var(--good)">✓</b>'}</div>
       <div class="li"><span class="ic" style="font-weight:800">2</span><span class="grow">${T('Open the new address in Safari and add it to your Home Screen.')}</span></div>
       <div class="li"><span class="ic" style="font-weight:800">3</span><span class="grow">${T('Sign in there, then delete this old icon.')}</span></div></div>
-    <button class="btn" id="mvGo" style="margin-top:16px">${T('Open the new Food Tracker')}</button>
+    <a class="btn" id="mvGo" href="${NEW_HOME}" target="_blank" rel="noopener" style="margin-top:16px;text-decoration:none">${T('Open the new Food Tracker')}</a>
+    <p class="small muted" style="margin:10px 0 0">${T('Or type this in Safari:')} <b>foodtrackerapp.pages.dev</b></p>
     <button class="small muted" id="mvLater" style="margin-top:18px;padding:8px">${T('Later')}</button></div>`;
   document.body.appendChild(pg);
   pg.querySelector('#mvLater').onclick = () => { sessionStorage.setItem('ft_moved_later', '1'); clearInterval(movedWatch); pg.remove(); };
@@ -1953,12 +1954,12 @@ function showMoved() {
     openAccountSheet('signup');
     clearInterval(movedWatch); movedWatch = setInterval(() => { if (acct() && !$('.backdrop')) { clearInterval(movedWatch); showMoved(); } }, 700);
   };
-  pg.querySelector('#mvGo').onclick = async () => {
-    if (has && !acct() && !confirm(T('You have no account yet, so your data would not come along. Open the new address anyway?'))) return;
-    if (acct()) await runBackup(false);
+  // The link opens right away (iPhone blocks pages opened after waiting); saving happens on its own
+  if (acct()) runBackup(false);
+  pg.querySelector('#mvGo').onclick = e => {
+    if (has && !acct() && !confirm(T('You have no account yet, so your data would not come along. Open the new address anyway?'))) { e.preventDefault(); return; }
     // This old copy stops getting reminders (turn them on again in the new app)
-    try { const reg = await navigator.serviceWorker?.getRegistration(); const sub = await reg?.pushManager.getSubscription(); if (sub) await sub.unsubscribe(); } catch {}
-    window.open(NEW_HOME, '_blank');
+    navigator.serviceWorker?.getRegistration().then(reg => reg?.pushManager.getSubscription()).then(sub => sub && sub.unsubscribe()).catch(() => {});
   };
 }
 
