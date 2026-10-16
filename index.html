@@ -741,7 +741,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v80';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v81';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1496,6 +1496,21 @@ async function geminiOnce(key, model, msgs, system, json, onText, ms) {
   const text = (data.candidates?.[0]?.content?.parts || []).filter(p => !p.thought).map(p => p.text || '').join('');
   return text ? { ok: true, text } : { ok: false, status: 500, msg: 'empty answer (' + (data.candidates?.[0]?.finishReason || data.promptFeedback?.blockReason || 'unknown') + ')' };
 }
+// Counts this phone's AI use per day [requests, refused by Google, "busy" shown]. Finished days are sent
+// along with the daily backup / hello (no extra saves), so the owner sees AI use in Settings → Users.
+function aiCount(i) {
+  let c = {}; try { c = JSON.parse(LS.get('ft_aic', '{}')) || {}; } catch {}
+  const d = iso(); c[d] = c[d] || [0, 0, 0]; c[d][i]++;
+  for (const k of Object.keys(c)) if (k < addDays(d, -8)) delete c[k];
+  LS.set('ft_aic', JSON.stringify(c));
+}
+const aiReport = () => { try { const c = JSON.parse(LS.get('ft_aic', '{}')) || {}, d = iso(); return Object.fromEntries(Object.entries(c).filter(([k]) => k < d)); } catch { return {}; } };
+function aiReported(rep) {
+  let c = {}; try { c = JSON.parse(LS.get('ft_aic', '{}')) || {}; } catch {}
+  for (const k of Object.keys(rep)) delete c[k];
+  LS.set('ft_aic', JSON.stringify(c));
+}
+const devId = () => { let d = LS.get('ft_dev', ''); if (!/^[a-f0-9]{32}$/.test(d)) { d = hexOf(crypto.getRandomValues(new Uint8Array(16))); LS.set('ft_dev', d); } return d; };
 async function geminiChain(key, msgs, system, json, onText, ms, strong) {
   const cool = JSON.parse(LS.get('ft_cool', '{}')), now = Date.now();
   let list = GEMINI.map(m => m.id);
@@ -1511,6 +1526,7 @@ async function geminiChain(key, msgs, system, json, onText, ms, strong) {
   let offline = 0;
   for (const model of (ready.length ? ready : list)) {
     const r = await geminiOnce(key, model, msgs, system, json, onText, ms);
+    if (key === SHARED && r.status !== 0) { aiCount(0); if (r.status === 429) aiCount(1); }
     if (r.ok) { if (!strong) LS.set('ft_lastModel', model); lastAI = model; return r.text; }
     if (r.status === 0 && ++offline >= 2) throw aiErr(T('No connection to the AI. Check your internet.'));
     if (key !== SHARED && (/api[_ ]?key|API_KEY_INVALID|unauthenticated/i.test(r.msg) || r.status === 401)) throw aiErr(T('Your Google AI key was rejected. Check it in Settings.'), true);
@@ -1521,6 +1537,7 @@ async function geminiChain(key, msgs, system, json, onText, ms, strong) {
     else err = aiErr('Google AI: ' + r.msg);
     if (wait) { cool[model] = Date.now() + wait; LS.set('ft_cool', JSON.stringify(cool)); }
   }
+  if (key === SHARED) aiCount(2);
   throw err;
 }
 async function claudeCall(key, msgs, system, json, onText) {
@@ -1822,11 +1839,12 @@ async function runBackup(manual, a = acct()) {
     const payload = JSON.stringify({ v: 1, t: Date.now(), data: LS.get('ft_data', ''), chat: LS.get('ft_chat', ''), lang: LS.get('ft_lang', ''), theme: LS.get('ft_theme', ''), bg: LS.get('ft_bg', ''), push: LS.get('ft_push_prefs', '') });
     const zz = await zipText(payload);
     const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await aesKey(a.key), zz.bytes));
-    const r = await fetch(SERVER_URL + '/backup', { method: 'POST', headers: { 'Content-Type': 'text/plain', 'X-Id': a.id, 'X-Auth': a.auth },
+    const rep = OLD_HOME ? {} : aiReport();
+    const r = await fetch(SERVER_URL + '/backup', { method: 'POST', headers: { 'Content-Type': 'text/plain', 'X-Id': a.id, 'X-Auth': a.auth, ...(OLD_HOME ? {} : { 'X-Dev': devId(), 'X-AI': JSON.stringify(rep) }) },
       body: (zz.z ? 'z' : 'p') + '.' + b64(iv) + '.' + b64(ct) });
     if (!r.ok) throw new Error('HTTP ' + r.status);
     LS.set('ft_bk_last', String(Date.now()));
-    if (!OLD_HOME) LS.set('ft_bk_o', '1');
+    if (!OLD_HOME) { LS.set('ft_bk_o', '1'); LS.set('ft_bk_day', iso()); LS.set('ft_hello', iso()); aiReported(rep); }
     if (manual) toast('✓ ' + T('Backup saved'));
     if (tab === 'settings' && !$('.backdrop')) renderSettings();
     return true;
@@ -1834,7 +1852,7 @@ async function runBackup(manual, a = acct()) {
 }
 let bkRunning = false;
 async function autoBackup() {
-  if (bkRunning || !acct() || (Date.now() - +LS.get('ft_bk_last', 0) < 20 * 3600e3 && (OLD_HOME || LS.get('ft_bk_o', '')))) return;
+  if (bkRunning || !acct() || (OLD_HOME ? Date.now() - +LS.get('ft_bk_last', 0) < 20 * 3600e3 : LS.get('ft_bk_day', '') === iso() && LS.get('ft_bk_o', ''))) return;
   bkRunning = true; await runBackup(false); bkRunning = false;
   photoSync(false);
 }
@@ -1896,7 +1914,7 @@ async function openText(box, key) {
 async function photoSync(force, onStatus = () => {}) {
   const a = acct();
   if (phBusy || !SERVER_URL || !a || !db.profile || !window.crypto || !crypto.subtle) return null;
-  if (!force && Date.now() - +LS.get('ft_ph_sync', 0) < 3 * 3600e3) return null;
+  if (!force && LS.get('ft_ph_day', '') === iso()) return null;   // once a day is enough (photos are on the phone anyway)
   phBusy = true;
   const H = { 'Content-Type': 'text/plain', 'X-Id': a.id, 'X-Auth': a.auth }, call = (path, body, extra = {}) => fetch(SERVER_URL + path, { method: 'POST', headers: { ...H, ...extra }, body });
   let up = 0, got = 0, total = 0;
@@ -1933,13 +1951,15 @@ async function photoSync(force, onStatus = () => {}) {
       const ids = Object.keys(merged), h = await photoHash(ids); total += ids.length;
       if (s && s.h === h) continue;
       onStatus('up');
+      // The backup keeps a lighter copy of each photo (about half the size; the phone keeps its own)
+      for (const id of Object.keys(merged)) if (merged[id].length > 40000) { try { merged[id] = await scaleImage(merged[id], 400, 0.72); } catch {} }
       const box = await sealText(JSON.stringify(merged), key);
       if (box.length > 20e6) continue;   // far more photos than anyone takes in a month
       const u = await call('/photos/put?m=' + mo, box, { 'X-Hash': h, 'X-Count': String(ids.length) });
       if (!u.ok) throw new Error('HTTP ' + u.status);
       up += Math.max(0, ids.length - (s ? +s.n || 0 : 0)); seen[mo] = { h, ids };
     }
-    LS.set('ft_ph_seen', JSON.stringify(seen)); LS.set('ft_ph_sync', String(Date.now()));
+    LS.set('ft_ph_seen', JSON.stringify(seen)); LS.set('ft_ph_sync', String(Date.now())); LS.set('ft_ph_day', iso());
     if (got) { if (!$('.backdrop') && !$('#moved')) render(); toast('✓ ' + T('{n} meal photos are back', { n: got })); }
     return { up, got, total };
   } catch { return null; } finally { phBusy = false; }
@@ -2140,11 +2160,15 @@ async function syncDone() {
   if (!SERVER_URL || !db.profile) return;
   let sub; try { sub = JSON.parse(LS.get('ft_push', 'null')); } catch {}
   if (!sub || !sub.endpoint) return;
-  const today = iso(), sent = JSON.parse(LS.get('ft_done_sent', '{}')), todo = [];
-  if (dayBurned(today) > 0) todo.push(['burn', today]);
+  const today = iso(), sent = JSON.parse(LS.get('ft_done_sent', '{}')), todo = [], pf = pushPrefs(), now = new Date(), hr = now.getHours(), wd = now.getDay();
+  // The server can send a reminder up to 3 hours after its time; after that a "done" note changes nothing
+  if (pf.burn >= 0 && hr < pf.burn + 3 && dayBurned(today) > 0) todo.push(['burn', today]);
   const lastW = db.weights.map(w => w.date).sort().pop();
-  if (lastW && daysBetween(lastW, today) <= 3) todo.push(['weight', lastW]);
-  if (LS.get('ft_checkin', '') === today) todo.push(['checkin', today]);
+  if (pf.wDay >= 0 && lastW) {
+    let until = (pf.wDay - wd + 7) % 7; if (until === 0 && hr >= pf.wTime + 3) until = 7;
+    if (daysBetween(lastW, today) + until <= 3) todo.push(['weight', lastW]);   // the weigh-in reminder is skipped within 3 days of a weigh-in
+  }
+  if (pf.ci >= 0 && wd === 0 && hr < pf.ci + 3 && LS.get('ft_checkin', '') === today) todo.push(['checkin', today]);
   for (const [kind, date] of todo) {
     if (sent[kind] === date) continue;
     try {
@@ -2252,12 +2276,11 @@ function shareJourney(j) {
    Each phone says "hello" once a day with a random number, so the owner can see how many people use the
    app. Nothing else is sent: no name, email or food data. The owner sees the totals in Settings (admin). */
 function sayHello() {
-  if (!SERVER_URL || !db.profile || OLD_HOME || !window.crypto) return;
+  if (!SERVER_URL || !db.profile || OLD_HOME || !window.crypto || acct()) return;   // with an account the daily backup says it
   const today = iso(); if (LS.get('ft_hello', '') === today) return;
-  let d = LS.get('ft_dev', '');
-  if (!/^[a-f0-9]{32}$/.test(d)) { d = hexOf(crypto.getRandomValues(new Uint8Array(16))); LS.set('ft_dev', d); }
-  fetch(SERVER_URL + '/hello', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ d }) })
-    .then(r => { if (r.ok) LS.set('ft_hello', today); }).catch(() => {});
+  const rep = aiReport();
+  fetch(SERVER_URL + '/hello', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ d: devId(), ai: rep }) })
+    .then(r => { if (r.ok) { LS.set('ft_hello', today); aiReported(rep); } }).catch(() => {});
 }
 function usersCard() {
   if (!isAdmin() || !SERVER_URL) return '';
@@ -2287,7 +2310,13 @@ async function loadUsers() {
       <div class="small muted" style="margin:14px 0 6px;font-weight:600;text-align:left">${T('Active per day (last 14 days)')}</div>
       <div style="display:flex;align-items:flex-end;gap:4px;height:70px">${st.days.map(x => `<div title="${x.d}: ${x.n}" style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:3px">
         <span style="font-size:10px;color:var(--muted);font-weight:600">${x.n || ''}</span><div style="width:100%;max-width:16px;border-radius:5px;background:var(--ink);opacity:${x.d === st.date ? 1 : .55};height:${Math.max(3, x.n / max * 48)}px"></div></div>`).join('')}</div>
-      <p class="small muted" style="margin:10px 0 0;text-align:left">${T('🔔 {n} phones with reminders on.', { n: st.reminders })}</p>`;
+      <p class="small muted" style="margin:10px 0 0;text-align:left">${T('🔔 {n} phones with reminders on.', { n: st.reminders })}</p>
+      ${(() => { const ai = st.ai || [], y = ai[ai.length - 1] || { n: 0, refused: 0, busy: 0 }, wk = ai.reduce((a, x) => a + x.n, 0), hit = ai.reduce((a, x) => a + x.busy, 0);
+        return `<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line);text-align:left">
+          <div class="spread"><b style="font-size:15px">✨ ${T('AI use')}</b><span class="small muted" style="font-weight:600">${T('Last 7 days: {n}', { n: wk.toLocaleString(LOC) })}</span></div>
+          <div class="small" style="margin-top:6px">${T('Yesterday: {n} AI requests', { n: y.n.toLocaleString(LOC) })}${y.refused ? ` · ${T('{n} refused by Google', { n: y.refused })}` : ''}</div>
+          <div class="small" style="margin-top:6px;font-weight:600;color:${hit ? 'var(--bad)' : 'var(--good)'}">${hit ? '⚠️ ' + T('People saw "AI busy" {n} times this week. You are close to the free limit.', { n: hit }) : '✓ ' + T('Within the free limit: nobody had to wait.')}</div>
+          <div class="small muted" style="margin-top:6px">${T('Phones report a day once they open the app the next day.')}</div></div>`; })()}`;
   } catch { box.innerHTML = `<p class="small muted" style="margin:0">${T('No connection')}</p>`; }
 }
 function bindUsersCard() {
@@ -4340,14 +4369,14 @@ function openPicker(sel, anchor) {
   if (anchor) { const r = anchor.getBoundingClientRect(); input.style.left = Math.max(0, r.left + 16) + 'px'; input.style.top = Math.max(0, r.top) + 'px'; }
   input.click();
 }
-function scaleImage(src, max) {
+function scaleImage(src, max, q = 0.82) {
   return new Promise((res, rej) => {
     const img = new Image(), isFile = src instanceof Blob, url = isFile ? URL.createObjectURL(src) : src;
     img.onload = () => {
       const k = Math.min(1, max / Math.max(img.width, img.height));
       const c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
       c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-      if (isFile) URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg', 0.82));
+      if (isFile) URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg', q));
     };
     img.onerror = () => { if (isFile) URL.revokeObjectURL(url); rej(new Error(T('Could not open this image.'))); };
     img.src = url;

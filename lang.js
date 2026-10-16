@@ -852,7 +852,14 @@ window.I18N = {
 "Portion eaten":"Gegessene Portion",
 "No internet. Saved, it will be analysed automatically.":"Kein Internet. Gespeichert, es wird automatisch analysiert.",
 "Waiting for internet":"Wartet auf Internet",
-"It will be analysed automatically as soon as you are online.":"Wird automatisch analysiert, sobald du online bist."
+"It will be analysed automatically as soon as you are online.":"Wird automatisch analysiert, sobald du online bist.",
+"AI use":"KI-Nutzung",
+"Last 7 days: {n}":"Letzte 7 Tage: {n}",
+"Yesterday: {n} AI requests":"Gestern: {n} KI-Anfragen",
+"{n} refused by Google":"{n} von Google abgelehnt",
+"People saw \"AI busy\" {n} times this week. You are close to the free limit.":"Leute sahen diese Woche {n}-mal „KI ausgelastet“. Du bist nahe am Gratis-Limit.",
+"Within the free limit: nobody had to wait.":"Im Gratis-Limit: Niemand musste warten.",
+"Phones report a day once they open the app the next day.":"Handys melden einen Tag, sobald sie die App am nächsten Tag öffnen."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1706,7 +1713,14 @@ window.I18N = {
 "Portion eaten":"Porción comida",
 "No internet. Saved, it will be analysed automatically.":"Sin internet. Guardado, se analizará automáticamente.",
 "Waiting for internet":"Esperando internet",
-"It will be analysed automatically as soon as you are online.":"Se analizará automáticamente en cuanto tengas conexión."
+"It will be analysed automatically as soon as you are online.":"Se analizará automáticamente en cuanto tengas conexión.",
+"AI use":"Uso de IA",
+"Last 7 days: {n}":"Últimos 7 días: {n}",
+"Yesterday: {n} AI requests":"Ayer: {n} solicitudes de IA",
+"{n} refused by Google":"{n} rechazadas por Google",
+"People saw \"AI busy\" {n} times this week. You are close to the free limit.":"La gente vio \"IA ocupada\" {n} veces esta semana. Estás cerca del límite gratuito.",
+"Within the free limit: nobody had to wait.":"Dentro del límite gratuito: nadie tuvo que esperar.",
+"Phones report a day once they open the app the next day.":"Los teléfonos informan de un día cuando abren la app al día siguiente."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -2560,7 +2574,14 @@ window.I18N = {
 "Portion eaten":"Portion mangée",
 "No internet. Saved, it will be analysed automatically.":"Pas d'internet. Enregistré, ce sera analysé automatiquement.",
 "Waiting for internet":"En attente d'internet",
-"It will be analysed automatically as soon as you are online.":"Ce sera analysé automatiquement dès que tu seras en ligne."
+"It will be analysed automatically as soon as you are online.":"Ce sera analysé automatiquement dès que tu seras en ligne.",
+"AI use":"Utilisation de l'IA",
+"Last 7 days: {n}":"7 derniers jours : {n}",
+"Yesterday: {n} AI requests":"Hier : {n} requêtes IA",
+"{n} refused by Google":"{n} refusées par Google",
+"People saw \"AI busy\" {n} times this week. You are close to the free limit.":"Des gens ont vu « IA occupée » {n} fois cette semaine. Tu es proche de la limite gratuite.",
+"Within the free limit: nobody had to wait.":"Dans la limite gratuite : personne n'a dû attendre.",
+"Phones report a day once they open the app the next day.":"Les téléphones transmettent une journée quand ils ouvrent l'app le lendemain."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -3414,7 +3435,14 @@ window.I18N = {
 "Portion eaten":"Porzione mangiata",
 "No internet. Saved, it will be analysed automatically.":"Nessuna connessione. Salvato, verrà analizzato automaticamente.",
 "Waiting for internet":"In attesa di internet",
-"It will be analysed automatically as soon as you are online.":"Verrà analizzato automaticamente appena sei online."
+"It will be analysed automatically as soon as you are online.":"Verrà analizzato automaticamente appena sei online.",
+"AI use":"Uso dell'IA",
+"Last 7 days: {n}":"Ultimi 7 giorni: {n}",
+"Yesterday: {n} AI requests":"Ieri: {n} richieste IA",
+"{n} refused by Google":"{n} rifiutate da Google",
+"People saw \"AI busy\" {n} times this week. You are close to the free limit.":"Le persone hanno visto \"IA occupata\" {n} volte questa settimana. Sei vicino al limite gratuito.",
+"Within the free limit: nobody had to wait.":"Entro il limite gratuito: nessuno ha dovuto aspettare.",
+"Phones report a day once they open the app the next day.":"I telefoni segnalano un giorno quando aprono l'app il giorno dopo."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -4268,7 +4296,14 @@ window.I18N = {
 "Portion eaten":"食べた量",
 "No internet. Saved, it will be analysed automatically.":"インターネットに接続されていません。保存したので、自動で分析されます。",
 "Waiting for internet":"インターネット接続を待っています",
-"It will be analysed automatically as soon as you are online.":"オンラインになると自動で分析されます。"
+"It will be analysed automatically as soon as you are online.":"オンラインになると自動で分析されます。",
+"AI use":"AIの利用",
+"Last 7 days: {n}":"過去7日間: {n}",
+"Yesterday: {n} AI requests":"昨日: AIリクエスト {n} 件",
+"{n} refused by Google":"Googleに拒否: {n} 件",
+"People saw \"AI busy\" {n} times this week. You are close to the free limit.":"今週「AIが混雑中」が {n} 回表示されました。無料枠の上限に近づいています。",
+"Within the free limit: nobody had to wait.":"無料枠内です。待たされた人はいません。",
+"Phones report a day once they open the app the next day.":"スマホは翌日アプリを開いたときに前日の分を報告します。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -5122,7 +5157,14 @@ window.I18N = {
 "Portion eaten":"Gegeten portie",
 "No internet. Saved, it will be analysed automatically.":"Geen internet. Opgeslagen, het wordt automatisch geanalyseerd.",
 "Waiting for internet":"Wacht op internet",
-"It will be analysed automatically as soon as you are online.":"Wordt automatisch geanalyseerd zodra je online bent."
+"It will be analysed automatically as soon as you are online.":"Wordt automatisch geanalyseerd zodra je online bent.",
+"AI use":"AI-gebruik",
+"Last 7 days: {n}":"Laatste 7 dagen: {n}",
+"Yesterday: {n} AI requests":"Gisteren: {n} AI-verzoeken",
+"{n} refused by Google":"{n} geweigerd door Google",
+"People saw \"AI busy\" {n} times this week. You are close to the free limit.":"Mensen zagen deze week {n} keer \"AI bezet\". Je zit dicht bij de gratis limiet.",
+"Within the free limit: nobody had to wait.":"Binnen de gratis limiet: niemand hoefde te wachten.",
+"Phones report a day once they open the app the next day.":"Telefoons melden een dag zodra ze de app de volgende dag openen."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -5976,7 +6018,14 @@ window.I18N = {
 "Portion eaten":"Zjedzona porcja",
 "No internet. Saved, it will be analysed automatically.":"Brak internetu. Zapisano, zostanie przeanalizowane automatycznie.",
 "Waiting for internet":"Czeka na internet",
-"It will be analysed automatically as soon as you are online.":"Zostanie przeanalizowane automatycznie, gdy będziesz online."
+"It will be analysed automatically as soon as you are online.":"Zostanie przeanalizowane automatycznie, gdy będziesz online.",
+"AI use":"Użycie AI",
+"Last 7 days: {n}":"Ostatnie 7 dni: {n}",
+"Yesterday: {n} AI requests":"Wczoraj: {n} zapytań do AI",
+"{n} refused by Google":"{n} odrzuconych przez Google",
+"People saw \"AI busy\" {n} times this week. You are close to the free limit.":"W tym tygodniu ludzie {n} razy zobaczyli „AI zajęte”. Jesteś blisko darmowego limitu.",
+"Within the free limit: nobody had to wait.":"W ramach darmowego limitu: nikt nie musiał czekać.",
+"Phones report a day once they open the app the next day.":"Telefony zgłaszają dzień, gdy otworzą aplikację następnego dnia."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -6830,7 +6879,14 @@ window.I18N = {
 "Portion eaten":"Porção comida",
 "No internet. Saved, it will be analysed automatically.":"Sem internet. Guardado, será analisado automaticamente.",
 "Waiting for internet":"À espera de internet",
-"It will be analysed automatically as soon as you are online.":"Será analisado automaticamente assim que estiver online."
+"It will be analysed automatically as soon as you are online.":"Será analisado automaticamente assim que estiver online.",
+"AI use":"Uso de IA",
+"Last 7 days: {n}":"Últimos 7 dias: {n}",
+"Yesterday: {n} AI requests":"Ontem: {n} pedidos de IA",
+"{n} refused by Google":"{n} recusados pela Google",
+"People saw \"AI busy\" {n} times this week. You are close to the free limit.":"As pessoas viram \"IA ocupada\" {n} vezes esta semana. Está perto do limite gratuito.",
+"Within the free limit: nobody had to wait.":"Dentro do limite gratuito: ninguém teve de esperar.",
+"Phones report a day once they open the app the next day.":"Os telemóveis reportam um dia quando abrem a app no dia seguinte."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -7684,7 +7740,14 @@ window.I18N = {
 "Portion eaten":"Съеденная порция",
 "No internet. Saved, it will be analysed automatically.":"Нет интернета. Сохранено, анализ запустится автоматически.",
 "Waiting for internet":"Ждём интернет",
-"It will be analysed automatically as soon as you are online.":"Анализ запустится автоматически, как только появится интернет."
+"It will be analysed automatically as soon as you are online.":"Анализ запустится автоматически, как только появится интернет.",
+"AI use":"Использование ИИ",
+"Last 7 days: {n}":"За 7 дней: {n}",
+"Yesterday: {n} AI requests":"Вчера: {n} запросов к ИИ",
+"{n} refused by Google":"Google отклонил: {n}",
+"People saw \"AI busy\" {n} times this week. You are close to the free limit.":"На этой неделе люди {n} раз видели «ИИ занят». Вы близки к бесплатному лимиту.",
+"Within the free limit: nobody had to wait.":"В пределах бесплатного лимита: никому не пришлось ждать.",
+"Phones report a day once they open the app the next day.":"Телефоны присылают данные за день, когда открывают приложение на следующий день."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -8538,7 +8601,14 @@ window.I18N = {
 "Portion eaten":"Yenen porsiyon",
 "No internet. Saved, it will be analysed automatically.":"İnternet yok. Kaydedildi, otomatik olarak analiz edilecek.",
 "Waiting for internet":"İnternet bekleniyor",
-"It will be analysed automatically as soon as you are online.":"Çevrimiçi olduğunda otomatik olarak analiz edilecek."
+"It will be analysed automatically as soon as you are online.":"Çevrimiçi olduğunda otomatik olarak analiz edilecek.",
+"AI use":"Yapay zekâ kullanımı",
+"Last 7 days: {n}":"Son 7 gün: {n}",
+"Yesterday: {n} AI requests":"Dün: {n} yapay zekâ isteği",
+"{n} refused by Google":"{n} istek Google tarafından reddedildi",
+"People saw \"AI busy\" {n} times this week. You are close to the free limit.":"Bu hafta insanlar {n} kez \"Yapay zekâ meşgul\" gördü. Ücretsiz sınıra yakınsın.",
+"Within the free limit: nobody had to wait.":"Ücretsiz sınır içinde: kimse beklemek zorunda kalmadı.",
+"Phones report a day once they open the app the next day.":"Telefonlar bir günü, ertesi gün uygulamayı açtıklarında bildirir."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -9392,6 +9462,13 @@ window.I18N = {
 "Portion eaten":"吃了多少",
 "No internet. Saved, it will be analysed automatically.":"没有网络。已保存，联网后会自动分析。",
 "Waiting for internet":"等待网络",
-"It will be analysed automatically as soon as you are online.":"联网后会自动分析。"
+"It will be analysed automatically as soon as you are online.":"联网后会自动分析。",
+"AI use":"AI 使用",
+"Last 7 days: {n}":"最近 7 天：{n}",
+"Yesterday: {n} AI requests":"昨天：{n} 次 AI 请求",
+"{n} refused by Google":"被 Google 拒绝 {n} 次",
+"People saw \"AI busy\" {n} times this week. You are close to the free limit.":"本周有 {n} 次显示“AI 繁忙”。你已接近免费额度上限。",
+"Within the free limit: nobody had to wait.":"在免费额度内：没有人需要等待。",
+"Phones report a day once they open the app the next day.":"手机会在第二天打开应用时上报前一天的数据。"
 }
 };
