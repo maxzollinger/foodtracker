@@ -422,13 +422,13 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .gp .opt{text-align:left}
 #tourLayer{position:fixed;inset:0;z-index:95;animation:fade .3s}
 #tourLayer.out{opacity:0;transition:opacity .3s}
-.tspot{position:fixed;box-shadow:0 0 0 9999px rgba(0,0,0,.66),0 0 0 3px rgba(255,255,255,.9),0 0 24px rgba(255,255,255,.25);transition:top .45s cubic-bezier(.2,.8,.2,1),left .45s cubic-bezier(.2,.8,.2,1),width .45s cubic-bezier(.2,.8,.2,1),height .45s cubic-bezier(.2,.8,.2,1),border-radius .45s,opacity .25s;pointer-events:none}
-.ttip{position:fixed;left:16px;right:16px;max-width:420px;margin:0 auto;background:var(--card);color:var(--text);border-radius:22px;padding:14px 16px 16px;box-shadow:0 18px 50px rgba(0,0,0,.45);transition:top .45s cubic-bezier(.2,.8,.2,1),opacity .25s;animation:celIn .35s ease}
-.ttip.center{top:50%!important;transform:translateY(-50%)}
+.tspot{position:fixed;left:0;top:0;will-change:transform,width,height;box-shadow:0 0 0 9999px rgba(0,0,0,.66),0 0 0 3px rgba(255,255,255,.9),0 0 24px rgba(255,255,255,.25);pointer-events:none}
+.ttip{position:fixed;left:16px;right:16px;top:0;max-width:420px;margin:0 auto;will-change:transform;background:var(--card);color:var(--text);border-radius:22px;padding:14px 16px 16px;box-shadow:0 18px 50px rgba(0,0,0,.45);transition:opacity .25s ease}
+.ttip-body{transition:opacity .16s ease}
+.ttip-body.swap{opacity:0}
 .ttip-t{display:block;font-size:18px;margin:6px 0 4px}
 .ttip-x{margin:0 0 14px;font-size:15px;line-height:1.45;color:var(--muted)}
 .ttip-skip{font-size:14px;font-weight:600;color:var(--muted);padding:4px 6px}
-#tourLayer.moving .tspot,#tourLayer.moving .ttip{opacity:0}
 .inpop{position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));z-index:70;max-width:536px;margin:0 auto;display:flex;align-items:center;gap:12px;
   padding:12px 10px 12px 14px;border-radius:20px;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   box-shadow:0 12px 34px rgba(0,0,0,.28),inset 0 0 0 1px var(--line);animation:popIn .5s cubic-bezier(.2,1.2,.4,1)}
@@ -732,7 +732,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v76';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v79';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2317,18 +2317,21 @@ const TOUR_STEPS = [
   { tab: 'home', sel: '#fab', title: N('Log your food'), text: N('The most important button: take a photo of your meal, scan a barcode, describe it in words, or pick a favorite.') },
   { tab: 'home', sel: '.tab[data-tab="progress"]', title: N('Progress'), text: N('Next stop: your progress.') },
   { tab: 'progress', sel: '.two', title: N('Weight and streak'), text: N('Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.') },
-  { tab: 'progress', sel: '#goalCard', title: N('Goal progress'), text: N('Your weight trend, how much is left, and when you will reach your goal.') },
   { tab: 'progress', sel: '#badgeCard', title: N('Badges'), text: N('Earn badges for streaks, protein, water and milestones. Tap one to see what it is for.') },
+  { tab: 'progress', sel: '#goalCard', title: N('Goal progress'), text: N('Your weight trend, how much is left, and when you will reach your goal.') },
   { tab: 'progress', sel: '.tab[data-tab="chat"]', title: N('Coach'), text: N('Now your personal AI coach.') },
-  { tab: 'chat', sel: '#chatScreen .chatbar', title: N('Ask your coach anything'), text: N('Type or speak, or tap + to send photos and files, like a menu. Tap a suggestion to start. Every Sunday your weekly check-in appears here.') },
+  { tab: 'chat', sel: '#chatScreen .chatbar .chips button', title: N('Suggestions'), text: N('Not sure what to ask? Tap a suggestion to start a conversation.') },
+  { tab: 'chat', sel: '#chatScreen .chatbar .plusbtn', title: N('Photos and files'), text: N('Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.') },
+  { tab: 'chat', sel: '#chatScreen .chatbar .composer', title: N('Ask your coach anything'), text: N('Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.') },
   { tab: 'chat', sel: '.tab[data-tab="settings"]', title: N('Settings'), text: N('Finally, your settings.') },
   { tab: 'settings', sel: '#sGoal', title: N('Your goal'), text: N('Change your main goal any time. Your past days stay as they are.') },
   { tab: 'settings', sel: '#sPers', title: N('Personal details'), text: N('Height, weight, age and training. Your goals update automatically when they change.') },
   { tab: 'settings', sel: '#sGoals', title: N('Adjust macronutrients'), text: N('Set your own calorie and macro targets if you prefer.') },
   { tab: 'settings', sel: '#prefList', title: N('Language, units and tour'), text: N('Choose your language, kg or lb, cm or ft, litres or fl oz. You can watch this tour again here.') },
+  { tab: 'settings', sel: '#appCard', title: N('Appearance'), text: N('Choose light or dark mode, or let it follow your phone. Under Background you can give the whole app a color gradient.') },
   { tab: 'settings', sel: '#remCard', title: N('Reminders'), text: N('Turn on notifications and choose when you want your reminders.') },
-  { tab: 'settings', sel: '#bkCard', title: N('Account & backup'), text: N('Create an account so your data is backed up every day and comes back on a new phone.') },
   { tab: 'settings', sel: '#sPriv', title: N('Privacy'), text: N('What happens with your data, explained simply.') },
+  { tab: 'settings', sel: '#bkCard', title: N('Account & backup'), text: N('Create an account so your data is backed up every day and comes back on a new phone.') },
   { tab: 'home', title: N("You're all set"), text: N('Start by logging your next meal with the + button. Enjoy!') }
 ];
 function openTour(onDone) {
@@ -2336,48 +2339,80 @@ function openTour(onDone) {
   const layer = document.createElement('div'); layer.id = 'tourLayer';
   layer.innerHTML = `<div class="tspot"></div><div class="ttip">
       <div class="spread"><span class="ttip-n small muted"></span><button class="ttip-skip">${T('Skip')}</button></div>
-      <b class="ttip-t"></b><p class="ttip-x"></p>
+      <div class="ttip-body"><b class="ttip-t"></b><p class="ttip-x"></p></div>
       <div class="row" style="gap:10px"><button class="btn outline sm grow ttip-back">${T('Back')}</button><button class="btn sm grow ttip-next"></button></div></div>`;
   document.body.appendChild(layer);
-  const spot = layer.querySelector('.tspot'), tip = layer.querySelector('.ttip'), wait = ms => new Promise(r => setTimeout(r, ms));
-  let i = 0, dir = 1, target = null, busy = false;
-  const place = () => {
-    const vh = innerHeight;
-    if (!target) { spot.style.cssText = `top:${vh / 2}px;left:${innerWidth / 2}px;width:0;height:0;border-radius:24px`; tip.classList.add('center'); tip.style.top = ''; return; }
-    tip.classList.remove('center');
-    const r = target.getBoundingClientRect(), pad = 6, cs = getComputedStyle(target), rad = cs.borderRadius.includes('%') ? 999 : parseFloat(cs.borderRadius) || 12;
-    spot.style.cssText = `top:${r.top - pad}px;left:${r.left - pad}px;width:${r.width + pad * 2}px;height:${r.height + pad * 2}px;border-radius:${Math.min(rad + pad, 999)}px`;
-    const th = tip.offsetHeight, below = r.bottom + pad + 14, above = r.top - pad - 14 - th;
-    tip.style.top = (below + th < vh - 12 ? below : above > 12 ? above : Math.max(12, vh - th - 24)) + 'px';
+  const spot = layer.querySelector('.tspot'), tip = layer.querySelector('.ttip'), body = layer.querySelector('.ttip-body'), wait = ms => new Promise(r => setTimeout(r, ms));
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  tip.style.opacity = '0';   // shown once it knows where to go
+  let i = 0, dir = 1, target = null, busy = false, tipGoal = null, alive = true;
+  // Where things are now (cur) and where they're going; one animation loop moves both smoothly every frame
+  let cur = null, tipTop = null, last = performance.now();
+  const rectOf = el => {
+    const r = el.getBoundingClientRect(), pad = 6, cs = getComputedStyle(el), rad = cs.borderRadius.includes('%') ? 999 : parseFloat(cs.borderRadius) || 12;
+    const x0 = Math.max(6, r.left - pad), x1 = Math.min(innerWidth - 6, r.right + pad);
+    return { x: x0, y: r.top - pad, w: x1 - x0, h: r.height + pad * 2, r: Math.min(rad + pad, 40) };
   };
+  const centre = () => ({ x: innerWidth / 2, y: innerHeight / 2, w: 0, h: 0, r: 24 });
+  // Where the bubble ends up: under the part if it fits, otherwise above it (worked out from where the part
+  // will be once the page has finished scrolling, so the bubble goes straight to its place)
+  const placeTip = final => {
+    const th = tip.offsetHeight, vh = innerHeight;
+    if (!final) return (vh - th) / 2;
+    const below = final.y + final.h + 14, above = final.y - 14 - th;
+    return below + th < vh - 12 ? below : above > 12 ? above : Math.max(12, vh - th - 24);
+  };
+  function frame(now) {
+    if (!alive) return;
+    const dt = Math.min(64, now - last); last = now;
+    const goal = target && target.isConnected ? rectOf(target) : centre();
+    const k = still ? 1 : 1 - Math.pow(0.82, dt / 16.7);   // eases out, the same at any frame rate
+    if (!cur) cur = { ...goal };
+    for (const key of ['x', 'y', 'w', 'h', 'r']) cur[key] += (goal[key] - cur[key]) * k;
+    spot.style.cssText = `transform:translate3d(${cur.x}px,${cur.y}px,0);width:${cur.w}px;height:${cur.h}px;border-radius:${cur.r}px`;
+    if (tipGoal !== null) { tipTop = tipTop === null ? tipGoal : tipTop + (tipGoal - tipTop) * k; tip.style.transform = `translate3d(0,${tipTop}px,0)`; }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
   const finish = () => {
-    LS.set('ft_tour', '1'); window.removeEventListener('resize', place); layer.classList.add('out');
-    setTimeout(() => { layer.remove(); if (tab !== 'home') go('home'); if (onDone) onDone(); }, 300);
+    LS.set('ft_tour', '1'); window.removeEventListener('resize', onResize); layer.classList.add('out');
+    setTimeout(() => { alive = false; layer.remove(); if (tab !== 'home') go('home'); if (onDone) onDone(); }, 300);
   };
   async function show(n) {
     if (n < 0 || busy) return;
     if (n >= TOUR_STEPS.length) return finish();
     busy = true; i = n;
-    const s = TOUR_STEPS[i];
-    if (s.tab !== tab) { layer.classList.add('moving'); switchTab(s.tab); await wait(700); }
-    target = s.sel ? document.querySelector(s.sel) : null;
-    if (s.sel && (!target || !target.offsetParent && target.id !== 'fab')) { busy = false; layer.classList.remove('moving'); return show(i + dir); }   // not on this phone (e.g. no account option)
-    if (target && !target.closest('.tabbar')) {
-      target.scrollIntoView({ block: 'center', behavior: 'smooth' });
-      let last = -1;   // wait until the page has stopped moving, so the bubble does not cover the part
-      for (let k = 0; k < 20; k++) { await wait(80); const y = target.getBoundingClientRect().top; if (k > 3 && Math.abs(y - last) < 1) break; last = y; }
+    const s = TOUR_STEPS[i], t0 = performance.now();
+    body.classList.add('swap');   // the old text fades out while things move
+    if (s.tab !== tab) { switchTab(s.tab); await wait(260); }   // the light stays on the tab button and then glides to the new page
+    const el = s.sel ? document.querySelector(s.sel) : null;
+    if (s.sel && (!el || !el.offsetParent && el.id !== 'fab')) { busy = false; return show(i + dir); }   // not on this phone (e.g. no account option)
+    target = el;
+    // Scroll the part to the middle; the light follows it while the page moves
+    let final = el ? rectOf(el) : null;
+    const sc = el && !el.closest('.tabbar') && el.closest('#scroller');
+    if (sc) {
+      const sr = sc.getBoundingClientRect(), r = el.getBoundingClientRect();
+      const want = Math.max(0, Math.min(sc.scrollHeight - sc.clientHeight, sc.scrollTop + r.top - sr.top - (sr.height - r.height) / 2));
+      final.y -= want - sc.scrollTop;
+      sc.scrollTo({ top: want, behavior: still ? 'auto' : 'smooth' });
     }
+    await wait(Math.max(0, 150 - (performance.now() - t0)));
     tip.querySelector('.ttip-n').textContent = `${i + 1} / ${TOUR_STEPS.length}`;
     tip.querySelector('.ttip-t').textContent = T(s.title);
     tip.querySelector('.ttip-x').textContent = T(s.text);
     tip.querySelector('.ttip-back').style.visibility = i ? '' : 'hidden';
     tip.querySelector('.ttip-next').textContent = i === TOUR_STEPS.length - 1 ? T("Let's go") : T('Next');
-    place(); layer.classList.remove('moving'); busy = false;
+    tipGoal = placeTip(final);
+    tip.style.opacity = '';
+    body.classList.remove('swap');
+    busy = false;
   }
+  const onResize = () => { if (target) tipGoal = placeTip(rectOf(target)); else tipGoal = placeTip(null); };
   layer.querySelector('.ttip-next').onclick = () => { dir = 1; show(i + 1); };
   layer.querySelector('.ttip-back').onclick = () => { dir = -1; show(i - 1); };
   layer.querySelector('.ttip-skip').onclick = finish;
-  window.addEventListener('resize', place);
+  window.addEventListener('resize', onResize);
   if (tab !== 'home') go('home');
   show(0);
 }
@@ -3854,7 +3889,7 @@ function renderSettings() {
       <button class="li" id="sUnits"><span class="ic">📏</span><span class="grow">${T('Units')}</span><span class="val">${unitsName()}</span><span class="chev">›</span></button>
       <button class="li" id="sTour"><span class="ic">📖</span><span class="grow">${T('App tour')}</span><span class="chev">›</span></button>
     </div>
-    <div class="card"><b>🌓 ${T('Appearance')}</b>
+    <div class="card" id="appCard"><b>🌓 ${T('Appearance')}</b>
       <div class="seg">${[['auto', N('Automatic')], ['light', N('Light')], ['dark', N('Dark')]].map(([v, l]) => `<button data-th="${v}" class="${th === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>
       <button class="bgrow" id="sBg"><span class="bgthumb" style="background:${isDark() ? curBg().dImg : curBg().lImg}"></span><span class="grow"><b>${T('Background')}</b><br><span class="small muted">${T(curBg().name)}</span></span><span class="chev">›</span></button></div>
     ${remindersCard()}

@@ -842,7 +842,13 @@ window.I18N = {
 "Copper":"Kupfer",
 "Amber":"Bernstein",
 "Graphite":"Graphit",
-"Pick a background for the app. It follows light and dark mode.":"Wähle einen Hintergrund für die App. Er passt sich dem hellen und dunklen Modus an."
+"Pick a background for the app. It follows light and dark mode.":"Wähle einen Hintergrund für die App. Er passt sich dem hellen und dunklen Modus an.",
+"Choose light or dark mode, or let it follow your phone. Under Background you can give the whole app a color gradient.":"Wähle hellen oder dunklen Modus oder lass ihn deinem Handy folgen. Unter Hintergrund kannst du der ganzen App einen Farbverlauf geben.",
+"Suggestions":"Vorschläge",
+"Not sure what to ask? Tap a suggestion to start a conversation.":"Weißt du nicht, was du fragen sollst? Tippe auf einen Vorschlag, um zu starten.",
+"Photos and files":"Fotos und Dateien",
+"Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Tippe auf +, um Fotos oder Dateien zu senden, zum Beispiel eine Speisekarte oder ein Nährwertetikett. Der Coach liest sie und hilft dir bei der Wahl.",
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Schreib deine Frage oder tippe auf das Mikrofon, um zu sprechen. Jeden Sonntag erscheint hier dein Wochen-Check-in."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1686,7 +1692,13 @@ window.I18N = {
 "Copper":"Cobre",
 "Amber":"Ámbar",
 "Graphite":"Grafito",
-"Pick a background for the app. It follows light and dark mode.":"Elige un fondo para la app. Se adapta al modo claro y oscuro."
+"Pick a background for the app. It follows light and dark mode.":"Elige un fondo para la app. Se adapta al modo claro y oscuro.",
+"Choose light or dark mode, or let it follow your phone. Under Background you can give the whole app a color gradient.":"Elige el modo claro u oscuro, o deja que siga a tu teléfono. En Fondo puedes darle a toda la app un degradado de color.",
+"Suggestions":"Sugerencias",
+"Not sure what to ask? Tap a suggestion to start a conversation.":"¿No sabes qué preguntar? Toca una sugerencia para empezar.",
+"Photos and files":"Fotos y archivos",
+"Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Toca + para enviar fotos o archivos, como la carta de un restaurante o una etiqueta nutricional. El coach los lee y te ayuda a elegir.",
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Escribe tu pregunta o toca el micrófono para hablar. Cada domingo aparece aquí tu resumen semanal."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -2530,7 +2542,13 @@ window.I18N = {
 "Copper":"Cuivre",
 "Amber":"Ambre",
 "Graphite":"Graphite",
-"Pick a background for the app. It follows light and dark mode.":"Choisis un fond pour l'app. Il suit le mode clair et sombre."
+"Pick a background for the app. It follows light and dark mode.":"Choisis un fond pour l'app. Il suit le mode clair et sombre.",
+"Choose light or dark mode, or let it follow your phone. Under Background you can give the whole app a color gradient.":"Choisis le mode clair ou sombre, ou laisse-le suivre ton téléphone. Sous Arrière-plan, tu peux donner un dégradé de couleur à toute l'app.",
+"Suggestions":"Suggestions",
+"Not sure what to ask? Tap a suggestion to start a conversation.":"Tu ne sais pas quoi demander ? Touche une suggestion pour commencer.",
+"Photos and files":"Photos et fichiers",
+"Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Touche + pour envoyer des photos ou des fichiers, comme la carte d'un restaurant ou une étiquette nutritionnelle. Le coach les lit et t'aide à choisir.",
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Écris ta question ou touche le micro pour parler. Chaque dimanche, ton bilan de la semaine apparaît ici."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -3374,7 +3392,13 @@ window.I18N = {
 "Copper":"Rame",
 "Amber":"Ambra",
 "Graphite":"Grafite",
-"Pick a background for the app. It follows light and dark mode.":"Scegli uno sfondo per l'app. Segue la modalità chiara e scura."
+"Pick a background for the app. It follows light and dark mode.":"Scegli uno sfondo per l'app. Segue la modalità chiara e scura.",
+"Choose light or dark mode, or let it follow your phone. Under Background you can give the whole app a color gradient.":"Scegli la modalità chiara o scura, oppure lascia che segua il telefono. In Sfondo puoi dare a tutta l'app una sfumatura di colore.",
+"Suggestions":"Suggerimenti",
+"Not sure what to ask? Tap a suggestion to start a conversation.":"Non sai cosa chiedere? Tocca un suggerimento per iniziare.",
+"Photos and files":"Foto e file",
+"Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Tocca + per inviare foto o file, come il menu di un ristorante o un'etichetta nutrizionale. Il coach li legge e ti aiuta a scegliere.",
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Scrivi la tua domanda o tocca il microfono per parlare. Ogni domenica qui appare il tuo check-in settimanale."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -4218,7 +4242,13 @@ window.I18N = {
 "Copper":"カッパー",
 "Amber":"アンバー",
 "Graphite":"グラファイト",
-"Pick a background for the app. It follows light and dark mode.":"アプリの背景を選びましょう。ライトモードとダークモードに合わせて変わります。"
+"Pick a background for the app. It follows light and dark mode.":"アプリの背景を選びましょう。ライトモードとダークモードに合わせて変わります。",
+"Choose light or dark mode, or let it follow your phone. Under Background you can give the whole app a color gradient.":"ライトモードかダークモードを選ぶか、スマホの設定に合わせられます。「背景」ではアプリ全体にカラーグラデーションを設定できます。",
+"Suggestions":"おすすめの質問",
+"Not sure what to ask? Tap a suggestion to start a conversation.":"何を聞けばいいか迷ったら、おすすめをタップして始めましょう。",
+"Photos and files":"写真とファイル",
+"Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"+ をタップすると、レストランのメニューや栄養成分表示などの写真やファイルを送れます。コーチが読み取って選ぶのを手伝います。",
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"質問を入力するか、マイクをタップして話しかけましょう。毎週日曜日にここで週間チェックインが届きます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -5062,7 +5092,13 @@ window.I18N = {
 "Copper":"Koper",
 "Amber":"Amber",
 "Graphite":"Grafiet",
-"Pick a background for the app. It follows light and dark mode.":"Kies een achtergrond voor de app. Hij past zich aan lichte en donkere modus aan."
+"Pick a background for the app. It follows light and dark mode.":"Kies een achtergrond voor de app. Hij past zich aan lichte en donkere modus aan.",
+"Choose light or dark mode, or let it follow your phone. Under Background you can give the whole app a color gradient.":"Kies lichte of donkere modus, of laat hem je telefoon volgen. Onder Achtergrond geef je de hele app een kleurverloop.",
+"Suggestions":"Suggesties",
+"Not sure what to ask? Tap a suggestion to start a conversation.":"Weet je niet wat je moet vragen? Tik op een suggestie om te beginnen.",
+"Photos and files":"Foto's en bestanden",
+"Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Tik op + om foto's of bestanden te sturen, zoals een restaurantmenu of een voedingsetiket. De coach leest ze en helpt je kiezen.",
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Typ je vraag of tik op de microfoon om te praten. Elke zondag verschijnt hier je wekelijkse check-in."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -5906,7 +5942,13 @@ window.I18N = {
 "Copper":"Miedź",
 "Amber":"Bursztyn",
 "Graphite":"Grafit",
-"Pick a background for the app. It follows light and dark mode.":"Wybierz tło aplikacji. Dopasowuje się do trybu jasnego i ciemnego."
+"Pick a background for the app. It follows light and dark mode.":"Wybierz tło aplikacji. Dopasowuje się do trybu jasnego i ciemnego.",
+"Choose light or dark mode, or let it follow your phone. Under Background you can give the whole app a color gradient.":"Wybierz tryb jasny lub ciemny albo pozwól mu podążać za telefonem. W sekcji Tło możesz nadać całej aplikacji kolorowy gradient.",
+"Suggestions":"Sugestie",
+"Not sure what to ask? Tap a suggestion to start a conversation.":"Nie wiesz, o co zapytać? Stuknij sugestię, aby zacząć.",
+"Photos and files":"Zdjęcia i pliki",
+"Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Stuknij +, aby wysłać zdjęcia lub pliki, np. menu restauracji albo etykietę z wartościami odżywczymi. Coach je przeczyta i pomoże wybrać.",
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Wpisz pytanie albo stuknij mikrofon, aby mówić. W każdą niedzielę pojawia się tu Twoje tygodniowe podsumowanie."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -6750,7 +6792,13 @@ window.I18N = {
 "Copper":"Cobre",
 "Amber":"Âmbar",
 "Graphite":"Grafite",
-"Pick a background for the app. It follows light and dark mode.":"Escolha um fundo para a app. Acompanha o modo claro e escuro."
+"Pick a background for the app. It follows light and dark mode.":"Escolha um fundo para a app. Acompanha o modo claro e escuro.",
+"Choose light or dark mode, or let it follow your phone. Under Background you can give the whole app a color gradient.":"Escolha o modo claro ou escuro, ou deixe-o seguir o telemóvel. Em Fundo pode dar a toda a app um gradiente de cor.",
+"Suggestions":"Sugestões",
+"Not sure what to ask? Tap a suggestion to start a conversation.":"Não sabe o que perguntar? Toque numa sugestão para começar.",
+"Photos and files":"Fotos e ficheiros",
+"Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Toque em + para enviar fotos ou ficheiros, como o menu de um restaurante ou um rótulo nutricional. O coach lê-os e ajuda-o a escolher.",
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Escreva a sua pergunta ou toque no microfone para falar. Todos os domingos o seu resumo semanal aparece aqui."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -7594,7 +7642,13 @@ window.I18N = {
 "Copper":"Медь",
 "Amber":"Янтарь",
 "Graphite":"Графит",
-"Pick a background for the app. It follows light and dark mode.":"Выберите фон приложения. Он подстраивается под светлую и тёмную тему."
+"Pick a background for the app. It follows light and dark mode.":"Выберите фон приложения. Он подстраивается под светлую и тёмную тему.",
+"Choose light or dark mode, or let it follow your phone. Under Background you can give the whole app a color gradient.":"Выберите светлую или тёмную тему или пусть она следует за телефоном. В разделе «Фон» можно задать всему приложению цветовой градиент.",
+"Suggestions":"Подсказки",
+"Not sure what to ask? Tap a suggestion to start a conversation.":"Не знаете, что спросить? Нажмите на подсказку, чтобы начать.",
+"Photos and files":"Фото и файлы",
+"Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Нажмите +, чтобы отправить фото или файлы, например меню ресторана или этикетку с составом. Коуч прочитает их и поможет выбрать.",
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Напишите вопрос или нажмите на микрофон, чтобы говорить. Каждое воскресенье здесь появляется ваш недельный отчёт."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -8438,7 +8492,13 @@ window.I18N = {
 "Copper":"Bakır",
 "Amber":"Kehribar",
 "Graphite":"Grafit",
-"Pick a background for the app. It follows light and dark mode.":"Uygulama için bir arka plan seç. Açık ve koyu moda uyum sağlar."
+"Pick a background for the app. It follows light and dark mode.":"Uygulama için bir arka plan seç. Açık ve koyu moda uyum sağlar.",
+"Choose light or dark mode, or let it follow your phone. Under Background you can give the whole app a color gradient.":"Açık veya koyu modu seç ya da telefonunu takip etmesine izin ver. Arka plan bölümünden tüm uygulamaya renk geçişi verebilirsin.",
+"Suggestions":"Öneriler",
+"Not sure what to ask? Tap a suggestion to start a conversation.":"Ne soracağını bilmiyor musun? Başlamak için bir öneriye dokun.",
+"Photos and files":"Fotoğraflar ve dosyalar",
+"Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"Restoran menüsü veya besin etiketi gibi fotoğraf ya da dosya göndermek için + simgesine dokun. Koç bunları okur ve seçmene yardım eder.",
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"Sorunu yaz veya konuşmak için mikrofona dokun. Her pazar haftalık değerlendirmen burada görünür."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -9282,6 +9342,12 @@ window.I18N = {
 "Copper":"紫铜",
 "Amber":"琥珀",
 "Graphite":"石墨",
-"Pick a background for the app. It follows light and dark mode.":"为应用选择背景。它会随浅色和深色模式变化。"
+"Pick a background for the app. It follows light and dark mode.":"为应用选择背景。它会随浅色和深色模式变化。",
+"Choose light or dark mode, or let it follow your phone. Under Background you can give the whole app a color gradient.":"选择浅色或深色模式，或让它跟随手机设置。在“背景”中可以为整个应用设置渐变色。",
+"Suggestions":"建议",
+"Not sure what to ask? Tap a suggestion to start a conversation.":"不知道问什么？点一个建议开始对话。",
+"Photos and files":"照片和文件",
+"Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.":"点 + 可以发送照片或文件，比如餐厅菜单或营养标签。教练会读取并帮你选择。",
+"Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.":"输入你的问题，或点麦克风说话。每周日你的每周回顾会显示在这里。"
 }
 };
