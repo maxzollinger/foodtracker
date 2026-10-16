@@ -670,7 +670,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v63';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v64';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1265,7 +1265,7 @@ async function askAI(parts, opt = {}) {
   const g = geminiKey(), c = getClaudeKey();
   if (!g && !c) throw new Error('NOKEY');
   const prov = [];
-  if (g) prov.push(() => geminiChain(g, msgs, opt.system, json, opt.onText, opt.timeout));
+  if (g) prov.push(() => geminiChain(g, msgs, opt.system, json, opt.onText, opt.timeout, opt.strong));
   if (c) prov.push(() => claudeCall(c, msgs, opt.system, json, opt.onText));
   if (LS.get('ft_ai_first', 'gemini') === 'claude') prov.reverse();
   let err;
@@ -1334,18 +1334,22 @@ async function geminiOnce(key, model, msgs, system, json, onText, ms) {
   const text = (data.candidates?.[0]?.content?.parts || []).filter(p => !p.thought).map(p => p.text || '').join('');
   return text ? { ok: true, text } : { ok: false, status: 500, msg: 'empty answer (' + (data.candidates?.[0]?.finishReason || data.promptFeedback?.blockReason || 'unknown') + ')' };
 }
-async function geminiChain(key, msgs, system, json, onText, ms) {
+async function geminiChain(key, msgs, system, json, onText, ms, strong) {
   const cool = JSON.parse(LS.get('ft_cool', '{}')), now = Date.now();
   let list = GEMINI.map(m => m.id);
   const custom = LS.get('ft_model', ''), last = LS.get('ft_lastModel', '');
-  if (last && list.includes(last)) list = [last, ...list.filter(x => x !== last)];
+  if (strong) {   // photos & files: the best readers first (newest full Flash), the light models only as a fallback
+    const rank = x => /lite/.test(x) ? 9 : x === 'gemini-3.8-flash' ? 0 : x === 'gemini-3.6-flash' ? 1 : 2;
+    list = [...list].sort((a, b) => rank(a) - rank(b));
+  }
+  if (!strong && last && list.includes(last)) list = [last, ...list.filter(x => x !== last)];
   if (custom) list = [custom, ...list.filter(x => x !== custom)];
   const ready = list.filter(m => !(cool[m] > now));
   let err = aiErr(getClaudeKey() || !isAdmin() ? T('All free Google AI models are busy right now. Try again in a minute.') : T('All free Google AI models are busy right now. Try again in a minute, or add a Claude key in Settings.'));
   let offline = 0;
   for (const model of (ready.length ? ready : list)) {
     const r = await geminiOnce(key, model, msgs, system, json, onText, ms);
-    if (r.ok) { LS.set('ft_lastModel', model); lastAI = model; return r.text; }
+    if (r.ok) { if (!strong) LS.set('ft_lastModel', model); lastAI = model; return r.text; }
     if (r.status === 0 && ++offline >= 2) throw aiErr(T('No connection to the AI. Check your internet.'));
     if (key !== SHARED && (/api[_ ]?key|API_KEY_INVALID|unauthenticated/i.test(r.msg) || r.status === 401)) throw aiErr(T('Your Google AI key was rejected. Check it in Settings.'), true);
     let wait = 0;
@@ -1460,7 +1464,7 @@ function attRoom(n) {
 async function chatPhoto(e) {
   const files = [...e.target.files]; e.target.value = ''; if (!files.length) return;
   for (const f of files.slice(0, attRoom(files.length))) {
-    try { const full = await scaleImage(f, 960); chatAtt.push({ kind: 'image', full: full.split(',')[1], thumb: await scaleImage(full, 200) }); renderAttach(); }
+    try { const full = await scaleImage(f, 1800); chatAtt.push({ kind: 'image', full: full.split(',')[1], thumb: await scaleImage(full, 200) }); renderAttach(); }
     catch (err) { toast(err.message); }
   }
 }
@@ -2964,6 +2968,7 @@ RULES
 - When suggesting food, give concrete foods with grams plus calories and protein, and make them fit exactly what is left today. Vary suggestions; look at what they ate recently.
 - Use metric units. The app is set to ${langInfo().ai}: answer in ${langInfo().ai} unless the user writes in another language, then answer in theirs.
 - You are not a doctor. For medical conditions, medication, pregnancy or signs of an eating disorder, recommend a professional.
+- PHOTOS AND FILES: when the user sends photos (e.g. a restaurant menu, a food label, a fridge, a receipt) or files, first read them carefully, every page and every photo. Only mention dishes, products and numbers that are really visible or written in them, using their exact names (and prices if shown). Never invent items that are not there. If something is too small, blurry or cut off to read, say so and ask for a closer photo instead of guessing. For a menu: recommend the best concrete options from THAT menu for their goal and what is left today, with estimated calories and protein, and say how to order them (e.g. sauce on the side).
 - The app has a weekly meal plan and grocery list (see WEEKLY MEAL PLAN below). For cooking, meal prep or planning questions, base your help on that plan: a concrete prep schedule (which day, what to cook ahead, how to store it and for how long), simple cooking steps, and swaps that keep them on target. Refer to today's planned meals when it fits. If they change something, tell them they can also swap meals or change the plan on the meal plan page.
 ${db.profile ? '- ' + PLAN_COACH[planOf(db.profile).id] + '\n' : ''}
 MEMORY
@@ -3057,7 +3062,7 @@ function buildChatbar(scr) {
   bar.querySelectorAll('[data-act]').forEach(b => b.onclick = () => {
     closeChatMenu();
     const a = b.dataset.act;
-    if (a === 'new') { chat = []; saveChat(); chatAtt = []; renderChat(); toast('✓ ' + T('New conversation')); }
+    if (a === 'new') { chat = []; saveChat(); chatAtt = []; idb.del('chatatt'); renderChat(); toast('✓ ' + T('New conversation')); }
     if (a === 'image') openPicker('#fileChat', bar.querySelector('.chips'));
     if (a === 'photo') $('#fileChatCam').click();
     if (a === 'file') openPicker('#fileChatDoc', bar.querySelector('.chips'));
@@ -3194,11 +3199,17 @@ async function sendChat(text) {
   const pics = att.filter(x => x.kind === 'image'), docs = att.filter(x => x.kind === 'file');
   const q = text || (docs.length ? (docs.length > 1 || pics.length ? T('What do you think about these files?') : T('What do you think about this file?'))
     : pics.length > 1 ? T('What do you think about these photos?') : T('What do you think about this food?'));
-  const history = chat.filter(m => !m.err).slice(-30).map(m => {
+  // The most recent photos/files stay with the conversation, so follow-up questions ("what should I order?") still see them
+  let kept = null; try { kept = await idb.get('chatatt'); } catch {}
+  const recent = chat.filter(m => !m.err).slice(-30), keptIdx = kept ? recent.findIndex(m => m.t === kept.t) : -1;
+  const history = recent.map((m, i) => {
     const n = m.imgs ? m.imgs.length : m.img ? 1 : 0, fs = m.files || (m.file ? [m.file] : []);
-    return { role: m.role, parts: [{ text: m.text + (n ? `\n[${n} photo(s) attached]` : '') + (fs.length ? `\n[file(s) attached: ${fs.join(', ')}]` : '') }] };
+    const textPart = { text: m.text + (n ? `\n[${n} photo(s) attached]` : '') + (fs.length ? `\n[file(s) attached: ${fs.join(', ')}]` : '') };
+    return { role: m.role, parts: i === keptIdx && i >= recent.length - 12 ? [...kept.parts, textPart] : [textPart] };
   });
-  chat.push({ role: 'user', text: q, imgs: pics.length ? pics.map(x => x.thumb) : null, files: docs.length ? docs.map(x => x.name) : null, t: Date.now() });
+  const usesKept = keptIdx >= 0 && keptIdx >= recent.length - 12;
+  const sentAt = Date.now();
+  chat.push({ role: 'user', text: q, imgs: pics.length ? pics.map(x => x.thumb) : null, files: docs.length ? docs.map(x => x.name) : null, t: sentAt });
   saveChat(); chatBusy = true; renderChat(true);
 
   /* Calm typing: the stream fills `target` as fast as the AI sends it; the bubble shows it word by
@@ -3219,9 +3230,12 @@ async function sendChat(text) {
   let entry;
   try {
     const attach = att.map(x => x.kind === 'image' ? { image: x.full } : x.text != null ? { text: `Attached file "${x.name}":\n${x.text}` } : { inline: { mime: x.mime, data: x.data } });
-    if (pics.length > 1) attach.push({ text: `[${pics.length} photos attached above, in order — e.g. several pages of one menu. Look at all of them together.]` });
+    if (att.length) {
+      attach.push({ text: `[The user attached ${pics.length ? pics.length + ' photo(s)' : ''}${pics.length && docs.length ? ' and ' : ''}${docs.length ? docs.length + ' file(s)' : ''} above, in order${pics.length > 1 ? ' (e.g. several pages of one menu: look at ALL of them together)' : ''}. Read them carefully and answer from what is actually in them.]` });
+      idb.set('chatatt', { t: sentAt, parts: attach }).catch(() => {});   // for follow-up questions
+    }
     const parts = [...attach, { text: `${liveNumbers()}\n\n${q}` }];
-    const answer = await askAI(parts, { json: false, system: coachSystem(), history, onText: t => { target = t; } });
+    const answer = await askAI(parts, { json: false, system: coachSystem(), history, strong: att.length > 0 || usesKept, timeout: att.length || usesKept ? 90000 : undefined, onText: t => { target = t; } });
     target = answer;
     const mem = applyMemoryTags(answer);
     entry = { role: 'assistant', text: stripTags(answer), mem: mem > 0, t: Date.now() };
