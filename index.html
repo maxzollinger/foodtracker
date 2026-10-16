@@ -670,7 +670,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v65';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v66';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -782,6 +782,55 @@ const fmtDate = (s, o = { day: 'numeric', month: 'short' }) => dt(s).toLocaleDat
 const fmtLong = d => d.toLocaleDateString(LOC, { day: 'numeric', month: 'long', year: 'numeric' });
 const clone = o => JSON.parse(JSON.stringify(o));
 let toastT;
+
+/* ================= Units (metric / US) =================
+   Everything is stored in kg, cm and ml. Only what people see and type changes: a small watcher turns
+   "72 kg", "180 cm", "250 ml" and "2.5 L" anywhere on screen into the chosen units. */
+const KG_LB = 2.20462, ML_OZ = 29.5735, CM_IN = 2.54;
+const units = () => (db && db.settings && db.settings.units) || (/^en-US/i.test(navigator.language || '') ? { w: 'lb', h: 'in', v: 'oz' } : { w: 'kg', h: 'cm', v: 'ml' });
+const isLb = () => units().w === 'lb', isIn = () => units().h === 'in', isOz = () => units().v === 'oz';
+const wUnit = () => isLb() ? 'lb' : 'kg';
+const showW = kg => r1(isLb() ? kg * KG_LB : kg);                  // a body weight as a number in the chosen unit
+const readW = v => isLb() ? Math.round(num(v) / KG_LB * 100) / 100 : r1(num(v));   // typed number → kg
+const ftIn = cm => { const t = Math.round(cm / CM_IN); return `${Math.floor(t / 12)}′${t % 12}″`; };
+const numU = (v, d = 1) => (Math.round(v * 10 ** d) / 10 ** d).toLocaleString(LOC, { maximumFractionDigits: d });
+const pnum = x => parseFloat(String(x).replace(',', '.'));
+function unitText(t) {
+  if (isLb()) t = t.replace(/(\d+(?:[.,]\d+)?)([\s\u00a0]?)kg(?![a-zA-Z])/g, (m, n, sp) => numU(pnum(n) * KG_LB) + sp + 'lb');
+  if (isIn()) t = t.replace(/(\d{2,3}(?:[.,]\d+)?)[\s\u00a0]?cm(?![a-zA-Z])/g, (m, n) => ftIn(pnum(n)));
+  if (isOz()) t = t.replace(/(\d+(?:[.,]\d+)?)([\s\u00a0]?)ml(?![a-zA-Z])/g, (m, n, sp) => numU(pnum(n) / ML_OZ, 0) + sp + 'fl oz')
+    .replace(/(\d+(?:[.,]\d+)?)([\s\u00a0])L(?![a-zA-Z])/g, (m, n, sp) => numU(pnum(n) * 1000 / ML_OZ, 0) + sp + 'fl oz');
+  return t;
+}
+function unitWalk(root) {
+  if (!root || !(isLb() || isIn() || isOz())) return;
+  if (root.nodeType === 3) root = root.parentNode;
+  if (!root || !root.ownerDocument) return;
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  for (let n = w.nextNode(); n; n = w.nextNode()) {
+    const par = n.parentNode; if (!par || /^(SCRIPT|STYLE|TEXTAREA)$/.test(par.nodeName)) continue;
+    const v = n.nodeValue; if (!/kg|cm|ml|L/.test(v)) continue;
+    const nv = unitText(v); if (nv !== v) n.nodeValue = nv;
+  }
+}
+new MutationObserver(ms => { for (const m of ms) { if (m.type === 'characterData') unitWalk(m.target); else m.addedNodes.forEach(unitWalk); } })
+  .observe(document.body, { childList: true, subtree: true, characterData: true });
+const unitsName = () => { const u = units(); return u.w === 'kg' && u.h === 'cm' && u.v === 'ml' ? T('Metric') : u.w === 'lb' && u.h === 'in' && u.v === 'oz' ? T('US') : `${u.w} · ${u.h === 'in' ? 'ft' : 'cm'} · ${u.v === 'oz' ? 'fl oz' : 'L'}`; };
+function setUnits(u) { db.settings.units = { ...units(), ...u }; if (db.profile) save(); render(); }
+function openUnitsSheet() {
+  const u = units(), row = (key, label, opts) => `<label class="lbl">${label}</label><div class="seg">${opts.map(([v, l]) => `<button data-u="${key}:${v}" class="${u[key] === v ? 'on' : ''}">${l}</button>`).join('')}</div>`;
+  const metric = u.w === 'kg' && u.h === 'cm' && u.v === 'ml', us = u.w === 'lb' && u.h === 'in' && u.v === 'oz';
+  sheet(`<h3>📏 ${T('Units')}</h3><p class="muted" style="margin-top:4px">${T('Choose how weights, heights and drinks are shown. Your data stays exactly the same.')}</p>
+    <div class="seg" style="margin-top:12px"><button data-preset="metric" class="${metric ? 'on' : ''}">${T('Metric')} · kg, cm, L</button><button data-preset="us" class="${us ? 'on' : ''}">${T('US')} · lb, ft, fl oz</button></div>
+    ${row('w', T('Body weight'), [['kg', 'kg'], ['lb', 'lb']])}
+    ${row('h', T('Height'), [['cm', 'cm'], ['in', 'ft / in']])}
+    ${row('v', T('Drinks'), [['ml', 'L / ml'], ['oz', 'fl oz']])}
+    <p class="small muted" style="margin:14px 0 0">${T('Food is still shown in grams, like on nutrition labels.')}</p>`, sh => {
+    sh.querySelectorAll('[data-preset]').forEach(b => b.onclick = () => { setUnits(b.dataset.preset === 'us' ? { w: 'lb', h: 'in', v: 'oz' } : { w: 'kg', h: 'cm', v: 'ml' }); openUnitsSheet(); });
+    sh.querySelectorAll('[data-u]').forEach(b => b.onclick = () => { const [k, v] = b.dataset.u.split(':'); setUnits({ [k]: v }); openUnitsSheet(); });
+  });
+}
+
 function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
 
 function ring(size, stroke, pct, color, inner = '') {
@@ -1211,11 +1260,12 @@ function numberSheet(title, value, unit, cb, step = 1) {
   });
 }
 function openWeightSheet() {
-  numberSheet(T('Log weight'), currentWeight() || 75, 'kg', v => {
+  numberSheet(T('Log weight'), showW(currentWeight() || 75), wUnit(), val => {
+    const v = readW(val);
     if (v < 25 || v > 350) return toast(T('Please enter a valid weight'));
-    db.weights = db.weights.filter(w => w.date !== iso()); db.weights.push({ date: iso(), kg: r1(v) }); save(); toast(T('✓ Weight saved'));
+    db.weights = db.weights.filter(w => w.date !== iso()); db.weights.push({ date: iso(), kg: v }); save(); toast(T('✓ Weight saved'));
     if (tab === 'progress') renderProgress(); else if (tab === 'home') renderHome();
-  }, 0.1);
+  }, isLb() ? 0.2 : 0.1);
 }
 
 /* ================= AI analysis ================= */
@@ -1932,7 +1982,7 @@ function shareJourney(j) {
   const f = (s, w) => `${w} ${s}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
   x.font = f(200, 400); x.fillText('🏆', W / 2, 330);
   x.fillStyle = '#fff'; x.font = f(84, 800); x.fillText(T('Goal reached!'), W / 2, 480);
-  x.fillStyle = '#ff9f1c'; x.font = f(96, 800); x.fillText(`${j.from} → ${j.to} kg`, W / 2, 630);
+  x.fillStyle = '#ff9f1c'; x.font = f(96, 800); x.fillText(unitText(`${j.from} kg`).replace(/\s?(kg|lb)$/, '') + ' → ' + unitText(`${j.to} kg`), W / 2, 630);
   x.fillStyle = '#c9c9ce'; x.font = f(44, 600);
   [[T('Days on your journey'), j.days], [T('Meals logged'), j.meals], [T('Average protein (last 30 days)'), j.avgP + ' g'], [T('Badges earned'), j.nb]]
     .forEach(([l, v], i) => { x.fillText(`${l}: ${v}`, W / 2, 790 + i * 80); });
@@ -2075,7 +2125,7 @@ function waterAuto(d = sel) {
 }
 const waterGoal = (d = sel) => db.settings.waterGoal || waterAuto(d).total;
 const waterOn = d => num(waterLog()[d]);
-const fmtL = ml => (ml >= 1000 ? (Math.round(ml / 10) / 100).toLocaleString(LOC) + ' L' : ml + ' ml');
+const fmtL = ml => isOz() ? numU(ml / ML_OZ, 0) + ' fl oz' : (ml >= 1000 ? (Math.round(ml / 10) / 100).toLocaleString(LOC) + ' L' : ml + ' ml');
 function addWater(ml, d = sel) {
   const v = Math.max(0, waterOn(d) + ml);
   if (v) waterLog()[d] = v; else delete waterLog()[d];
@@ -2106,7 +2156,7 @@ function openWaterSheet() {
   sheet(`<h3>💧 ${T('Water')}</h3><p class="muted" style="margin-top:4px">${T('{a} of {b} today', { a: fmtL(waterOn(sel)), b: fmtL(waterGoal()) })}</p>
     <div class="addgrid">${[[150, WATER_GLASS, 32, N('Small glass')], [250, WATER_GLASS, 44, N('Glass')], [500, WATER_BOTTLE, 50, N('Bottle')], [750, WATER_BOTTLE, 64, N('Large bottle')]].map(([ml, svg, px, l]) =>
       `<button class="addtile" data-ml="${ml}"><span class="wicon">${svg.replace('<svg ', `<svg height="${px}" `)}</span>${T(l)}<small class="muted">+${ml} ml</small></button>`).join('')}</div>
-    <div class="row" style="margin-top:14px"><input id="wCustom" inputmode="numeric" placeholder="${T('Other amount (ml)')}"><button class="btn sm" id="wAdd">${T('Add')}</button></div>
+    <div class="row" style="margin-top:14px"><input id="wCustom" inputmode="numeric" placeholder="${isOz() ? T('Other amount (ml)').replace('ml', 'fl oz') : T('Other amount (ml)')}"><button class="btn sm" id="wAdd">${T('Add')}</button></div>
     <label class="lbl">${T('Daily goal')}</label>
     <select id="wGoal"><option value="auto" ${!db.settings.waterGoal ? 'selected' : ''}>✨ ${T('Personal')} · ${fmtL(auto.total)} (${T('recommended')})</option>
       ${goals.map(g => `<option value="${g}" ${g === db.settings.waterGoal ? 'selected' : ''}>${fmtL(g)}</option>`).join('')}</select>
@@ -2114,7 +2164,7 @@ function openWaterSheet() {
       ${auto.parts.map(([l, ml], i) => `<div class="spread small"><span>${l}</span><b>${i ? '+' : ''}${fmtL(ml)}</b></div>`).join('')}</div>
     ${waterOn(sel) ? `<div class="row" style="margin-top:14px"><button class="btn outline grow" id="wLess">− 250 ml</button><button class="btn outline grow" id="wReset" style="color:var(--bad)">${T('Reset for this day')}</button></div>` : ''}`, s => {
     s.querySelectorAll('[data-ml]').forEach(b => b.onclick = () => { addWater(+b.dataset.ml); closeSheet(); toast(`💧 +${b.dataset.ml} ml`); });
-    s.querySelector('#wAdd').onclick = () => { const v = r0(num(s.querySelector('#wCustom').value)); if (v > 0 && v <= 5000) { addWater(v); closeSheet(); toast(`💧 +${v} ml`); } };
+    s.querySelector('#wAdd').onclick = () => { const raw = num(s.querySelector('#wCustom').value), v = r0(isOz() ? raw * ML_OZ : raw); if (v > 0 && v <= 5000) { addWater(v); closeSheet(); toast(`💧 +${v} ml`); } };
     s.querySelector('#wGoal').onchange = e => {
       if (e.target.value === 'auto') delete db.settings.waterGoal; else db.settings.waterGoal = +e.target.value;
       save(); if (tab === 'home') renderHome(); toast(T('✓ Saved')); openWaterSheet();
@@ -2351,7 +2401,7 @@ ${recent.length ? `- Do NOT repeat these meals from the previous weeks: ${[...ne
 ${change && old ? `- The user wants to CHANGE the current plan: "${change}". Keep what doesn't need to change.\nCurrent plan:\n${planBrief(old)}` : change ? `- Extra wish from the user: "${change}".` : ''}
 - The grocery list covers ALL meals for ${pr.people} person(s) for the whole week, merged (each ingredient once with the total amount, metric units or pieces), grouped into supermarket sections in a sensible shopping order. Leave out water; basic spices and oil go once into a pantry section.
 - "prep": 3 to 6 short, practical meal-prep tips for exactly this plan (what to cook ahead, on which day, how to store it).
-- Write all names, descriptions, section names and tips in ${langInfo().ai}. Nutrition numbers are per person, per serving.
+- Write all names, descriptions, section names and tips in ${langInfo().ai}. Nutrition numbers are per person, per serving.${isLb() ? ' Grocery quantities in US units (lb, oz, fl oz, pieces).' : ''}
 
 Return JSON only:
 {"days":[{"meals":[{"type":"Breakfast","name":"","desc":"one short sentence: main ingredients and how it is made","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0}]}],"groceries":[{"cat":"","items":[{"name":"","qty":""}]}],"prep":[""]}`;
@@ -2528,7 +2578,7 @@ async function exportPlan() {
   const layout = draw => {
     let y = P;
     const text = (t, size, w, color, gap = 1.4) => {
-      x.font = font(size, w);
+      t = unitText(String(t)); x.font = font(size, w);
       const max = W - P * 2, lines = []; let line = '';
       for (const wd of String(t).split(' ')) { const tl = line ? line + ' ' + wd : wd; if (line && x.measureText(tl).width > max) { lines.push(line); line = wd; } else line = tl; }
       lines.push(line);
@@ -2747,7 +2797,7 @@ function renderProgress() {
   $('#view').innerHTML = `
     <div class="top"><div class="brand">${T('Progress')}</div></div>
     <div class="two" style="margin-top:12px">
-      <div class="card"><div class="small muted">${T('Current weight')}</div><div style="font-size:30px;font-weight:800;letter-spacing:-.03em;margin:4px 0">${cur || '–'}<small style="font-size:16px"> kg</small></div>
+      <div class="card"><div class="small muted">${T('Current weight')}</div><div style="font-size:30px;font-weight:800;letter-spacing:-.03em;margin:4px 0">${cur ? showW(cur) : '–'}<small style="font-size:16px"> ${wUnit()}</small></div>
         <div class="small muted">${p && p.goal !== 'maintain' ? T('Goal <b>{w} kg</b>', { w: p.targetWeight }) : T('Goal: maintain')}</div>
         <button class="btn sm" id="logW" style="margin-top:12px;width:100%">${T('Log weight')}</button></div>
       <div class="card" style="text-align:center"><div style="font-size:40px">🔥</div><div style="font-size:30px;font-weight:800;color:var(--flame)">${st}</div><div class="small muted" style="font-weight:600">${T('Day streak')}</div><div class="wdots">${dots}</div>
@@ -2812,7 +2862,7 @@ function weightChart(ws, target) {
   const area = line + ` L${pts.at(-1)[0].toFixed(1)},${H - P.b} L${pts[0][0].toFixed(1)},${H - P.b} Z`;
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="${T('Weight')}">
     <defs><linearGradient id="wg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--ink)" stop-opacity=".14"/><stop offset="1" stop-color="var(--ink)" stop-opacity="0"/></linearGradient></defs>
-    ${[hi, (hi + lo) / 2, lo].map(v => `<line x1="${P.l}" x2="${W - P.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${P.l - 6}" y="${y(v) + 4}" font-size="10" text-anchor="end" fill="var(--muted)">${r1(v)}</text>`).join('')}
+    ${[hi, (hi + lo) / 2, lo].map(v => `<line x1="${P.l}" x2="${W - P.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/><text x="${P.l - 6}" y="${y(v) + 4}" font-size="10" text-anchor="end" fill="var(--muted)">${showW(v)}</text>`).join('')}
     ${target ? `<line x1="${P.l}" x2="${W - P.r}" y1="${y(target)}" y2="${y(target)}" stroke="var(--good)" stroke-dasharray="5 4" stroke-width="1.5"/><text x="${W - P.r}" y="${y(target) - 5}" font-size="10" text-anchor="end" fill="var(--good)" font-weight="600">${T('Goal')}</text>` : ''}
     <path d="${area}" fill="url(#wg)"/>
     <path d="${line}" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
@@ -2966,7 +3016,7 @@ RULES
 - When suggesting food, give concrete foods with grams plus calories and protein, and make them fit exactly what is left today. Vary suggestions; look at what they ate recently.
 - Use metric units. The app is set to ${langInfo().ai}: answer in ${langInfo().ai} unless the user writes in another language, then answer in theirs.
 - You are not a doctor. For medical conditions, medication, pregnancy or signs of an eating disorder, recommend a professional.
-- PHOTOS AND FILES: when the user sends photos (e.g. a restaurant menu, a food label, a fridge, a receipt) or files, first read them carefully, every page and every photo. Only mention dishes, products and numbers that are really visible or written in them, using their exact names (and prices if shown). Never invent items that are not there. If something is too small, blurry or cut off to read, say so and ask for a closer photo instead of guessing. For a menu: recommend the best concrete options from THAT menu for their goal and what is left today, with estimated calories and protein, and say how to order them (e.g. sauce on the side).
+${isLb() || isIn() || isOz() ? `- UNITS: the user uses ${isLb() ? 'pounds (lb) for body weight' : 'kg for body weight'}, ${isIn() ? 'feet/inches for height' : 'cm for height'} and ${isOz() ? 'fluid ounces (fl oz) for drinks' : 'litres/ml for drinks'}. The data below is in metric: convert when you talk about these. Food amounts and macros stay in grams.\n` : ''}- PHOTOS AND FILES: when the user sends photos (e.g. a restaurant menu, a food label, a fridge, a receipt) or files, first read them carefully, every page and every photo. Only mention dishes, products and numbers that are really visible or written in them, using their exact names (and prices if shown). Never invent items that are not there. If something is too small, blurry or cut off to read, say so and ask for a closer photo instead of guessing. For a menu: recommend the best concrete options from THAT menu for their goal and what is left today, with estimated calories and protein, and say how to order them (e.g. sauce on the side).
 - The app has a weekly meal plan and grocery list (see WEEKLY MEAL PLAN below). For cooking, meal prep or planning questions, base your help on that plan: a concrete prep schedule (which day, what to cook ahead, how to store it and for how long), simple cooking steps, and swaps that keep them on target. Refer to today's planned meals when it fits. If they change something, tell them they can also swap meals or change the plan on the meal plan page.
 ${db.profile ? '- ' + PLAN_COACH[planOf(db.profile).id] + '\n' : ''}
 MEMORY
@@ -3422,6 +3472,7 @@ function renderSettings() {
     <div class="h2">${T('Preferences')}</div>
     <div class="list">
       <button class="li" id="sLang"><span class="ic">🌐</span><span class="grow">${T('Language')}</span><span class="val">${langInfo().f} ${langInfo().n}</span><span class="chev">›</span></button>
+      <button class="li" id="sUnits"><span class="ic">📏</span><span class="grow">${T('Units')}</span><span class="val">${unitsName()}</span><span class="chev">›</span></button>
     </div>
     <div class="card"><b>🌓 ${T('Appearance')}</b>
       <div class="seg">${[['auto', N('Automatic')], ['light', N('Light')], ['dark', N('Dark')]].map(([v, l]) => `<button data-th="${v}" class="${th === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div></div>
@@ -3466,6 +3517,7 @@ function renderSettings() {
   $('#sGoals').onclick = openGoalsSheet;
   $('#sRedo').onclick = startOnboarding;
   $('#sLang').onclick = () => openLangSheet();
+  $('#sUnits').onclick = openUnitsSheet;
   document.querySelectorAll('[data-th]').forEach(b => b.onclick = () => { setTheme(b.dataset.th); renderSettings(); });
   bindReminders();
   bindBackupCard();
@@ -3536,8 +3588,8 @@ function openPersonalSheet() {
     <label class="pd-row pd-date"><span class="pd-ic">🎂</span><span class="grow"><b id="pdBirthTxt"></b><span class="small muted" id="pdAge"></span></span>
       <span class="chev">›</span><input id="pBirth" type="date" value="${st.birth}" max="${iso()}"></label>
     <div class="pd-grid">
-      ${[['h', T('Height'), 'cm', 1], ['w', T('Weight'), 'kg', 0.1]].map(([k, l, u, step]) => `<div class="pd-num"><div class="small muted" style="font-weight:600">${l}</div>
-        <div class="pd-val"><input id="pd_${k}" inputmode="decimal" value="${k === 'h' ? st.height : st.weight}"><span>${u}</span></div>
+      ${[['h', T('Height'), isIn() ? '' : 'cm', isIn() ? CM_IN : 1], ['w', T('Weight'), wUnit(), isLb() ? 0.2 : 0.1]].map(([k, l, u, step]) => `<div class="pd-num"><div class="small muted" style="font-weight:600">${l}</div>
+        <div class="pd-val"><input id="pd_${k}" inputmode="decimal" ${k === 'h' && isIn() ? 'readonly' : ''} value="${k === 'h' ? (isIn() ? ftIn(st.height) : st.height) : showW(st.weight)}"><span>${u}</span></div>
         <div class="pd-step"><button data-step="${k}" data-d="${-step}" aria-label="−">−</button><button data-step="${k}" data-d="${step}" aria-label="+">＋</button></div></div>`).join('')}</div>
     <div class="pd-sec">${T('Workouts / week')}</div>
     <div class="pd-wk">${WK.map(([v, ic, n, l]) => `<button data-wk="${v}" class="${st.workouts === v ? 'on' : ''}"><span class="pd-wic">${ic}</span><b>${n}</b><small>${T(l)}</small></button>`).join('')}</div>
@@ -3564,12 +3616,12 @@ function openPersonalSheet() {
     s.querySelectorAll('[data-wk]').forEach(b => b.onclick = () => { st.workouts = b.dataset.wk; s.querySelectorAll('[data-wk]').forEach(x => x.classList.toggle('on', x === b)); draw(); });
     $s('#pBirth').onchange = e => { if (e.target.value) { st.birth = e.target.value; draw(); } };
     const inp = { h: $s('#pd_h'), w: $s('#pd_w') };
-    inp.h.oninput = () => { const v = num(inp.h.value); if (v) { st.height = r0(v); draw(); } };
-    inp.w.oninput = () => { const v = num(inp.w.value); if (v) { st.weight = r1(v); draw(); } };
+    inp.h.oninput = () => { const v = num(inp.h.value); if (v && !isIn()) { st.height = r0(v); draw(); } };
+    inp.w.oninput = () => { const v = num(inp.w.value); if (v) { st.weight = readW(v); draw(); } };
     s.querySelectorAll('[data-step]').forEach(b => b.onclick = () => {
       const k = b.dataset.step, d = +b.dataset.d;
-      if (k === 'h') { st.height = clamp(r0(st.height + d), 120, 230); inp.h.value = st.height; }
-      else { st.weight = clamp(r1(st.weight + d), 30, 300); inp.w.value = st.weight; }
+      if (k === 'h') { st.height = clamp(isIn() ? r1(st.height + d) : r0(st.height + d), 120, 230); inp.h.value = isIn() ? ftIn(st.height) : st.height; }
+      else { st.weight = clamp(readW(showW(st.weight) + d), 30, 300); inp.w.value = showW(st.weight); }
       draw();
     });
     draw();
@@ -3600,7 +3652,7 @@ function openMainGoalSheet() {
         ${pl.dir === null ? `<label class="lbl">${T('And your weight?')}</label><div class="seg">${DIRS.map(([v, l]) => `<button data-dir="${v}" class="${d.goal === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>` : ''}
         ${pl.id === 'keto' ? `<label class="lbl">${T('How strict?')}</label><div class="seg">${[['keto', N('Keto (max 30 g carbs)')], ['lowcarb', N('Low carb (max 100 g carbs)')]].map(([v, l]) => `<button data-carb="${v}" class="${d.carbs === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>` : ''}
         ${pl.id === 'if' ? fastPicker(d.fast) : ''}
-        ${needsTarget(d) ? `<div class="row"><div class="grow"><label class="lbl">${T('Goal weight (kg)')}</label><input id="gT" inputmode="decimal" value="${d.targetWeight}"></div>
+        ${needsTarget(d) ? `<div class="row"><div class="grow"><label class="lbl">${T('Goal weight (kg)').replace('kg', wUnit())}</label><input id="gT" inputmode="decimal" value="${showW(d.targetWeight)}"></div>
           <div class="grow"><label class="lbl">${T('Speed (kg / week)')}</label><select id="gP">${paces.map(v => `<option value="${v}" ${v === d.pace ? 'selected' : ''}>${v} kg</option>`).join('')}</select></div></div>` : ''}
         <div class="tip" id="gPrev"></div>
         <button class="btn" id="gGo" style="margin-top:16px">${T('Save & update goals')}</button>`;
@@ -3609,7 +3661,7 @@ function openMainGoalSheet() {
       box.querySelectorAll('[data-dir]').forEach(b => b.onclick = () => { d.goal = b.dataset.dir; d.pace = paceRange(d)[1]; fixTarget(d, w); fill(); });
       box.querySelectorAll('[data-carb]').forEach(b => b.onclick = () => { d.carbs = b.dataset.carb; fill(); });
       if (box.querySelector('#fH')) bindFast(box, d.fast, preview);
-      if (box.querySelector('#gT')) box.querySelector('#gT').oninput = e => { d.targetWeight = r1(num(e.target.value)); preview(); };
+      if (box.querySelector('#gT')) box.querySelector('#gT').oninput = e => { d.targetWeight = r1(readW(e.target.value)); preview(); };
       if (box.querySelector('#gP')) box.querySelector('#gP').onchange = e => { d.pace = +e.target.value; preview(); };
       box.querySelector('#gGo').onclick = () => {
         if (needsTarget(d)) {
@@ -3680,7 +3732,12 @@ function renderOb() {
   if (!pg) { pg = document.createElement('div'); pg.id = 'onb'; pg.className = 'page'; pg.style.zIndex = 45; document.body.appendChild(pg); }
   const p = ob.p, s = OB[ob.step];
   const opts = (field, list) => list.map(([v, l, sub]) => `<button class="opt ${p[field] === v ? 'on' : ''}" data-set="${field}" data-v="${v}">${l}${sub ? `<small>${sub}</small>` : ''}</button>`).join('');
-  const kgOpts = (v, from, to) => { let o = ''; for (let k = from; k <= to; k += 0.5) o += `<option value="${k}" ${Math.abs(k - v) < 0.01 ? 'selected' : ''}>${k} kg</option>`; return o; };
+  const kgOpts = (v, from, to) => {
+    let o = '';
+    if (isLb()) { const sel = Math.round(v * KG_LB); for (let lb = Math.round(from * KG_LB); lb <= Math.round(to * KG_LB); lb++) o += `<option value="${(lb / KG_LB).toFixed(3)}" ${lb === sel ? 'selected' : ''}>${lb} lb</option>`; }
+    else for (let k = from; k <= to; k += 0.5) o += `<option value="${k}" ${Math.abs(k - v) < 0.01 ? 'selected' : ''}>${k} kg</option>`;
+    return o;
+  };
   const calib = T('This will be used to calibrate your custom plan.');
   let title = '', sub = '', body = '', ok = true, cta = T('Continue');
   if (s === 'intro') {
@@ -3704,8 +3761,10 @@ function renderOb() {
   if (s === 'workouts') { title = T('How many workouts do you do per week?'); sub = calib;
     body = opts('workouts', [['0-2', '0–2', T('workouts per week')], ['3-5', '3–5', T('workouts per week')], ['6+', '6+', T('workouts per week')]]); ok = !!p.workouts; }
   if (s === 'body') { title = T('Height & weight'); sub = calib;
-    let h = ''; for (let c = 120; c <= 230; c++) h += `<option value="${c}" ${c === r0(p.height) ? 'selected' : ''}>${c} cm</option>`;
-    body = `<div class="row"><div class="grow"><label class="lbl">${T('Height')}</label><select id="obH">${h}</select></div><div class="grow"><label class="lbl">${T('Weight')}</label><select id="obW">${kgOpts(Math.round(p.weight * 2) / 2, 35, 250)}</select></div></div>`; }
+    let h = '';
+    if (isIn()) { const sel = Math.round(p.height / CM_IN); for (let i = 48; i <= 90; i++) h += `<option value="${r1(i * CM_IN)}" ${i === sel ? 'selected' : ''}>${Math.floor(i / 12)}′${i % 12}″</option>`; }
+    else for (let c = 120; c <= 230; c++) h += `<option value="${c}" ${c === r0(p.height) ? 'selected' : ''}>${c} cm</option>`;
+    body = `<div class="seg" style="margin-bottom:14px"><button data-obu="metric" class="${isLb() ? '' : 'on'}">kg · cm</button><button data-obu="us" class="${isLb() ? 'on' : ''}">lb · ft</button></div><div class="row"><div class="grow"><label class="lbl">${T('Height')}</label><select id="obH">${h}</select></div><div class="grow"><label class="lbl">${T('Weight')}</label><select id="obW">${kgOpts(isLb() ? p.weight : Math.round(p.weight * 2) / 2, 35, 250)}</select></div></div>`; }
   if (s === 'birth') { title = T('When were you born?'); sub = calib;
     body = `<input type="date" id="obB" value="${p.birth}" max="${addDays(iso(), -365 * 12)}" min="1920-01-01" style="font-size:20px;text-align:center;padding:18px">`; ok = !!p.birth; }
   if (s === 'goal') { title = T('What is your main goal?'); sub = T('Everything in the app adapts to it. You can change it any time in Settings.');
@@ -3766,6 +3825,7 @@ function renderOb() {
   if (pg.querySelector('#fH')) bindFast(pg, p.fast, renderOb);
   const bind = (id, fn) => { const el = pg.querySelector(id); if (el) el.onchange = el.oninput = () => fn(el); };
   bind('#obH', el => p.height = +el.value);
+  pg.querySelectorAll('[data-obu]').forEach(b => b.onclick = () => { db.settings.units = b.dataset.obu === 'us' ? { w: 'lb', h: 'in', v: 'oz' } : { w: 'kg', h: 'cm', v: 'ml' }; renderOb(); });
   bind('#obW', el => p.weight = +el.value);
   bind('#obB', el => { p.birth = el.value; pg.querySelector('#obNext').disabled = !p.birth; });
   bind('#obT', el => { p.targetWeight = +el.value; renderOb(); });

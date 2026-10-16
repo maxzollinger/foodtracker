@@ -730,7 +730,14 @@ window.I18N = {
 "Extra activity that day ({n} kcal burned)":"Zusätzliche Aktivität an dem Tag ({n} kcal verbrannt)",
 "Activity of your day":"Aktivität deines Tages",
 "Describe your whole day (AI estimates the active calories)":"Beschreibe deinen ganzen Tag (die KI schätzt die aktiven Kalorien)",
-"e.g. 9000 steps, 1 h gym, cycled to work":"z. B. 9000 Schritte, 1 Std. Gym, mit dem Velo zur Arbeit"
+"e.g. 9000 steps, 1 h gym, cycled to work":"z. B. 9000 Schritte, 1 Std. Gym, mit dem Velo zur Arbeit",
+"Metric":"Metrisch",
+"US":"US",
+"Units":"Einheiten",
+"Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Wähle, wie Gewicht, Größe und Getränke angezeigt werden. Deine Daten bleiben genau gleich.",
+"Body weight":"Körpergewicht",
+"Drinks":"Getränke",
+"Food is still shown in grams, like on nutrition labels.":"Essen wird weiterhin in Gramm angezeigt, wie auf Nährwertangaben."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1462,7 +1469,14 @@ window.I18N = {
 "Extra activity that day ({n} kcal burned)":"Actividad extra ese día ({n} kcal quemadas)",
 "Activity of your day":"Actividad de tu día",
 "Describe your whole day (AI estimates the active calories)":"Describe todo tu día (la IA estima las calorías activas)",
-"e.g. 9000 steps, 1 h gym, cycled to work":"p. ej. 9000 pasos, 1 h de gym, bici al trabajo"
+"e.g. 9000 steps, 1 h gym, cycled to work":"p. ej. 9000 pasos, 1 h de gym, bici al trabajo",
+"Metric":"Métrico",
+"US":"EE. UU.",
+"Units":"Unidades",
+"Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Elige cómo se muestran el peso, la altura y las bebidas. Tus datos siguen exactamente iguales.",
+"Body weight":"Peso corporal",
+"Drinks":"Bebidas",
+"Food is still shown in grams, like on nutrition labels.":"La comida se sigue mostrando en gramos, como en las etiquetas nutricionales."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -2194,7 +2208,14 @@ window.I18N = {
 "Extra activity that day ({n} kcal burned)":"Activité en plus ce jour-là ({n} kcal brûlées)",
 "Activity of your day":"Activité de ta journée",
 "Describe your whole day (AI estimates the active calories)":"Décris toute ta journée (l'IA estime les calories actives)",
-"e.g. 9000 steps, 1 h gym, cycled to work":"ex. 9000 pas, 1 h de salle, vélo pour aller au travail"
+"e.g. 9000 steps, 1 h gym, cycled to work":"ex. 9000 pas, 1 h de salle, vélo pour aller au travail",
+"Metric":"Métrique",
+"US":"US",
+"Units":"Unités",
+"Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Choisis comment le poids, la taille et les boissons sont affichés. Tes données restent exactement les mêmes.",
+"Body weight":"Poids",
+"Drinks":"Boissons",
+"Food is still shown in grams, like on nutrition labels.":"Les aliments restent en grammes, comme sur les étiquettes nutritionnelles."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -2926,7 +2947,14 @@ window.I18N = {
 "Extra activity that day ({n} kcal burned)":"Attività extra quel giorno ({n} kcal bruciate)",
 "Activity of your day":"Attività della tua giornata",
 "Describe your whole day (AI estimates the active calories)":"Descrivi tutta la giornata (l'IA stima le calorie attive)",
-"e.g. 9000 steps, 1 h gym, cycled to work":"es. 9000 passi, 1 ora di palestra, bici per andare al lavoro"
+"e.g. 9000 steps, 1 h gym, cycled to work":"es. 9000 passi, 1 ora di palestra, bici per andare al lavoro",
+"Metric":"Metrico",
+"US":"USA",
+"Units":"Unità",
+"Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Scegli come vengono mostrati peso, altezza e bevande. I tuoi dati restano esattamente uguali.",
+"Body weight":"Peso corporeo",
+"Drinks":"Bevande",
+"Food is still shown in grams, like on nutrition labels.":"Il cibo resta in grammi, come sulle etichette nutrizionali."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -3658,7 +3686,14 @@ window.I18N = {
 "Extra activity that day ({n} kcal burned)":"その日の追加の活動（{n} kcal 消費）",
 "Activity of your day":"1 日の活動",
 "Describe your whole day (AI estimates the active calories)":"1 日全体を説明してください（AI がアクティブカロリーを推定）",
-"e.g. 9000 steps, 1 h gym, cycled to work":"例：9000 歩、ジム 1 時間、自転車通勤"
+"e.g. 9000 steps, 1 h gym, cycled to work":"例：9000 歩、ジム 1 時間、自転車通勤",
+"Metric":"メートル法",
+"US":"米国式",
+"Units":"単位",
+"Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"体重・身長・飲み物の表示単位を選べます。データはそのままです。",
+"Body weight":"体重",
+"Drinks":"飲み物",
+"Food is still shown in grams, like on nutrition labels.":"食べ物は栄養表示と同じくグラムで表示されます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -4390,7 +4425,14 @@ window.I18N = {
 "Extra activity that day ({n} kcal burned)":"Extra activiteit die dag ({n} kcal verbrand)",
 "Activity of your day":"Activiteit van je dag",
 "Describe your whole day (AI estimates the active calories)":"Beschrijf je hele dag (AI schat de actieve calorieën)",
-"e.g. 9000 steps, 1 h gym, cycled to work":"bijv. 9000 stappen, 1 uur gym, gefietst naar werk"
+"e.g. 9000 steps, 1 h gym, cycled to work":"bijv. 9000 stappen, 1 uur gym, gefietst naar werk",
+"Metric":"Metrisch",
+"US":"VS",
+"Units":"Eenheden",
+"Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Kies hoe gewicht, lengte en drankjes worden getoond. Je gegevens blijven precies hetzelfde.",
+"Body weight":"Lichaamsgewicht",
+"Drinks":"Drankjes",
+"Food is still shown in grams, like on nutrition labels.":"Eten blijft in grammen, zoals op voedingsetiketten."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -5122,7 +5164,14 @@ window.I18N = {
 "Extra activity that day ({n} kcal burned)":"Dodatkowa aktywność tego dnia ({n} kcal spalone)",
 "Activity of your day":"Aktywność z całego dnia",
 "Describe your whole day (AI estimates the active calories)":"Opisz cały dzień (AI oszacuje aktywne kalorie)",
-"e.g. 9000 steps, 1 h gym, cycled to work":"np. 9000 kroków, 1 h siłowni, rowerem do pracy"
+"e.g. 9000 steps, 1 h gym, cycled to work":"np. 9000 kroków, 1 h siłowni, rowerem do pracy",
+"Metric":"Metryczne",
+"US":"USA",
+"Units":"Jednostki",
+"Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Wybierz, jak pokazywać wagę, wzrost i napoje. Twoje dane pozostają dokładnie takie same.",
+"Body weight":"Masa ciała",
+"Drinks":"Napoje",
+"Food is still shown in grams, like on nutrition labels.":"Jedzenie nadal jest w gramach, jak na etykietach."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -5854,7 +5903,14 @@ window.I18N = {
 "Extra activity that day ({n} kcal burned)":"Atividade extra nesse dia ({n} kcal queimadas)",
 "Activity of your day":"Atividade do teu dia",
 "Describe your whole day (AI estimates the active calories)":"Descreve o teu dia inteiro (a IA estima as calorias ativas)",
-"e.g. 9000 steps, 1 h gym, cycled to work":"ex. 9000 passos, 1 h de ginásio, bicicleta para o trabalho"
+"e.g. 9000 steps, 1 h gym, cycled to work":"ex. 9000 passos, 1 h de ginásio, bicicleta para o trabalho",
+"Metric":"Métrico",
+"US":"EUA",
+"Units":"Unidades",
+"Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Escolhe como o peso, a altura e as bebidas são mostrados. Os teus dados ficam exatamente iguais.",
+"Body weight":"Peso corporal",
+"Drinks":"Bebidas",
+"Food is still shown in grams, like on nutrition labels.":"A comida continua em gramas, como nos rótulos nutricionais."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -6586,7 +6642,14 @@ window.I18N = {
 "Extra activity that day ({n} kcal burned)":"Дополнительная активность в этот день (сожжено {n} ккал)",
 "Activity of your day":"Активность за день",
 "Describe your whole day (AI estimates the active calories)":"Опиши весь день (ИИ оценит активные калории)",
-"e.g. 9000 steps, 1 h gym, cycled to work":"напр. 9000 шагов, 1 ч зал, на велосипеде на работу"
+"e.g. 9000 steps, 1 h gym, cycled to work":"напр. 9000 шагов, 1 ч зал, на велосипеде на работу",
+"Metric":"Метрические",
+"US":"США",
+"Units":"Единицы",
+"Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Выбери, как показывать вес, рост и напитки. Твои данные остаются прежними.",
+"Body weight":"Вес тела",
+"Drinks":"Напитки",
+"Food is still shown in grams, like on nutrition labels.":"Еда по-прежнему в граммах, как на этикетках."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -7318,7 +7381,14 @@ window.I18N = {
 "Extra activity that day ({n} kcal burned)":"O günkü ekstra aktivite ({n} kcal yakıldı)",
 "Activity of your day":"Gününün aktivitesi",
 "Describe your whole day (AI estimates the active calories)":"Tüm gününü anlat (yapay zekâ aktif kaloriyi tahmin eder)",
-"e.g. 9000 steps, 1 h gym, cycled to work":"ör. 9000 adım, 1 saat spor salonu, işe bisikletle"
+"e.g. 9000 steps, 1 h gym, cycled to work":"ör. 9000 adım, 1 saat spor salonu, işe bisikletle",
+"Metric":"Metrik",
+"US":"ABD",
+"Units":"Birimler",
+"Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"Kilo, boy ve içeceklerin nasıl gösterileceğini seç. Verilerin tamamen aynı kalır.",
+"Body weight":"Vücut ağırlığı",
+"Drinks":"İçecekler",
+"Food is still shown in grams, like on nutrition labels.":"Yiyecekler besin etiketlerindeki gibi gram olarak gösterilmeye devam eder."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -8050,6 +8120,13 @@ window.I18N = {
 "Extra activity that day ({n} kcal burned)":"当天额外活动（消耗 {n} 千卡）",
 "Activity of your day":"全天活动",
 "Describe your whole day (AI estimates the active calories)":"描述你的一整天（AI 估算活动热量）",
-"e.g. 9000 steps, 1 h gym, cycled to work":"例如：9000 步、健身 1 小时、骑车上班"
+"e.g. 9000 steps, 1 h gym, cycled to work":"例如：9000 步、健身 1 小时、骑车上班",
+"Metric":"公制",
+"US":"美制",
+"Units":"单位",
+"Choose how weights, heights and drinks are shown. Your data stays exactly the same.":"选择体重、身高和饮品的显示方式。你的数据完全不变。",
+"Body weight":"体重",
+"Drinks":"饮品",
+"Food is still shown in grams, like on nutrition labels.":"食物仍以克显示，和营养标签一样。"
 }
 };
