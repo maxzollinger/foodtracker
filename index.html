@@ -368,19 +368,15 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .gp-big{font-size:28px;font-weight:800;text-align:center;margin-bottom:10px;letter-spacing:-.02em}
 .gp-big span{color:var(--flame)}
 .gp .opt{text-align:left}
-.tour{display:flex;flex-direction:column;overflow:hidden;background:radial-gradient(120% 70% at 50% 30%,color-mix(in srgb,var(--flame) 12%,var(--bg)) 0%,var(--bg) 65%)}
-.tour.out{opacity:0;transition:opacity .25s}
-.tour-skip{position:absolute;top:calc(14px + env(safe-area-inset-top));right:16px;z-index:2;padding:8px 14px;border-radius:999px;background:var(--chip);font-weight:600;font-size:14px;color:var(--muted)}
-.tour-track{flex:1;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.tour-track::-webkit-scrollbar{display:none}
-.tour-slide{flex:0 0 100%;scroll-snap-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 30px 20px;max-width:560px;margin:0 auto;box-sizing:border-box}
-.tour-ic{width:116px;height:116px;border-radius:34px;background:var(--card);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;font-size:60px;margin-bottom:28px}
-.tour-slide h1{margin:0 0 12px;font-size:28px;line-height:1.15}
-.tour-slide p{margin:0;font-size:17px;line-height:1.5;color:var(--muted);max-width:420px}
-.tour-foot{padding:10px 22px calc(22px + env(safe-area-inset-bottom));max-width:560px;width:100%;margin:0 auto;box-sizing:border-box}
-.tour-dots{display:flex;justify-content:center;gap:7px;margin-bottom:18px}
-.tour-dots i{width:7px;height:7px;border-radius:4px;background:var(--line);transition:width .25s,background .25s}
-.tour-dots i.on{width:22px;background:var(--ink)}
+#tourLayer{position:fixed;inset:0;z-index:95;animation:fade .3s}
+#tourLayer.out{opacity:0;transition:opacity .3s}
+.tspot{position:fixed;box-shadow:0 0 0 9999px rgba(0,0,0,.66),0 0 0 3px rgba(255,255,255,.9),0 0 24px rgba(255,255,255,.25);transition:top .45s cubic-bezier(.2,.8,.2,1),left .45s cubic-bezier(.2,.8,.2,1),width .45s cubic-bezier(.2,.8,.2,1),height .45s cubic-bezier(.2,.8,.2,1),border-radius .45s,opacity .25s;pointer-events:none}
+.ttip{position:fixed;left:16px;right:16px;max-width:420px;margin:0 auto;background:var(--card);color:var(--text);border-radius:22px;padding:14px 16px 16px;box-shadow:0 18px 50px rgba(0,0,0,.45);transition:top .45s cubic-bezier(.2,.8,.2,1),opacity .25s;animation:celIn .35s ease}
+.ttip.center{top:50%!important;transform:translateY(-50%)}
+.ttip-t{display:block;font-size:18px;margin:6px 0 4px}
+.ttip-x{margin:0 0 14px;font-size:15px;line-height:1.45;color:var(--muted)}
+.ttip-skip{font-size:14px;font-weight:600;color:var(--muted);padding:4px 6px}
+#tourLayer.moving .tspot,#tourLayer.moving .ttip{opacity:0}
 .inpop{position:fixed;left:12px;right:12px;top:calc(10px + env(safe-area-inset-top));z-index:70;max-width:536px;margin:0 auto;display:flex;align-items:center;gap:12px;
   padding:12px 10px 12px 14px;border-radius:20px;background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   box-shadow:0 12px 34px rgba(0,0,0,.28),inset 0 0 0 1px var(--line);animation:popIn .5s cubic-bezier(.2,1.2,.4,1)}
@@ -684,7 +680,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v69';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v70';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1806,10 +1802,10 @@ function backupCard() {
   if (!SERVER_URL) return '';
   const a = acct(), last = +LS.get('ft_bk_last', 0);
   const when = last ? `${fmtDate(iso(new Date(last)))} ${new Date(last).toLocaleTimeString(LOC, { hour: '2-digit', minute: '2-digit' })}` : '';
-  if (!a) return `<div class="card"><b>☁️ ${T('Account & backup')}</b>
+  if (!a) return `<div class="card" id="bkCard"><b>☁️ ${T('Account & backup')}</b>
     <p class="small muted" style="margin:4px 0 12px">${T('Create a free account with your email and a password. Your data is then backed up every day, and you can get it back on any new phone.')}</p>
     <div class="row"><button class="btn sm grow" id="acUp">${T('Create account')}</button><button class="btn sm outline grow" id="acIn">${T('Sign in')}</button></div></div>`;
-  return `<div class="card"><b>☁️ ${T('Account & backup')}</b>
+  return `<div class="card" id="bkCard"><b>☁️ ${T('Account & backup')}</b>
     <p class="small" style="margin:6px 0 2px">👤 <b>${esc(a.email)}</b></p>
     <div class="spread" style="margin-top:6px"><span class="small" style="${last ? 'color:var(--good);font-weight:600' : ''}">${last ? '✓ ' + T('Last backup: {d}', { d: when }) : T('No backup yet')}</span>
       <button class="chipbtn" id="bkNow">${T('Back up now')}</button></div>
@@ -1977,7 +1973,7 @@ function badgesCard() {
   // Closed: 8 badges (newest earned first, then the ones you're closest to). Open: all of them.
   const prog = b => { const [have, need] = b.need(s); return have / need; };
   const shown = open ? BADGES : [...BADGES].sort((a, b) => (got[b.id] || '').localeCompare(got[a.id] || '') || (!!got[b.id] - !!got[a.id]) || prog(b) - prog(a)).slice(0, 8);
-  return `<div class="card"><div class="spread"><b style="font-size:17px">🏅 ${T('Badges')}</b><span class="etime">${n} / ${BADGES.length}</span></div>
+  return `<div class="card" id="badgeCard"><div class="spread"><b style="font-size:17px">🏅 ${T('Badges')}</b><span class="etime">${n} / ${BADGES.length}</span></div>
     <div class="badges">${shown.map(b => { const [have, need] = b.need(s), on = !!got[b.id];
       return `<button class="badge ${on ? 'on' : ''}" data-badge="${b.id}"><span class="bic">${b.ic}</span><span class="bname">${T(b.name)}</span>
         ${on ? '' : `<span class="bbar"><i style="width:${clamp(have / need * 100, 0, 100)}%"></i></span>`}</button>`; }).join('')}</div>
@@ -2082,35 +2078,87 @@ function showMoved() {
 }
 
 
-/* ================= App tour =================
-   A short swipeable rundown, shown once right after the first setup (can be skipped, and replayed
-   from Settings). */
-const TOUR = [
-  ['👋', N('Welcome to Food Tracker'), N('Your personal nutrition coach. Here is a 30-second tour of how everything works.')],
-  ['📷', N('Log food in seconds'), N('Tap the big + on Home: take a photo of your meal, scan a barcode, describe it in words, or pick a favorite. The AI does the counting.')],
-  ['🎯', N('Your daily goals'), N('Home shows calories and protein, carbs and fat left for today, plus your health score, water and calories burned. Everything is made for your goal.')],
-  ['💬', N('Your AI coach'), N('Ask the coach anything: what to eat next, what to order from a menu photo, how to prep. It knows your day and your goal, and sends a check-in every Sunday.')],
-  ['🛒', N('Meal plan & groceries'), N('Get a tasty weekly meal plan with one shopping list, made for your goal. A new one comes every Saturday, and you can change any meal.')],
-  ['📈', N('Progress & badges'), N('Weigh yourself 3 times a week in the morning. Progress shows your trend, how much is left and if you are on track, and you earn badges along the way.')],
-  ['🚀', N("You're all set"), N('In Settings you can turn on reminders, create an account to back up your data, and change language and units. Enjoy!')]
+/* ================= Guided tour =================
+   Runs through the real app: the screen dims, a spotlight glides from one part to the next and a small
+   bubble explains it. Before changing pages it points at the tab first, then the page fades in.
+   Shown once after the first setup; can be skipped and replayed from Settings. */
+const TOUR_STEPS = [
+  { tab: 'home', title: N('Welcome to Food Tracker'), text: N('Let me show you around. It takes about a minute, and you can skip any time.') },
+  { tab: 'home', sel: '.week', title: N('Your days'), text: N('Tap a day to see it or add something you forgot. The arrow goes back to earlier weeks.') },
+  { tab: 'home', sel: '#planChip', title: N('Your goal'), text: N('Your goal and how far along you are. The second line shows what is left and if you are on track. Tap it to change your goal.') },
+  { tab: 'home', sel: '.calcard', title: N('Calories for today'), text: N('How many calories you have left today. Tap the card to switch between left and eaten.') },
+  { tab: 'home', sel: '.macros', title: N('Protein, carbs and fat'), text: N('What is left of each today. Protein matters most for your body goals.') },
+  { tab: 'home', sel: '.hcard', title: N('Health score'), text: N('How healthy your food is today, from 1 to 10. Bigger meals count more than a small snack.') },
+  { tab: 'home', sel: '.minirow', title: N('Water and calories burned'), text: N('Tap + to add a glass of water or your burned calories. Tap a tile for more options.') },
+  { tab: 'home', sel: '#mpCard', title: N('Meal plan & groceries'), text: N('Your weekly meal plan and shopping list, made for your goal. A new one comes every Saturday.') },
+  { tab: 'home', sel: '#fab', title: N('Log your food'), text: N('The most important button: take a photo of your meal, scan a barcode, describe it in words, or pick a favorite.') },
+  { tab: 'home', sel: '.tab[data-tab="progress"]', title: N('Progress'), text: N('Next stop: your progress.') },
+  { tab: 'progress', sel: '.two', title: N('Weight and streak'), text: N('Log your weight here, about 3 times a week in the morning. The streak counts the days you log food.') },
+  { tab: 'progress', sel: '#goalCard', title: N('Goal progress'), text: N('Your weight trend, how much is left, and when you will reach your goal.') },
+  { tab: 'progress', sel: '#badgeCard', title: N('Badges'), text: N('Earn badges for streaks, protein, water and milestones. Tap one to see what it is for.') },
+  { tab: 'progress', sel: '.tab[data-tab="chat"]', title: N('Coach'), text: N('Now your personal AI coach.') },
+  { tab: 'chat', sel: '#chatScreen .chatbar', title: N('Ask your coach anything'), text: N('Type or speak, or tap + to send photos and files, like a menu. Tap a suggestion to start. Every Sunday your weekly check-in appears here.') },
+  { tab: 'chat', sel: '.tab[data-tab="settings"]', title: N('Settings'), text: N('Finally, your settings.') },
+  { tab: 'settings', sel: '#sGoal', title: N('Your goal'), text: N('Change your main goal any time. Your past days stay as they are.') },
+  { tab: 'settings', sel: '#sPers', title: N('Personal details'), text: N('Height, weight, age and training. Your goals update automatically when they change.') },
+  { tab: 'settings', sel: '#sGoals', title: N('Adjust macronutrients'), text: N('Set your own calorie and macro targets if you prefer.') },
+  { tab: 'settings', sel: '#prefList', title: N('Language, units and tour'), text: N('Choose your language, kg or lb, cm or ft, litres or fl oz. You can watch this tour again here.') },
+  { tab: 'settings', sel: '#remCard', title: N('Reminders'), text: N('Turn on notifications and choose when you want your reminders.') },
+  { tab: 'settings', sel: '#bkCard', title: N('Account & backup'), text: N('Create an account so your data is backed up every day and comes back on a new phone.') },
+  { tab: 'settings', sel: '#sPriv', title: N('Privacy'), text: N('What happens with your data, explained simply.') },
+  { tab: 'home', title: N("You're all set"), text: N('Start by logging your next meal with the + button. Enjoy!') }
 ];
 function openTour(onDone) {
-  $('#tour')?.remove();
-  const pg = document.createElement('div'); pg.id = 'tour'; pg.className = 'page tour'; pg.style.zIndex = 85;
-  pg.innerHTML = `<button class="tour-skip" id="tourSkip">${T('Skip')}</button>
-    <div class="tour-track" id="tourTrack">${TOUR.map(([ic, t, d]) => `<section class="tour-slide"><div class="tour-ic">${ic}</div><h1>${T(t)}</h1><p>${T(d)}</p></section>`).join('')}</div>
-    <div class="tour-foot"><div class="tour-dots">${TOUR.map((_, i) => `<i data-i="${i}"></i>`).join('')}</div>
-      <button class="btn" id="tourNext">${T('Next')}</button></div>`;
-  document.body.appendChild(pg);
-  const track = pg.querySelector('#tourTrack'), dots = [...pg.querySelectorAll('.tour-dots i')], next = pg.querySelector('#tourNext');
-  const idx = () => Math.round(track.scrollLeft / track.clientWidth);
-  const update = () => { const i = idx(); dots.forEach((d, k) => d.classList.toggle('on', k === i)); next.textContent = i === TOUR.length - 1 ? T("Let's go") : T('Next'); };
-  const finish = () => { LS.set('ft_tour', '1'); pg.classList.add('out'); setTimeout(() => { pg.remove(); if (onDone) onDone(); }, 250); };
-  track.addEventListener('scroll', () => requestAnimationFrame(update), { passive: true });
-  next.onclick = () => { const i = idx(); if (i >= TOUR.length - 1) finish(); else track.scrollTo({ left: (i + 1) * track.clientWidth, behavior: 'smooth' }); };
-  pg.querySelector('#tourSkip').onclick = finish;
-  update();
+  closeSheet(); $('#tourLayer')?.remove(); $('#tour')?.remove();
+  const layer = document.createElement('div'); layer.id = 'tourLayer';
+  layer.innerHTML = `<div class="tspot"></div><div class="ttip">
+      <div class="spread"><span class="ttip-n small muted"></span><button class="ttip-skip">${T('Skip')}</button></div>
+      <b class="ttip-t"></b><p class="ttip-x"></p>
+      <div class="row" style="gap:10px"><button class="btn outline sm grow ttip-back">${T('Back')}</button><button class="btn sm grow ttip-next"></button></div></div>`;
+  document.body.appendChild(layer);
+  const spot = layer.querySelector('.tspot'), tip = layer.querySelector('.ttip'), wait = ms => new Promise(r => setTimeout(r, ms));
+  let i = 0, dir = 1, target = null, busy = false;
+  const place = () => {
+    const vh = innerHeight;
+    if (!target) { spot.style.cssText = `top:${vh / 2}px;left:${innerWidth / 2}px;width:0;height:0;border-radius:24px`; tip.classList.add('center'); tip.style.top = ''; return; }
+    tip.classList.remove('center');
+    const r = target.getBoundingClientRect(), pad = 6, cs = getComputedStyle(target), rad = cs.borderRadius.includes('%') ? 999 : parseFloat(cs.borderRadius) || 12;
+    spot.style.cssText = `top:${r.top - pad}px;left:${r.left - pad}px;width:${r.width + pad * 2}px;height:${r.height + pad * 2}px;border-radius:${Math.min(rad + pad, 999)}px`;
+    const th = tip.offsetHeight, below = r.bottom + pad + 14, above = r.top - pad - 14 - th;
+    tip.style.top = (below + th < vh - 12 ? below : above > 12 ? above : Math.max(12, vh - th - 24)) + 'px';
+  };
+  const finish = () => {
+    LS.set('ft_tour', '1'); window.removeEventListener('resize', place); layer.classList.add('out');
+    setTimeout(() => { layer.remove(); if (tab !== 'home') go('home'); if (onDone) onDone(); }, 300);
+  };
+  async function show(n) {
+    if (n < 0 || busy) return;
+    if (n >= TOUR_STEPS.length) return finish();
+    busy = true; i = n;
+    const s = TOUR_STEPS[i];
+    if (s.tab !== tab) { layer.classList.add('moving'); switchTab(s.tab); await wait(700); }
+    target = s.sel ? document.querySelector(s.sel) : null;
+    if (s.sel && (!target || !target.offsetParent && target.id !== 'fab')) { busy = false; layer.classList.remove('moving'); return show(i + dir); }   // not on this phone (e.g. no account option)
+    if (target && !target.closest('.tabbar')) {
+      target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      let last = -1;   // wait until the page has stopped moving, so the bubble does not cover the part
+      for (let k = 0; k < 20; k++) { await wait(80); const y = target.getBoundingClientRect().top; if (k > 3 && Math.abs(y - last) < 1) break; last = y; }
+    }
+    tip.querySelector('.ttip-n').textContent = `${i + 1} / ${TOUR_STEPS.length}`;
+    tip.querySelector('.ttip-t').textContent = T(s.title);
+    tip.querySelector('.ttip-x').textContent = T(s.text);
+    tip.querySelector('.ttip-back').style.visibility = i ? '' : 'hidden';
+    tip.querySelector('.ttip-next').textContent = i === TOUR_STEPS.length - 1 ? T("Let's go") : T('Next');
+    place(); layer.classList.remove('moving'); busy = false;
+  }
+  layer.querySelector('.ttip-next').onclick = () => { dir = 1; show(i + 1); };
+  layer.querySelector('.ttip-back').onclick = () => { dir = -1; show(i - 1); };
+  layer.querySelector('.ttip-skip').onclick = finish;
+  window.addEventListener('resize', place);
+  if (tab !== 'home') go('home');
+  show(0);
 }
+
 /* ================= Privacy ================= */
 function openPrivacy() {
   const sec = (ic, title, text) => `<div class="priv"><div class="priv-ic">${ic}</div><div><b>${title}</b><p>${text}</p></div></div>`;
@@ -2884,7 +2932,7 @@ function renderProgress() {
         <div class="small muted" style="margin-top:6px;font-size:11px">${T('1 rest day a week is fine')}</div></div>
     </div>
     ${badgesCard()}
-    <div class="card"><div class="spread"><b style="font-size:17px">${T('Goal progress')}</b>${p && p.goal !== 'maintain' ? `<span class="etime">🚩 ${T('{n}% of goal', { n: r0(pct) })}</span>` : ''}</div>
+    <div class="card" id="goalCard"><div class="spread"><b style="font-size:17px">${T('Goal progress')}</b>${p && p.goal !== 'maintain' ? `<span class="etime">🚩 ${T('{n}% of goal', { n: r0(pct) })}</span>` : ''}</div>
       ${p && p.goal !== 'maintain' ? `<div class="hbar" style="margin:12px 0 8px"><i style="width:${pct}%;background:var(--ink)"></i></div>` : '<div style="height:12px"></div>'}
       ${gpr ? `<div class="small" style="margin:0 0 14px;line-height:1.5"><b>${goalLine(gpr)}</b><br><span class="muted">${T('Trend {w} kg', { w: r1(gpr.cur) })}${gpr.status !== 'new' && !gpr.reached ? ' · ' + T('on plan today: {w} kg', { w: gpr.shouldBe }) : ''}</span></div>` : ''}
       ${wsR.length >= 2 ? weightChart(wsR, p && p.goal !== 'maintain' ? p.targetWeight : null) : `<p class="muted small" style="text-align:center;padding:24px 0">${T('Log your weight a few times to see your chart.')}</p>`}
@@ -3430,7 +3478,7 @@ function remindersCard() {
       ${SERVER_URL ? reminderTimesHTML() : ''}
       <div class="row" style="margin-top:10px">${SERVER_URL ? '' : `<button class="btn sm grow" id="rCopy">📋 ${T('Copy code')}</button>`}<button class="btn sm outline grow" id="rTest">${T('Test')}</button></div>`;
   }
-  return `<div class="card"><b>🔔 ${T('Notifications')}</b>
+  return `<div class="card" id="remCard"><b>🔔 ${T('Notifications')}</b>
     <p class="small muted" style="margin:4px 0 0">${SERVER_URL ? T('A reminder to log your calories burned, and one for your weekly weigh-in. Choose the times that suit you.') : T('Every evening at about 20:00: log your calories burned. Every Sunday morning: log your weight.')}</p>${body}</div>`;
 }
 function bindReminders() {
@@ -3551,7 +3599,7 @@ function renderSettings() {
       <button class="li" id="sRedo"><span class="ic">🔁</span><span class="grow">${T('Redo setup questions')}</span><span class="chev">›</span></button>
     </div>
     <div class="h2">${T('Preferences')}</div>
-    <div class="list">
+    <div class="list" id="prefList">
       <button class="li" id="sLang"><span class="ic">🌐</span><span class="grow">${T('Language')}</span><span class="val">${langInfo().f} ${langInfo().n}</span><span class="chev">›</span></button>
       <button class="li" id="sUnits"><span class="ic">📏</span><span class="grow">${T('Units')}</span><span class="val">${unitsName()}</span><span class="chev">›</span></button>
       <button class="li" id="sTour"><span class="ic">📖</span><span class="grow">${T('App tour')}</span><span class="chev">›</span></button>
