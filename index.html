@@ -31,7 +31,8 @@
 <link rel="apple-touch-startup-image" href="splash/launch-640x1136.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
 <script>
   // Apply the saved light/dark choice before anything is drawn (no flash)
-  try { const t = localStorage.getItem('ft_theme') || 'dark'; if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch {}
+  try { const t = localStorage.getItem('ft_theme') || 'dark'; if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+    const g = localStorage.getItem('ft_bg') || ''; if (g && g !== 'classic') document.documentElement.dataset.bg = g; } catch {}
 </script>
 <style>
 :root{
@@ -54,6 +55,57 @@
   }
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+/* Backgrounds (Settings → Appearance → Background): a soft colour gradient behind the app, like Revolut.
+   Cards turn slightly see-through so the colour shows; sheets and pop-ups stay solid. */
+:root[data-bg="midnight"]{--bgimg:linear-gradient(180deg,#f7f7f9 0%,#e8eafc 45%,#d9dcff 100%);--bg:#eceefb}
+:root[data-theme="dark"][data-bg="midnight"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#020208 0%,#0d0e30 45%,#24288a 100%);--bg:#050613}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"])[data-bg="midnight"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#020208 0%,#0d0e30 45%,#24288a 100%);--bg:#050613}}
+:root[data-bg="violet"]{--bgimg:linear-gradient(180deg,#f7f7f9 0%,#eee9fc 45%,#e4dbff 100%);--bg:#f0edfb}
+:root[data-theme="dark"][data-bg="violet"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#030208 0%,#140c2f 45%,#3a2386 100%);--bg:#080513}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"])[data-bg="violet"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#030208 0%,#140c2f 45%,#3a2386 100%);--bg:#080513}}
+:root[data-bg="plum"]{--bgimg:linear-gradient(180deg,#f7f7f9 0%,#f3e8f8 45%,#efdaf7 100%);--bg:#f4edf8}
+:root[data-theme="dark"][data-bg="plum"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#040106 0%,#1a0825 45%,#4a1869 100%);--bg:#0a030f}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"])[data-bg="plum"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#040106 0%,#1a0825 45%,#4a1869 100%);--bg:#0a030f}}
+:root[data-bg="ocean"]{--bgimg:linear-gradient(180deg,#f7f7f9 0%,#e6eefc 45%,#d5e4ff 100%);--bg:#ebf0fb}
+:root[data-theme="dark"][data-bg="ocean"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#010307 0%,#040f2a 45%,#0c2c78 100%);--bg:#020611}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"])[data-bg="ocean"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#010307 0%,#040f2a 45%,#0c2c78 100%);--bg:#020611}}
+:root[data-bg="forest"]{--bgimg:linear-gradient(180deg,#f7f7f9 0%,#e5f2ea 45%,#d3eedb 100%);--bg:#eaf4ee}
+:root[data-theme="dark"][data-bg="forest"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#010402 0%,#041a0d 45%,#0c4a26 100%);--bg:#020a05}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"])[data-bg="forest"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#010402 0%,#041a0d 45%,#0c4a26 100%);--bg:#020a05}}
+:root[data-bg="emerald"]{--bgimg:linear-gradient(180deg,#f7f7f9 0%,#e3f3ee 45%,#cfefe3 100%);--bg:#e9f4f1}
+:root[data-theme="dark"][data-bg="emerald"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#000503 0%,#021c14 45%,#05503a 100%);--bg:#010b08}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"])[data-bg="emerald"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#000503 0%,#021c14 45%,#05503a 100%);--bg:#010b08}}
+:root[data-bg="slate"]{--bgimg:linear-gradient(180deg,#f7f7f9 0%,#e7eff0 45%,#d7e7e7 100%);--bg:#ecf1f3}
+:root[data-theme="dark"][data-bg="slate"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#010303 0%,#071314 45%,#14373a 100%);--bg:#030808}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"])[data-bg="slate"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#010303 0%,#071314 45%,#14373a 100%);--bg:#030808}}
+:root[data-bg="berry"]{--bgimg:linear-gradient(180deg,#f7f7f9 0%,#f7e6ee 45%,#f7d5e3 100%);--bg:#f7ebf1}
+:root[data-theme="dark"][data-bg="berry"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#050103 0%,#1e0610 45%,#55102f 100%);--bg:#0c0207}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"])[data-bg="berry"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#050103 0%,#1e0610 45%,#55102f 100%);--bg:#0c0207}}
+:root[data-bg="copper"]{--bgimg:linear-gradient(180deg,#f7f7f9 0%,#f5ebe6 45%,#f3dfd4 100%);--bg:#f6efec}
+:root[data-theme="dark"][data-bg="copper"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#050202 0%,#1d0e09 45%,#53291b 100%);--bg:#0c0604}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"])[data-bg="copper"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#050202 0%,#1d0e09 45%,#53291b 100%);--bg:#0c0604}}
+:root[data-bg="amber"]{--bgimg:linear-gradient(180deg,#f7f7f9 0%,#f6eede 45%,#f6e6c4 100%);--bg:#f7f1e6}
+:root[data-theme="dark"][data-bg="amber"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#050301 0%,#1e1404 45%,#57380a 100%);--bg:#0c0801}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"])[data-bg="amber"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#050301 0%,#1e1404 45%,#57380a 100%);--bg:#0c0801}}
+:root[data-bg="graphite"]{--bgimg:linear-gradient(180deg,#f7f7f9 0%,#ededf0 45%,#e3e3e8 100%);--bg:#f0f0f3}
+:root[data-theme="dark"][data-bg="graphite"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#030303 0%,#0f0f12 45%,#2c2c33 100%);--bg:#060607}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"])[data-bg="graphite"]{--bgimg:radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#030303 0%,#0f0f12 45%,#2c2c33 100%);--bg:#060607}}
+:root[data-bg]{--card:rgba(255,255,255,.74);--chip:rgba(0,0,0,.045);--line:rgba(0,0,0,.07);--track:rgba(0,0,0,.07);--solid:#fff}
+:root[data-theme="dark"][data-bg]{--card:rgba(255,255,255,.075);--chip:rgba(255,255,255,.09);--line:rgba(255,255,255,.1);--track:rgba(255,255,255,.12);--solid:#1c1c1e}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"])[data-bg]{--card:rgba(255,255,255,.075);--chip:rgba(255,255,255,.09);--line:rgba(255,255,255,.1);--track:rgba(255,255,255,.12);--solid:#1c1c1e}}
+html[data-bg]{background:var(--bgimg) var(--bg)}
+:root[data-bg] body{background:transparent}
+:root[data-bg] #chatScreen{background:transparent}
+:root[data-bg] .chatbar,:root[data-bg] .dfoot{background:transparent}
+:root[data-bg] .sheet,:root[data-bg] .sheethead,:root[data-bg] .celcard,:root[data-bg] .ttip,:root[data-bg] .pmenu{background:var(--solid)}
+:root[data-bg] .seg button.on{background:var(--solid)}
+.bgrow{display:flex;align-items:center;gap:12px;width:100%;margin-top:14px;padding:10px 12px 10px 10px;border-radius:16px;background:var(--chip);text-align:left}
+.bgthumb{width:34px;height:44px;border-radius:9px;flex:none;box-shadow:inset 0 0 0 1px var(--line)}
+.bggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.bgtile{aspect-ratio:3/4;border-radius:18px;position:relative;box-shadow:inset 0 0 0 1px rgba(127,127,127,.25);transition:transform .15s}
+.bgtile:active{transform:scale(.96)}
+.bgtile.on{box-shadow:0 0 0 3px var(--solid,var(--card)),0 0 0 5.5px var(--text)}
+.bgtile span{position:absolute;left:0;right:0;bottom:8px;text-align:center;font-size:12px;font-weight:700;color:var(--tc)}
 html,body{margin:0;background:var(--bg);color:var(--text);
   font:16px/1.35 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,"Noto Sans",sans-serif;-webkit-font-smoothing:antialiased}
 body{transition:background .25s;overflow:hidden;height:100%}
@@ -680,7 +732,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v73';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v75';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -773,8 +825,44 @@ function applyTheme() {
   root.style.background = '';   // the dark start colour (no white flash) hands over to the theme
   if (t === 'auto') delete root.dataset.theme; else root.dataset.theme = t;
   document.querySelector('meta[name=theme-color]').content = isDark() ? '#000000' : '#f7f7f9';
+  if (typeof applyBg === 'function') applyBg();
 }
 function setTheme(t) { LS.set('ft_theme', t); applyTheme(); }
+// Backgrounds, chosen in Settings → Appearance (each has a dark and a light version)
+const BGS = [
+  { id: 'classic', name: N('Classic'), dImg: '#000', lImg: '#f7f7f9', top: '#000000' },
+  { id: 'midnight', name: N('Midnight'), d: '#24288a', l: '#d9dcff', dImg: "radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#020208 0%,#0d0e30 45%,#24288a 100%)", lImg: "linear-gradient(180deg,#f7f7f9 0%,#e8eafc 45%,#d9dcff 100%)", top: '#020208' },
+  { id: 'violet', name: N('Violet'), d: '#3a2386', l: '#e4dbff', dImg: "radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#030208 0%,#140c2f 45%,#3a2386 100%)", lImg: "linear-gradient(180deg,#f7f7f9 0%,#eee9fc 45%,#e4dbff 100%)", top: '#030208' },
+  { id: 'plum', name: N('Plum'), d: '#4a1869', l: '#efdaf7', dImg: "radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#040106 0%,#1a0825 45%,#4a1869 100%)", lImg: "linear-gradient(180deg,#f7f7f9 0%,#f3e8f8 45%,#efdaf7 100%)", top: '#040106' },
+  { id: 'ocean', name: N('Ocean'), d: '#0c2c78', l: '#d5e4ff', dImg: "radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#010307 0%,#040f2a 45%,#0c2c78 100%)", lImg: "linear-gradient(180deg,#f7f7f9 0%,#e6eefc 45%,#d5e4ff 100%)", top: '#010307' },
+  { id: 'forest', name: N('Forest'), d: '#0c4a26', l: '#d3eedb', dImg: "radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#010402 0%,#041a0d 45%,#0c4a26 100%)", lImg: "linear-gradient(180deg,#f7f7f9 0%,#e5f2ea 45%,#d3eedb 100%)", top: '#010402' },
+  { id: 'emerald', name: N('Emerald'), d: '#05503a', l: '#cfefe3', dImg: "radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#000503 0%,#021c14 45%,#05503a 100%)", lImg: "linear-gradient(180deg,#f7f7f9 0%,#e3f3ee 45%,#cfefe3 100%)", top: '#000503' },
+  { id: 'slate', name: N('Slate'), d: '#14373a', l: '#d7e7e7', dImg: "radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#010303 0%,#071314 45%,#14373a 100%)", lImg: "linear-gradient(180deg,#f7f7f9 0%,#e7eff0 45%,#d7e7e7 100%)", top: '#010303' },
+  { id: 'berry', name: N('Berry'), d: '#55102f', l: '#f7d5e3', dImg: "radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#050103 0%,#1e0610 45%,#55102f 100%)", lImg: "linear-gradient(180deg,#f7f7f9 0%,#f7e6ee 45%,#f7d5e3 100%)", top: '#050103' },
+  { id: 'copper', name: N('Copper'), d: '#53291b', l: '#f3dfd4', dImg: "radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#050202 0%,#1d0e09 45%,#53291b 100%)", lImg: "linear-gradient(180deg,#f7f7f9 0%,#f5ebe6 45%,#f3dfd4 100%)", top: '#050202' },
+  { id: 'amber', name: N('Amber'), d: '#57380a', l: '#f6e6c4', dImg: "radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#050301 0%,#1e1404 45%,#57380a 100%)", lImg: "linear-gradient(180deg,#f7f7f9 0%,#f6eede 45%,#f6e6c4 100%)", top: '#050301' },
+  { id: 'graphite', name: N('Graphite'), d: '#2c2c33', l: '#e3e3e8', dImg: "radial-gradient(130% 55% at 50% 0%,rgba(0,0,0,.6),transparent 75%),linear-gradient(180deg,#030303 0%,#0f0f12 45%,#2c2c33 100%)", lImg: "linear-gradient(180deg,#f7f7f9 0%,#ededf0 45%,#e3e3e8 100%)", top: '#030303' }
+];
+// Button colours from the first try (v74) turn into the matching background once
+(() => { const a = LS.get('ft_accent', ''); if (a) { if (!LS.get('ft_bg', '') && a !== 'classic') LS.set('ft_bg', { blue: 'ocean', green: 'forest', violet: 'violet', pink: 'berry', orange: 'copper', teal: 'emerald', gold: 'amber' }[a] || 'classic'); LS.del('ft_accent'); LS.del('ft_tint'); } })();
+const curBg = () => BGS.find(x => x.id === LS.get('ft_bg', 'classic')) || BGS[0];
+function applyBg() {
+  const root = document.documentElement, b = curBg();
+  if (b.id !== 'classic') root.dataset.bg = b.id; else delete root.dataset.bg;
+  const m = document.querySelector('meta[name=theme-color]');   // the status bar matches the top of the background
+  if (m) m.content = isDark() ? b.top : '#f7f7f9';
+}
+function openBgSheet() {
+  const dk = isDark(), cur = curBg().id;
+  sheet(`<h3>🎨 ${T('Background')}</h3><p class="muted" style="margin-top:4px">${T('Pick a background for the app. It follows light and dark mode.')}</p>
+    <div class="bggrid">${BGS.map(b => `<button class="bgtile ${b.id === cur ? 'on' : ''}" data-bg="${b.id}" style="background:${dk ? b.dImg : b.lImg};--tc:${dk ? '#fff' : '#111113'}"><span>${T(b.name)}</span></button>`).join('')}</div>`, sh => {
+    sh.querySelectorAll('.bgtile').forEach(t => t.onclick = () => {
+      LS.set('ft_bg', t.dataset.bg); applyBg();
+      sh.querySelectorAll('.bgtile').forEach(x => x.classList.toggle('on', x === t));
+      if (tab === 'settings') { const y = $('#scroller').scrollTop; renderSettings(); $('#scroller').scrollTop = y; }
+    });
+  });
+}
 matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => { applyTheme(); if (tab === 'home') renderHome(); });
 
 /* ================= Helpers ================= */
@@ -1688,7 +1776,7 @@ async function runBackup(manual, a = acct()) {
   if (!SERVER_URL || !a || !db.profile || !window.crypto || !crypto.subtle) return false;
   try {
     const iv = crypto.getRandomValues(new Uint8Array(12));
-    const payload = JSON.stringify({ v: 1, t: Date.now(), data: LS.get('ft_data', ''), chat: LS.get('ft_chat', ''), lang: LS.get('ft_lang', ''), theme: LS.get('ft_theme', ''), push: LS.get('ft_push_prefs', '') });
+    const payload = JSON.stringify({ v: 1, t: Date.now(), data: LS.get('ft_data', ''), chat: LS.get('ft_chat', ''), lang: LS.get('ft_lang', ''), theme: LS.get('ft_theme', ''), bg: LS.get('ft_bg', ''), push: LS.get('ft_push_prefs', '') });
     const zz = await zipText(payload);
     const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await aesKey(a.key), zz.bytes));
     const r = await fetch(SERVER_URL + '/backup', { method: 'POST', headers: { 'Content-Type': 'text/plain', 'X-Id': a.id, 'X-Auth': a.auth },
@@ -1724,6 +1812,7 @@ function applyAccountData(p) {
   if (p.chat) LS.set('ft_chat', p.chat);
   if (p.lang) LS.set('ft_lang', p.lang);
   if (p.theme) LS.set('ft_theme', p.theme);
+  if (p.bg) LS.set('ft_bg', p.bg);
   if (p.push) LS.set('ft_push_prefs', p.push);
   sessionStorage.setItem('ft_restored', '1');
   kvWait().then(() => location.reload());
@@ -3741,7 +3830,8 @@ function renderSettings() {
       <button class="li" id="sTour"><span class="ic">📖</span><span class="grow">${T('App tour')}</span><span class="chev">›</span></button>
     </div>
     <div class="card"><b>🌓 ${T('Appearance')}</b>
-      <div class="seg">${[['auto', N('Automatic')], ['light', N('Light')], ['dark', N('Dark')]].map(([v, l]) => `<button data-th="${v}" class="${th === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div></div>
+      <div class="seg">${[['auto', N('Automatic')], ['light', N('Light')], ['dark', N('Dark')]].map(([v, l]) => `<button data-th="${v}" class="${th === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>
+      <button class="bgrow" id="sBg"><span class="bgthumb" style="background:${isDark() ? curBg().dImg : curBg().lImg}"></span><span class="grow"><b>${T('Background')}</b><br><span class="small muted">${T(curBg().name)}</span></span><span class="chev">›</span></button></div>
     ${remindersCard()}
     ${usersCard()}
     ${isAdmin() && SERVER_URL ? `<button class="card li" id="sShare" style="border-radius:22px"><span class="ic">📤</span><span class="grow"><b>${T('Share Food Tracker')}</b><br><span class="small muted">${T('Send the app to friends and family')}</span></span><span class="chev">›</span></button>` : ''}
@@ -3787,6 +3877,7 @@ function renderSettings() {
   $('#sUnits').onclick = openUnitsSheet;
   $('#sTour').onclick = () => openTour();
   document.querySelectorAll('[data-th]').forEach(b => b.onclick = () => { setTheme(b.dataset.th); renderSettings(); });
+  $('#sBg').onclick = openBgSheet;
   bindReminders();
   bindBackupCard();
   bindUsersCard();
