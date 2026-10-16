@@ -707,7 +707,16 @@ window.I18N = {
 "When it opens, and 30 minutes before it closes.":"Wenn es öffnet und 30 Minuten bevor es schließt.",
 "Your weekly check-in is ready 📊":"Dein wöchentlicher Check-in ist bereit 📊",
 "Your eating window is open now ⏱️":"Dein Essensfenster ist jetzt offen ⏱️",
-"Your eating window closes in 30 min ⏱️":"Dein Essensfenster schließt in 30 Min. ⏱️"
+"Your eating window closes in 30 min ⏱️":"Dein Essensfenster schließt in 30 Min. ⏱️",
+"Food Tracker has a new home":"Food Tracker hat ein neues Zuhause",
+"Please move over in 3 short steps. Your data comes with you.":"Zieh bitte in 3 kurzen Schritten um. Deine Daten kommen mit.",
+"Nothing to save yet.":"Noch nichts zu sichern.",
+"Your data is saved in your account ({e}).":"Deine Daten sind in deinem Konto gesichert ({e}).",
+"Save your data: create a free account.":"Sichere deine Daten: erstelle ein kostenloses Konto.",
+"Open the new address in Safari and add it to your Home Screen.":"Öffne die neue Adresse in Safari und füge sie zum Home-Bildschirm hinzu.",
+"Sign in there, then delete this old icon.":"Melde dich dort an und lösche dann dieses alte Symbol.",
+"Open the new Food Tracker":"Neuen Food Tracker öffnen",
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Du hast noch kein Konto, deine Daten würden also nicht mitkommen. Trotzdem die neue Adresse öffnen?"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -1416,7 +1425,16 @@ window.I18N = {
 "When it opens, and 30 minutes before it closes.":"Cuando se abre y 30 minutos antes de que se cierre.",
 "Your weekly check-in is ready 📊":"Tu resumen semanal está listo 📊",
 "Your eating window is open now ⏱️":"Tu ventana de comidas está abierta ⏱️",
-"Your eating window closes in 30 min ⏱️":"Tu ventana de comidas se cierra en 30 min ⏱️"
+"Your eating window closes in 30 min ⏱️":"Tu ventana de comidas se cierra en 30 min ⏱️",
+"Food Tracker has a new home":"Food Tracker tiene un nuevo hogar",
+"Please move over in 3 short steps. Your data comes with you.":"Múdate en 3 pasos cortos. Tus datos vienen contigo.",
+"Nothing to save yet.":"Aún no hay nada que guardar.",
+"Your data is saved in your account ({e}).":"Tus datos están guardados en tu cuenta ({e}).",
+"Save your data: create a free account.":"Guarda tus datos: crea una cuenta gratis.",
+"Open the new address in Safari and add it to your Home Screen.":"Abre la nueva dirección en Safari y añádela a tu pantalla de inicio.",
+"Sign in there, then delete this old icon.":"Inicia sesión allí y luego borra este icono antiguo.",
+"Open the new Food Tracker":"Abrir el nuevo Food Tracker",
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Aún no tienes cuenta, así que tus datos no vendrían contigo. ¿Abrir la nueva dirección igualmente?"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -2125,7 +2143,16 @@ window.I18N = {
 "When it opens, and 30 minutes before it closes.":"À l'ouverture, et 30 minutes avant la fermeture.",
 "Your weekly check-in is ready 📊":"Ton bilan de la semaine est prêt 📊",
 "Your eating window is open now ⏱️":"Ta fenêtre alimentaire est ouverte ⏱️",
-"Your eating window closes in 30 min ⏱️":"Ta fenêtre alimentaire se ferme dans 30 min ⏱️"
+"Your eating window closes in 30 min ⏱️":"Ta fenêtre alimentaire se ferme dans 30 min ⏱️",
+"Food Tracker has a new home":"Food Tracker a une nouvelle adresse",
+"Please move over in 3 short steps. Your data comes with you.":"Déménage en 3 petites étapes. Tes données viennent avec toi.",
+"Nothing to save yet.":"Rien à sauvegarder pour l'instant.",
+"Your data is saved in your account ({e}).":"Tes données sont sauvegardées dans ton compte ({e}).",
+"Save your data: create a free account.":"Sauvegarde tes données : crée un compte gratuit.",
+"Open the new address in Safari and add it to your Home Screen.":"Ouvre la nouvelle adresse dans Safari et ajoute-la à ton écran d'accueil.",
+"Sign in there, then delete this old icon.":"Connecte-toi là-bas, puis supprime cette ancienne icône.",
+"Open the new Food Tracker":"Ouvrir le nouveau Food Tracker",
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Tu n'as pas encore de compte, tes données ne viendraient donc pas avec toi. Ouvrir quand même la nouvelle adresse ?"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -2834,7 +2861,16 @@ window.I18N = {
 "When it opens, and 30 minutes before it closes.":"Quando si apre e 30 minuti prima che si chiuda.",
 "Your weekly check-in is ready 📊":"Il tuo check-in settimanale è pronto 📊",
 "Your eating window is open now ⏱️":"La tua finestra dei pasti è aperta ⏱️",
-"Your eating window closes in 30 min ⏱️":"La tua finestra dei pasti si chiude tra 30 min ⏱️"
+"Your eating window closes in 30 min ⏱️":"La tua finestra dei pasti si chiude tra 30 min ⏱️",
+"Food Tracker has a new home":"Food Tracker ha una nuova casa",
+"Please move over in 3 short steps. Your data comes with you.":"Spostati in 3 brevi passi. I tuoi dati vengono con te.",
+"Nothing to save yet.":"Ancora niente da salvare.",
+"Your data is saved in your account ({e}).":"I tuoi dati sono salvati nel tuo account ({e}).",
+"Save your data: create a free account.":"Salva i tuoi dati: crea un account gratuito.",
+"Open the new address in Safari and add it to your Home Screen.":"Apri il nuovo indirizzo in Safari e aggiungilo alla schermata Home.",
+"Sign in there, then delete this old icon.":"Accedi lì, poi elimina questa vecchia icona.",
+"Open the new Food Tracker":"Apri il nuovo Food Tracker",
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Non hai ancora un account, quindi i tuoi dati non verrebbero con te. Aprire comunque il nuovo indirizzo?"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -3543,7 +3579,16 @@ window.I18N = {
 "When it opens, and 30 minutes before it closes.":"始まったときと、終わる 30 分前。",
 "Your weekly check-in is ready 📊":"今週のチェックインが届きました 📊",
 "Your eating window is open now ⏱️":"食事の時間帯が始まりました ⏱️",
-"Your eating window closes in 30 min ⏱️":"食事の時間帯はあと 30 分で終わります ⏱️"
+"Your eating window closes in 30 min ⏱️":"食事の時間帯はあと 30 分で終わります ⏱️",
+"Food Tracker has a new home":"Food Tracker が新しい場所に移りました",
+"Please move over in 3 short steps. Your data comes with you.":"3 つの簡単なステップで移動しましょう。データも一緒に移ります。",
+"Nothing to save yet.":"まだ保存するものはありません。",
+"Your data is saved in your account ({e}).":"データはアカウントに保存されています（{e}）。",
+"Save your data: create a free account.":"データを保存：無料アカウントを作成しましょう。",
+"Open the new address in Safari and add it to your Home Screen.":"新しいアドレスを Safari で開き、ホーム画面に追加してください。",
+"Sign in there, then delete this old icon.":"そこでログインしてから、この古いアイコンを削除してください。",
+"Open the new Food Tracker":"新しい Food Tracker を開く",
+"You have no account yet, so your data would not come along. Open the new address anyway?":"まだアカウントがないため、データは移りません。それでも新しいアドレスを開きますか？"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -4252,7 +4297,16 @@ window.I18N = {
 "When it opens, and 30 minutes before it closes.":"Als het opent en 30 minuten voordat het sluit.",
 "Your weekly check-in is ready 📊":"Je wekelijkse check-in staat klaar 📊",
 "Your eating window is open now ⏱️":"Je eetvenster is nu open ⏱️",
-"Your eating window closes in 30 min ⏱️":"Je eetvenster sluit over 30 min ⏱️"
+"Your eating window closes in 30 min ⏱️":"Je eetvenster sluit over 30 min ⏱️",
+"Food Tracker has a new home":"Food Tracker heeft een nieuw adres",
+"Please move over in 3 short steps. Your data comes with you.":"Verhuis in 3 korte stappen. Je gegevens gaan mee.",
+"Nothing to save yet.":"Nog niets om op te slaan.",
+"Your data is saved in your account ({e}).":"Je gegevens zijn opgeslagen in je account ({e}).",
+"Save your data: create a free account.":"Bewaar je gegevens: maak een gratis account.",
+"Open the new address in Safari and add it to your Home Screen.":"Open het nieuwe adres in Safari en zet het op je beginscherm.",
+"Sign in there, then delete this old icon.":"Log daar in en verwijder daarna dit oude icoon.",
+"Open the new Food Tracker":"Nieuwe Food Tracker openen",
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Je hebt nog geen account, dus je gegevens zouden niet meegaan. Toch het nieuwe adres openen?"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -4961,7 +5015,16 @@ window.I18N = {
 "When it opens, and 30 minutes before it closes.":"Gdy się otwiera i 30 minut przed zamknięciem.",
 "Your weekly check-in is ready 📊":"Twoje cotygodniowe podsumowanie jest gotowe 📊",
 "Your eating window is open now ⏱️":"Twoje okno jedzenia jest teraz otwarte ⏱️",
-"Your eating window closes in 30 min ⏱️":"Twoje okno jedzenia zamyka się za 30 min ⏱️"
+"Your eating window closes in 30 min ⏱️":"Twoje okno jedzenia zamyka się za 30 min ⏱️",
+"Food Tracker has a new home":"Food Tracker ma nowy adres",
+"Please move over in 3 short steps. Your data comes with you.":"Przenieś się w 3 krótkich krokach. Twoje dane przejdą z tobą.",
+"Nothing to save yet.":"Na razie nic do zapisania.",
+"Your data is saved in your account ({e}).":"Twoje dane są zapisane na koncie ({e}).",
+"Save your data: create a free account.":"Zapisz dane: utwórz darmowe konto.",
+"Open the new address in Safari and add it to your Home Screen.":"Otwórz nowy adres w Safari i dodaj go do ekranu początkowego.",
+"Sign in there, then delete this old icon.":"Zaloguj się tam, a potem usuń tę starą ikonę.",
+"Open the new Food Tracker":"Otwórz nowy Food Tracker",
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Nie masz jeszcze konta, więc twoje dane nie przejdą. Mimo to otworzyć nowy adres?"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -5670,7 +5733,16 @@ window.I18N = {
 "When it opens, and 30 minutes before it closes.":"Quando abre e 30 minutos antes de fechar.",
 "Your weekly check-in is ready 📊":"O teu resumo semanal está pronto 📊",
 "Your eating window is open now ⏱️":"A tua janela alimentar está aberta ⏱️",
-"Your eating window closes in 30 min ⏱️":"A tua janela alimentar fecha em 30 min ⏱️"
+"Your eating window closes in 30 min ⏱️":"A tua janela alimentar fecha em 30 min ⏱️",
+"Food Tracker has a new home":"O Food Tracker tem uma nova casa",
+"Please move over in 3 short steps. Your data comes with you.":"Muda-te em 3 passos curtos. Os teus dados vêm contigo.",
+"Nothing to save yet.":"Ainda nada para guardar.",
+"Your data is saved in your account ({e}).":"Os teus dados estão guardados na tua conta ({e}).",
+"Save your data: create a free account.":"Guarda os teus dados: cria uma conta gratuita.",
+"Open the new address in Safari and add it to your Home Screen.":"Abre o novo endereço no Safari e adiciona-o ao ecrã principal.",
+"Sign in there, then delete this old icon.":"Inicia sessão lá e depois apaga este ícone antigo.",
+"Open the new Food Tracker":"Abrir o novo Food Tracker",
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Ainda não tens conta, por isso os teus dados não viriam contigo. Abrir o novo endereço na mesma?"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -6379,7 +6451,16 @@ window.I18N = {
 "When it opens, and 30 minutes before it closes.":"Когда оно открывается и за 30 минут до закрытия.",
 "Your weekly check-in is ready 📊":"Твой недельный отчёт готов 📊",
 "Your eating window is open now ⏱️":"Твоё окно питания открыто ⏱️",
-"Your eating window closes in 30 min ⏱️":"Твоё окно питания закроется через 30 мин ⏱️"
+"Your eating window closes in 30 min ⏱️":"Твоё окно питания закроется через 30 мин ⏱️",
+"Food Tracker has a new home":"У Food Tracker новый адрес",
+"Please move over in 3 short steps. Your data comes with you.":"Переезд в 3 коротких шага. Твои данные переедут с тобой.",
+"Nothing to save yet.":"Пока нечего сохранять.",
+"Your data is saved in your account ({e}).":"Твои данные сохранены в аккаунте ({e}).",
+"Save your data: create a free account.":"Сохрани данные: создай бесплатный аккаунт.",
+"Open the new address in Safari and add it to your Home Screen.":"Открой новый адрес в Safari и добавь его на экран «Домой».",
+"Sign in there, then delete this old icon.":"Войди там, а потом удали этот старый значок.",
+"Open the new Food Tracker":"Открыть новый Food Tracker",
+"You have no account yet, so your data would not come along. Open the new address anyway?":"У тебя ещё нет аккаунта, поэтому данные не переедут. Всё равно открыть новый адрес?"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -7088,7 +7169,16 @@ window.I18N = {
 "When it opens, and 30 minutes before it closes.":"Açıldığında ve kapanmadan 30 dakika önce.",
 "Your weekly check-in is ready 📊":"Haftalık değerlendirmen hazır 📊",
 "Your eating window is open now ⏱️":"Yemek pencereni şimdi açık ⏱️",
-"Your eating window closes in 30 min ⏱️":"Yemek pencereni 30 dk içinde kapanıyor ⏱️"
+"Your eating window closes in 30 min ⏱️":"Yemek pencereni 30 dk içinde kapanıyor ⏱️",
+"Food Tracker has a new home":"Food Tracker'ın yeni bir adresi var",
+"Please move over in 3 short steps. Your data comes with you.":"Lütfen 3 kısa adımda taşın. Verilerin seninle gelir.",
+"Nothing to save yet.":"Henüz kaydedilecek bir şey yok.",
+"Your data is saved in your account ({e}).":"Verilerin hesabında kayıtlı ({e}).",
+"Save your data: create a free account.":"Verilerini kaydet: ücretsiz bir hesap oluştur.",
+"Open the new address in Safari and add it to your Home Screen.":"Yeni adresi Safari'de aç ve ana ekranına ekle.",
+"Sign in there, then delete this old icon.":"Orada giriş yap, sonra bu eski simgeyi sil.",
+"Open the new Food Tracker":"Yeni Food Tracker'ı aç",
+"You have no account yet, so your data would not come along. Open the new address anyway?":"Henüz hesabın yok, bu yüzden verilerin taşınmaz. Yine de yeni adresi açmak istiyor musun?"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -7797,6 +7887,15 @@ window.I18N = {
 "When it opens, and 30 minutes before it closes.":"窗口开启时，以及关闭前 30 分钟。",
 "Your weekly check-in is ready 📊":"你的每周总结已准备好 📊",
 "Your eating window is open now ⏱️":"你的进食窗口现在开启了 ⏱️",
-"Your eating window closes in 30 min ⏱️":"你的进食窗口将在 30 分钟后关闭 ⏱️"
+"Your eating window closes in 30 min ⏱️":"你的进食窗口将在 30 分钟后关闭 ⏱️",
+"Food Tracker has a new home":"Food Tracker 搬家了",
+"Please move over in 3 short steps. Your data comes with you.":"只需 3 个简单步骤即可搬过去，你的数据会一起带走。",
+"Nothing to save yet.":"还没有需要保存的内容。",
+"Your data is saved in your account ({e}).":"你的数据已保存在账户中（{e}）。",
+"Save your data: create a free account.":"保存你的数据：创建一个免费账户。",
+"Open the new address in Safari and add it to your Home Screen.":"在 Safari 中打开新地址并添加到主屏幕。",
+"Sign in there, then delete this old icon.":"在那里登录，然后删除这个旧图标。",
+"Open the new Food Tracker":"打开新的 Food Tracker",
+"You have no account yet, so your data would not come along. Open the new address anyway?":"你还没有账户，所以数据不会一起带走。仍要打开新地址吗？"
 }
 };

@@ -10,7 +10,10 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Food Tracker">
 <link rel="apple-touch-icon" href="icon-180.png">
-<link rel="icon" href="icon-180.png">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
 <!-- Dark launch screens, so the iPhone never shows a white screen while the app opens -->
 <link rel="apple-touch-startup-image" href="splash/launch-1320x2868.png" media="(device-width: 440px) and (device-height: 956px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
@@ -664,7 +667,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v52';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v54';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1615,7 +1618,7 @@ async function runBackup(manual, a = acct()) {
   if (!SERVER_URL || !a || !db.profile || !window.crypto || !crypto.subtle) return false;
   try {
     const iv = crypto.getRandomValues(new Uint8Array(12));
-    const payload = JSON.stringify({ v: 1, t: Date.now(), data: LS.get('ft_data', ''), chat: LS.get('ft_chat', ''), lang: LS.get('ft_lang', ''), theme: LS.get('ft_theme', '') });
+    const payload = JSON.stringify({ v: 1, t: Date.now(), data: LS.get('ft_data', ''), chat: LS.get('ft_chat', ''), lang: LS.get('ft_lang', ''), theme: LS.get('ft_theme', ''), push: LS.get('ft_push_prefs', '') });
     const zz = await zipText(payload);
     const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await aesKey(a.key), zz.bytes));
     const r = await post('/backup', { id: a.id, auth: a.auth, data: (zz.z ? 'z' : 'p') + '.' + b64(iv) + '.' + b64(ct) });
@@ -1646,6 +1649,7 @@ function applyAccountData(p) {
   if (p.chat) LS.set('ft_chat', p.chat);
   if (p.lang) LS.set('ft_lang', p.lang);
   if (p.theme) LS.set('ft_theme', p.theme);
+  if (p.push) LS.set('ft_push_prefs', p.push);
   sessionStorage.setItem('ft_restored', '1');
   kvWait().then(() => location.reload());
 }
@@ -1920,6 +1924,42 @@ function shareJourney(j) {
   const file = new File([bytes], 'my-journey.png', { type: 'image/png' });
   if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file] }).catch(() => {});
   else { const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); }
+}
+
+/* ================= Moving to the new address =================
+   The app now lives at NEW_HOME. On the old address (GitHub Pages) a screen helps people move over:
+   their data travels through their account; the old phone stops getting reminders so nothing comes twice. */
+const NEW_HOME = 'https://foodtrackerapp.pages.dev/';
+let movedWatch = null;
+function showMoved() {
+  if (location.hostname !== 'maxzollinger.github.io' || sessionStorage.getItem('ft_moved_later') || $('#onb')) return;
+  $('#moved')?.remove();
+  const a = acct(), has = !!db.profile;
+  const pg = document.createElement('div'); pg.id = 'moved'; pg.className = 'page'; pg.style.zIndex = 90;
+  pg.innerHTML = `<div class="onb" style="justify-content:center;text-align:center">
+    <img src="icon-180.png" alt="" style="width:88px;height:88px;border-radius:22px;margin:0 auto 20px;box-shadow:0 10px 30px rgba(0,0,0,.25)">
+    <h1 style="margin:0 0 8px">${T('Food Tracker has a new home')}</h1>
+    <p class="sub" style="margin:0 0 20px"><b>foodtrackerapp.pages.dev</b><br>${T('Please move over in 3 short steps. Your data comes with you.')}</p>
+    <div class="list" style="text-align:left">
+      <div class="li"><span class="ic" style="font-weight:800">1</span><span class="grow">${!has ? T('Nothing to save yet.') : a ? T('Your data is saved in your account ({e}).', { e: esc(a.email) }) : T('Save your data: create a free account.')}</span>
+        ${has && !a ? `<button class="btn sm" id="mvAcc">${T('Create account')}</button>` : '<b style="color:var(--good)">✓</b>'}</div>
+      <div class="li"><span class="ic" style="font-weight:800">2</span><span class="grow">${T('Open the new address in Safari and add it to your Home Screen.')}</span></div>
+      <div class="li"><span class="ic" style="font-weight:800">3</span><span class="grow">${T('Sign in there, then delete this old icon.')}</span></div></div>
+    <button class="btn" id="mvGo" style="margin-top:16px">${T('Open the new Food Tracker')}</button>
+    <button class="small muted" id="mvLater" style="margin-top:18px;padding:8px">${T('Later')}</button></div>`;
+  document.body.appendChild(pg);
+  pg.querySelector('#mvLater').onclick = () => { sessionStorage.setItem('ft_moved_later', '1'); clearInterval(movedWatch); pg.remove(); };
+  if (pg.querySelector('#mvAcc')) pg.querySelector('#mvAcc').onclick = () => {
+    openAccountSheet('signup');
+    clearInterval(movedWatch); movedWatch = setInterval(() => { if (acct() && !$('.backdrop')) { clearInterval(movedWatch); showMoved(); } }, 700);
+  };
+  pg.querySelector('#mvGo').onclick = async () => {
+    if (has && !acct() && !confirm(T('You have no account yet, so your data would not come along. Open the new address anyway?'))) return;
+    if (acct()) await runBackup(false);
+    // This old copy stops getting reminders (turn them on again in the new app)
+    try { const reg = await navigator.serviceWorker?.getRegistration(); const sub = await reg?.pushManager.getSubscription(); if (sub) await sub.unsubscribe(); } catch {}
+    window.open(NEW_HOME, '_blank');
+  };
 }
 
 /* ================= Privacy ================= */
@@ -3760,6 +3800,7 @@ if (db.profile) save();   // keep any migration changes
 go('home');
 if (!db.profile) startOnboarding();
 showInstall();
+setTimeout(showMoved, 4600);
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
   navigator.serviceWorker.addEventListener('message', e => handleOpen(e.data && e.data.open));
