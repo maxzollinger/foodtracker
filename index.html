@@ -741,7 +741,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v81';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v84';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2272,6 +2272,255 @@ function shareJourney(j) {
   else { const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); }
 }
 
+/* ================= Watch & tracker: calories burned filled in automatically =================
+   Apple Health (through a small iPhone Shortcut that sends today's active calories) or a direct connection
+   to WHOOP, Oura, Polar or Withings. The connection keys stay on this phone; the server only passes things on.
+   Each day gets one entry ("auto-<date>") that is updated whenever new numbers arrive. */
+const HEALTH_SHORTCUT_URL = '';   // iCloud link of the ready-made Shortcut (empty = people build it with the steps)
+const TRACKER_LIST = [
+  { id: 'apple', name: 'Apple Health', ic: '❤️', sub: N('Apple Watch, and watches and rings that sync to Apple Health (Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros…)') },
+  { id: 'whoop', name: 'WHOOP', ic: '⌚', sub: N('Connect your WHOOP account directly.') },
+  { id: 'oura', name: 'Oura', ic: '💍', sub: N('Connect your Oura account directly.') },
+  { id: 'polar', name: 'Polar', ic: '⌚', sub: N('Connect your Polar Flow account directly.') },
+  { id: 'withings', name: 'Withings', ic: '⌚', sub: N('Connect your Withings account directly.') }
+];
+
+// Every common watch, ring and fitness app, in order of how common they are. Each one is connected the best
+// possible way: directly (if set up on the server), through Apple Health on iPhone, or explained when it can't work.
+const BRANDS = [
+  { id: 'applewatch', name: 'Apple Watch', ic: '⌚', via: 'apple' },
+  { id: 'garmin', name: 'Garmin', ic: '🧭', via: 'apple', hint: N('In the <b>Garmin Connect</b> app: <b>More</b> → <b>Settings</b> → <b>Connected Apps</b> → <b>Apple Health</b>, and turn it on (with Active Calories).') },
+  { id: 'fitbit', name: 'Fitbit', ic: '⌚', via: 'none', why: N('Fitbit does not share with Apple Health, and Google is closing its connection for other apps. Some paid apps from the App Store can copy Fitbit to Apple Health; if you use one, choose Apple Watch / Apple Health here. Otherwise please enter calories by hand.') },
+  { id: 'samsung', name: 'Samsung Galaxy Watch', ic: '⌚', via: 'none', why: N('Samsung Health does not let other apps read its data. Please enter calories by hand, e.g. the active calories from the Samsung Health app.') },
+  { id: 'whoop', name: 'WHOOP', ic: '⌚', via: 'whoop', hint: N('In the <b>WHOOP</b> app: <b>More</b> → <b>App Settings</b> → <b>Integrations</b> → <b>Apple Health</b>, and turn it on.') },
+  { id: 'oura', name: 'Oura', ic: '💍', via: 'oura', hint: N('In the <b>Oura</b> app: <b>Settings</b> → <b>Apple Health</b>, and turn it on.') },
+  { id: 'pixel', name: 'Google Pixel Watch', ic: '⌚', via: 'none', why: N('The Pixel Watch uses Fitbit, which does not share with other apps. Please enter calories by hand.') },
+  { id: 'amazfit', name: 'Amazfit (Zepp)', ic: '⌚', via: 'apple', hint: N('In the <b>Zepp</b> app: <b>Profile</b> → <b>Add accounts</b> (or Third-party access) → <b>Apple Health</b>, and turn it on.') },
+  { id: 'huawei', name: 'Huawei', ic: '⌚', via: 'apple', hint: N('In the <b>Huawei Health</b> app: <b>Me</b> → <b>Privacy management</b> → <b>Data sharing</b> → <b>Health</b>, and turn it on.') },
+  { id: 'xiaomi', name: 'Xiaomi (Mi Fitness)', ic: '⌚', via: 'apple', hint: N('In the <b>Mi Fitness</b> app: <b>Profile</b> → <b>Third-party data</b> → <b>Apple Health</b>, and turn it on.') },
+  { id: 'polar', name: 'Polar', ic: '⌚', via: 'polar', hint: N('In the <b>Polar Flow</b> app: <b>Settings</b> → <b>Apple Health</b>, and turn it on.') },
+  { id: 'withings', name: 'Withings', ic: '⌚', via: 'withings', hint: N('In the <b>Withings</b> app: <b>Profile</b> → <b>Apple Health</b>, and turn it on.') },
+  { id: 'suunto', name: 'Suunto', ic: '⌚', via: 'apple', hint: N('In the <b>Suunto</b> app: <b>Profile</b> → <b>Settings</b> → <b>Apple Health</b>, and turn it on.') },
+  { id: 'coros', name: 'COROS', ic: '⌚', via: 'apple', hint: N('In the <b>COROS</b> app: <b>Profile</b> → <b>Settings</b> → <b>Third-party apps</b> → <b>Apple Health</b>, and turn it on.') },
+  { id: 'strava', name: 'Strava', ic: '🏃', via: 'apple', hint: N('In <b>Strava</b>: <b>Settings</b> → <b>Applications, Services and Devices</b> → <b>Health</b>, and connect it. Only workouts are shared, so also wear your watch for the whole day.') },
+  { id: 'other', name: N('Other / phone only'), ic: '📱', via: 'apple', hint: N('Most watches, rings and fitness apps can share with Apple Health: look for <b>Apple Health</b> or <b>Health</b> in their settings and turn it on. Without a watch, your iPhone itself counts your steps and active calories.') }
+];
+const brandName = id => { const b = BRANDS.find(x => x.id === id); return b ? (b.id === 'other' ? T(b.name) : b.name) : ''; };
+const linkInfo = () => { try { return JSON.parse(LS.get('ft_link', 'null')); } catch { return null; } };
+const linkName = id => { const n = (TRACKER_LIST.find(x => x.id === id) || {}).name || id, b = LS.get('ft_brand', ''); return id === 'apple' && b && b !== 'applewatch' ? `${brandName(b)} · ${n}` : n; };
+const healthCode = () => { let c = LS.get('ft_hcode', ''); if (!/^[a-f0-9]{24}$/.test(c)) { c = hexOf(crypto.getRandomValues(new Uint8Array(12))); LS.set('ft_hcode', c); } return c; };
+// Puts the day's active calories in one automatic entry (updated, never doubled)
+function applyAutoBurn(date, kcal, src) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || date > iso() || date < addDays(iso(), -3)) return false;
+  kcal = r0(Math.max(0, Math.min(6000, num(kcal))));
+  const id = 'auto-' + date, ex = db.exercises.find(e => e.id === id);
+  if (!kcal) return false;
+  if (ex && ex.kcal === kcal) return false;
+  if (ex) { ex.kcal = kcal; ex.name = linkName(src); }
+  else db.exercises.push({ id, date, time: '', name: linkName(src), kcal, minutes: 0, auto: src });
+  return true;
+}
+let linkBusy = false;
+async function linkSync(force) {
+  const L = linkInfo();
+  if (!L || !SERVER_URL || linkBusy) return;
+  if (!force && Date.now() - (L.tried || 0) < 10 * 60e3) return;   // at most every 10 minutes (the trackers ask for that)
+  linkBusy = true; L.tried = Date.now();
+  const post = (path, body) => fetch(SERVER_URL + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  let changed = false;
+  try {
+    if (L.p === 'apple') {
+      const r = await post('/health/pull', { code: healthCode() });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const got = await r.json(), list = Array.isArray(got) ? got : Object.entries(got).map(([d, k]) => ({ d, k, t: 0 })), best = {};
+      for (const x of list) { const d = x.d || iso(new Date(x.t)); if (!best[d] || x.t >= best[d].t) best[d] = x; }
+      for (const [d, x] of Object.entries(best)) changed = applyAutoBurn(d, x.k, 'apple') || changed;
+      if (list.length) { L.ok = Date.now(); L.last = Math.max(...list.map(x => x.t || 0)); L.err = ''; }
+    } else {
+      const refresh = async () => {
+        if (!L.refresh) throw new Error('reconnect');
+        const r = await post(`/link/${L.p}/refresh`, { refresh: L.refresh });
+        if (!r.ok) throw new Error(r.status === 401 ? 'reconnect' : 'HTTP ' + r.status);
+        const t = await r.json(); L.access = t.access; if (t.refresh) L.refresh = t.refresh; L.exp = t.exp;
+        LS.set('ft_link', JSON.stringify(L));   // the old key stops working, so save the new one right away
+      };
+      if (L.exp && Date.now() > L.exp) await refresh();
+      const ask = () => post(`/link/${L.p}/data`, { access: L.access, from: addDays(iso(), -1), to: iso() });
+      let r = await ask();
+      if (r.status === 401) { await refresh(); r = await ask(); }
+      if (r.status === 401) throw new Error('reconnect');
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const { days } = await r.json(), bmr = targets().bmr || 1600;
+      for (const d of days || []) {
+        // WHOOP gives the total burn incl. what the body burns at rest; the app wants the active part
+        const active = d.active != null ? d.active : d.total != null ? d.total - bmr * Math.min(30, d.hours || 24) / 24 : 0;
+        changed = applyAutoBurn(d.date, active, L.p) || changed;
+      }
+      L.ok = Date.now(); L.err = '';
+    }
+  } catch (e) { L.err = e.message === 'reconnect' ? 'reconnect' : 'net'; }
+  finally {
+    LS.set('ft_link', JSON.stringify(L)); linkBusy = false;
+    if (changed) { save(); if (tab === 'home' && !$('.page')) renderHome(); }
+    if ($('#trkSheet')) openTrackerSheet();
+  }
+}
+// After signing in at WHOOP/Oura/Polar/Withings, the app picks up the keys from the server
+let pickTimer = null;
+function watchPickup() {
+  clearInterval(pickTimer);
+  pickTimer = setInterval(async () => {
+    let w; try { w = JSON.parse(LS.get('ft_link_pick', 'null')); } catch {}
+    if (!w || Date.now() - w.t > 15 * 60e3) { clearInterval(pickTimer); LS.del('ft_link_pick'); return; }
+    if (document.visibilityState !== 'visible') return;
+    try {
+      const r = await fetch(SERVER_URL + '/link/pickup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pick: w.pick }) });
+      if (!r.ok) return;
+      const t = await r.json();
+      clearInterval(pickTimer); LS.del('ft_link_pick');
+      LS.set('ft_link', JSON.stringify({ p: t.p, access: t.access, refresh: t.refresh, exp: t.exp }));
+      connectedNow(t.p);
+    } catch {}
+  }, 2500);
+}
+function connectedNow(p) {
+  if ((db.settings.burnType || 'day') !== 'day') { db.settings.burnType = 'day'; save(); }   // trackers give the whole day's active calories
+  toast('✓ ' + T('Connected to {name}', { name: linkName(p) }));
+  if ($('#trkWait') || $('#hsWiz')) closeSheet();
+  linkSync(true).then(() => { if (!$('.backdrop') && p !== 'apple') openTrackerSheet(); });
+  if ($('#trkSheet')) openTrackerSheet();
+  if (tab === 'settings' && !$('.backdrop')) renderSettings();
+}
+let trackersAvail = null;
+async function openTrackerSheet() {
+  const L = linkInfo(), before = $('.backdrop');
+  if (trackersAvail === null && SERVER_URL) {
+    try { trackersAvail = await (await fetch(SERVER_URL + '/link/list', { method: 'POST' })).json(); } catch { trackersAvail = {}; }
+    if ($('.backdrop') !== before) return;   // something else was opened meanwhile
+  }
+  const today = db.exercises.find(e => e.id === 'auto-' + iso());
+  const when = L && L.ok ? new Date(L.ok).toLocaleTimeString(LOC, { hour: '2-digit', minute: '2-digit' }) : '';
+  const ios = isIOS(), direct = id => !!(trackersAvail || {})[id];
+  const brandWay = b => b.via !== 'apple' && b.via !== 'none' && direct(b.via) ? 'direct' : b.via === 'none' ? 'none' : ios ? 'apple' : 'none';
+  const html = `<div id="trkSheet"><h3>⌚ ${T('Watch & tracker')}</h3>
+    <p class="muted" style="margin-top:4px">${T('Your active calories of the whole day are filled in automatically, every time you open the app.')}</p>
+    ${L ? `<div class="card" style="background:var(--chip);box-shadow:none;margin-top:12px">
+        <div class="spread"><b>${L.err === 'reconnect' ? '⚠️' : '✓'} ${esc(linkName(L.p))}</b><span class="small muted">${when ? T('Updated {t}', { t: when }) : T('Waiting for the first numbers…')}</span></div>
+        <p class="small" style="margin:6px 0 0">${today ? T('Today: <b>{n} kcal</b> active', { n: r0(today.kcal) }) : L.p === 'apple' ? T('No numbers yet. Run the Shortcut once (see below).') : T('No numbers for today yet.')}</p>
+        ${L.err === 'reconnect' ? `<p class="small" style="margin:6px 0 0;color:var(--bad)">${T('The connection expired. Please connect again.')}</p>` : L.err === 'net' ? `<p class="small muted" style="margin:6px 0 0">${T('Could not update right now. It tries again by itself.')}</p>` : ''}
+        <div class="row" style="margin-top:12px"><button class="btn sm grow" id="tkSync">${T('Update now')}</button><button class="btn sm outline grow" id="tkOff">${T('Disconnect')}</button></div>
+        ${L.p === 'apple' ? `<button class="chipbtn" id="tkHow" style="margin-top:10px">${T('Show the Shortcut steps')}</button>` : ''}</div>`
+      : `<div class="small muted" style="font-weight:600;margin:14px 0 8px">${T('What do you wear?')}</div>
+        <div class="list">${BRANDS.map(b => { const way = brandWay(b); return `<button class="li" data-brand="${b.id}"><span class="ic">${b.ic}</span><span class="grow"><b>${b.id === 'other' ? T(b.name) : b.name}</b><br><span class="small muted">${way === 'direct' ? T('Connect directly') : way === 'apple' ? (b.id === 'applewatch' ? T('Through Apple Health') + ` <span class="ptag" style="background:var(--good);color:#fff;margin-left:2px">${T('Recommended')}</span>` : T('Through Apple Health')) : T('Not possible yet, see why')}</span></span><span class="chev">›</span></button>`; }).join('')}</div>
+        ${isAdmin() && TRACKER_LIST.some(x => x.id !== 'apple' && !(trackersAvail || {})[x.id]) ? `<p class="small muted" style="margin:10px 0 0">Admin: ${TRACKER_LIST.filter(x => x.id !== 'apple' && !(trackersAvail || {})[x.id]).map(x => x.name).join(', ')} – ${T('not set up on your server yet.')}</p>` : ''}`}
+    </div>`;
+  sheet(html, sh => {
+    sh.querySelectorAll('[data-brand]').forEach(el => el.onclick = () => {
+      const b = BRANDS.find(x => x.id === el.dataset.brand), way = brandWay(b);
+      if (way === 'direct') { LS.set('ft_brand', b.id); return startTrackerLink(b.via); }
+      if (way === 'none') return openBrandInfo(b);
+      LS.set('ft_brand', b.id);
+      if (b.id === 'applewatch') return openHealthSetup(1);
+      openBrandPrep(b);
+    });
+    if (sh.querySelector('#tkSync')) sh.querySelector('#tkSync').onclick = () => { sh.querySelector('#tkSync').innerHTML = '<span class="spin"></span>'; linkSync(true); };
+    if (sh.querySelector('#tkOff')) sh.querySelector('#tkOff').onclick = () => {
+      if (!confirm(T('Disconnect {name}? Calories already filled in stay.', { name: linkName(L.p) }))) return;
+      LS.del('ft_link'); LS.del('ft_brand'); openTrackerSheet(); if (tab === 'settings') renderSettings();
+    };
+    if (sh.querySelector('#tkHow')) sh.querySelector('#tkHow').onclick = () => openHealthSetup(1);
+  });
+}
+// A brand that shares through Apple Health: first the one setting in their app, then the Apple Health steps
+function openBrandPrep(b) {
+  sheet(`<h3>${b.ic} ${esc(b.id === 'other' ? T(b.name) : b.name)}</h3>
+    <p class="muted" style="margin-top:4px">${T('{name} sends your calories to Apple Health, and Food Tracker picks them up from there.', { name: esc(b.id === 'other' ? T('Your app') : b.name) })}</p>
+    <div class="card" style="background:var(--chip);box-shadow:none;margin-top:12px"><b>${T('First, once:')}</b><p class="small" style="margin:6px 0 0;line-height:1.5">${T(b.hint)}</p>
+      <p class="small muted" style="margin:6px 0 0">${T('Menu names can differ a little between app versions.')}</p></div>
+    <button class="btn" id="bpNext" style="margin-top:16px">${T('Done, continue')}</button>`, sh => {
+    sh.querySelector('#bpNext').onclick = () => openHealthSetup(1);
+  });
+}
+// A brand that can't be connected: say why, honestly, and offer the easy alternative
+function openBrandInfo(b) {
+  const ios = isIOS();
+  sheet(`<h3>${b.ic} ${esc(b.name)}</h3>
+    <p style="margin-top:6px;line-height:1.5">${b.why ? T(b.why) : b.via === 'apple' ? T("On Android phones, {name} can't share its calories with other apps yet. Please enter calories by hand.", { name: esc(b.id === 'other' ? T('Your app') : b.name) }) : T('On this phone, {name} can only be connected directly, and that is not set up yet. Please enter calories by hand for now.', { name: esc(b.name) })}</p>
+    <button class="btn" id="biHand" style="margin-top:16px">${T('Enter calories by hand')}</button>`, sh => {
+    sh.querySelector('#biHand').onclick = () => { closeSheet(); setTimeout(openBurnSheet, 350); };
+  });
+}
+function startTrackerLink(p) {
+  const pick = hexOf(crypto.getRandomValues(new Uint8Array(16)));
+  LS.set('ft_link_pick', JSON.stringify({ p, pick, t: Date.now() }));
+  const url = `${SERVER_URL}/link/${p}/start?pick=${pick}`;
+  sheet(`<div id="trkWait"><h3>${esc(linkName(p))}</h3>
+    <p class="muted" style="margin-top:4px">${T('Sign in at {name} and allow Food Tracker to read your activity. Then come back here: it connects by itself.', { name: esc(linkName(p)) })}</p>
+    <a class="btn" href="${url}" target="_blank" rel="noopener" style="margin-top:16px;text-decoration:none">${T('Sign in at {name}', { name: esc(linkName(p)) })}</a>
+    <p class="small muted" style="margin:12px 0 0;text-align:center">${T('Waiting for {name}…', { name: esc(linkName(p)) })} <span class="spin" style="vertical-align:-3px"></span></p></div>`);
+  watchPickup();
+}
+function openHealthSetup(stepIn) {
+  const code = healthCode(), push = SERVER_URL + '/health/push', name = 'Food Tracker calories';
+  if (!linkInfo() || linkInfo().p !== 'apple') LS.set('ft_link', JSON.stringify({ p: 'apple' }));
+  let step = stepIn || (linkInfo().ok ? 3 : 1);
+  const copy = (v, quiet) => { try { navigator.clipboard.writeText(v); if (!quiet) toast(T('✓ Copied')); } catch { if (!quiet) toast(v); } };
+  const dots = n => `<div class="row" style="justify-content:center;gap:6px;margin:2px 0 14px">${[1, 2, 3].map(i => `<i style="width:${i === n ? 22 : 7}px;height:7px;border-radius:4px;background:${i <= n ? 'var(--ink)' : 'var(--line)'};display:block;transition:.25s"></i>`).join('')}</div>`;
+  const li = (n, t) => `<div class="li" style="align-items:flex-start"><span class="ic" style="font-weight:800">${n}</span><span class="grow small" style="line-height:1.45">${t}</span></div>`;
+  const body = {
+    1: `<h3>❤️ ${T('Step 1: Add the Shortcut')}</h3>
+      ${HEALTH_SHORTCUT_URL ? `<p class="muted" style="margin-top:4px">${T('Tap the button. In Shortcuts, tap <b>Add Shortcut</b>. When it asks for your code, tap the field and choose <b>Paste</b>: your code is already copied.')}</p>
+        <a class="btn" id="hsAdd" href="${HEALTH_SHORTCUT_URL}" target="_blank" rel="noopener" style="margin-top:16px;text-decoration:none">${T('Add the Shortcut')}</a>
+        <button class="btn outline" id="hsNext" style="margin-top:10px">${T('Done, next step')}</button>`
+      : `<p class="muted" style="margin-top:4px">${T('Build it once in the Shortcuts app, it takes about 2 minutes. Your code is already copied.')}</p>
+        ${LANG !== 'en' ? `<p class="small muted" style="margin:6px 0 0">${T('The action names below are in English. On an iPhone in your language they are translated: search for the matching words.')}</p>` : ''}
+        <div class="list" style="margin-top:12px">${[
+          T('Open <b>Shortcuts</b>, tap <b>+</b> and name it <b>Food Tracker calories</b>.'),
+          T('Add <b>Find Health Samples</b>: type <b>Active Energy</b>, filter <b>Start Date is today</b>.'),
+          T('Add <b>Calculate Statistics</b>: <b>Sum</b>.'),
+          T('Add <b>Get Contents of URL</b>: paste the address, method <b>POST</b>, body <b>JSON</b> with <b>code</b> = your code and <b>kcal</b> = Statistics.') +
+            `<div class="row" style="margin-top:8px;gap:8px"><button class="chipbtn" id="hsUrl">${T('Copy address')}</button><button class="chipbtn" id="hsCode">${T('Copy code')}</button></div>`].map((t, i) => li(i + 1, t)).join('')}</div>
+        <a class="btn" href="shortcuts://" style="margin-top:14px;text-decoration:none">${T('Open Shortcuts')}</a>
+        <button class="btn outline" id="hsNext" style="margin-top:10px">${T('Done, next step')}</button>`}`,
+    2: `<h3>❤️ ${T('Step 2: Run it once')}</h3>
+      <p class="muted" style="margin-top:4px">${T('Tap the button. iPhone asks once if the Shortcut may read Health: tap <b>Allow</b>. Then come back here, it checks by itself.')}</p>
+      <a class="btn" id="hsRun" href="shortcuts://run-shortcut?name=${encodeURIComponent(name)}" style="margin-top:16px;text-decoration:none">▶︎ ${T('Run it now')}</a>
+      <p class="small muted" id="hsWait" style="margin:12px 0 0;text-align:center">${T('Waiting for your first numbers…')} <span class="spin" style="vertical-align:-3px"></span></p>
+      <button class="chipbtn" id="hsBack" style="margin:14px auto 0;display:block">${T('Back to step 1')}</button>`,
+    3: `<h3>❤️ ${T('Step 3: Make it automatic')}</h3>
+      <p class="muted" style="margin-top:4px">${linkInfo().ok ? '✓ ' + T('It works! Now let it run by itself every day:') : T('Let it run by itself every day:')}</p>
+      <div class="list" style="margin-top:12px">${[
+        T('In Shortcuts, tap <b>Automation</b>, then <b>+</b>.'),
+        T('Choose <b>Time of Day</b>: <b>21:00</b>, <b>Daily</b>, <b>Run Immediately</b>.'),
+        T('Pick <b>Food Tracker calories</b> and tap <b>Done</b>.')].map((t, i) => li(i + 1, t)).join('')}</div>
+      <p class="small muted" style="margin:10px 0 0">${T('Tip: add a second one, e.g. at 14:00, so the number also updates during the day.')}</p>
+      <a class="btn outline" href="shortcuts://" style="margin-top:14px;text-decoration:none">${T('Open Shortcuts')}</a>
+      <button class="btn" id="hsDone" style="margin-top:10px">${T('All done')}</button>`
+  }[step];
+  sheet(`<div id="hsWiz">${dots(step)}${body}</div>`, sh => {
+    const go = n => openHealthSetup(n);
+    if (step === 1) {
+      copy(code, true);   // ready to paste in Shortcuts
+      if (sh.querySelector('#hsUrl')) sh.querySelector('#hsUrl').onclick = () => copy(push);
+      if (sh.querySelector('#hsCode')) sh.querySelector('#hsCode').onclick = () => copy(code);
+      if (sh.querySelector('#hsAdd')) sh.querySelector('#hsAdd').onclick = () => copy(code, true);
+      sh.querySelector('#hsNext').onclick = () => go(2);
+    }
+    if (step === 2) {
+      sh.querySelector('#hsBack').onclick = () => go(1);
+      // Back from Shortcuts: look for the numbers a few times, then move on by itself
+      let tries = 0;
+      const look = async () => {
+        if (!$('#hsWiz') || tries++ > 40) return;
+        if (document.visibilityState === 'visible') { await linkSync(true); if (linkInfo() && linkInfo().ok) { toast('✓ ' + T('Connected to {name}', { name: 'Apple Health' })); if ((db.settings.burnType || 'day') !== 'day') { db.settings.burnType = 'day'; save(); } return go(3); } }
+        setTimeout(look, 3000);
+      };
+      setTimeout(look, 1500);
+    }
+    if (step === 3) sh.querySelector('#hsDone').onclick = () => { closeSheet(); if (tab === 'settings') renderSettings(); if (tab === 'home') renderHome(); };
+  });
+}
+
 /* ================= Users count =================
    Each phone says "hello" once a day with a random number, so the owner can see how many people use the
    app. Nothing else is sent: no name, email or food data. The owner sees the totals in Settings (admin). */
@@ -2498,6 +2747,7 @@ function openPrivacy() {
     ${sec('☁️', T('Account & backup'), T("If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner."))}
     ${sec('✨', T('AI'), T('When you scan food, chat with the coach, use voice input or create a meal plan, that photo, text or recording is sent through the Food Tracker server to Google Gemini to get an answer. The server does not keep it. Google handles it under the Gemini API terms, so please don\'t send very sensitive things like medical documents.'))}
     ${sec('🔔', T('Notifications'), T("If you turn on reminders, the server keeps your phone's notification address, your reminder times and your time zone. Nothing else."))}
+    ${sec('⌚', T('Watch & tracker'), T('If you connect Apple Health or a tracker, only your active calories per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.'))}
     ${sec('🏷️', T('Barcodes'), T('When you scan a barcode, only its number is sent to Open Food Facts, a free food database, to find the product.'))}
     ${sec('📊', T('Usage count'), T('To know how many people use Food Tracker, the app sends a random number once a day. It is not linked to you, your email or your food. Only the number of users is counted.'))}
     ${sec('🚫', T('What never happens'), T('No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.'))}
@@ -2721,6 +2971,8 @@ function openBurnSheet() {
   const already = r0(dayBurned(sel)), isToday = sel === iso();
   sheet(`<h3>${T('Calories burned')}</h3>
     <div class="seg" style="margin-top:10px">${[['day', N('Whole day')], ['workout', N('Workouts only')]].map(([v, l]) => `<button data-bt="${v}" class="${(db.settings.burnType || 'day') === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>
+    ${linkInfo() ? `<p class="small" style="margin:10px 0 0;font-weight:600">⌚ ${T('Filled in automatically from {name}.', { name: esc(linkName(linkInfo().p)) })} <button class="chipbtn" id="bTrk" style="margin-left:4px">${T('Settings')}</button></p>`
+      : `<button class="bgrow" id="bTrk" style="margin-top:12px"><span style="font-size:26px">⌚</span><span class="grow"><b>${T('Wear a watch or ring?')}</b><br><span class="small muted">${T('Connect it once and this is filled in automatically.')}</span></span><span class="chev">›</span></button>`}
     <p class="muted small" style="margin-top:8px">${burnWholeDay() ? T('Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not "total").') : T('Enter the <b>active</b> calories of each workout (not "total").')} ${T('Your normal day and training are already in your goal, so only extra activity raises it.')}</p>
     ${already ? `<p class="small" style="margin:0">${T('Already logged: <b>{n} kcal</b>. This adds on top.', { n: already })}</p>
       <div class="list" style="box-shadow:none;background:var(--chip);margin:10px 0 0">${db.exercises.filter(e => e.date === sel).map(e =>
@@ -2734,6 +2986,7 @@ function openBurnSheet() {
     s.querySelectorAll('[data-q]').forEach(b => b.onclick = () => { inp.value = r0(num(inp.value) + +b.dataset.q); });
     s.querySelectorAll('[data-bt]').forEach(b => b.onclick = () => { db.settings.burnType = b.dataset.bt; save(); openBurnSheet(); if (tab === 'home') renderHome(); });
     s.querySelector('#bAi').onclick = () => openExercise(null);
+    s.querySelector('#bTrk').onclick = () => openTrackerSheet();
     s.querySelectorAll('[data-delex]').forEach(b => b.onclick = () => { db.exercises = db.exercises.filter(x => x.id !== b.dataset.delex); save(); renderHome(); openBurnSheet(); });
     s.querySelector('#bSave').onclick = () => {
       const kcal = r0(num(inp.value));
@@ -3443,7 +3696,7 @@ Calories: ${r0(tot.kcal)} eaten of ${g.kcal} kcal goal → ${left('kcal')}
 Protein: ${r0(tot.protein)} of ${g.protein} g → ${left('protein')}
 Carbs: ${r0(tot.carbs)} of ${g.carbs} g → ${left('carbs')}
 Fats: ${r0(tot.fat)} of ${g.fat} g → ${left('fat')}
-Calories burned today: ${g.burned} kcal (${burnWholeDay() ? 'active calories of the WHOLE day from their watch: all movement incl. workouts' : 'workouts only'}) → ${g.extra} kcal added to today's goal (mode "${db.settings.burnMode}"; ~${g.included} kcal/day of normal ${burnWholeDay() ? 'daily activity and training' : 'training'} is already part of the base goal)
+Calories burned today: ${g.burned} kcal${linkInfo() ? ` (filled in automatically from ${linkName(linkInfo().p)})` : ''} (${burnWholeDay() ? 'active calories of the WHOLE day from their watch: all movement incl. workouts' : 'workouts only'}) → ${g.extra} kcal added to today's goal (mode "${db.settings.burnMode}"; ~${g.included} kcal/day of normal ${burnWholeDay() ? 'daily activity and training' : 'training'} is already part of the base goal)
 Health score today: ${healthAvg(todayMeals) ?? 'no meals yet'}/10
 Water today: ${waterOn(today)} of ${waterGoal(today)} ml (${db.settings.waterGoal ? 'goal set by the user' : 'personal goal from body weight, training, goal and the exercise of today'})
 Sugar ${r0(dayExtras(today).sugar)} g, fiber ${r0(dayExtras(today).fiber)} g, sodium ${r0(dayExtras(today).sodium)} mg today (known for ${dayExtras(today).known} of ${dayExtras(today).meals} meals)${pend ? `\nStill analysing: ${pend} food photo(s), not counted yet` : ''}
@@ -3483,7 +3736,7 @@ const PLAN_COACH = {
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
-- Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only.
+- Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for).
 - Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Every Sunday a weekly check-in appears here. You remember lasting facts about them.
 - Settings: Your goal, Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, Sunday check-in, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone; "Back up now"); Privacy; Delete all data.
@@ -3937,7 +4190,7 @@ setInterval(() => {
 }, 5 * 60e3);
 setInterval(() => { if (updReady && document.visibilityState === 'visible' && Date.now() - lastTouch > 45e3 && safeToReload()) kvWait().then(() => location.reload()); }, 20e3);
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') { checkUpdate(); setTimeout(processQueue, 1000); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); setTimeout(askAccount, 5000); setTimeout(weeklyCheckin, 1500); setTimeout(syncDone, 2500); }
+  if (document.visibilityState === 'visible') { checkUpdate(); setTimeout(processQueue, 1000); setTimeout(() => linkSync(false), 1200); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); setTimeout(askAccount, 5000); setTimeout(weeklyCheckin, 1500); setTimeout(syncDone, 2500); }
   else { if (!rec) micOff(); cameraOff(); if (updReady) kvWait().then(() => location.reload()); }   // in the background: nobody sees the reload
 });
 
@@ -3962,6 +4215,7 @@ function renderSettings() {
     <div class="list">
       ${p ? `<button class="li" id="sGoal"><span class="ic">${planOf(p).ic}</span><span class="grow">${T('Your goal')}<br><span class="small muted">${T(planOf(p).name)}</span></span><span class="chev">›</span></button>` : ''}
       <button class="li" id="sPers"><span class="ic">👤</span><span class="grow">${T('Personal details')}</span><span class="chev">›</span></button>
+      <button class="li" id="sTrk"><span class="ic">⌚</span><span class="grow">${T('Watch & tracker')}</span><span class="val">${linkInfo() ? esc(linkName(linkInfo().p)) : T('Not connected')}</span><span class="chev">›</span></button>
       <button class="li" id="sGoals"><span class="ic">🎯</span><span class="grow">${T('Adjust macronutrients')}<br><span class="small muted">${t.kcal} kcal · ${t.protein}g P · ${t.carbs}g C · ${t.fat}g F</span></span><span class="chev">›</span></button>
       <button class="li" id="sRedo"><span class="ic">🔁</span><span class="grow">${T('Redo setup questions')}</span><span class="chev">›</span></button>
     </div>
@@ -4012,6 +4266,7 @@ function renderSettings() {
     if (++taps >= 7) { taps = 0; LS.set('ft_admin', isAdmin() ? '0' : '1'); toast(isAdmin() ? 'Admin mode on' : 'Admin mode off'); renderSettings(); } };
   if ($('#sShare')) $('#sShare').onclick = shareApp;
   $('#sPers').onclick = openPersonalSheet;
+  $('#sTrk').onclick = () => openTrackerSheet();
   if ($('#sGoal')) $('#sGoal').onclick = openMainGoalSheet;
   $('#sGoals').onclick = openGoalsSheet;
   $('#sRedo').onclick = startOnboarding;
@@ -4425,6 +4680,9 @@ idb.kvGet('ft_pending').then(q => {
   if (tab === 'home') renderHome();
   setTimeout(processQueue, 1500);
 });
+setTimeout(() => linkSync(false), 3500);
+setInterval(() => { if (document.visibilityState === 'visible') linkSync(false); }, 30 * 60e3);
+if (LS.get('ft_link_pick', '')) watchPickup();
 setTimeout(() => photoSync(false), 12000);
 setTimeout(sayHello, 7000);
 setInterval(sayHello, 60 * 60e3);
