@@ -59,15 +59,17 @@ jobs:
             }
             let sent = 0, gone = 0, failed = 0;
             for (const { id, sub } of list) {
-              const p = { ...DEF, ...(sub.prefs || {}) }, L = local(p.tz), last = sub.last || {}, due = [];
+              const p = { ...DEF, ...(sub.prefs || {}) }, L = local(p.tz), last = sub.last || {}, done = sub.done || {}, due = [];
+              const daysSince = d => d ? Math.round((Date.parse(L.date) - Date.parse(d)) / 864e5) : 99;
               if (env.FORCE) due.push(env.FORCE);
               else {
                 // Phones known to the server: any time in the 3 hours after the chosen time, once that day
                 // (so a late or skipped hourly run doesn't lose a reminder). Old single phone: exactly on the hour.
                 const inWin = h => id ? L.hour >= h && L.hour < h + 3 : L.hour === h;
-                if (p.burn >= 0 && inWin(p.burn) && last.burn !== L.date) due.push('burn');
-                if (p.wDay >= 0 && L.wd === p.wDay && inWin(p.wTime) && last.weight !== L.date) due.push('weight');
-                if (id && p.ci >= 0 && L.wd === 0 && inWin(p.ci) && last.checkin !== L.date) due.push('checkin');
+                // Nothing is sent for things already done: burned calories logged today, weight logged in the last 3 days, check-in already seen
+                if (p.burn >= 0 && inWin(p.burn) && last.burn !== L.date && done.burn !== L.date) due.push('burn');
+                if (p.wDay >= 0 && L.wd === p.wDay && inWin(p.wTime) && last.weight !== L.date && daysSince(done.weight) > 2) due.push('weight');
+                if (id && p.ci >= 0 && L.wd === 0 && inWin(p.ci) && last.checkin !== L.date && done.checkin !== L.date) due.push('checkin');
                 // Eating window (intermittent fasting): when it opens, and 30 minutes before it closes
                 if (id && p.fo && /^\d{2}:\d{2}$/.test(p.fs) && p.fh > 0) {
                   const [h, m] = p.fs.split(':').map(Number), open = h * 60 + m, close = (open + (24 - p.fh) * 60) % 1440;
