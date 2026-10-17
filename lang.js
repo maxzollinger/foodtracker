@@ -1200,7 +1200,8 @@ window.I18N = {
 "Slowly, so you can still build muscle":"Langsam, damit du trotzdem Muskeln aufbaust",
 "Where are you right now?":"Wo stehst du gerade?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Deine Kalorien steigen etwas, während dein Baby wächst. Folge bitte auch dem Rat deiner Ärztin, deines Arztes oder deiner Hebamme.",
-"Burned · {n} active":"Verbrannt · {n} aktiv"
+"Burned · {n} active":"Verbrannt · {n} aktiv",
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Verbinde einmal deine Apple Watch (über Apple Health), WHOOP oder einen anderen Tracker. Deine verbrannten Kalorien werden dann bei jedem Öffnen der App automatisch eingetragen."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2402,7 +2403,8 @@ window.I18N = {
 "Slowly, so you can still build muscle":"Despacio, para que aún puedas ganar músculo",
 "Where are you right now?":"¿En qué etapa estás?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Tus calorías suben un poco a medida que crece tu bebé. Sigue también los consejos de tu médico o matrona.",
-"Burned · {n} active":"Quemadas · {n} activas"
+"Burned · {n} active":"Quemadas · {n} activas",
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Conecta una vez tu Apple Watch (a través de Apple Health), WHOOP u otro dispositivo. Tus calorías quemadas se rellenan solas cada vez que abres la app."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3604,7 +3606,8 @@ window.I18N = {
 "Slowly, so you can still build muscle":"Lentement, pour pouvoir quand même prendre du muscle",
 "Where are you right now?":"Où en es-tu ?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Tes calories augmentent un peu à mesure que ton bébé grandit. Suis aussi les conseils de ton médecin ou de ta sage-femme.",
-"Burned · {n} active":"Brûlées · {n} actives"
+"Burned · {n} active":"Brûlées · {n} actives",
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Connecte une fois ton Apple Watch (via Apple Santé), ton WHOOP ou un autre tracker. Tes calories brûlées sont ensuite remplies automatiquement à chaque ouverture de l’app."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -4806,7 +4809,8 @@ window.I18N = {
 "Slowly, so you can still build muscle":"Lentamente, così puoi comunque costruire muscoli",
 "Where are you right now?":"A che punto sei?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Le tue calorie aumentano un po’ man mano che il bambino cresce. Segui anche i consigli del tuo medico o dell’ostetrica.",
-"Burned · {n} active":"Bruciate · {n} attive"
+"Burned · {n} active":"Bruciate · {n} attive",
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Collega una volta il tuo Apple Watch (tramite Apple Salute), WHOOP o un altro tracker. Le calorie bruciate verranno inserite automaticamente ogni volta che apri l’app."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6008,7 +6012,8 @@ window.I18N = {
 "Slowly, so you can still build muscle":"ゆっくり。筋肉もつけられるように",
 "Where are you right now?":"今はどの時期ですか？",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"赤ちゃんの成長に合わせてカロリーが少し増えます。医師や助産師のアドバイスにも従ってください。",
-"Burned · {n} active":"消費 · アクティブ {n}"
+"Burned · {n} active":"消費 · アクティブ {n}",
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Apple Watch（ヘルスケア経由）、WHOOP などのトラッカーを一度つなぐだけ。アプリを開くたびに消費カロリーが自動で入力されます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -7210,7 +7215,8 @@ window.I18N = {
 "Slowly, so you can still build muscle":"Langzaam, zodat je nog steeds spieren opbouwt",
 "Where are you right now?":"Waar sta je nu?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Je calorieën stijgen een beetje naarmate je baby groeit. Volg ook het advies van je arts of verloskundige.",
-"Burned · {n} active":"Verbrand · {n} actief"
+"Burned · {n} active":"Verbrand · {n} actief",
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Koppel één keer je Apple Watch (via Apple Gezondheid), WHOOP of een andere tracker. Je verbrande calorieën worden dan elke keer dat je de app opent automatisch ingevuld."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -8412,7 +8418,8 @@ window.I18N = {
 "Slowly, so you can still build muscle":"Powoli, aby nadal budować mięśnie",
 "Where are you right now?":"Na jakim jesteś etapie?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Twoje kalorie rosną nieco wraz z rozwojem dziecka. Stosuj się też do zaleceń lekarza lub położnej.",
-"Burned · {n} active":"Spalone · {n} aktywne"
+"Burned · {n} active":"Spalone · {n} aktywne",
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Połącz raz swój Apple Watch (przez Apple Zdrowie), WHOOP lub inny tracker. Spalone kalorie będą wtedy uzupełniane automatycznie przy każdym otwarciu aplikacji."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -9614,7 +9621,8 @@ window.I18N = {
 "Slowly, so you can still build muscle":"Devagar, para continuar a ganhar músculo",
 "Where are you right now?":"Em que fase está?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"As suas calorias sobem um pouco à medida que o bebé cresce. Siga também os conselhos do seu médico ou parteira.",
-"Burned · {n} active":"Gastas · {n} ativas"
+"Burned · {n} active":"Gastas · {n} ativas",
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Ligue uma vez o seu Apple Watch (através da app Saúde), WHOOP ou outro dispositivo. As calorias gastas são preenchidas automaticamente sempre que abrir a app."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -10816,7 +10824,8 @@ window.I18N = {
 "Slowly, so you can still build muscle":"Медленно, чтобы мышцы всё равно росли",
 "Where are you right now?":"На каком вы этапе?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Калорий становится немного больше по мере роста малыша. Также следуйте советам врача или акушерки.",
-"Burned · {n} active":"Сожжено · {n} активных"
+"Burned · {n} active":"Сожжено · {n} активных",
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Один раз подключите Apple Watch (через «Здоровье»), WHOOP или другой трекер. Сожжённые калории будут подставляться автоматически при каждом открытии приложения."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -12018,7 +12027,8 @@ window.I18N = {
 "Slowly, so you can still build muscle":"Yavaşça, böylece yine de kas yapabilirsin",
 "Where are you right now?":"Şu anda hangi dönemdesin?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Bebeğin büyüdükçe kalorilerin biraz artar. Lütfen doktorunun veya ebenin tavsiyelerine de uy.",
-"Burned · {n} active":"Yakılan · {n} aktif"
+"Burned · {n} active":"Yakılan · {n} aktif",
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Apple Watch’unu (Apple Sağlık üzerinden), WHOOP’u veya başka bir takip cihazını bir kez bağla. Yaktığın kaloriler uygulamayı her açtığında otomatik olarak girilir."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -13220,6 +13230,7 @@ window.I18N = {
 "Slowly, so you can still build muscle":"慢慢来，这样仍能增肌",
 "Where are you right now?":"你现在处于哪个阶段？",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"随着宝宝长大，你的热量会稍微增加。也请遵循医生或助产士的建议。",
-"Burned · {n} active":"消耗 · 活动 {n}"
+"Burned · {n} active":"消耗 · 活动 {n}",
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"只需连接一次 Apple Watch（通过“健康”App）、WHOOP 或其他手环。之后每次打开 App，消耗的卡路里都会自动填入。"
 }
 };

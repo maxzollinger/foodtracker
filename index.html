@@ -860,7 +860,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v107';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v108';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3174,6 +3174,7 @@ const TOUR_STEPS = [
   { tab: 'chat', sel: '.tab[data-tab="settings"]', title: N('Settings'), text: N('Finally, your settings.') },
   { tab: 'settings', sel: '#sGoal', title: N('Your goal'), text: N('Change your main goal any time. Your past days stay as they are.') },
   { tab: 'settings', sel: '#sPers', title: N('Personal details'), text: N('Height, weight, age and training. Your goals update automatically when they change.') },
+  { tab: 'settings', sel: '#sTrk', title: N('Watch & tracker'), text: N('Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.') },
   { tab: 'settings', sel: '#sGoals', title: N('Adjust macronutrients'), text: N('Set your own calorie and macro targets if you prefer.') },
   { tab: 'settings', sel: '#prefList', title: N('Language, units and tour'), text: N('Choose your language, kg or lb, cm or ft, litres or fl oz. You can watch this tour again here.') },
   { tab: 'settings', sel: '#appCard', title: N('Appearance'), text: N('Choose light or dark mode, or let it follow your phone. Under Background you can give the whole app a color gradient.') },
