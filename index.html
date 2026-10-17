@@ -741,7 +741,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v86';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v87';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2471,6 +2471,8 @@ let setupPoll = null;
 async function openSetupPage() {
   const st = setupInfo(); if (!st) return;
   await loadTrackers();
+  // WHOOP & co. started through Apple Health, but now connectable directly (better): switch over
+  { const b0 = setupBrand(st); if (st.via === 'apple' && !st.finished && b0.via !== 'apple' && b0.via !== 'none' && (trackersAvail || {})[b0.via]) { st.via = 'direct'; st.done = {}; saveSetup(st); } }
   let pg = $('#setupPg');
   if (!pg) { pg = document.createElement('div'); pg.id = 'setupPg'; pg.className = 'page'; document.body.appendChild(pg); document.body.style.overflow = 'hidden'; }
   const b = setupBrand(st), bn = b.id === 'other' ? T('Your app') : b.name, steps = setupSteps(st), cur = steps.findIndex(x => !st.done[x]);
@@ -2545,10 +2547,12 @@ async function openSetupPage() {
             <b class="grow" style="font-size:16px">${title[k]}</b>${done ? `<span class="small muted">${T('Show')}</span>` : ''}</div>
           ${now || st.show === k ? `<div style="margin-top:12px">${body[k]}</div>` : ''}</div>`;
       }).join('')}
+      ${finished ? '' : `<button class="small muted" id="spOther" style="display:block;margin:18px auto 0;padding:8px;text-decoration:underline">${T('Choose another watch or way')}</button>`}
     </div>`;
   pg.scrollTop = y;
   const copy = (v, quiet) => { try { navigator.clipboard.writeText(v); if (!quiet) toast(T('✓ Copied')); } catch { if (!quiet) toast(v); } };
   pg.querySelector('#spBack').onclick = closeSetupPage;
+  if (pg.querySelector('#spOther')) pg.querySelector('#spOther').onclick = () => { LS.del('ft_setup'); if (linkInfo() && !linkInfo().ok) LS.del('ft_link'); closeSetupPage(); setTimeout(openTrackerSheet, 250); };
   if (pg.querySelector('#spClose')) pg.querySelector('#spClose').onclick = closeSetupPage;
   pg.querySelectorAll('[data-done]').forEach(x => x.onclick = () => { st.done[x.dataset.done] = true; delete st.show; delete st.mismatch; saveSetup(st); pg.scrollTop = 0; openSetupPage(); });
   pg.querySelectorAll('[data-redo]').forEach(x => x.onclick = () => { st.show = st.show === x.dataset.redo ? '' : x.dataset.redo; saveSetup(st); openSetupPage(); });
