@@ -269,6 +269,10 @@ a{color:inherit}
 .circ{width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.35);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 .dbody{background:var(--bg);border-radius:28px 28px 0 0;margin-top:-30px;position:relative;padding:22px 18px calc(110px + env(safe-area-inset-bottom))}
 .tinput{font-size:24px;font-weight:800;letter-spacing:-.02em;line-height:1.2;background:none;padding:4px 0;border-radius:0;min-height:0;resize:none;overflow:hidden}
+.pwbox{position:relative}
+.pwbox input{padding-right:52px}
+.pweye{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.pweye svg{width:22px;height:22px}
 .stepper{display:flex;align-items:center;gap:4px;background:var(--card);border-radius:999px;padding:4px;box-shadow:inset 0 0 0 1.5px var(--line);flex:none}
 .stepper button{width:32px;height:32px;border-radius:50%;font-size:20px;font-weight:600}
 .stepper b{min-width:28px;text-align:center}
@@ -741,7 +745,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v93';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v94';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1965,6 +1969,19 @@ async function photoSync(force, onStatus = () => {}) {
   } catch { return null; } finally { phBusy = false; }
 }
 
+// The eye next to a password: dots first, tap to show what you typed (tap again to hide)
+const EYE_OPEN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_SHUT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.9 17.9A10 10 0 0 1 12 19c-6.5 0-10-7-10-7a18 18 0 0 1 4.1-5.1M9.9 5.2A9 9 0 0 1 12 5c6.5 0 10 7 10 7a18 18 0 0 1-2.2 3.2M14.1 14.2a3 3 0 1 1-4.2-4.3"/><path d="M2 2l20 20"/></svg>';
+const eyeBtn = id => `<button type="button" class="pweye" aria-label="${T('Show password')}" onclick="togglePw('${id}', this)">${EYE_OPEN}</button>`;
+function togglePw(id, btn) {
+  const inp = document.getElementById(id); if (!inp) return;
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.innerHTML = show ? EYE_SHUT : EYE_OPEN;
+  btn.setAttribute('aria-label', show ? T('Hide password') : T('Show password'));
+  inp.focus({ preventScroll: true });
+}
+
 // One sheet for both: create an account, or sign in on a new phone
 function openAccountSheet(mode = 'signup') {
   const up = mode === 'signup';
@@ -1974,7 +1991,7 @@ function openAccountSheet(mode = 'signup') {
       <label class="lbl" for="acEmail">${T('Email')}</label>
       <input id="acEmail" name="email" type="email" autocomplete="${up ? 'email' : 'username'}" inputmode="email" autocapitalize="off" spellcheck="false" required placeholder="name@example.com">
       <label class="lbl" for="acPw">${T('Password')}</label>
-      <input id="acPw" name="password" type="password" autocomplete="${up ? 'new-password' : 'current-password'}" minlength="8" required placeholder="${up ? T('At least 8 characters') : ''}">
+      <div class="pwbox"><input id="acPw" name="password" type="password" autocomplete="${up ? 'new-password' : 'current-password'}" minlength="8" required placeholder="${up ? T('At least 8 characters') : ''}">${eyeBtn('acPw')}</div>
       <button class="btn" type="submit" style="margin-top:18px">${up ? T('Create account') : T('Sign in')}</button>
     </form>
     <p class="small" id="acMsg" style="text-align:center;min-height:20px;margin:10px 0 0"></p>
@@ -2011,15 +2028,27 @@ function openAccountSheet(mode = 'signup') {
   });
 }
 // Once, after someone has started using the app: invite them to create an account
-function askAccount() {
-  if (!SERVER_URL || acct() || LS.get('ft_acct_ask', '') || !db.profile || !db.meals.length || $('.backdrop') || $('#onb') || $('.page')) return;
-  LS.set('ft_acct_ask', '1');
+// First setup: offered right after the tour (then the reminders question follows). "Later" asks once more
+// after 3 days; Settings → Account & backup always has it. Older users: once, after their first meal.
+function askAccount(first, then) {
+  const next = () => { if (then) { const t = then; then = null; setTimeout(t, 500); } };
+  const st = LS.get('ft_acct_ask', '');
+  const laterDue = st.startsWith('later:') && Date.now() - +st.slice(6) > 3 * 864e5;
+  if (!SERVER_URL || acct() || !db.profile || $('.backdrop') || $('#onb') || $('.page') || $('#tourLayer')) return next();
+  if (!first && !laterDue && (st || !db.meals.length)) return next();
+  LS.set('ft_acct_ask', laterDue ? '1' : 'asked');
   sheet(`<div style="text-align:center;padding:6px 4px 0"><div class="askbell">☁️</div>
       <h3 style="margin:14px 0 6px">${T('Keep your data safe')}</h3>
-      <p class="muted" style="margin:0 0 20px">${T('Create a free account with your email and a password. Your data is then backed up every day, and you can get it back on any new phone.')}</p>
-      <button class="btn" id="aaYes">${T('Create account')}</button><button class="btn outline" id="aaNo" style="margin-top:10px">${T('Not now')}</button></div>`, s => {
-    s.querySelector('#aaYes').onclick = () => openAccountSheet('signup');
-    s.querySelector('#aaNo').onclick = dismissSheet;
+      <p class="muted" style="margin:0 0 8px">${T('Create a free account with your email and a password. Your data is then backed up every day, and you can get it back on any new phone.')}</p>
+      <p class="small muted" style="margin:0 0 18px">🔒 ${T('Encrypted with your password: nobody else can read it.')}</p>
+      <button class="btn" id="aaYes">${T('Create account')}</button>
+      <button class="btn outline" id="aaNo" style="margin-top:10px">${T('Later')}</button>
+      <p class="small muted" style="margin:10px 0 0">${T('You can always do it later in Settings → Account & backup.')}</p>
+      <button class="small muted" id="aaIn" style="display:block;margin:8px auto 0;padding:6px;text-decoration:underline">${T('Already have an account? Sign in')}</button></div>`, sh => {
+    const watch = () => { const iv = setInterval(() => { if (!$('.backdrop')) { clearInterval(iv); next(); } }, 600); };   // continue once the account sheet is closed
+    sh.querySelector('#aaYes').onclick = () => { openAccountSheet('signup'); watch(); };
+    sh.querySelector('#aaIn').onclick = () => { openAccountSheet('login'); watch(); };
+    sh.querySelector('#aaNo').onclick = () => { if (!laterDue) LS.set('ft_acct_ask', 'later:' + Date.now()); dismissSheet(); setTimeout(next, 350); };
   });
 }
 function backupCard() {
@@ -2883,7 +2912,7 @@ function usersCard() {
   if (!isAdmin() || !SERVER_URL) return '';
   if (!LS.get('ft_admin_token', '')) return `<div class="card" id="usersCard"><b>👥 ${T('Users')}</b>
     <p class="small muted" style="margin:4px 0 10px">${T('Paste your admin password (ADMIN_TOKEN) once to see how many people use the app.')}</p>
-    <input id="usTok" type="password" autocomplete="off" spellcheck="false" placeholder="ADMIN_TOKEN">
+    <div class="pwbox"><input id="usTok" type="password" autocomplete="off" spellcheck="false" placeholder="ADMIN_TOKEN">${eyeBtn('usTok')}</div>
     <button class="btn sm" id="usSave" style="margin-top:10px">${T('Save')}</button></div>`;
   return `<div class="card" id="usersCard"><div class="spread"><b>👥 ${T('Users')}</b><button class="chipbtn" id="usRef" aria-label="${T('Refresh')}">↻</button></div>
     <div id="usBody" style="margin-top:10px;text-align:center"><span class="spin"></span></div></div>`;
@@ -4964,7 +4993,7 @@ function finishOnboarding() {
   if (!db.weights.length || currentWeight() !== p.weight) { db.weights = db.weights.filter(w => w.date !== iso()); db.weights.push({ date: iso(), kg: p.weight }); }
   LS.set('ft_lang', LANG);
   save(); ob = null; $('#onb')?.remove(); go('home'); toast('🎉 ' + T('Your plan is ready'));
-  if (!LS.get('ft_tour', '')) setTimeout(() => openTour(() => setTimeout(() => askReminders(true), 600)), 700);
+  if (!LS.get('ft_tour', '')) setTimeout(() => openTour(() => setTimeout(() => askAccount(true, () => askReminders(true)), 600)), 700);
   else setTimeout(() => askReminders(true), 1800);
 }
 

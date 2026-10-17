@@ -1148,7 +1148,11 @@ window.I18N = {
 "Remember your habit plan 🎯":"Denk an deinen Gewohnheits-Plan 🎯",
 "Your plan: {p}":"Dein Plan: {p}",
 "Habits (optional)":"Gewohnheiten (optional)",
-"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Willst du eine Gewohnheit ändern, z. B. spätes Naschen? Wähl eine aus, mach einen kleinen Plan, und die App prüft es für dich. Wenn du das nicht willst, ignoriere es einfach."
+"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Willst du eine Gewohnheit ändern, z. B. spätes Naschen? Wähl eine aus, mach einen kleinen Plan, und die App prüft es für dich. Wenn du das nicht willst, ignoriere es einfach.",
+"Show password":"Passwort anzeigen",
+"Hide password":"Passwort verbergen",
+"Encrypted with your password: nobody else can read it.":"Mit deinem Passwort verschlüsselt: Niemand sonst kann es lesen.",
+"You can always do it later in Settings → Account & backup.":"Du kannst es jederzeit später unter Einstellungen → Konto & Backup machen."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2298,7 +2302,11 @@ window.I18N = {
 "Remember your habit plan 🎯":"Recuerda tu plan de hábito 🎯",
 "Your plan: {p}":"Tu plan: {p}",
 "Habits (optional)":"Hábitos (opcional)",
-"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"¿Quieres cambiar un hábito, como picar tarde? Elige uno, haz un pequeño plan y la app lo comprueba por ti. Si no lo quieres, simplemente ignóralo."
+"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"¿Quieres cambiar un hábito, como picar tarde? Elige uno, haz un pequeño plan y la app lo comprueba por ti. Si no lo quieres, simplemente ignóralo.",
+"Show password":"Mostrar contraseña",
+"Hide password":"Ocultar contraseña",
+"Encrypted with your password: nobody else can read it.":"Cifrado con tu contraseña: nadie más puede leerlo.",
+"You can always do it later in Settings → Account & backup.":"Siempre puedes hacerlo más tarde en Ajustes → Cuenta y copia de seguridad."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3448,7 +3456,11 @@ window.I18N = {
 "Remember your habit plan 🎯":"Pense à ton plan d'habitude 🎯",
 "Your plan: {p}":"Ton plan : {p}",
 "Habits (optional)":"Habitudes (facultatif)",
-"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Envie de changer une habitude, comme grignoter tard ? Choisis-en une, fais un petit plan, et l'app vérifie pour toi. Si tu ne veux pas, ignore-le simplement."
+"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Envie de changer une habitude, comme grignoter tard ? Choisis-en une, fais un petit plan, et l'app vérifie pour toi. Si tu ne veux pas, ignore-le simplement.",
+"Show password":"Afficher le mot de passe",
+"Hide password":"Masquer le mot de passe",
+"Encrypted with your password: nobody else can read it.":"Chiffré avec ton mot de passe : personne d’autre ne peut le lire.",
+"You can always do it later in Settings → Account & backup.":"Tu peux toujours le faire plus tard dans Réglages → Compte et sauvegarde."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -4598,7 +4610,11 @@ window.I18N = {
 "Remember your habit plan 🎯":"Ricorda il tuo piano 🎯",
 "Your plan: {p}":"Il tuo piano: {p}",
 "Habits (optional)":"Abitudini (facoltativo)",
-"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Vuoi cambiare un’abitudine, come spizzicare la sera tardi? Scegline una, fai un piccolo piano e l’app la controlla per te. Se non ti interessa, ignorala."
+"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Vuoi cambiare un’abitudine, come spizzicare la sera tardi? Scegline una, fai un piccolo piano e l’app la controlla per te. Se non ti interessa, ignorala.",
+"Show password":"Mostra password",
+"Hide password":"Nascondi password",
+"Encrypted with your password: nobody else can read it.":"Cifrato con la tua password: nessun altro può leggerlo.",
+"You can always do it later in Settings → Account & backup.":"Puoi sempre farlo più tardi in Impostazioni → Account e backup."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -5748,7 +5764,11 @@ window.I18N = {
 "Remember your habit plan 🎯":"習慣の計画を思い出そう 🎯",
 "Your plan: {p}":"あなたの計画：{p}",
 "Habits (optional)":"習慣（任意）",
-"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"夜遅くの間食など、習慣を変えたい？1つ選んで小さな計画を立てると、アプリがチェックします。不要なら気にしなくて大丈夫です。"
+"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"夜遅くの間食など、習慣を変えたい？1つ選んで小さな計画を立てると、アプリがチェックします。不要なら気にしなくて大丈夫です。",
+"Show password":"パスワードを表示",
+"Hide password":"パスワードを隠す",
+"Encrypted with your password: nobody else can read it.":"パスワードで暗号化されるので、他の人は読めません。",
+"You can always do it later in Settings → Account & backup.":"あとでいつでも 設定 → アカウントとバックアップ からできます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -6898,7 +6918,11 @@ window.I18N = {
 "Remember your habit plan 🎯":"Denk aan je gewoonteplan 🎯",
 "Your plan: {p}":"Je plan: {p}",
 "Habits (optional)":"Gewoontes (optioneel)",
-"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Wil je een gewoonte veranderen, zoals laat snacken? Kies er een, maak een klein plan en de app controleert het voor je. Wil je dit niet, negeer het dan gewoon."
+"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Wil je een gewoonte veranderen, zoals laat snacken? Kies er een, maak een klein plan en de app controleert het voor je. Wil je dit niet, negeer het dan gewoon.",
+"Show password":"Wachtwoord tonen",
+"Hide password":"Wachtwoord verbergen",
+"Encrypted with your password: nobody else can read it.":"Versleuteld met je wachtwoord: niemand anders kan het lezen.",
+"You can always do it later in Settings → Account & backup.":"Je kunt het altijd later doen via Instellingen → Account & back-up."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -8048,7 +8072,11 @@ window.I18N = {
 "Remember your habit plan 🎯":"Pamiętaj o planie nawyku 🎯",
 "Your plan: {p}":"Twój plan: {p}",
 "Habits (optional)":"Nawyki (opcjonalne)",
-"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Chcesz zmienić nawyk, np. późne podjadanie? Wybierz jeden, zrób mały plan, a aplikacja sprawdzi go za Ciebie. Jeśli nie chcesz, po prostu to zignoruj."
+"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Chcesz zmienić nawyk, np. późne podjadanie? Wybierz jeden, zrób mały plan, a aplikacja sprawdzi go za Ciebie. Jeśli nie chcesz, po prostu to zignoruj.",
+"Show password":"Pokaż hasło",
+"Hide password":"Ukryj hasło",
+"Encrypted with your password: nobody else can read it.":"Zaszyfrowane Twoim hasłem: nikt inny tego nie odczyta.",
+"You can always do it later in Settings → Account & backup.":"Zawsze możesz zrobić to później w Ustawienia → Konto i kopia zapasowa."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -9198,7 +9226,11 @@ window.I18N = {
 "Remember your habit plan 🎯":"Lembre-se do seu plano de hábito 🎯",
 "Your plan: {p}":"O seu plano: {p}",
 "Habits (optional)":"Hábitos (opcional)",
-"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Quer mudar um hábito, como petiscar tarde? Escolha um, faça um pequeno plano e a app verifica por si. Se não quiser, simplesmente ignore."
+"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Quer mudar um hábito, como petiscar tarde? Escolha um, faça um pequeno plano e a app verifica por si. Se não quiser, simplesmente ignore.",
+"Show password":"Mostrar palavra-passe",
+"Hide password":"Ocultar palavra-passe",
+"Encrypted with your password: nobody else can read it.":"Encriptado com a sua palavra-passe: mais ninguém o consegue ler.",
+"You can always do it later in Settings → Account & backup.":"Pode sempre fazê-lo mais tarde em Definições → Conta e cópia de segurança."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -10348,7 +10380,11 @@ window.I18N = {
 "Remember your habit plan 🎯":"Помните о плане привычки 🎯",
 "Your plan: {p}":"Ваш план: {p}",
 "Habits (optional)":"Привычки (по желанию)",
-"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Хотите изменить привычку, например поздние перекусы? Выберите одну, составьте маленький план — приложение будет проверять за вас. Если не нужно, просто не обращайте внимания."
+"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Хотите изменить привычку, например поздние перекусы? Выберите одну, составьте маленький план — приложение будет проверять за вас. Если не нужно, просто не обращайте внимания.",
+"Show password":"Показать пароль",
+"Hide password":"Скрыть пароль",
+"Encrypted with your password: nobody else can read it.":"Зашифровано вашим паролем: никто другой не сможет прочитать.",
+"You can always do it later in Settings → Account & backup.":"Это всегда можно сделать позже: Настройки → Аккаунт и резервная копия."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -11498,7 +11534,11 @@ window.I18N = {
 "Remember your habit plan 🎯":"Alışkanlık planını hatırla 🎯",
 "Your plan: {p}":"Planın: {p}",
 "Habits (optional)":"Alışkanlıklar (isteğe bağlı)",
-"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Geç saatte atıştırmak gibi bir alışkanlığı değiştirmek ister misin? Birini seç, küçük bir plan yap, uygulama senin için kontrol etsin. İstemiyorsan görmezden gel."
+"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"Geç saatte atıştırmak gibi bir alışkanlığı değiştirmek ister misin? Birini seç, küçük bir plan yap, uygulama senin için kontrol etsin. İstemiyorsan görmezden gel.",
+"Show password":"Şifreyi göster",
+"Hide password":"Şifreyi gizle",
+"Encrypted with your password: nobody else can read it.":"Şifrenle şifrelenir: başka kimse okuyamaz.",
+"You can always do it later in Settings → Account & backup.":"Bunu daha sonra her zaman Ayarlar → Hesap ve yedekleme bölümünden yapabilirsin."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -12648,6 +12688,10 @@ window.I18N = {
 "Remember your habit plan 🎯":"记得你的习惯计划 🎯",
 "Your plan: {p}":"你的计划：{p}",
 "Habits (optional)":"习惯（可选）",
-"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"想改变一个习惯，比如深夜吃零食？选一个，做个小计划，应用会帮你检查。不需要的话，忽略即可。"
+"Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don't want this, simply ignore it.":"想改变一个习惯，比如深夜吃零食？选一个，做个小计划，应用会帮你检查。不需要的话，忽略即可。",
+"Show password":"显示密码",
+"Hide password":"隐藏密码",
+"Encrypted with your password: nobody else can read it.":"用你的密码加密：其他人都无法读取。",
+"You can always do it later in Settings → Account & backup.":"你随时可以稍后在 设置 → 账户与备份 中完成。"
 }
 };
