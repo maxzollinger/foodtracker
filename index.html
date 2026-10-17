@@ -698,6 +698,21 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .inst-hint svg{width:16px;height:16px}
 @keyframes hintBob{50%{transform:translateY(6px)}}
 @media (prefers-reduced-motion:reduce){.appglow::before,.inst-hint,.inst-step{animation:none}}
+/* Adjust macronutrients */
+.mg-kcal{background:var(--chip);border-radius:20px;padding:14px 16px;margin-top:16px}
+.mg-kcal .pd-val{margin:4px 0 10px}
+.mg-kcal .pd-val input{font-size:40px}
+.mg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.mg-m{padding:12px 10px 10px;box-shadow:inset 0 3px 0 var(--c);min-width:0}
+.mg-m .pd-val{margin:4px 0 8px}
+.mg-m .pd-val input{font-size:25px}
+.mg-m .pd-step{gap:6px}
+.mg-m .pd-step button{height:32px;font-size:18px}
+.mg-tag{font-size:11.5px;font-weight:700;color:var(--muted);white-space:nowrap}
+.mg-tag button{font-size:11.5px;font-weight:700;color:var(--flame);padding:2px 0}
+.mg-bar{display:flex;gap:2px;height:8px;border-radius:4px;overflow:hidden;margin-top:14px;background:var(--track)}
+.mg-bar i{display:block;height:100%;flex:1 1 0;transition:flex-grow .3s ease}
+.mg-legend{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:600;margin-top:6px}
 </style>
 <script src="lang.js"></script>
 </head>
@@ -860,7 +875,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v108';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v109';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2695,7 +2710,8 @@ let linkBusy = false;
 async function linkSync(force) {
   const L = linkInfo();
   if (!L || !SERVER_URL || linkBusy) return;
-  if (!force && Date.now() - (L.tried || 0) < 10 * 60e3) return;   // at most every 10 minutes (the trackers ask for that)
+  // Fresh numbers whenever someone looks: every 5 minutes on its own, after 1 minute when they open the burned-calories window
+  if (!force && Date.now() - (L.tried || 0) < (force === 0 ? 60e3 : 5 * 60e3)) return;
   linkBusy = true; L.tried = Date.now();
   const post = (path, body) => fetch(SERVER_URL + path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   let changed = false;
@@ -2735,6 +2751,7 @@ async function linkSync(force) {
   finally {
     LS.set('ft_link', JSON.stringify(L)); linkBusy = false;
     if (changed) { save(); if (tab === 'home' && !$('.page')) renderHome(); }
+    if (changed && $('#bKcal') && !$('#bKcal').value && !$('#bName').value) openBurnSheet();   // the open burned-calories window shows the new numbers
     if ($('#trkSheet')) openTrackerSheet();
   }
 }
@@ -3528,6 +3545,7 @@ function burnNote(g) {
     : T('Covered by your goal. Your normal ~{i} kcal of training is already included.', { i: g.included });
 }
 function openBurnSheet() {
+  linkSync(0);   // a quick update from the watch/tracker; the window refreshes when new numbers arrive
   const already = r0(dayBurned(sel)), isToday = sel === iso();
   sheet(`<h3>${T('Calories burned')}</h3>
     <div class="seg" style="margin-top:10px">${[['day', N('Whole day')], ['workout', N('Workouts only')]].map(([v, l]) => `<button data-bt="${v}" class="${(db.settings.burnType || 'day') === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>
@@ -4305,7 +4323,7 @@ const planCoach = p => PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` R
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
-- Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference (e.g. WHOOP 450 vs 48 active in the morning) is normal.
+- Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for).
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
 - Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
@@ -5015,17 +5033,42 @@ function openMainGoalSheet() {
   });
 }
 function openGoalsSheet() {
-  const t = targets();
-  sheet(`<h3>${T('Adjust macronutrients')}</h3><p class="muted" style="margin-top:4px">${T('Leave a field empty to use the value calculated from your personal details. Numbers you type here stay fixed until you change your personal details or tap Auto-generate.')}</p>
-    ${[['kcal', '🔥 ' + T('Calorie goal'), 'kcal'], ['protein', '🍗 ' + T('Protein goal'), 'g'], ['carbs', '🌾 ' + T('Carb goal'), 'g'], ['fat', '🥑 ' + T('Fat goal'), 'g']].map(([k, l, u]) =>
-      `<label class="lbl">${l} (${u})</label><input data-ov="${k}" inputmode="numeric" value="${db.overrides[k] || ''}" placeholder="${t.auto[k] ?? ''} (${T('auto')})">`).join('')}
-    <button class="btn" id="gSave" style="margin-top:20px">${T('Save')}</button>
+  const t = targets(), A = t.auto, v = { kcal: t.kcal, protein: t.protein, carbs: t.carbs, fat: t.fat };
+  const M = [['protein', T('Protein'), '🍗', 'var(--protein)', 4, 5], ['carbs', T('Carbs'), '🌾', 'var(--carbs)', 4, 10], ['fat', T('Fats'), '🥑', 'var(--fat)', 9, 5]];
+  sheet(`<div class="pd-head"><div class="pd-av">🎯</div><div class="grow"><h3 style="margin:0">${T('Adjust macronutrients')}</h3><div class="small muted">${T('Your daily targets. Tap a number to change it, or use − and +.')}</div></div></div>
+    <div class="mg-kcal"><div class="spread"><span class="small" style="font-weight:700">🔥 ${T('Calorie goal')}</span><span class="mg-tag" data-tag="kcal"></span></div>
+      <div class="pd-val"><input data-v="kcal" inputmode="numeric" value="${v.kcal}"><span>kcal</span></div>
+      <div class="pd-step"><button data-st="kcal:-50" aria-label="−50">−</button><button data-st="kcal:50" aria-label="+50">+</button></div>
+      <div class="mg-bar" id="mgBar">${M.map(([k, , , c]) => `<i data-bar="${k}" style="background:${c}"></i>`).join('')}</div><div class="mg-legend" id="mgLeg"></div></div>
+    <div class="mg-grid">${M.map(([k, l, ic, c, , st]) => `<div class="pd-num mg-m" style="--c:${c}"><div class="small" style="font-weight:700;white-space:nowrap">${ic} ${l}</div>
+      <div class="pd-val"><input data-v="${k}" inputmode="numeric" value="${v[k]}"><span>g</span></div>
+      <div class="pd-step"><button data-st="${k}:-${st}" aria-label="−${st}">−</button><button data-st="${k}:${st}" aria-label="+${st}">+</button></div>
+      <div class="mg-tag" data-tag="${k}" style="margin-top:8px;text-align:center"></div></div>`).join('')}</div>
+    <p class="small" id="mgSum" style="margin:12px 2px 0;line-height:1.45"></p>
+    <button class="btn" id="gSave" style="margin-top:16px">${T('Save')}</button>
     <button class="btn outline" id="gAuto" style="margin-top:10px">✨ ${T('Auto-generate goals')}</button>`, s => {
-    s.querySelector('#gSave').onclick = () => {
-      s.querySelectorAll('[data-ov]').forEach(i => { const v = num(i.value); if (v > 0) db.overrides[i.dataset.ov] = v; else delete db.overrides[i.dataset.ov]; });
-      save(); closeSheet(); toast(T('✓ Goals updated')); renderSettings();
+    const inp = k => s.querySelector(`[data-v="${k}"]`);
+    const upd = () => {
+      for (const k of ['kcal', 'protein', 'carbs', 'fat']) v[k] = r0(num(inp(k).value));
+      // Auto or custom, with a one-tap way back to the calculated number
+      s.querySelectorAll('[data-tag]').forEach(e => { const k = e.dataset.tag, own = v[k] > 0 && v[k] !== A[k];
+        e.classList.toggle('custom', own); e.innerHTML = own ? `<button data-reset="${k}">↺ ${T('auto')} ${A[k]}</button>` : T('auto');
+        if (own) e.querySelector('button').onclick = () => { inp(k).value = A[k]; upd(); }; });
+      const kc = M.map(([k, , , , f]) => Math.max(0, v[k]) * f), sum = kc.reduce((a, b) => a + b, 0) || 1;
+      M.forEach(([k], n) => s.querySelector(`[data-bar="${k}"]`).style.flexGrow = kc[n] / sum);
+      s.querySelector('#mgLeg').innerHTML = M.map(([k, l], n) => `<span>${l} ${r0(kc[n] / sum * 100)}%</span>`).join('');
+      const tot = r0(kc.reduce((a, b) => a + b, 0)), diff = tot - v.kcal;
+      s.querySelector('#mgSum').innerHTML = `${T('Macros add up to {n} kcal.', { n: `<b>${tot}</b>` })}${Math.abs(diff) > 75 && v.kcal > 0 ? ` <span style="color:var(--carbs);font-weight:600">${T('That is {d} kcal away from your calorie goal.', { d: (diff > 0 ? '+' : '') + diff })}</span>` : ' ✓'}`;
     };
-    s.querySelector('#gAuto').onclick = () => { db.overrides = {}; save(); closeSheet(); toast(T('✓ Goals recalculated')); renderSettings(); };
+    s.querySelectorAll('[data-v]').forEach(i => i.oninput = upd);
+    s.querySelectorAll('[data-st]').forEach(b => b.onclick = () => { const [k, d] = b.dataset.st.split(':'); inp(k).value = Math.max(0, r0(num(inp(k).value)) + +d); upd(); });
+    upd();
+    s.querySelector('#gSave').onclick = () => {
+      upd();
+      for (const k of ['kcal', 'protein', 'carbs', 'fat']) { if (v[k] > 0 && v[k] !== A[k]) db.overrides[k] = v[k]; else delete db.overrides[k]; }
+      save(); closeSheet(); toast(T('✓ Goals updated')); render();
+    };
+    s.querySelector('#gAuto').onclick = () => { db.overrides = {}; save(); closeSheet(); toast(T('✓ Goals recalculated')); render(); };
   });
 }
 
@@ -5291,7 +5334,7 @@ idb.kvGet('ft_pending').then(q => {
   setTimeout(processQueue, 1500);
 });
 setTimeout(() => linkSync(false), 3500);
-setInterval(() => { if (document.visibilityState === 'visible') linkSync(false); }, 30 * 60e3);
+setInterval(() => { if (document.visibilityState === 'visible') linkSync(false); }, 5 * 60e3);
 if (LS.get('ft_link_pick', '')) watchPickup();
 setTimeout(() => photoSync(false), 12000);
 setTimeout(sayHello, 7000);

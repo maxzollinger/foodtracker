@@ -1201,7 +1201,10 @@ window.I18N = {
 "Where are you right now?":"Wo stehst du gerade?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Deine Kalorien steigen etwas, während dein Baby wächst. Folge bitte auch dem Rat deiner Ärztin, deines Arztes oder deiner Hebamme.",
 "Burned · {n} active":"Verbrannt · {n} aktiv",
-"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Verbinde einmal deine Apple Watch (über Apple Health), WHOOP oder einen anderen Tracker. Deine verbrannten Kalorien werden dann bei jedem Öffnen der App automatisch eingetragen."
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Verbinde einmal deine Apple Watch (über Apple Health), WHOOP oder einen anderen Tracker. Deine verbrannten Kalorien werden dann bei jedem Öffnen der App automatisch eingetragen.",
+"Your daily targets. Tap a number to change it, or use − and +.":"Deine Tagesziele. Tippe auf eine Zahl, um sie zu ändern, oder nutze − und +.",
+"Macros add up to {n} kcal.":"Die Makros ergeben {n} kcal.",
+"That is {d} kcal away from your calorie goal.":"Das sind {d} kcal Abweichung von deinem Kalorienziel."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2404,7 +2407,10 @@ window.I18N = {
 "Where are you right now?":"¿En qué etapa estás?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Tus calorías suben un poco a medida que crece tu bebé. Sigue también los consejos de tu médico o matrona.",
 "Burned · {n} active":"Quemadas · {n} activas",
-"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Conecta una vez tu Apple Watch (a través de Apple Health), WHOOP u otro dispositivo. Tus calorías quemadas se rellenan solas cada vez que abres la app."
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Conecta una vez tu Apple Watch (a través de Apple Health), WHOOP u otro dispositivo. Tus calorías quemadas se rellenan solas cada vez que abres la app.",
+"Your daily targets. Tap a number to change it, or use − and +.":"Tus objetivos diarios. Toca un número para cambiarlo o usa − y +.",
+"Macros add up to {n} kcal.":"Los macros suman {n} kcal.",
+"That is {d} kcal away from your calorie goal.":"Son {d} kcal de diferencia con tu objetivo de calorías."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3607,7 +3613,10 @@ window.I18N = {
 "Where are you right now?":"Où en es-tu ?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Tes calories augmentent un peu à mesure que ton bébé grandit. Suis aussi les conseils de ton médecin ou de ta sage-femme.",
 "Burned · {n} active":"Brûlées · {n} actives",
-"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Connecte une fois ton Apple Watch (via Apple Santé), ton WHOOP ou un autre tracker. Tes calories brûlées sont ensuite remplies automatiquement à chaque ouverture de l’app."
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Connecte une fois ton Apple Watch (via Apple Santé), ton WHOOP ou un autre tracker. Tes calories brûlées sont ensuite remplies automatiquement à chaque ouverture de l’app.",
+"Your daily targets. Tap a number to change it, or use − and +.":"Tes objectifs du jour. Touche un nombre pour le modifier, ou utilise − et +.",
+"Macros add up to {n} kcal.":"Les macros font {n} kcal au total.",
+"That is {d} kcal away from your calorie goal.":"Soit {d} kcal d’écart avec ton objectif de calories."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -4810,7 +4819,10 @@ window.I18N = {
 "Where are you right now?":"A che punto sei?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Le tue calorie aumentano un po’ man mano che il bambino cresce. Segui anche i consigli del tuo medico o dell’ostetrica.",
 "Burned · {n} active":"Bruciate · {n} attive",
-"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Collega una volta il tuo Apple Watch (tramite Apple Salute), WHOOP o un altro tracker. Le calorie bruciate verranno inserite automaticamente ogni volta che apri l’app."
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Collega una volta il tuo Apple Watch (tramite Apple Salute), WHOOP o un altro tracker. Le calorie bruciate verranno inserite automaticamente ogni volta che apri l’app.",
+"Your daily targets. Tap a number to change it, or use − and +.":"I tuoi obiettivi giornalieri. Tocca un numero per cambiarlo, oppure usa − e +.",
+"Macros add up to {n} kcal.":"I macro sommano {n} kcal.",
+"That is {d} kcal away from your calorie goal.":"Sono {d} kcal di differenza dal tuo obiettivo calorico."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6013,7 +6025,10 @@ window.I18N = {
 "Where are you right now?":"今はどの時期ですか？",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"赤ちゃんの成長に合わせてカロリーが少し増えます。医師や助産師のアドバイスにも従ってください。",
 "Burned · {n} active":"消費 · アクティブ {n}",
-"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Apple Watch（ヘルスケア経由）、WHOOP などのトラッカーを一度つなぐだけ。アプリを開くたびに消費カロリーが自動で入力されます。"
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Apple Watch（ヘルスケア経由）、WHOOP などのトラッカーを一度つなぐだけ。アプリを開くたびに消費カロリーが自動で入力されます。",
+"Your daily targets. Tap a number to change it, or use − and +.":"1日の目標です。数字をタップして変更するか、− と + を使います。",
+"Macros add up to {n} kcal.":"PFC の合計は {n} kcal です。",
+"That is {d} kcal away from your calorie goal.":"カロリー目標との差は {d} kcal です。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -7216,7 +7231,10 @@ window.I18N = {
 "Where are you right now?":"Waar sta je nu?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Je calorieën stijgen een beetje naarmate je baby groeit. Volg ook het advies van je arts of verloskundige.",
 "Burned · {n} active":"Verbrand · {n} actief",
-"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Koppel één keer je Apple Watch (via Apple Gezondheid), WHOOP of een andere tracker. Je verbrande calorieën worden dan elke keer dat je de app opent automatisch ingevuld."
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Koppel één keer je Apple Watch (via Apple Gezondheid), WHOOP of een andere tracker. Je verbrande calorieën worden dan elke keer dat je de app opent automatisch ingevuld.",
+"Your daily targets. Tap a number to change it, or use − and +.":"Je dagdoelen. Tik op een getal om het te wijzigen, of gebruik − en +.",
+"Macros add up to {n} kcal.":"De macro’s tellen op tot {n} kcal.",
+"That is {d} kcal away from your calorie goal.":"Dat is {d} kcal verschil met je caloriedoel."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -8419,7 +8437,10 @@ window.I18N = {
 "Where are you right now?":"Na jakim jesteś etapie?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Twoje kalorie rosną nieco wraz z rozwojem dziecka. Stosuj się też do zaleceń lekarza lub położnej.",
 "Burned · {n} active":"Spalone · {n} aktywne",
-"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Połącz raz swój Apple Watch (przez Apple Zdrowie), WHOOP lub inny tracker. Spalone kalorie będą wtedy uzupełniane automatycznie przy każdym otwarciu aplikacji."
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Połącz raz swój Apple Watch (przez Apple Zdrowie), WHOOP lub inny tracker. Spalone kalorie będą wtedy uzupełniane automatycznie przy każdym otwarciu aplikacji.",
+"Your daily targets. Tap a number to change it, or use − and +.":"Twoje dzienne cele. Stuknij liczbę, aby ją zmienić, lub użyj − i +.",
+"Macros add up to {n} kcal.":"Makroskładniki dają razem {n} kcal.",
+"That is {d} kcal away from your calorie goal.":"To {d} kcal różnicy względem celu kalorii."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -9622,7 +9643,10 @@ window.I18N = {
 "Where are you right now?":"Em que fase está?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"As suas calorias sobem um pouco à medida que o bebé cresce. Siga também os conselhos do seu médico ou parteira.",
 "Burned · {n} active":"Gastas · {n} ativas",
-"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Ligue uma vez o seu Apple Watch (através da app Saúde), WHOOP ou outro dispositivo. As calorias gastas são preenchidas automaticamente sempre que abrir a app."
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Ligue uma vez o seu Apple Watch (através da app Saúde), WHOOP ou outro dispositivo. As calorias gastas são preenchidas automaticamente sempre que abrir a app.",
+"Your daily targets. Tap a number to change it, or use − and +.":"As suas metas diárias. Toque num número para o alterar ou use − e +.",
+"Macros add up to {n} kcal.":"Os macros somam {n} kcal.",
+"That is {d} kcal away from your calorie goal.":"São {d} kcal de diferença da sua meta de calorias."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -10825,7 +10849,10 @@ window.I18N = {
 "Where are you right now?":"На каком вы этапе?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Калорий становится немного больше по мере роста малыша. Также следуйте советам врача или акушерки.",
 "Burned · {n} active":"Сожжено · {n} активных",
-"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Один раз подключите Apple Watch (через «Здоровье»), WHOOP или другой трекер. Сожжённые калории будут подставляться автоматически при каждом открытии приложения."
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Один раз подключите Apple Watch (через «Здоровье»), WHOOP или другой трекер. Сожжённые калории будут подставляться автоматически при каждом открытии приложения.",
+"Your daily targets. Tap a number to change it, or use − and +.":"Ваши дневные цели. Нажмите на число, чтобы изменить его, или используйте − и +.",
+"Macros add up to {n} kcal.":"БЖУ в сумме дают {n} ккал.",
+"That is {d} kcal away from your calorie goal.":"Это на {d} ккал отличается от цели по калориям."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -12028,7 +12055,10 @@ window.I18N = {
 "Where are you right now?":"Şu anda hangi dönemdesin?",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Bebeğin büyüdükçe kalorilerin biraz artar. Lütfen doktorunun veya ebenin tavsiyelerine de uy.",
 "Burned · {n} active":"Yakılan · {n} aktif",
-"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Apple Watch’unu (Apple Sağlık üzerinden), WHOOP’u veya başka bir takip cihazını bir kez bağla. Yaktığın kaloriler uygulamayı her açtığında otomatik olarak girilir."
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"Apple Watch’unu (Apple Sağlık üzerinden), WHOOP’u veya başka bir takip cihazını bir kez bağla. Yaktığın kaloriler uygulamayı her açtığında otomatik olarak girilir.",
+"Your daily targets. Tap a number to change it, or use − and +.":"Günlük hedeflerin. Değiştirmek için bir sayıya dokun ya da − ve + kullan.",
+"Macros add up to {n} kcal.":"Makrolar toplam {n} kcal ediyor.",
+"That is {d} kcal away from your calorie goal.":"Bu, kalori hedefinden {d} kcal farklı."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -13231,6 +13261,9 @@ window.I18N = {
 "Where are you right now?":"你现在处于哪个阶段？",
 "Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"随着宝宝长大，你的热量会稍微增加。也请遵循医生或助产士的建议。",
 "Burned · {n} active":"消耗 · 活动 {n}",
-"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"只需连接一次 Apple Watch（通过“健康”App）、WHOOP 或其他手环。之后每次打开 App，消耗的卡路里都会自动填入。"
+"Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.":"只需连接一次 Apple Watch（通过“健康”App）、WHOOP 或其他手环。之后每次打开 App，消耗的卡路里都会自动填入。",
+"Your daily targets. Tap a number to change it, or use − and +.":"你的每日目标。点按数字即可修改，或使用 − 和 +。",
+"Macros add up to {n} kcal.":"三大营养素合计 {n} kcal。",
+"That is {d} kcal away from your calorie goal.":"与你的热量目标相差 {d} kcal。"
 }
 };
