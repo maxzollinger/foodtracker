@@ -713,21 +713,15 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .mg-bar{display:flex;gap:2px;height:8px;border-radius:4px;overflow:hidden;margin-top:14px;background:var(--track)}
 .mg-bar i{display:block;height:100%;flex:1 1 0;transition:flex-grow .3s ease}
 .mg-legend{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:600;margin-top:6px}
-/* Pull to refresh */
-#ptr{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 6px);width:40px;height:40px;margin-left:-20px;border-radius:50%;z-index:25;pointer-events:none;opacity:0;transform:translate3d(0,-46px,0) scale(.55);
-  display:flex;align-items:center;justify-content:center;background:var(--solid,var(--card));color:var(--muted);box-shadow:var(--shadow),0 10px 24px -8px rgba(0,0,0,.4);will-change:transform,opacity}
-.ptr-in{display:flex;transition:color .2s}
-#ptr svg{width:21px;height:21px}
-#ptr .ptr-arc{stroke-dasharray:100;stroke-dashoffset:100;transition:opacity .15s}
+/* Pull to refresh: just a thin circle, no bubble */
+#ptr{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 10px);width:28px;height:28px;margin-left:-14px;z-index:25;pointer-events:none;opacity:0;transform:translate3d(0,-30px,0);
+  display:flex;align-items:center;justify-content:center;color:var(--muted);will-change:transform,opacity}
+.ptr-in{display:flex}
+#ptr svg{width:22px;height:22px}
+#ptr .ptr-arc{stroke-dasharray:100;stroke-dashoffset:100}
 #ptr.spin .ptr-arc{transition:stroke-dashoffset .3s ease}
-#ptr .ptr-ok{stroke-dasharray:100;stroke-dashoffset:100;opacity:0}
 #ptr.ready{color:var(--text)}
-#ptr.ready .ptr-in{animation:ptrPop .32s cubic-bezier(.34,1.6,.5,1)}
 #ptr.spin svg{animation:rot .8s linear infinite}
-#ptr.done{color:var(--good)}
-#ptr.done .ptr-arc{opacity:0}
-#ptr.done .ptr-ok{opacity:1;stroke-dashoffset:0;transition:stroke-dashoffset .38s cubic-bezier(.65,0,.35,1) .05s}
-@keyframes ptrPop{50%{transform:scale(1.18)}}
 </style>
 <script src="lang.js"></script>
 </head>
@@ -890,7 +884,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v111';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v112';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -4815,23 +4809,23 @@ async function pullRefresh() {
 (() => {
   const sc = $('#scroller'), view = $('#view'), ind = document.createElement('div');
   ind.id = 'ptr';
-  ind.innerHTML = '<span class="ptr-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle class="ptr-arc" cx="12" cy="12" r="7.5" pathLength="100"/><path class="ptr-ok" d="M7.5 12.4l3 3 6-6.4" pathLength="100"/></svg></span>';
+  ind.innerHTML = '<span class="ptr-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle class="ptr-arc" cx="12" cy="12" r="8" pathLength="100"/></svg></span>';
   document.body.appendChild(ind);
   const svg = ind.querySelector('svg'), arc = ind.querySelector('.ptr-arc');
-  const GO = 70, HOLD = 58;
+  const GO = 64, HOLD = 44;
   const rubber = x => (1 - 1 / (x * 0.55 / 320 + 1)) * 320;   // like iOS: light at first, heavier the further you pull
-  const ease = 'cubic-bezier(.22,1,.36,1)', spring = 'cubic-bezier(.34,1.45,.5,1)';
+  const ease = 'cubic-bezier(.22,1,.36,1)';
   const anim = (t) => { view.style.transition = `transform ${t}`; ind.style.transition = `transform ${t},opacity .3s ease`; };
   const place = (d, opacity, scale) => {
     view.style.transform = d ? `translate3d(0,${d}px,0)` : '';
-    ind.style.transform = `translate3d(0,${Math.min(d, GO + 24) * 0.62 - 46}px,0) scale(${scale})`;
+    ind.style.transform = `translate3d(0,${Math.min(d, GO) * 0.5 - 30}px,0)`;
     ind.style.opacity = opacity;
   };
   let y0 = null, x0 = 0, raw = 0, pulling = false, raf = 0, armed = false;
   const paint = () => {
     raf = 0;
     const d = rubber(raw), p = Math.min(1, d / GO);
-    place(d, Math.min(1, p * 1.5), 0.55 + 0.45 * p);
+    place(d, p, 1);
     arc.style.strokeDashoffset = 100 - p * 78;             // the circle draws itself while pulling
     svg.style.transform = `rotate(${p * 200 - 110}deg)`;
     const r = d >= GO; if (r !== armed) { armed = r; ind.classList.toggle('ready', r); }
@@ -4852,7 +4846,7 @@ async function pullRefresh() {
     if (!raf) raf = requestAnimationFrame(paint);   // one update per screen frame
   }, { passive: false });
   const back = () => {
-    anim(`.55s ${ease}`); place(0, 0, 0.55);
+    anim(`.5s ${ease}`); place(0, 0, 1);
     setTimeout(() => { if (!pulling) { view.style.transition = view.style.willChange = ''; ind.classList.remove('ready', 'spin', 'done'); armed = false; } }, 560);
   };
   const end = async () => {
@@ -4861,13 +4855,11 @@ async function pullRefresh() {
     cancelAnimationFrame(raf); raf = 0;
     if (!armed) return back();
     ptrBusy = true;
-    anim(`.5s ${spring}`); place(HOLD, 1, 1);               // settles softly into place and starts spinning
+    anim(`.45s ${ease}`); place(HOLD, 1, 1);               // settles softly into place and starts spinning
     svg.style.transform = ''; arc.style.strokeDashoffset = 28; ind.classList.add('spin');
     const t0 = Date.now();
     try { await pullRefresh(); } catch {}
     await new Promise(r => setTimeout(r, Math.max(0, 700 - (Date.now() - t0))));   // long enough to see that it happened
-    ind.classList.remove('spin'); ind.classList.add('done');   // a check mark draws itself
-    await new Promise(r => setTimeout(r, 520));
     back(); setTimeout(() => { ptrBusy = false; }, 560);
   };
   sc.addEventListener('touchend', end); sc.addEventListener('touchcancel', end);
