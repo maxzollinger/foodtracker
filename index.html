@@ -741,7 +741,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v88';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v89';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2415,10 +2415,10 @@ async function openTrackerSheet() {
         ${L.err === 'reconnect' ? `<p class="small" style="margin:6px 0 0;color:var(--bad)">${T('The connection expired. Please connect again.')}</p>` : L.err === 'net' ? `<p class="small muted" style="margin:6px 0 0">${T('Could not update right now. It tries again by itself.')}</p>` : ''}
         <div class="row" style="margin-top:12px"><button class="btn sm grow" id="tkSync">${T('Update now')}</button><button class="btn sm outline grow" id="tkOff">${T('Disconnect')}</button></div>
         ${L.p === 'apple' ? `<button class="chipbtn" id="tkHow" style="margin-top:10px">${T('Show the Shortcut steps')}</button>` : ''}
-        ${isAdmin() && LS.get('ft_admin_token', '') && L.p === 'apple' ? `<button class="chipbtn" id="tkLink" style="margin:10px 0 0 6px">🔗 Admin: ${shortcutURL() ? T('Change the shared Shortcut link') : T('Add your shared Shortcut link')}</button>` : ''}</div>`
+        ${isAdmin() && LS.get('ft_admin_token', '') ? `<button class="chipbtn" id="tkLink" style="margin:10px 0 0 ${L.p === 'apple' ? 6 : 0}px">🔗 Admin: ${shortcutURL() ? T('Change the shared Shortcut link') : T('Share Apple Health with friends')}</button>` : ''}</div>`
       : `<div class="small muted" style="font-weight:600;margin:14px 0 8px">${T('What do you wear?')}</div>
         <div class="list">${BRANDS.map(b => { const way = brandWay(b); return `<button class="li" data-brand="${b.id}"><span class="ic">${b.ic}</span><span class="grow"><b>${b.id === 'other' ? T(b.name) : b.name}</b><br><span class="small muted">${way === 'direct' ? T('Connect directly') : way === 'apple' ? (b.id === 'applewatch' ? T('Through Apple Health') + ` <span class="ptag" style="background:var(--good);color:#fff;margin-left:2px">${T('Recommended')}</span>` : T('Through Apple Health')) : T('Not possible yet, see why')}</span></span><span class="chev">›</span></button>`; }).join('')}</div>
-        ${isAdmin() && LS.get('ft_admin_token', '') ? `<button class="chipbtn" id="tkLink" style="margin-top:12px">🔗 Admin: ${shortcutURL() ? T('Change the shared Shortcut link') : T('Add your shared Shortcut link')}</button>` : ''}
+        ${isAdmin() && LS.get('ft_admin_token', '') ? `<button class="chipbtn" id="tkLink" style="margin-top:12px">🔗 Admin: ${shortcutURL() ? T('Change the shared Shortcut link') : T('Share Apple Health with friends')}</button>` : ''}
         ${isAdmin() && TRACKER_LIST.some(x => x.id !== 'apple' && !(trackersAvail || {})[x.id]) ? `<p class="small muted" style="margin:10px 0 0">Admin: ${TRACKER_LIST.filter(x => x.id !== 'apple' && !(trackersAvail || {})[x.id]).map(x => x.name).join(', ')} – ${T('not set up on your server yet.')}</p>` : ''}`}
     </div>`;
   sheet(html, sh => {
@@ -2433,7 +2433,7 @@ async function openTrackerSheet() {
       LS.del('ft_link'); LS.del('ft_brand'); openTrackerSheet(); if (tab === 'settings') renderSettings();
     };
     if (sh.querySelector('#tkHow')) sh.querySelector('#tkHow').onclick = () => { saveSetup({ brand: LS.get('ft_brand', '') || 'applewatch', via: 'apple', done: {}, show: '' }); closeSheet(); setTimeout(openSetupPage, 200); };
-    if (sh.querySelector('#tkLink')) sh.querySelector('#tkLink').onclick = saveShortcutLink;
+    if (sh.querySelector('#tkLink')) sh.querySelector('#tkLink').onclick = () => { closeSheet(); setTimeout(openSharePage, 200); };
   });
 }
 // A brand that can't be connected: say why, honestly, and offer the easy alternative
@@ -2497,7 +2497,7 @@ async function openSetupPage() {
       <p class="small muted" style="margin:8px 0 0">${T('Menu names can differ a little between app versions.')}</p>
       <button class="btn" data-done="brand" style="margin-top:14px">${T('Done, next step')}</button>`,
     shortcut: link
-      ? `<p class="small" style="line-height:1.5;margin:0">${T('Tap the button. Shortcuts opens: tap <b>Add Shortcut</b>. When it asks for your code, tap the field and choose <b>Paste</b>: your code is already copied.')}</p>
+      ? `<p class="small" style="line-height:1.5;margin:0">${T('Tap the button, then <b>Add Shortcut</b> (or <b>Set Up Shortcut</b>). When it asks for your code, tap the field and choose <b>Paste</b>: your code is already copied. If it does not ask: open the new Shortcut and paste your code into the first box (where it says PASTE YOUR CODE).')}</p>
         <a class="btn" id="spAdd" href="${link}" target="_blank" rel="noopener" style="margin-top:14px;text-decoration:none">${T('Add the Shortcut')}</a>
         <p class="small muted" style="margin:10px 0 0">${T('Your code')}: <b style="font-family:ui-monospace,monospace">${code}</b> ${copyBtn('spCode', T('Copy code'))}</p>
         <button class="btn outline" data-done="shortcut" style="margin-top:12px">${T('I added it, next step')}</button>`
@@ -2523,7 +2523,7 @@ async function openSetupPage() {
         <a class="btn" id="spRun" href="shortcuts://run-shortcut?name=${encodeURIComponent('Food Tracker calories')}" style="margin-top:14px;text-decoration:none">▶︎ ${T('Run it now')}</a>
         <p class="small muted" style="margin:12px 0 0;text-align:center">${T('Waiting for the first number…')} <span class="spin" style="vertical-align:-3px"></span></p>
         ${st.ranAt && Date.now() - st.ranAt > 45e3 ? `<div class="card" style="background:var(--chip);box-shadow:none;margin-top:12px"><b class="small">${T('Nothing arrived yet? Check:')}</b>
-          ${sub(1, T('Did the Shortcut show an error? Open it and tap ▶︎ to see.'))}${sub(2, T('Is the code in the Shortcut exactly your code? {code}', { code: `<b style="font-family:ui-monospace,monospace">${code}</b>` }))}${sub(3, T('Is Health allowed? iPhone <b>Settings</b> → <b>Health</b> → <b>Data Access & Devices</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>.'))}</div>` : ''}`,
+          ${sub(1, T('Did the Shortcut show an error? Open it and tap ▶︎ to see.'))}${sub(2, T('Is the code in the Shortcut exactly your code? {code}', { code: `<b style="font-family:ui-monospace,monospace">${code}</b>` }) + (link ? ' ' + T('It is in the first box of the Shortcut; paste it there if it still says PASTE YOUR CODE.') : ''))}${sub(3, T('Is Health allowed? iPhone <b>Settings</b> → <b>Health</b> → <b>Data Access & Devices</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>.'))}</div>` : ''}`,
     auto: `${[
           [T('In the Shortcuts app, tap <b>Automation</b> (bottom), then <b>+</b> (top right) or <b>New Automation</b>.'), open],
           [T('Choose <b>Time of Day</b>. Set <b>21:00</b>, repeat <b>Daily</b>, and choose <b>Run Immediately</b>. Tap <b>Next</b>.')],
@@ -2578,6 +2578,73 @@ async function openSetupPage() {
   }, 3000);
   if (steps[cur] === 'signin') watchPickup();
 }
+/* ---------- Owner only: make the Apple Health Shortcut once and share it with everyone ----------
+   The template keeps the code in its own first box ("Text"), so friends either answer the setup question
+   or simply paste their code into that box. The link is saved on the server; everyone then gets "Add". */
+function openSharePage() {
+  let st; try { st = JSON.parse(LS.get('ft_share', 'null')) || { done: {} }; } catch { st = { done: {} }; }
+  const save = () => LS.set('ft_share', JSON.stringify(st));
+  let pg = $('#sharePg');
+  if (!pg) { pg = document.createElement('div'); pg.id = 'sharePg'; pg.className = 'page'; document.body.appendChild(pg); document.body.style.overflow = 'hidden'; }
+  const steps = ['build', 'share', 'paste', 'test'], cur = steps.findIndex(k => !st.done[k]), y = pg.scrollTop;
+  const base = SERVER_URL + '/health/push?code=', link = shortcutURL();
+  const sub = (n, t, extra = '') => `<div class="row" style="align-items:flex-start;gap:10px;margin:10px 0"><b style="flex:none;width:22px;height:22px;border-radius:50%;background:var(--chip);font-size:12px;display:flex;align-items:center;justify-content:center">${n}</b><div class="grow small" style="line-height:1.5">${t}${extra}</div></div>`;
+  const open = `<a class="btn outline sm" href="shortcuts://" style="text-decoration:none;margin-top:6px">${T('Open Shortcuts')}</a>`;
+  const title = { build: T('Build the template Shortcut'), share: T('Copy its iCloud link'), paste: T('Save the link in Food Tracker'), test: T('Test it like a friend') };
+  const body = {
+    build: `${LANG !== 'en' ? `<p class="small muted" style="margin:0 0 6px">${T('The action names below are in English. On an iPhone in your language they are translated: search for the matching words.')}</p>` : ''}
+      ${[
+        [T('Open <b>Shortcuts</b>, tap <b>+</b> (top right), then tap the name at the top → <b>Rename</b> → <b>Food Tracker calories</b>.'), open],
+        [T('Search <b>Text</b> and tap it. In the box, type: <b>PASTE YOUR CODE</b>'), `<button class="chipbtn" id="shTxt" style="margin-top:6px">${T('Copy')}</button>`],
+        [T('Search <b>Health Samples</b> → <b>Find Health Samples</b>: <b>Type</b> → <b>Active Energy</b>, <b>Add Filter</b> → <b>Start Date</b> · <b>is today</b>, <b>Group By</b> (under <b>Show More</b>) → <b>Day</b>.')],
+        [T('Search <b>Calculate Statistics</b>, tap it and choose <b>Sum</b>.')],
+        [T('Search <b>Get Contents of URL</b>, tap the blue <b>URL</b> and paste:'), `<div style="font-family:ui-monospace,monospace;font-size:12px;word-break:break-all;margin-top:4px">${base}</div><button class="chipbtn" id="shUrl" style="margin-top:6px">${T('Copy address')}</button>`],
+        [T('Right after it, tap <b>Text</b> in the bar above the keyboard. Then type <b>&amp;kcal=</b> and tap <b>Statistics</b> in the bar. The address now ends with: <b>code=</b>[Text]<b>&amp;kcal=</b>[Statistics].')],
+        [T('Ask friends for their code when they add it: open the Shortcut details (<b>ⓘ</b> or the name at the top → <b>Details</b>) → <b>Setup</b> → <b>Add Question</b> → tap <b>PASTE YOUR CODE</b> in the Text box. Question: <b>Paste your Food Tracker code</b>.'), `<p class="small muted" style="margin:6px 0 0">${T('No Setup tab on your iPhone? Skip this: friends are told to paste their code into the first box themselves.')}</p>`],
+        [T('Tap <b>Done</b>.')]
+      ].map(([t, x], i) => sub(i + 1, t, x || '')).join('')}
+      <button class="btn" data-sh="build" style="margin-top:8px">${T('Done, next step')}</button>`,
+    share: `${sub(1, T('In the Shortcuts list, press and hold <b>Food Tracker calories</b> → <b>Share</b> → <b>Copy iCloud Link</b>.'), open)}
+      <p class="small muted" style="margin:6px 0 0">${T('If there is no iCloud link: turn on iCloud for Shortcuts in iPhone <b>Settings</b> → your name → <b>iCloud</b>.')}</p>
+      <button class="btn" data-sh="share" style="margin-top:12px">${T('Copied, next step')}</button>`,
+    paste: `<p class="small" style="margin:0 0 8px">${T('Paste the link here:')}</p>
+      <input id="shLink" placeholder="https://www.icloud.com/shortcuts/…" value="${esc(link)}" autocomplete="off" autocapitalize="off" spellcheck="false">
+      <button class="btn" id="shSave" style="margin-top:12px">${T('Save for everyone')}</button>
+      ${LS.get('ft_admin_token', '') ? '' : `<p class="small" style="margin:10px 0 0;color:var(--bad)">${T('First save your admin password in Settings → Users.')}</p>`}`,
+    test: `<p class="small" style="line-height:1.5;margin:0">${T('Delete your template Shortcut (press and hold → <b>Delete</b>). Then connect yourself exactly like a friend: Settings → <b>Watch & tracker</b> → <b>Apple Watch</b>. If that works, it works for everyone.')}</p>
+      <button class="btn" data-sh="test" style="margin-top:12px">${T('Done, finish')}</button>`
+  };
+  pg.innerHTML = `<div class="mp-head"><button class="mp-back" id="shBack" aria-label="${T('Close')}">‹</button>
+      <div class="grow"><div class="mp-title">❤️ ${T('Share Apple Health')}</div><div class="small muted" style="font-weight:600">${cur < 0 ? T('Done') : T('Step {n} of {of}', { n: cur + 1, of: steps.length })}</div></div></div>
+    <div class="wrap" style="padding-bottom:40px">
+      <p class="small muted" style="margin:4px 0 14px;line-height:1.5">${T('Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.')}</p>
+      ${cur < 0 ? `<div class="card" style="text-align:center;padding:22px"><div style="font-size:48px">✅</div><b style="display:block;margin-top:6px">${T('Everyone now gets the Add button.')}</b><button class="btn" id="shClose" style="margin-top:14px">${T('Close')}</button></div>` : ''}
+      ${steps.map((k, i) => { const done = !!st.done[k], now = i === cur; return `<div class="card" style="${now ? 'box-shadow:var(--shadow),inset 0 0 0 2px var(--ink)' : done ? '' : 'opacity:.55'}">
+        <div class="row" style="gap:12px;align-items:center" ${done ? `data-shredo="${k}"` : ''}><span style="flex:none;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;background:${done ? 'var(--good)' : now ? 'var(--ink)' : 'var(--chip)'};color:${done ? '#fff' : now ? 'var(--on-ink)' : 'var(--muted)'}">${done ? '✓' : i + 1}</span><b class="grow" style="font-size:16px">${title[k]}</b>${done ? `<span class="small muted">${T('Show')}</span>` : ''}</div>
+        ${now || st.show === k ? `<div style="margin-top:12px">${body[k]}</div>` : ''}</div>`; }).join('')}
+    </div>`;
+  pg.scrollTop = y;
+  const copy = v => { try { navigator.clipboard.writeText(v); toast(T('✓ Copied')); } catch { toast(v); } };
+  const close = () => { pg.remove(); document.body.style.overflow = ''; if (st.done.test) LS.del('ft_share'); };
+  pg.querySelector('#shBack').onclick = close;
+  if (pg.querySelector('#shClose')) pg.querySelector('#shClose').onclick = close;
+  if (pg.querySelector('#shTxt')) pg.querySelector('#shTxt').onclick = () => copy('PASTE YOUR CODE');
+  if (pg.querySelector('#shUrl')) pg.querySelector('#shUrl').onclick = () => copy(base);
+  pg.querySelectorAll('[data-sh]').forEach(b => b.onclick = () => { st.done[b.dataset.sh] = true; delete st.show; save(); pg.scrollTop = 0; openSharePage(); });
+  pg.querySelectorAll('[data-shredo]').forEach(b => b.onclick = () => { st.show = st.show === b.dataset.shredo ? '' : b.dataset.shredo; save(); openSharePage(); });
+  if (pg.querySelector('#shSave')) pg.querySelector('#shSave').onclick = async () => {
+    const v = pg.querySelector('#shLink').value.trim(), btn = pg.querySelector('#shSave');
+    btn.innerHTML = '<span class="spin"></span>';
+    try {
+      const r = await fetch(SERVER_URL + '/config', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + LS.get('ft_admin_token', '') }, body: JSON.stringify({ shortcut: v }) });
+      if (!r.ok) throw new Error(r.status === 403 ? T('Wrong admin password.') : r.status === 400 ? T('That is not a Shortcut link.') : 'HTTP ' + r.status);
+      trackersAvail = null; await loadTrackers();
+      toast('✓ ' + T('Saved. Everyone now gets the Add button.'));
+      st.done.paste = true; save(); openSharePage();
+    } catch (e) { toast(e.message); btn.textContent = T('Save for everyone'); }
+  };
+}
+
 // Owner only: save the shared Shortcut link once, so friends just tap "Add"
 async function saveShortcutLink() {
   const v = prompt(T('Paste the iCloud link of your shared Shortcut (https://www.icloud.com/shortcuts/…). Leave empty to remove it.'), shortcutURL());
