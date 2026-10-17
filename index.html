@@ -741,7 +741,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v91';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v92';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2449,6 +2449,9 @@ function openBrandInfo(b) {
    Every step says exactly what to tap. Progress is saved, so after switching to Shortcuts or another
    app you come back to the same step (and a banner on Home leads back until it's finished). */
 const shortcutURL = () => HEALTH_SHORTCUT_URL || (trackersAvail || {}).shortcut || '';
+// The exact name of the Shortcut on this phone (the shared one keeps the name it was shared with)
+const shortcutName = () => (shortcutURL() && (trackersAvail || {}).shortcutName) || 'Food Tracker calories';
+const withName = str => str.split('Food Tracker calories').join(esc(shortcutName()));
 async function loadTrackers() {
   if (trackersAvail !== null || !SERVER_URL) return;
   try { trackersAvail = await (await fetch(SERVER_URL + '/link/list', { method: 'POST' })).json(); } catch { trackersAvail = {}; }
@@ -2517,17 +2520,17 @@ async function openSetupPage() {
       ? `<p style="margin:0;font-weight:700;color:var(--good)">✓ ${T('Received: {n} kcal active today.', { n: r0(today.kcal) })}</p>
         <p class="small" style="line-height:1.5;margin:8px 0 0">${T('Quick check: is that about the same as <b>Active Energy</b> in the Health app (Health → <b>Browse</b> → <b>Activity</b> → <b>Active Energy</b>)?')}</p>
         ${st.mismatch ? `<div class="card" style="background:var(--chip);box-shadow:none;margin-top:10px"><p class="small" style="margin:0;line-height:1.5">${T('Then two sources are probably counted (e.g. iPhone and watch). Fix: open the Shortcut, tap <b>Find Health Samples</b> → <b>Add Filter</b> → <b>Source</b> → <b>is</b> → choose your watch or app (e.g. Apple Watch, Garmin Connect). Then run it again.')}</p>
-          <a class="btn sm" href="shortcuts://run-shortcut?name=${encodeURIComponent('Food Tracker calories')}" style="text-decoration:none;margin-top:10px">▶︎ ${T('Run it again')}</a></div>` : ''}
+          <a class="btn sm" href="shortcuts://run-shortcut?name=${encodeURIComponent(shortcutName())}" style="text-decoration:none;margin-top:10px">▶︎ ${T('Run it again')}</a></div>` : ''}
         <div class="row" style="margin-top:12px"><button class="btn sm grow" data-done="run">${T('Yes, next step')}</button><button class="btn sm outline grow" id="spDiff">${T("No, it's different")}</button></div>`
       : `<p class="small" style="line-height:1.5;margin:0">${T('Tap the button. iPhone asks once if the Shortcut may read Health: tap <b>Allow</b> (Active Energy). Then come back here, it checks by itself.')}</p>
-        <a class="btn" id="spRun" href="shortcuts://run-shortcut?name=${encodeURIComponent('Food Tracker calories')}" style="margin-top:14px;text-decoration:none">▶︎ ${T('Run it now')}</a>
+        <a class="btn" id="spRun" href="shortcuts://run-shortcut?name=${encodeURIComponent(shortcutName())}" style="margin-top:14px;text-decoration:none">▶︎ ${T('Run it now')}</a>
         <p class="small muted" style="margin:12px 0 0;text-align:center">${T('Waiting for the first number…')} <span class="spin" style="vertical-align:-3px"></span></p>
         ${st.ranAt && Date.now() - st.ranAt > 45e3 ? `<div class="card" style="background:var(--chip);box-shadow:none;margin-top:12px"><b class="small">${T('Nothing arrived yet? Check:')}</b>
           ${sub(1, T('Did the Shortcut show an error? Open it and tap ▶︎ to see.'))}${sub(2, T('Is the code in the Shortcut exactly your code? {code}', { code: `<b style="font-family:ui-monospace,monospace">${code}</b>` }) + (link ? ' ' + T('It is in the first box of the Shortcut; paste it there if it still says PASTE YOUR CODE.') : ''))}${sub(3, T('Is Health allowed? iPhone <b>Settings</b> → <b>Health</b> → <b>Data Access & Devices</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>.'))}</div>` : ''}`,
     auto: `${[
           [T('In the Shortcuts app, tap <b>Automation</b> (bottom), then <b>+</b> (top right) or <b>New Automation</b>.'), open],
           [T('Choose <b>Time of Day</b>. Set <b>21:00</b>, repeat <b>Daily</b>, and choose <b>Run Immediately</b>. Tap <b>Next</b>.')],
-          [T('Choose <b>Food Tracker calories</b>. Done!')]
+          [withName(T('Choose <b>Food Tracker calories</b>. Done!'))]
         ].map(([t, x], i) => sub(i + 1, t, x || '')).join('')}
       <p class="small muted" style="margin:6px 0 0">${T('Tip: add a second one, e.g. at 14:00, so the number also updates during the day.')}</p>
       <button class="btn" data-done="auto" style="margin-top:14px">${T('Done, finish')}</button>`,
