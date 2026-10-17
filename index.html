@@ -757,7 +757,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v100';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v101';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -4555,19 +4555,22 @@ async function syncPush() {
   } catch {}
 }
 // Friendly question to turn on reminders: right after setup, then at most twice more, a few days apart
-function askReminders(force) {
-  if (!db.profile || !pushSupported() || (isIOS() && !isStandalone()) || Notification.permission !== 'default' || $('.backdrop') || $('#onb')) return;
+// Asks to turn on reminders (right after the tour, or now and then). "then" runs when the question is done.
+function askReminders(force, then) {
+  const next = () => { if (then) { const t = then; then = null; setTimeout(t, 500); } };
+  if (!db.profile || !pushSupported() || (isIOS() && !isStandalone()) || Notification.permission !== 'default' || $('.backdrop') || $('#onb') || $('#tourLayer')) return next();
   const st = JSON.parse(LS.get('ft_push_ask', '{"n":0,"t":0}'));
-  if (!force && (st.n >= 3 || Date.now() - st.t < 3 * 864e5)) return;
+  if (!force && (st.n >= 3 || Date.now() - st.t < 3 * 864e5)) return next();
   LS.set('ft_push_ask', JSON.stringify({ n: st.n + 1, t: Date.now() }));
   sheet(`<div style="text-align:center;padding:8px 4px 4px">
       <div class="askbell">🔔</div>
       <h3 style="margin:14px 0 6px">${T('Turn on reminders')}</h3>
-      <p class="muted" style="margin:0 0 22px">${T('A short reminder in the evening to log your calories burned, and on Sunday to weigh in.')}</p>
+      <p class="muted" style="margin:0 0 8px">${T('Short reminders to log your calories burned, for your weekly weigh-in and your weekly check-in.')}</p>
+      <p class="small muted" style="margin:0 0 22px">${T('You can turn each one on or off and choose the times in Settings → Notifications.')}</p>
       <button class="btn" id="askYes">${T('Allow')}</button>
       <button class="btn outline" id="askNo" style="margin-top:10px">${T('Not now')}</button></div>`, sh => {
-    sh.querySelector('#askYes').onclick = () => { closeSheet(); enableReminders(); };
-    sh.querySelector('#askNo').onclick = dismissSheet;
+    sh.querySelector('#askYes').onclick = async () => { closeSheet(); await enableReminders(); next(); };
+    sh.querySelector('#askNo').onclick = () => { dismissSheet(); setTimeout(next, 350); };
   });
 }
 // Share the app link (admin)
@@ -4705,7 +4708,7 @@ function renderSettings() {
   $('#sRedo').onclick = startOnboarding;
   $('#sLang').onclick = () => openLangSheet();
   $('#sUnits').onclick = openUnitsSheet;
-  $('#sTour').onclick = () => openTour();
+  $('#sTour').onclick = () => openTour(() => setTimeout(() => askReminders(true), 600));
   document.querySelectorAll('[data-th]').forEach(b => b.onclick = () => { setTheme(b.dataset.th); renderSettings(); });
   $('#sBg').onclick = openBgSheet;
   bindReminders();
@@ -5066,7 +5069,7 @@ function finishOnboarding() {
   if (!db.weights.length || currentWeight() !== p.weight) { db.weights = db.weights.filter(w => w.date !== iso()); db.weights.push({ date: iso(), kg: p.weight }); }
   LS.set('ft_lang', LANG);
   save(); ob = null; $('#onb')?.remove(); go('home'); toast('🎉 ' + T('Your plan is ready'));
-  if (!LS.get('ft_tour', '')) setTimeout(() => openTour(() => setTimeout(() => askAccount(true, () => askReminders(true)), 600)), 700);
+  if (!LS.get('ft_tour', '')) setTimeout(() => openTour(() => setTimeout(() => askReminders(true, () => askAccount(true)), 600)), 700);
   else setTimeout(() => askReminders(true), 1800);
 }
 

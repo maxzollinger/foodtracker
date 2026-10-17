@@ -1173,7 +1173,9 @@ window.I18N = {
 "What the + offers":"Was das + bietet",
 "New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Neue Unterhaltung beginnt von vorn. Bild hochladen: ein Foto aus deiner Mediathek, z. B. eine Speisekarte. Foto aufnehmen: direkt mit der Kamera. Datei hochladen: ein PDF oder Dokument, z. B. ein Ernährungsplan.",
 "Everything you can add":"Alles, was du eintragen kannst",
-"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoriten: eine übliche Mahlzeit mit einem Tipp erneut eintragen. Essen scannen oder Foto hochladen: Die KI zählt Kalorien und Makros aus dem Bild. Barcode: genaue Werte vom Etikett. Essen beschreiben: schreib oder sag, was du gegessen hast. Dazu Training und manuelle Einträge."
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoriten: eine übliche Mahlzeit mit einem Tipp erneut eintragen. Essen scannen oder Foto hochladen: Die KI zählt Kalorien und Makros aus dem Bild. Barcode: genaue Werte vom Etikett. Essen beschreiben: schreib oder sag, was du gegessen hast. Dazu Training und manuelle Einträge.",
+"Short reminders to log your calories burned, for your weekly weigh-in and your weekly check-in.":"Kurze Erinnerungen für deine verbrannten Kalorien, dein wöchentliches Wiegen und deinen Wochen-Check-in.",
+"You can turn each one on or off and choose the times in Settings → Notifications.":"Du kannst jede einzeln ein- oder ausschalten und die Zeiten unter Einstellungen → Mitteilungen wählen."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2348,7 +2350,9 @@ window.I18N = {
 "What the + offers":"Lo que ofrece el +",
 "New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nueva conversación empieza de cero. Subir imagen: una foto de tu galería, p. ej. una carta. Hacer foto: usa la cámara al momento. Subir archivo: un PDF o documento, p. ej. un plan de comidas.",
 "Everything you can add":"Todo lo que puedes añadir",
-"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoritos: vuelve a registrar una comida habitual con un toque. Escanear comida o Subir foto: la IA cuenta calorías y macros desde una imagen. Código de barras: valores exactos de la etiqueta. Describir comida: escribe o di lo que comiste. Además, ejercicio y entradas manuales."
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoritos: vuelve a registrar una comida habitual con un toque. Escanear comida o Subir foto: la IA cuenta calorías y macros desde una imagen. Código de barras: valores exactos de la etiqueta. Describir comida: escribe o di lo que comiste. Además, ejercicio y entradas manuales.",
+"Short reminders to log your calories burned, for your weekly weigh-in and your weekly check-in.":"Recordatorios breves para registrar las calorías quemadas, tu pesaje semanal y tu resumen semanal.",
+"You can turn each one on or off and choose the times in Settings → Notifications.":"Puedes activar o desactivar cada uno y elegir las horas en Ajustes → Notificaciones."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3523,7 +3527,9 @@ window.I18N = {
 "What the + offers":"Ce que propose le +",
 "New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nouvelle conversation repart de zéro. Importer une image : une photo de ta galerie, p. ex. une carte. Prendre une photo : avec l’appareil tout de suite. Importer un fichier : un PDF ou document, p. ex. un plan de repas.",
 "Everything you can add":"Tout ce que tu peux ajouter",
-"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoris : note à nouveau un repas habituel en un geste. Scanner ou Importer une photo : l'IA compte calories et macros à partir d'une image. Code-barres : valeurs exactes de l'étiquette. Décrire : écris ou dis ce que tu as mangé. Plus l'exercice et la saisie manuelle."
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoris : note à nouveau un repas habituel en un geste. Scanner ou Importer une photo : l'IA compte calories et macros à partir d'une image. Code-barres : valeurs exactes de l'étiquette. Décrire : écris ou dis ce que tu as mangé. Plus l'exercice et la saisie manuelle.",
+"Short reminders to log your calories burned, for your weekly weigh-in and your weekly check-in.":"De courts rappels pour noter tes calories brûlées, ta pesée hebdomadaire et ton bilan de la semaine.",
+"You can turn each one on or off and choose the times in Settings → Notifications.":"Tu peux activer ou désactiver chacun et choisir les heures dans Réglages → Notifications."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -4698,7 +4704,9 @@ window.I18N = {
 "What the + offers":"Cosa offre il +",
 "New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nuova conversazione riparte da zero. Carica immagine: una foto dalla galleria, es. un menu. Scatta foto: subito con la fotocamera. Carica file: un PDF o documento, es. un piano alimentare.",
 "Everything you can add":"Tutto ciò che puoi aggiungere",
-"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Preferiti: registra di nuovo un pasto abituale con un tocco. Scansiona cibo o Carica foto: l'IA conta calorie e macro da un'immagine. Codice a barre: valori esatti dell'etichetta. Descrivi il cibo: scrivi o di' cosa hai mangiato. In più allenamento e inserimento manuale."
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Preferiti: registra di nuovo un pasto abituale con un tocco. Scansiona cibo o Carica foto: l'IA conta calorie e macro da un'immagine. Codice a barre: valori esatti dell'etichetta. Descrivi il cibo: scrivi o di' cosa hai mangiato. In più allenamento e inserimento manuale.",
+"Short reminders to log your calories burned, for your weekly weigh-in and your weekly check-in.":"Brevi promemoria per registrare le calorie bruciate, la pesata settimanale e il check-in settimanale.",
+"You can turn each one on or off and choose the times in Settings → Notifications.":"Puoi attivare o disattivare ciascuno e scegliere gli orari in Impostazioni → Notifiche."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -5873,7 +5881,9 @@ window.I18N = {
 "What the + offers":"＋でできること",
 "New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"新しい会話：最初から始めます。画像をアップロード：ライブラリの写真（例：メニュー）。写真を撮る：すぐにカメラで。ファイルをアップロード：PDF や書類（例：食事プラン）。",
 "Everything you can add":"追加できるものすべて",
-"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"お気に入り：いつもの食事をワンタップで再記録。食べ物をスキャン・写真をアップロード：AI が画像からカロリーと PFC を計算。バーコード：表示どおりの正確な値。食べ物を説明：食べたものを入力するか話すだけ。運動や手入力もあります。"
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"お気に入り：いつもの食事をワンタップで再記録。食べ物をスキャン・写真をアップロード：AI が画像からカロリーと PFC を計算。バーコード：表示どおりの正確な値。食べ物を説明：食べたものを入力するか話すだけ。運動や手入力もあります。",
+"Short reminders to log your calories burned, for your weekly weigh-in and your weekly check-in.":"消費カロリーの記録、週1回の体重測定、週間チェックインのための短いリマインダーです。",
+"You can turn each one on or off and choose the times in Settings → Notifications.":"それぞれのオン・オフと時間は 設定 → 通知 で選べます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -7048,7 +7058,9 @@ window.I18N = {
 "What the + offers":"Wat de + biedt",
 "New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nieuw gesprek begint opnieuw. Afbeelding uploaden: een foto uit je bibliotheek, bijv. een menukaart. Foto maken: meteen met de camera. Bestand uploaden: een pdf of document, bijv. een voedingsschema.",
 "Everything you can add":"Alles wat je kunt toevoegen",
-"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favorieten: log een vaste maaltijd opnieuw met één tik. Eten scannen of Foto uploaden: de AI telt calorieën en macro’s uit een foto. Barcode: exacte waarden van het etiket. Eten beschrijven: typ of zeg wat je at. Plus beweging en handmatige invoer."
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favorieten: log een vaste maaltijd opnieuw met één tik. Eten scannen of Foto uploaden: de AI telt calorieën en macro’s uit een foto. Barcode: exacte waarden van het etiket. Eten beschrijven: typ of zeg wat je at. Plus beweging en handmatige invoer.",
+"Short reminders to log your calories burned, for your weekly weigh-in and your weekly check-in.":"Korte herinneringen om je verbrande calorieën te loggen, voor je wekelijkse weging en je wekelijkse check-in.",
+"You can turn each one on or off and choose the times in Settings → Notifications.":"Je kunt ze elk aan- of uitzetten en de tijden kiezen in Instellingen → Meldingen."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -8223,7 +8235,9 @@ window.I18N = {
 "What the + offers":"Co oferuje +",
 "New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nowa rozmowa zaczyna od nowa. Prześlij obraz: zdjęcie z galerii, np. menu. Zrób zdjęcie: od razu aparatem. Prześlij plik: PDF lub dokument, np. plan posiłków.",
 "Everything you can add":"Wszystko, co możesz dodać",
-"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Ulubione: jednym stuknięciem zapisz ponownie zwykły posiłek. Skanuj jedzenie lub Prześlij zdjęcie: AI liczy kalorie i makro ze zdjęcia. Kod kreskowy: dokładne wartości z etykiety. Opisz jedzenie: wpisz lub powiedz, co zjadłeś. Do tego trening i wpisy ręczne."
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Ulubione: jednym stuknięciem zapisz ponownie zwykły posiłek. Skanuj jedzenie lub Prześlij zdjęcie: AI liczy kalorie i makro ze zdjęcia. Kod kreskowy: dokładne wartości z etykiety. Opisz jedzenie: wpisz lub powiedz, co zjadłeś. Do tego trening i wpisy ręczne.",
+"Short reminders to log your calories burned, for your weekly weigh-in and your weekly check-in.":"Krótkie przypomnienia o spalonych kaloriach, cotygodniowym ważeniu i tygodniowym podsumowaniu.",
+"You can turn each one on or off and choose the times in Settings → Notifications.":"Każde możesz włączyć lub wyłączyć i wybrać godziny w Ustawienia → Powiadomienia."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -9398,7 +9412,9 @@ window.I18N = {
 "What the + offers":"O que o + oferece",
 "New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nova conversa começa do zero. Carregar imagem: uma foto da galeria, p. ex. um menu. Tirar foto: com a câmara na hora. Carregar ficheiro: um PDF ou documento, p. ex. um plano alimentar.",
 "Everything you can add":"Tudo o que pode adicionar",
-"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoritos: registe de novo uma refeição habitual com um toque. Digitalizar comida ou Carregar foto: a IA conta calorias e macros a partir de uma imagem. Código de barras: valores exatos do rótulo. Descrever comida: escreva ou diga o que comeu. Mais exercício e entradas manuais."
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoritos: registe de novo uma refeição habitual com um toque. Digitalizar comida ou Carregar foto: a IA conta calorias e macros a partir de uma imagem. Código de barras: valores exatos do rótulo. Descrever comida: escreva ou diga o que comeu. Mais exercício e entradas manuais.",
+"Short reminders to log your calories burned, for your weekly weigh-in and your weekly check-in.":"Lembretes curtos para registar as calorias gastas, a pesagem semanal e o resumo semanal.",
+"You can turn each one on or off and choose the times in Settings → Notifications.":"Pode ligar ou desligar cada um e escolher as horas em Definições → Notificações."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -10573,7 +10589,9 @@ window.I18N = {
 "What the + offers":"Что даёт +",
 "New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Новый разговор начинается с чистого листа. Загрузить изображение: фото из галереи, например меню. Сделать фото: сразу камерой. Загрузить файл: PDF или документ, например план питания.",
 "Everything you can add":"Всё, что можно добавить",
-"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Избранное: повторно запишите привычный приём пищи одним касанием. Сканировать еду или Загрузить фото: ИИ считает калории и БЖУ по снимку. Штрихкод: точные значения с этикетки. Описать еду: напишите или скажите, что съели. А также тренировки и ручной ввод."
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Избранное: повторно запишите привычный приём пищи одним касанием. Сканировать еду или Загрузить фото: ИИ считает калории и БЖУ по снимку. Штрихкод: точные значения с этикетки. Описать еду: напишите или скажите, что съели. А также тренировки и ручной ввод.",
+"Short reminders to log your calories burned, for your weekly weigh-in and your weekly check-in.":"Короткие напоминания: записать сожжённые калории, еженедельное взвешивание и недельный отчёт.",
+"You can turn each one on or off and choose the times in Settings → Notifications.":"Каждое можно включить или выключить и выбрать время в Настройки → Уведомления."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -11748,7 +11766,9 @@ window.I18N = {
 "What the + offers":"+'nın sundukları",
 "New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Yeni sohbet sıfırdan başlar. Görsel yükle: galeriden bir fotoğraf, ör. bir menü. Fotoğraf çek: hemen kamerayla. Dosya yükle: bir PDF veya belge, ör. bir beslenme planı.",
 "Everything you can add":"Ekleyebileceğin her şey",
-"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoriler: alışık olduğun bir öğünü tek dokunuşla yeniden kaydet. Yemek tara veya Fotoğraf yükle: yapay zekâ fotoğraftan kalori ve makroları hesaplar. Barkod: etiketteki kesin değerler. Yemeği anlat: ne yediğini yaz ya da söyle. Ayrıca egzersiz ve manuel giriş."
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoriler: alışık olduğun bir öğünü tek dokunuşla yeniden kaydet. Yemek tara veya Fotoğraf yükle: yapay zekâ fotoğraftan kalori ve makroları hesaplar. Barkod: etiketteki kesin değerler. Yemeği anlat: ne yediğini yaz ya da söyle. Ayrıca egzersiz ve manuel giriş.",
+"Short reminders to log your calories burned, for your weekly weigh-in and your weekly check-in.":"Yakılan kalorileri kaydetmek, haftalık tartılma ve haftalık değerlendirme için kısa hatırlatıcılar.",
+"You can turn each one on or off and choose the times in Settings → Notifications.":"Her birini Ayarlar → Bildirimler bölümünden açıp kapatabilir ve saatlerini seçebilirsin."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -12923,6 +12943,8 @@ window.I18N = {
 "What the + offers":"+ 能做什么",
 "New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"新对话：重新开始。上传图片：相册中的照片，例如菜单。拍照：直接用相机。上传文件：PDF 或文档，例如饮食计划。",
 "Everything you can add":"你可以添加的全部内容",
-"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"收藏：一键再次记录常吃的一餐。扫描食物或上传照片：AI 根据图片计算卡路里和营养素。条形码：标签上的准确数值。描述食物：输入或说出你吃了什么。另外还有运动和手动记录。"
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"收藏：一键再次记录常吃的一餐。扫描食物或上传照片：AI 根据图片计算卡路里和营养素。条形码：标签上的准确数值。描述食物：输入或说出你吃了什么。另外还有运动和手动记录。",
+"Short reminders to log your calories burned, for your weekly weigh-in and your weekly check-in.":"简短提醒：记录消耗的卡路里、每周称重和每周回顾。",
+"You can turn each one on or off and choose the times in Settings → Notifications.":"你可以在 设置 → 通知 中分别开关每个提醒并选择时间。"
 }
 };
