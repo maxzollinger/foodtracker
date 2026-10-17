@@ -745,7 +745,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v94';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v95';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2201,7 +2201,7 @@ async function syncDone() {
     let until = (pf.wDay - wd + 7) % 7; if (until === 0 && hr >= pf.wTime + 3) until = 7;
     if (daysBetween(lastW, today) + until <= 3) todo.push(['weight', lastW]);   // the weigh-in reminder is skipped within 3 days of a weigh-in
   }
-  if (pf.ci >= 0 && wd === 0 && hr < pf.ci + 3 && LS.get('ft_checkin', '') === today) todo.push(['checkin', today]);
+  if (pf.ci >= 0 && wd === (pf.cd ?? 0) && hr < pf.ci + 3 && LS.get('ft_checkin', '') === today) todo.push(['checkin', today]);
   for (const [kind, date] of todo) {
     if (sent[kind] === date) continue;
     try {
@@ -3021,7 +3021,7 @@ const TOUR_STEPS = [
   { tab: 'progress', sel: '.tab[data-tab="chat"]', title: N('Coach'), text: N('Now your personal AI coach.') },
   { tab: 'chat', sel: '#chatScreen .chatbar .chips button', title: N('Suggestions'), text: N('Not sure what to ask? Tap a suggestion to start a conversation.') },
   { tab: 'chat', sel: '#chatScreen .chatbar .plusbtn', title: N('Photos and files'), text: N('Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.') },
-  { tab: 'chat', sel: '#chatScreen .chatbar .composer', title: N('Ask your coach anything'), text: N('Type your question, or tap the microphone to speak. Every Sunday your weekly check-in appears here.') },
+  { tab: 'chat', sel: '#chatScreen .chatbar .composer', title: N('Ask your coach anything'), text: N('Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.') },
   { tab: 'chat', sel: '.tab[data-tab="settings"]', title: N('Settings'), text: N('Finally, your settings.') },
   { tab: 'settings', sel: '#sGoal', title: N('Your goal'), text: N('Change your main goal any time. Your past days stay as they are.') },
   { tab: 'settings', sel: '#sPers', title: N('Personal details'), text: N('Height, weight, age and training. Your goals update automatically when they change.') },
@@ -3274,13 +3274,13 @@ function inPop(icon, title, text, onOpen) {
   setTimeout(close, 12000);
 }
 
-/* ================= Weekly check-in from the coach (Sundays) =================
+/* ================= Weekly check-in from the coach (Sundays, or the day chosen in Settings → Notifications) =================
    On Sunday (from 9:00), or the next time the app is opened in the two days after, the coach writes a
    short summary of the week with the real numbers and one tip. It appears in the coach chat. */
 let checkinBusy = false;
 async function weeklyCheckin() {
   if (checkinBusy || !db.profile || !hasAI()) return;
-  const today = iso(), sun = addDays(today, -dt(today).getDay());
+  const today = iso(), sun = addDays(today, -((dt(today).getDay() - (pushPrefs().cd ?? 0) + 7) % 7));   // the last check-in day (Sunday unless changed)
   if (LS.get('ft_checkin', '') === sun || daysBetween(sun, today) > 2 || (today === sun && new Date().getHours() < 9)) return;
   const days = [...Array(7)].map((_, i) => addDays(sun, i - 6)), logged = days.filter(d => dayTotals(d).count);
   if (logged.length < 2) return LS.set('ft_checkin', sun);   // too little to say anything useful
@@ -3309,7 +3309,7 @@ Write my WEEKLY CHECK-IN for this week. First line: a short title starting with 
 }
 
 /* ================= Reminder times (per person) ================= */
-const PUSH_DEF = { burn: 20, wDay: 0, wTime: 9, ci: 18, fo: 1, hb: -1 };
+const PUSH_DEF = { burn: 20, wDay: 0, wTime: 9, ci: 18, cd: 0, fo: 1, hb: -1 };   // cd = check-in day (0 = Sunday)
 const pushPrefs = () => { try { return { ...PUSH_DEF, ...JSON.parse(LS.get('ft_push_prefs', '{}')) }; } catch { return { ...PUSH_DEF }; } };
 const userTZ = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Zurich'; } catch { return 'Europe/Zurich'; } };
 function reminderTimesHTML() {
@@ -3322,7 +3322,9 @@ function reminderTimesHTML() {
     <div class="spread"><span>⚖️ ${T('Weigh-in')}</span><span class="row" style="gap:6px">
       <select id="rWDay" class="rsel"><option value="-1" ${p.wDay < 0 ? 'selected' : ''}>${T('Off')}</option>${[1, 2, 3, 4, 5, 6, 0].map(i => `<option value="${i}" ${i === p.wDay ? 'selected' : ''}>${dayName(i)}</option>`).join('')}</select>
       ${p.wDay >= 0 ? `<select id="rWTime" class="rsel">${hourOpts(p.wTime, false)}</select>` : ''}</span></div>
-    <div class="spread"><span>📊 ${T('Weekly check-in')}</span><span class="row" style="gap:6px"><span class="small muted">${dayName(0)}</span><select id="rCi" class="rsel">${hourOpts(p.ci, true)}</select></span></div>
+    <div class="spread"><span>📊 ${T('Weekly check-in')}</span><span class="row" style="gap:6px">
+      <select id="rCd" class="rsel">${[1, 2, 3, 4, 5, 6, 0].map(i => `<option value="${i}" ${i === p.cd ? 'selected' : ''}>${dayName(i)}</option>`).join('')}</select>
+      <select id="rCi" class="rsel">${hourOpts(p.ci, true)}</select></span></div>
     ${db.profile && planOf(db.profile).id === 'if' ? `<div class="spread"><span>⏱️ ${T('Eating window')}</span><select id="rFo" class="rsel"><option value="1" ${p.fo ? 'selected' : ''}>${T('On')}</option><option value="0" ${p.fo ? '' : 'selected'}>${T('Off')}</option></select></div>
     <div class="small muted" style="margin-top:-4px">${T('When it opens, and 30 minutes before it closes.')}</div>` : ''}</div>`;
 }
@@ -3332,6 +3334,7 @@ function bindReminderTimes() {
   if ($('#rWDay')) $('#rWDay').onchange = e => set('wDay', e.target.value);
   if ($('#rWTime')) $('#rWTime').onchange = e => set('wTime', e.target.value);
   if ($('#rCi')) $('#rCi').onchange = e => set('ci', e.target.value);
+  if ($('#rCd')) $('#rCd').onchange = e => set('cd', e.target.value);
   if ($('#rFo')) $('#rFo').onchange = e => set('fo', e.target.value);
 }
 
@@ -4121,8 +4124,8 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for).
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
-- Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Every Sunday a weekly check-in appears here. You remember lasting facts about them.
-- Settings: Your goal, Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, Sunday check-in, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone; "Back up now"); Privacy; Delete all data.
+- Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
+- Settings: Your goal, Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone; "Back up now"); Privacy; Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
   const mem = memList();

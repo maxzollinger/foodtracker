@@ -1152,7 +1152,8 @@ window.I18N = {
 "Show password":"Passwort anzeigen",
 "Hide password":"Passwort verbergen",
 "Encrypted with your password: nobody else can read it.":"Mit deinem Passwort verschlüsselt: Niemand sonst kann es lesen.",
-"You can always do it later in Settings → Account & backup.":"Du kannst es jederzeit später unter Einstellungen → Konto & Backup machen."
+"You can always do it later in Settings → Account & backup.":"Du kannst es jederzeit später unter Einstellungen → Konto & Backup machen.",
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Schreib deine Frage oder tippe auf das Mikrofon, um zu sprechen. Einmal pro Woche erscheint hier dein Wochen-Check-in."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2306,7 +2307,8 @@ window.I18N = {
 "Show password":"Mostrar contraseña",
 "Hide password":"Ocultar contraseña",
 "Encrypted with your password: nobody else can read it.":"Cifrado con tu contraseña: nadie más puede leerlo.",
-"You can always do it later in Settings → Account & backup.":"Siempre puedes hacerlo más tarde en Ajustes → Cuenta y copia de seguridad."
+"You can always do it later in Settings → Account & backup.":"Siempre puedes hacerlo más tarde en Ajustes → Cuenta y copia de seguridad.",
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Escribe tu pregunta o toca el micrófono para hablar. Una vez por semana aparece aquí tu resumen semanal."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3460,7 +3462,8 @@ window.I18N = {
 "Show password":"Afficher le mot de passe",
 "Hide password":"Masquer le mot de passe",
 "Encrypted with your password: nobody else can read it.":"Chiffré avec ton mot de passe : personne d’autre ne peut le lire.",
-"You can always do it later in Settings → Account & backup.":"Tu peux toujours le faire plus tard dans Réglages → Compte et sauvegarde."
+"You can always do it later in Settings → Account & backup.":"Tu peux toujours le faire plus tard dans Réglages → Compte et sauvegarde.",
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Écris ta question ou touche le micro pour parler. Une fois par semaine, ton bilan de la semaine apparaît ici."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -4614,7 +4617,8 @@ window.I18N = {
 "Show password":"Mostra password",
 "Hide password":"Nascondi password",
 "Encrypted with your password: nobody else can read it.":"Cifrato con la tua password: nessun altro può leggerlo.",
-"You can always do it later in Settings → Account & backup.":"Puoi sempre farlo più tardi in Impostazioni → Account e backup."
+"You can always do it later in Settings → Account & backup.":"Puoi sempre farlo più tardi in Impostazioni → Account e backup.",
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Scrivi la tua domanda o tocca il microfono per parlare. Una volta a settimana qui appare il tuo check-in settimanale."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -5768,7 +5772,8 @@ window.I18N = {
 "Show password":"パスワードを表示",
 "Hide password":"パスワードを隠す",
 "Encrypted with your password: nobody else can read it.":"パスワードで暗号化されるので、他の人は読めません。",
-"You can always do it later in Settings → Account & backup.":"あとでいつでも 設定 → アカウントとバックアップ からできます。"
+"You can always do it later in Settings → Account & backup.":"あとでいつでも 設定 → アカウントとバックアップ からできます。",
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"質問を入力するか、マイクをタップして話しかけましょう。週に1回、ここで週間チェックインが届きます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -6922,7 +6927,8 @@ window.I18N = {
 "Show password":"Wachtwoord tonen",
 "Hide password":"Wachtwoord verbergen",
 "Encrypted with your password: nobody else can read it.":"Versleuteld met je wachtwoord: niemand anders kan het lezen.",
-"You can always do it later in Settings → Account & backup.":"Je kunt het altijd later doen via Instellingen → Account & back-up."
+"You can always do it later in Settings → Account & backup.":"Je kunt het altijd later doen via Instellingen → Account & back-up.",
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Typ je vraag of tik op de microfoon om te praten. Eén keer per week verschijnt hier je wekelijkse check-in."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -8076,7 +8082,8 @@ window.I18N = {
 "Show password":"Pokaż hasło",
 "Hide password":"Ukryj hasło",
 "Encrypted with your password: nobody else can read it.":"Zaszyfrowane Twoim hasłem: nikt inny tego nie odczyta.",
-"You can always do it later in Settings → Account & backup.":"Zawsze możesz zrobić to później w Ustawienia → Konto i kopia zapasowa."
+"You can always do it later in Settings → Account & backup.":"Zawsze możesz zrobić to później w Ustawienia → Konto i kopia zapasowa.",
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Wpisz pytanie albo stuknij mikrofon, aby mówić. Raz w tygodniu pojawia się tu Twoje tygodniowe podsumowanie."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -9230,7 +9237,8 @@ window.I18N = {
 "Show password":"Mostrar palavra-passe",
 "Hide password":"Ocultar palavra-passe",
 "Encrypted with your password: nobody else can read it.":"Encriptado com a sua palavra-passe: mais ninguém o consegue ler.",
-"You can always do it later in Settings → Account & backup.":"Pode sempre fazê-lo mais tarde em Definições → Conta e cópia de segurança."
+"You can always do it later in Settings → Account & backup.":"Pode sempre fazê-lo mais tarde em Definições → Conta e cópia de segurança.",
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Escreva a sua pergunta ou toque no microfone para falar. Uma vez por semana o seu resumo semanal aparece aqui."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -10384,7 +10392,8 @@ window.I18N = {
 "Show password":"Показать пароль",
 "Hide password":"Скрыть пароль",
 "Encrypted with your password: nobody else can read it.":"Зашифровано вашим паролем: никто другой не сможет прочитать.",
-"You can always do it later in Settings → Account & backup.":"Это всегда можно сделать позже: Настройки → Аккаунт и резервная копия."
+"You can always do it later in Settings → Account & backup.":"Это всегда можно сделать позже: Настройки → Аккаунт и резервная копия.",
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Напишите вопрос или нажмите на микрофон, чтобы говорить. Раз в неделю здесь появляется ваш недельный отчёт."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -11538,7 +11547,8 @@ window.I18N = {
 "Show password":"Şifreyi göster",
 "Hide password":"Şifreyi gizle",
 "Encrypted with your password: nobody else can read it.":"Şifrenle şifrelenir: başka kimse okuyamaz.",
-"You can always do it later in Settings → Account & backup.":"Bunu daha sonra her zaman Ayarlar → Hesap ve yedekleme bölümünden yapabilirsin."
+"You can always do it later in Settings → Account & backup.":"Bunu daha sonra her zaman Ayarlar → Hesap ve yedekleme bölümünden yapabilirsin.",
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Sorunu yaz veya konuşmak için mikrofona dokun. Haftada bir kez haftalık değerlendirmen burada görünür."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -12692,6 +12702,7 @@ window.I18N = {
 "Show password":"显示密码",
 "Hide password":"隐藏密码",
 "Encrypted with your password: nobody else can read it.":"用你的密码加密：其他人都无法读取。",
-"You can always do it later in Settings → Account & backup.":"你随时可以稍后在 设置 → 账户与备份 中完成。"
+"You can always do it later in Settings → Account & backup.":"你随时可以稍后在 设置 → 账户与备份 中完成。",
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"输入你的问题，或点麦克风说话。每周一次，你的每周回顾会显示在这里。"
 }
 };

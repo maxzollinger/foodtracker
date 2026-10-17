@@ -35,7 +35,7 @@ jobs:
           const webpush = require('web-push');
           const env = process.env;
           webpush.setVapidDetails('https://maxzollinger.github.io/foodtracker/', env.VAPID_PUBLIC_KEY, env.VAPID_PRIVATE_KEY);
-          const DEF = { burn: 20, wDay: 0, wTime: 9, ci: 18, fo: 0, fs: '', fh: 0, hb: -1, tz: 'Europe/Zurich' };
+          const DEF = { burn: 20, wDay: 0, wTime: 9, ci: 18, cd: 0, fo: 0, fs: '', fh: 0, hb: -1, tz: 'Europe/Zurich' };
           const now = new Date();
           // The date, hour and weekday right now in a person's time zone
           function local(tz) {
@@ -70,7 +70,7 @@ jobs:
                 // Nothing is sent for things already done: burned calories logged today, weight logged in the last 3 days, check-in already seen
                 if (p.burn >= 0 && inWin(p.burn) && last.burn !== L.date && done.burn !== L.date) due.push('burn');
                 if (p.wDay >= 0 && L.wd === p.wDay && inWin(p.wTime) && last.weight !== L.date && daysSince(done.weight) > 3) due.push('weight');
-                if (id && p.ci >= 0 && L.wd === 0 && inWin(p.ci) && last.checkin !== L.date && done.checkin !== L.date) due.push('checkin');
+                if (id && p.ci >= 0 && L.wd === (p.cd ?? 0) && inWin(p.ci) && last.checkin !== L.date && done.checkin !== L.date) due.push('checkin');
                 if (id && p.hb >= 0 && inWin(p.hb) && last.habit !== L.date) due.push('habit');   // optional habit plan reminder
                 // Eating window (intermittent fasting): when it opens, and 30 minutes before it closes
                 if (id && p.fo && /^\d{2}:\d{2}$/.test(p.fs) && p.fh > 0) {
