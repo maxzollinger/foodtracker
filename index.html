@@ -860,7 +860,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v105';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v106';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3186,9 +3186,11 @@ function openTour(onDone) {
   tip.style.opacity = '0';   // shown once it knows where to go
   let i = 0, dir = 1, target = null, busy = false, tipGoal = null, alive = true, openMenu = '';
   // Where things are now (cur) and where they're going; one animation loop moves both smoothly every frame
-  let cur = null, tipTop = null, last = performance.now();
+  let cur = null, tipTop = null, last = performance.now(), landing = null, landUntil = 0;   // landing: where the part ends up after scrolling
+  // Where a part sits once its page has finished sliding in (page and sheet animations move it for a moment)
+  const shiftOf = el => { let x = 0, y = 0; for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) { const t = getComputedStyle(a).transform; if (t && t !== 'none') { const m = new DOMMatrix(t); x += m.m41; y += m.m42; } } return { x, y }; };
   const rectOf = el => {
-    const r = el.getBoundingClientRect(), pad = 6, cs = getComputedStyle(el), rad = cs.borderRadius.includes('%') ? 999 : parseFloat(cs.borderRadius) || 12;
+    const b = el.getBoundingClientRect(), sh = shiftOf(el), r = { left: b.left - sh.x, right: b.right - sh.x, top: b.top - sh.y, height: b.height }, pad = 6, cs = getComputedStyle(el), rad = cs.borderRadius.includes('%') ? 999 : parseFloat(cs.borderRadius) || 12;
     const x0 = Math.max(6, r.left - pad), x1 = Math.min(innerWidth - 6, r.right + pad);
     return { x: x0, y: r.top - pad, w: x1 - x0, h: r.height + pad * 2, r: Math.min(rad + pad, 40) };
   };
@@ -3204,7 +3206,9 @@ function openTour(onDone) {
   function frame(now) {
     if (!alive) return;
     const dt = Math.min(64, now - last); last = now;
-    const goal = target && target.isConnected ? rectOf(target) : centre();
+    let goal = target && target.isConnected ? rectOf(target) : centre();
+    // While the page scrolls, glide straight to where the part will be instead of chasing it (no dip and catch-up)
+    if (landing && target) { if (Math.abs(goal.y - landing.y) < 1.5 || now > landUntil) landing = null; else goal = landing; }
     const k = still ? 1 : 1 - Math.pow(0.82, dt / 16.7);   // eases out, the same at any frame rate
     if (!cur) cur = { ...goal };
     for (const key of ['x', 'y', 'w', 'h', 'r']) cur[key] += (goal[key] - cur[key]) * k;
@@ -3221,7 +3225,7 @@ function openTour(onDone) {
   async function show(n) {
     if (n < 0 || busy) return;
     if (n >= TOUR_STEPS.length) return finish();
-    busy = true; i = n;
+    busy = true; i = n; landing = null;
     const s = TOUR_STEPS[i], t0 = performance.now();
     body.classList.add('swap');   // the old text fades out while things move
     // Menus the step talks about: opened for it, closed again when the tour moves on
@@ -3247,6 +3251,7 @@ function openTour(onDone) {
       const sr = sc.getBoundingClientRect(), r = el.getBoundingClientRect();
       const want = Math.max(0, Math.min(sc.scrollHeight - sc.clientHeight, sc.scrollTop + r.top - sr.top - (sr.height - r.height) / 2));
       final.y -= want - sc.scrollTop;
+      if (Math.abs(want - sc.scrollTop) > 1) { landing = { ...final }; landUntil = performance.now() + 1200; }
       sc.scrollTo({ top: want, behavior: still ? 'auto' : 'smooth' });
     }
     await wait(Math.max(0, 150 - (performance.now() - t0)));
