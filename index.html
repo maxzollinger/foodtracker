@@ -741,7 +741,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v90';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v91';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2600,7 +2600,7 @@ function openSharePage() {
         [T('Search <b>Calculate Statistics</b>, tap it and choose <b>Sum</b>.')],
         [T('Search <b>Get Contents of URL</b>, tap the blue <b>URL</b> and paste:'), `<div style="font-family:ui-monospace,monospace;font-size:12px;word-break:break-all;margin-top:4px">${base}</div><button class="chipbtn" id="shUrl" style="margin-top:6px">${T('Copy address')}</button>`],
         [T('Right after it, tap <b>Text</b> in the bar above the keyboard. Then type <b>&amp;kcal=</b> and tap <b>Statistics</b> in the bar. The address now ends with: <b>code=</b>[Text]<b>&amp;kcal=</b>[Statistics].')],
-        [T('Ask friends for their code when they add it: open the Shortcut details (<b>ⓘ</b> or the name at the top → <b>Details</b>) → <b>Setup</b> → <b>Add Question</b> → tap <b>PASTE YOUR CODE</b> in the Text box. Question: <b>Paste your Food Tracker code</b>.'), `<p class="small muted" style="margin:6px 0 0">${T('No Setup tab on your iPhone? Skip this: friends are told to paste their code into the first box themselves.')}</p>`],
+        [T('Optional: let iPhone ask friends for their code. In the Shortcut, tap its name at the top (or ⌄) → <b>Settings</b> → <b>Setup</b> (at the top) → <b>Add New Question</b> → tap the <b>PASTE YOUR CODE</b> box → question: <b>Paste your Food Tracker code</b> → <b>Done</b>.'), `<p class="small muted" style="margin:6px 0 0">${T('Can not find it? Just skip this step. Friends are told to paste their code into the first box themselves, so it works either way.')}</p>`],
         [T('Tap <b>Done</b>.')]
       ].map(([t, x], i) => sub(i + 1, t, x || '')).join('')}
       <button class="btn" data-sh="build" style="margin-top:8px">${T('Done, next step')}</button>`,

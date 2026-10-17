@@ -1049,7 +1049,9 @@ window.I18N = {
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Bau den Kurzbefehl einmal und teile ihn. Dann tippen Freunde mit Apple Watch, Garmin und allen anderen Uhren nur auf Hinzufügen, fügen ihren Code ein und sind fertig.",
 "Everyone now gets the Add button.":"Alle bekommen jetzt den Hinzufügen-Knopf.",
 "Search <b>Text</b> and tap it. In the box, type exactly these words:":"Suche <b>Text</b> und tippe darauf. Schreibe genau diese Wörter ins Feld:",
-"Not your own code: these words are a placeholder that each friend replaces with their code.":"Nicht dein eigener Code: Diese Wörter sind ein Platzhalter, den jeder Freund durch seinen Code ersetzt."
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"Nicht dein eigener Code: Diese Wörter sind ein Platzhalter, den jeder Freund durch seinen Code ersetzt.",
+"Optional: let iPhone ask friends for their code. In the Shortcut, tap its name at the top (or ⌄) → <b>Settings</b> → <b>Setup</b> (at the top) → <b>Add New Question</b> → tap the <b>PASTE YOUR CODE</b> box → question: <b>Paste your Food Tracker code</b> → <b>Done</b>.":"Optional: Das iPhone fragt Freunde nach ihrem Code. Tippe im Kurzbefehl oben auf den Namen (oder ⌄) → <b>Einstellungen</b> → <b>Einrichtung</b> (oben) → <b>Neue Frage hinzufügen</b> → tippe auf das Feld <b>PASTE YOUR CODE</b> → Frage: <b>Paste your Food Tracker code</b> → <b>Fertig</b>.",
+"Can not find it? Just skip this step. Friends are told to paste their code into the first box themselves, so it works either way.":"Nicht gefunden? Überspring diesen Schritt einfach. Freunde werden angeleitet, ihren Code selbst ins erste Feld einzufügen, es klappt also so oder so."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2100,7 +2102,9 @@ window.I18N = {
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Crea el atajo una vez y compártelo. Así los amigos con Apple Watch, Garmin y cualquier otro reloj solo tocan Añadir, pegan su código y listo.",
 "Everyone now gets the Add button.":"Ahora todos tienen el botón Añadir.",
 "Search <b>Text</b> and tap it. In the box, type exactly these words:":"Busca <b>Text</b> y tócalo. En el recuadro escribe exactamente estas palabras:",
-"Not your own code: these words are a placeholder that each friend replaces with their code.":"No es tu propio código: estas palabras son un marcador que cada amigo cambia por su código."
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"No es tu propio código: estas palabras son un marcador que cada amigo cambia por su código.",
+"Optional: let iPhone ask friends for their code. In the Shortcut, tap its name at the top (or ⌄) → <b>Settings</b> → <b>Setup</b> (at the top) → <b>Add New Question</b> → tap the <b>PASTE YOUR CODE</b> box → question: <b>Paste your Food Tracker code</b> → <b>Done</b>.":"Opcional: que el iPhone pida el código a los amigos. En el atajo, toca su nombre arriba (o ⌄) → <b>Ajustes</b> → <b>Configuración</b> (arriba) → <b>Añadir nueva pregunta</b> → toca el recuadro <b>PASTE YOUR CODE</b> → pregunta: <b>Paste your Food Tracker code</b> → <b>OK</b>.",
+"Can not find it? Just skip this step. Friends are told to paste their code into the first box themselves, so it works either way.":"¿No lo encuentras? Salta este paso. A los amigos se les indica pegar su código en el primer recuadro, así que funciona igual."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3151,7 +3155,9 @@ window.I18N = {
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Crée le raccourci une fois et partage-le. Les amis avec Apple Watch, Garmin et toutes les autres montres n'ont plus qu'à toucher Ajouter, coller leur code, et c'est fini.",
 "Everyone now gets the Add button.":"Tout le monde a maintenant le bouton Ajouter.",
 "Search <b>Text</b> and tap it. In the box, type exactly these words:":"Cherche <b>Text</b> et touche-le. Dans la case, écris exactement ces mots :",
-"Not your own code: these words are a placeholder that each friend replaces with their code.":"Pas ton propre code : ces mots sont un repère que chaque ami remplace par son code."
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"Pas ton propre code : ces mots sont un repère que chaque ami remplace par son code.",
+"Optional: let iPhone ask friends for their code. In the Shortcut, tap its name at the top (or ⌄) → <b>Settings</b> → <b>Setup</b> (at the top) → <b>Add New Question</b> → tap the <b>PASTE YOUR CODE</b> box → question: <b>Paste your Food Tracker code</b> → <b>Done</b>.":"Facultatif : l'iPhone demande leur code aux amis. Dans le raccourci, touche son nom en haut (ou ⌄) → <b>Réglages</b> → <b>Configuration</b> (en haut) → <b>Ajouter une question</b> → touche la case <b>PASTE YOUR CODE</b> → question : <b>Paste your Food Tracker code</b> → <b>OK</b>.",
+"Can not find it? Just skip this step. Friends are told to paste their code into the first box themselves, so it works either way.":"Introuvable ? Passe simplement cette étape. On explique aux amis de coller leur code dans la première case, donc ça marche quand même."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -4202,7 +4208,9 @@ window.I18N = {
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Crea il comando rapido una volta e condividilo. Così gli amici con Apple Watch, Garmin e tutti gli altri orologi toccano solo Aggiungi, incollano il codice e hanno finito.",
 "Everyone now gets the Add button.":"Ora tutti hanno il pulsante Aggiungi.",
 "Search <b>Text</b> and tap it. In the box, type exactly these words:":"Cerca <b>Text</b> e toccalo. Nel riquadro scrivi esattamente queste parole:",
-"Not your own code: these words are a placeholder that each friend replaces with their code.":"Non il tuo codice: queste parole sono un segnaposto che ogni amico sostituisce con il proprio codice."
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"Non il tuo codice: queste parole sono un segnaposto che ogni amico sostituisce con il proprio codice.",
+"Optional: let iPhone ask friends for their code. In the Shortcut, tap its name at the top (or ⌄) → <b>Settings</b> → <b>Setup</b> (at the top) → <b>Add New Question</b> → tap the <b>PASTE YOUR CODE</b> box → question: <b>Paste your Food Tracker code</b> → <b>Done</b>.":"Facoltativo: l'iPhone chiede il codice agli amici. Nel comando rapido, tocca il nome in alto (o ⌄) → <b>Impostazioni</b> → <b>Configurazione</b> (in alto) → <b>Aggiungi nuova domanda</b> → tocca il riquadro <b>PASTE YOUR CODE</b> → domanda: <b>Paste your Food Tracker code</b> → <b>Fine</b>.",
+"Can not find it? Just skip this step. Friends are told to paste their code into the first box themselves, so it works either way.":"Non lo trovi? Salta questo passo. Agli amici viene detto di incollare il codice nel primo riquadro, quindi funziona comunque."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -5253,7 +5261,9 @@ window.I18N = {
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"ショートカットを一度作って共有しましょう。Apple Watch や Garmin などの友だちは「追加」をタップしてコードを貼るだけで完了します。",
 "Everyone now gets the Add button.":"全員に追加ボタンが表示されるようになりました。",
 "Search <b>Text</b> and tap it. In the box, type exactly these words:":"<b>Text</b> を検索してタップ。欄にこの言葉をそのまま入力：",
-"Not your own code: these words are a placeholder that each friend replaces with their code.":"あなたのコードではありません。友だちが自分のコードに置き換えるための目印です。"
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"あなたのコードではありません。友だちが自分のコードに置き換えるための目印です。",
+"Optional: let iPhone ask friends for their code. In the Shortcut, tap its name at the top (or ⌄) → <b>Settings</b> → <b>Setup</b> (at the top) → <b>Add New Question</b> → tap the <b>PASTE YOUR CODE</b> box → question: <b>Paste your Food Tracker code</b> → <b>Done</b>.":"任意：iPhone が友だちにコードを尋ねるようにします。ショートカットで上の名前（または ⌄）→ <b>設定</b> → 上部の <b>設定項目（Setup）</b> → <b>新しい質問を追加</b> → <b>PASTE YOUR CODE</b> の欄をタップ → 質問：<b>Paste your Food Tracker code</b> → <b>完了</b>。",
+"Can not find it? Just skip this step. Friends are told to paste their code into the first box themselves, so it works either way.":"見つからない？このステップは飛ばして大丈夫です。友だちには最初の欄にコードを貼るよう案内されるので、どちらでも動きます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -6304,7 +6314,9 @@ window.I18N = {
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Maak de opdracht één keer en deel hem. Vrienden met Apple Watch, Garmin en alle andere horloges tikken dan alleen op Voeg toe, plakken hun code en zijn klaar.",
 "Everyone now gets the Add button.":"Iedereen krijgt nu de knop Toevoegen.",
 "Search <b>Text</b> and tap it. In the box, type exactly these words:":"Zoek <b>Text</b> en tik erop. Typ precies deze woorden in het vak:",
-"Not your own code: these words are a placeholder that each friend replaces with their code.":"Niet je eigen code: deze woorden zijn een plaatshouder die elke vriend vervangt door zijn code."
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"Niet je eigen code: deze woorden zijn een plaatshouder die elke vriend vervangt door zijn code.",
+"Optional: let iPhone ask friends for their code. In the Shortcut, tap its name at the top (or ⌄) → <b>Settings</b> → <b>Setup</b> (at the top) → <b>Add New Question</b> → tap the <b>PASTE YOUR CODE</b> box → question: <b>Paste your Food Tracker code</b> → <b>Done</b>.":"Optioneel: laat de iPhone vrienden om hun code vragen. Tik in de opdracht bovenaan op de naam (of ⌄) → <b>Instellingen</b> → <b>Configuratie</b> (bovenaan) → <b>Voeg nieuwe vraag toe</b> → tik op het vak <b>PASTE YOUR CODE</b> → vraag: <b>Paste your Food Tracker code</b> → <b>Gereed</b>.",
+"Can not find it? Just skip this step. Friends are told to paste their code into the first box themselves, so it works either way.":"Niet gevonden? Sla deze stap gewoon over. Vrienden krijgen uitleg om hun code zelf in het eerste vak te plakken, dus het werkt hoe dan ook."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -7355,7 +7367,9 @@ window.I18N = {
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Utwórz skrót raz i udostępnij go. Wtedy znajomi z Apple Watch, Garmin i innymi zegarkami tylko stukają Dodaj, wklejają kod i gotowe.",
 "Everyone now gets the Add button.":"Wszyscy mają teraz przycisk Dodaj.",
 "Search <b>Text</b> and tap it. In the box, type exactly these words:":"Wyszukaj <b>Text</b> i stuknij. W polu wpisz dokładnie te słowa:",
-"Not your own code: these words are a placeholder that each friend replaces with their code.":"To nie Twój kod: te słowa to miejsce, które każdy znajomy zastąpi swoim kodem."
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"To nie Twój kod: te słowa to miejsce, które każdy znajomy zastąpi swoim kodem.",
+"Optional: let iPhone ask friends for their code. In the Shortcut, tap its name at the top (or ⌄) → <b>Settings</b> → <b>Setup</b> (at the top) → <b>Add New Question</b> → tap the <b>PASTE YOUR CODE</b> box → question: <b>Paste your Food Tracker code</b> → <b>Done</b>.":"Opcjonalnie: iPhone zapyta znajomych o kod. W skrócie stuknij nazwę u góry (lub ⌄) → <b>Ustawienia</b> → <b>Konfiguracja</b> (u góry) → <b>Dodaj nowe pytanie</b> → stuknij pole <b>PASTE YOUR CODE</b> → pytanie: <b>Paste your Food Tracker code</b> → <b>Gotowe</b>.",
+"Can not find it? Just skip this step. Friends are told to paste their code into the first box themselves, so it works either way.":"Nie możesz znaleźć? Po prostu pomiń ten krok. Znajomi dostaną instrukcję, by wkleić kod w pierwsze pole, więc i tak zadziała."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -8406,7 +8420,9 @@ window.I18N = {
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Crie o atalho uma vez e partilhe-o. Assim os amigos com Apple Watch, Garmin e todos os outros relógios só tocam em Adicionar, colam o código e pronto.",
 "Everyone now gets the Add button.":"Agora todos têm o botão Adicionar.",
 "Search <b>Text</b> and tap it. In the box, type exactly these words:":"Procure <b>Text</b> e toque. Na caixa escreva exatamente estas palavras:",
-"Not your own code: these words are a placeholder that each friend replaces with their code.":"Não é o seu código: estas palavras são um marcador que cada amigo substitui pelo seu código."
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"Não é o seu código: estas palavras são um marcador que cada amigo substitui pelo seu código.",
+"Optional: let iPhone ask friends for their code. In the Shortcut, tap its name at the top (or ⌄) → <b>Settings</b> → <b>Setup</b> (at the top) → <b>Add New Question</b> → tap the <b>PASTE YOUR CODE</b> box → question: <b>Paste your Food Tracker code</b> → <b>Done</b>.":"Opcional: o iPhone pede o código aos amigos. No atalho, toque no nome em cima (ou ⌄) → <b>Definições</b> → <b>Configuração</b> (em cima) → <b>Adicionar nova pergunta</b> → toque na caixa <b>PASTE YOUR CODE</b> → pergunta: <b>Paste your Food Tracker code</b> → <b>OK</b>.",
+"Can not find it? Just skip this step. Friends are told to paste their code into the first box themselves, so it works either way.":"Não encontra? Salte este passo. Os amigos são orientados a colar o código na primeira caixa, por isso funciona na mesma."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -9457,7 +9473,9 @@ window.I18N = {
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Создайте команду один раз и поделитесь. Тогда друзья с Apple Watch, Garmin и любыми другими часами просто нажимают «Добавить», вставляют код — и готово.",
 "Everyone now gets the Add button.":"Теперь у всех есть кнопка «Добавить».",
 "Search <b>Text</b> and tap it. In the box, type exactly these words:":"Найдите <b>Text</b> и нажмите. В поле напишите ровно эти слова:",
-"Not your own code: these words are a placeholder that each friend replaces with their code.":"Это не ваш код: эти слова — заполнитель, который каждый друг заменит своим кодом."
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"Это не ваш код: эти слова — заполнитель, который каждый друг заменит своим кодом.",
+"Optional: let iPhone ask friends for their code. In the Shortcut, tap its name at the top (or ⌄) → <b>Settings</b> → <b>Setup</b> (at the top) → <b>Add New Question</b> → tap the <b>PASTE YOUR CODE</b> box → question: <b>Paste your Food Tracker code</b> → <b>Done</b>.":"Необязательно: iPhone будет спрашивать у друзей код. В команде нажмите на имя вверху (или ⌄) → <b>Настройки</b> → <b>Настройка</b> (вверху) → <b>Добавить новый вопрос</b> → нажмите на поле <b>PASTE YOUR CODE</b> → вопрос: <b>Paste your Food Tracker code</b> → <b>Готово</b>.",
+"Can not find it? Just skip this step. Friends are told to paste their code into the first box themselves, so it works either way.":"Не нашли? Просто пропустите этот шаг. Друзьям подскажут вставить код в первое поле, так что всё равно сработает."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -10508,7 +10526,9 @@ window.I18N = {
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Kestirmeyi bir kez oluşturup paylaş. Böylece Apple Watch, Garmin ve diğer saatleri olan arkadaşlar sadece Ekle'ye dokunur, kodlarını yapıştırır ve biter.",
 "Everyone now gets the Add button.":"Artık herkes Ekle düğmesini görüyor.",
 "Search <b>Text</b> and tap it. In the box, type exactly these words:":"<b>Text</b>'i ara ve dokun. Kutuya tam olarak şu kelimeleri yaz:",
-"Not your own code: these words are a placeholder that each friend replaces with their code.":"Kendi kodun değil: bu kelimeler, her arkadaşın kendi koduyla değiştireceği bir yer tutucudur."
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"Kendi kodun değil: bu kelimeler, her arkadaşın kendi koduyla değiştireceği bir yer tutucudur.",
+"Optional: let iPhone ask friends for their code. In the Shortcut, tap its name at the top (or ⌄) → <b>Settings</b> → <b>Setup</b> (at the top) → <b>Add New Question</b> → tap the <b>PASTE YOUR CODE</b> box → question: <b>Paste your Food Tracker code</b> → <b>Done</b>.":"İsteğe bağlı: iPhone arkadaşlara kodlarını sorsun. Kestirmede üstteki ada (veya ⌄) dokun → <b>Ayarlar</b> → <b>Ayarlama</b> (üstte) → <b>Yeni Soru Ekle</b> → <b>PASTE YOUR CODE</b> kutusuna dokun → soru: <b>Paste your Food Tracker code</b> → <b>Bitti</b>.",
+"Can not find it? Just skip this step. Friends are told to paste their code into the first box themselves, so it works either way.":"Bulamadın mı? Bu adımı atla. Arkadaşlara kodlarını ilk kutuya yapıştırmaları söylenir, yani her iki şekilde de çalışır."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -11559,6 +11579,8 @@ window.I18N = {
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"只需创建一次快捷指令并共享。这样使用 Apple Watch、Garmin 和其他手表的朋友只要点“添加”、粘贴代码就完成了。",
 "Everyone now gets the Add button.":"现在所有人都能看到添加按钮。",
 "Search <b>Text</b> and tap it. In the box, type exactly these words:":"搜索 <b>Text</b> 并点它。在框中准确输入这几个词：",
-"Not your own code: these words are a placeholder that each friend replaces with their code.":"不是你自己的代码：这些词只是占位符，每位朋友会换成自己的代码。"
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"不是你自己的代码：这些词只是占位符，每位朋友会换成自己的代码。",
+"Optional: let iPhone ask friends for their code. In the Shortcut, tap its name at the top (or ⌄) → <b>Settings</b> → <b>Setup</b> (at the top) → <b>Add New Question</b> → tap the <b>PASTE YOUR CODE</b> box → question: <b>Paste your Food Tracker code</b> → <b>Done</b>.":"可选：让 iPhone 向朋友询问代码。在快捷指令中点顶部名称（或 ⌄）→ <b>设置</b> → 顶部的 <b>设置项（Setup）</b> → <b>添加新问题</b> → 点 <b>PASTE YOUR CODE</b> 框 → 问题：<b>Paste your Food Tracker code</b> → <b>完成</b>。",
+"Can not find it? Just skip this step. Friends are told to paste their code into the first box themselves, so it works either way.":"找不到？直接跳过这一步。会提示朋友把代码粘贴到第一个框，所以两种方式都能用。"
 }
 };
