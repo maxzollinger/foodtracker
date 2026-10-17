@@ -846,7 +846,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v103';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v104';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1071,21 +1071,29 @@ const ACT = { '0-2': 1.375, '3-5': 1.55, '6+': 1.725 };
 // "lean" = build lean muscle: a small surplus so most of the gain is muscle, not fat.
 const isGain = g => g === 'gain' || g === 'lean';
 const LEAN_MAX = 0.5;   // kg/week; faster than this mostly adds fat
-/* The 10 main goals. "dir" is the weight direction the rest of the app works with (profile.goal:
+/* The 12 main goals. "dir" is the weight direction the rest of the app works with (profile.goal:
    lose / maintain / lean / gain). Diet-style goals (dir: null) let the user pick the weight direction. */
 const PLANS = [
   { id: 'cut', ic: '🔥', name: N('Lose weight'), sub: N('Cutting / fat loss: eat in a calorie deficit'), dir: 'lose' },
+  { id: 'recomp', ic: '🔄', name: N('Lose fat & build muscle'), sub: N('Recomp: lose fat slowly and get stronger at the same time'), dir: null, dirs: ['lose', 'maintain'] },
   { id: 'maintain', ic: '⚖️', name: N('Maintain weight'), sub: N('Eat at maintenance'), dir: 'maintain' },
   { id: 'bulk', ic: '💪', name: N('Build muscle (bulk)'), sub: N('Calorie surplus to gain weight and muscle'), dir: 'gain' },
   { id: 'lean', ic: '🥩', name: N('Lean bulk'), sub: N('Small surplus, mostly whole foods, little fat'), dir: 'lean' },
   { id: 'dirty', ic: '🍔', name: N('Dirty bulk'), sub: N('Big surplus, fast gain, more fat'), dir: 'gain' },
-  { id: 'recomp', ic: '🔄', name: N('Recomp'), sub: N('Lose fat and build muscle at the same time'), dir: 'maintain' },
+  { id: 'sport', ic: '🏃', name: N('Sport & endurance'), sub: N('More carbs for running, cycling and team sports'), dir: null },
   { id: 'healthy', ic: '🥗', name: N('Eat healthier'), sub: N('Less sugar, salt and processed food'), dir: null },
   { id: 'protein', ic: '🍗', name: N('High protein'), sub: N('Hit a daily protein target'), dir: null },
   { id: 'keto', ic: '🥑', name: N('Keto / low carb'), sub: N('Very few carbs, more fat'), dir: null },
-  { id: 'if', ic: '⏱️', name: N('Intermittent fasting'), sub: N('Eat within a daily time window (16:8 etc.)'), dir: null }
+  { id: 'if', ic: '⏱️', name: N('Intermittent fasting'), sub: N('Eat within a daily time window (16:8 etc.)'), dir: null },
+  { id: 'preg', ic: '🤰', name: N('Pregnancy & breastfeeding'), sub: N('Enough energy for you and your baby, no dieting'), dir: 'maintain' }
 ];
-const planOf = p => PLANS.find(x => x.id === (p && p.plan)) || PLANS[1];
+const planOf = p => PLANS.find(x => x.id === (p && p.plan)) || PLANS.find(x => x.id === 'maintain');
+// Which weight directions a goal allows (null = fixed by the goal itself)
+const planDirs = pl => pl.dirs || (pl.dir === null ? ['lose', 'maintain', 'lean'] : null);
+// Goals offered to this person (pregnancy is not shown to men)
+const plansFor = p => PLANS.filter(x => !(x.id === 'preg' && p && p.sex === 'm'));
+const PREG = [['t1', N('Pregnant, months 1–3')], ['t2', N('Pregnant, months 4–6')], ['t3', N('Pregnant, months 7–9')], ['bf', N('Breastfeeding')]];
+const PREG_KCAL = { t1: 0, t2: 340, t3: 450, bf: 400 };
 const DIRS = [['lose', N('Lose weight')], ['maintain', N('Keep my weight')], ['lean', N('Gain weight')]];
 const FASTS = [[14, '14:10'], [16, '16:8'], [18, '18:6'], [20, '20:4']];
 const needsTarget = p => p.goal !== 'maintain';
@@ -1093,20 +1101,23 @@ const needsTarget = p => p.goal !== 'maintain';
 function paceRange(p) {
   const id = planOf(p).id;
   if (p.goal === 'lean') return [0.1, 0.25, LEAN_MAX];
+  if (id === 'recomp') return [0.1, 0.25, 0.5];   // slow, so muscle can still grow
   if (id === 'bulk') return [0.1, 0.35, 0.75];
   if (id === 'dirty') return [0.25, 0.75, 1];
   return [0.1, 0.5, 1];
 }
 // Picking a goal sets the weight direction, a sensible goal weight and a speed inside the allowed range
 function applyPlan(p, id, w) {
-  const pl = PLANS.find(x => x.id === id);
+  const pl = PLANS.find(x => x.id === id), was = p.plan;
   p.plan = id;
-  if (pl.dir) p.goal = pl.dir;
-  else if (!['lose', 'maintain', 'lean'].includes(p.goal)) p.goal = p.goal === 'gain' ? 'lean' : 'maintain';
+  const dirs = planDirs(pl);
+  if (!dirs) p.goal = pl.dir;
+  else if (pl.dirs && was !== id) p.goal = pl.dirs[0];   // e.g. recomp starts with a slow loss; the person can switch to keeping the weight
+  else if (!dirs.includes(p.goal)) p.goal = p.goal === 'gain' && dirs.includes('lean') ? 'lean' : pl.dirs ? pl.dirs[0] : 'maintain';
   p.pace = paceRange(p)[1];   // each goal starts at its typical speed (adjustable)
   fixTarget(p, w);
   p.goalStart = { kg: w, date: iso() };
-  if (p.goal === 'maintain') p.maintainSince = p.maintainSince || iso(); else delete p.maintainSince;
+  if (p.goal === 'maintain' && id !== 'preg') p.maintainSince = p.maintainSince || iso(); else delete p.maintainSince;
 }
 function fixTarget(p, w) {
   if (p.goal === 'maintain') p.targetWeight = w;
@@ -1127,18 +1138,23 @@ function calcTargets(p, w) {
   if (p.goal === 'lose') kcal -= p.pace * 7700 / 7;
   if (p.goal === 'gain') kcal += p.pace * 7700 / 7;
   if (p.goal === 'lean') kcal += Math.min(num(p.pace) || 0.25, LEAN_MAX) * 7700 / 7;
-  if (plan === 'recomp') kcal = tdee - Math.min(300, tdee * 0.1);   // small deficit; high protein + training do the rest
-  kcal = Math.max(kcal, p.sex === 'm' ? 1500 : 1200);
+  // Recomp: a slow loss (max 0.5 kg/week) or, when keeping the weight, a small deficit; high protein + training do the rest
+  if (plan === 'recomp') kcal = p.goal === 'lose' ? tdee - Math.min(num(p.pace) || 0.25, 0.5) * 7700 / 7 : tdee - Math.min(300, tdee * 0.1);
+  if (plan === 'preg') kcal = tdee + (PREG_KCAL[p.preg] ?? 340);   // never a deficit; extra energy as the baby grows / for breastfeeding
+  kcal = Math.max(kcal, p.sex === 'm' ? 1500 : plan === 'preg' ? 1800 : 1200);
   let perKg = p.goal === 'lose' || p.goal === 'lean' ? 2.0 : p.goal === 'gain' ? 1.8 : 1.6;
   if (plan === 'cut' || plan === 'recomp' || plan === 'protein') perKg = 2.2;
   if (plan === 'dirty') perKg = 1.6;
-  const protein = w * perKg;
+  if (plan === 'sport') perKg = p.goal === 'lose' ? 1.8 : 1.6;
+  if (plan === 'preg') perKg = 1.3;
+  // Protein comes from the body weight, but above a BMI of 27 from the weight at BMI 27 (extra body fat needs no extra protein)
+  const protein = Math.min(w, 27 * Math.pow((p.height || 170) / 100, 2)) * perKg;
   let fat, carbs;
   if (plan === 'keto') {
     carbs = p.carbs === 'lowcarb' ? 100 : 30;
     fat = Math.max(0, (kcal - protein * 4 - carbs * 4) / 9);
   } else {
-    fat = kcal * (plan === 'healthy' || plan === 'dirty' ? 0.3 : 0.27) / 9;
+    fat = kcal * (plan === 'healthy' || plan === 'dirty' || plan === 'preg' ? 0.3 : plan === 'sport' ? 0.25 : 0.27) / 9;
     carbs = Math.max(0, (kcal - protein * 4 - fat * 9) / 4);
   }
   return { kcal: r0(kcal), protein: r0(protein), carbs: r0(carbs), fat: r0(fat), tdee: r0(tdee), bmr: r0(bmr) };
@@ -1258,8 +1274,8 @@ function focusCard(date, t, tot) {
   }
   if (id === 'protein' || id === 'recomp') {
     const v = tot.protein, g = t.protein, left = r0(g - v);
-    return `<div class="card"><div class="spread"><b>${id === 'recomp' ? '🔄 ' + T('Recomp') : '🍗 ' + T('Protein target')}</b><span><b>${r0(v)}</b> <span class="muted">/ ${g} g</span></span></div>${bar(v, g, 'var(--protein)')}
-      <p class="small muted" style="margin:8px 0 0">${left > 0 ? T('{n} g protein to go today.', { n: left }) : T('Protein goal reached! 🎉')}${id === 'recomp' ? ' ' + T('Train with weights; your weight may stay similar while your body changes.') : ''}</p></div>`;
+    return `<div class="card"><div class="spread"><b>${id === 'recomp' ? '🔄 ' + T('Lose fat & build muscle') : '🍗 ' + T('Protein target')}</b><span><b>${r0(v)}</b> <span class="muted">/ ${g} g</span></span></div>${bar(v, g, 'var(--protein)')}
+      <p class="small muted" style="margin:8px 0 0">${left > 0 ? T('{n} g protein to go today.', { n: left }) : T('Protein goal reached! 🎉')}${id === 'recomp' ? ' ' + (p.goal === 'lose' ? T('Train with weights so the weight you lose is fat, not muscle.') : T('Train with weights; your weight may stay similar while your body changes.')) : ''}</p></div>`;
   }
   return '';
 }
@@ -3331,7 +3347,7 @@ function waterAuto(d = sel) {
   if (ex > train) parts.push([burnWholeDay() ? T('Extra activity that day ({n} kcal burned)', { n: r0(burned) }) : T('Exercise that day ({n} kcal)', { n: r0(burned) }), ex]);
   else if (train) parts.push([T('Training {n}× a week', { n: p.workouts }), train]);
   const pl = planOf(p);
-  if (['protein', 'keto', 'bulk', 'lean', 'dirty', 'recomp'].includes(pl.id) || p.goal === 'lean') parts.push([T('Your goal: {g}', { g: T(pl.name) }), 250]);
+  if (['protein', 'keto', 'bulk', 'lean', 'dirty', 'recomp', 'sport', 'preg'].includes(pl.id) || p.goal === 'lean') parts.push([T('Your goal: {g}', { g: T(pl.name) }), pl.id === 'preg' && p.preg === 'bf' ? 500 : 250]);
   return { total: clamp(Math.round(parts.reduce((a, x) => a + x[1], 0) / 250) * 250, 1500, 5000), parts };
 }
 const waterGoal = (d = sel) => db.settings.waterGoal || waterAuto(d).total;
@@ -3591,7 +3607,7 @@ function prefsText(pr) {
 }
 function planGoalText() {
   const p = db.profile, t = targets(), id = planOf(p).id;
-  let s = `Daily targets per person: ${t.kcal} kcal, ${t.protein} g protein, ${t.carbs} g carbs, ${t.fat} g fat. Main goal: ${planOf(p).name} (${planOf(p).sub}). ${PLAN_COACH[id]}`;
+  let s = `Daily targets per person: ${t.kcal} kcal, ${t.protein} g protein, ${t.carbs} g carbs, ${t.fat} g fat. Main goal: ${planOf(p).name} (${planOf(p).sub}). ${planCoach(p)}`;
   if (id === 'if') { const f = fastState(p); s += ` Eating window ${f.startStr}-${f.endStr}: every meal must fit inside it.`; }
   return s;
 }
@@ -4067,6 +4083,7 @@ function renderProgress() {
 }
 function expectedText(p, cur) {
   if (!p || !cur) return '';
+  if (planOf(p).id === 'preg') return `<div class="tip">🤰 ${T('Gaining weight during pregnancy is normal and healthy. Your doctor or midwife can tell you what is right for you.')}</div>`;
   if (p.goal === 'maintain') return planOf(p).id === 'recomp' ? `<div class="tip">🔄 ${T('Recomp: your weight may stay about the same while you lose fat and build muscle. Judge progress by strength, the mirror and how your clothes fit.')}</div>` : '';
   const rem = p.targetWeight - cur;
   if ((p.goal === 'lose' && rem >= 0) || (isGain(p.goal) && rem <= 0)) return `<div class="tip">🎉 ${T('You reached your goal weight! Update your goal in Settings.')}</div>`;
@@ -4117,7 +4134,7 @@ let chatBusy = false, chatAtt = [];
 const saveChat = () => { chat = chat.slice(-80); if (!LS.set('ft_chat', JSON.stringify(chat))) { chat = chat.slice(-30).map(m => ({ ...m, img: null })); LS.set('ft_chat', JSON.stringify(chat)); } };
 // One extra suggestion that fits the chosen goal
 const PLAN_CHIP = { cut: N('What are filling low-calorie meals?'), bulk: N('How do I eat enough to gain weight?'), dirty: N('Give me easy high-calorie meals'),
-  recomp: N('How do I make my recomp work?'), healthy: N('How can I eat healthier today?'), protein: N('Give me high-protein meal ideas'),
+  recomp: N('How do I lose fat and build muscle at the same time?'), sport: N('What should I eat before and after training?'), preg: N('What should I eat and avoid right now?'), healthy: N('How can I eat healthier today?'), protein: N('Give me high-protein meal ideas'),
   keto: N('Give me a keto meal idea for today'), if: N('What should I eat when my eating window opens?') };
 const chipsFor = () => { const c = PLAN_CHIP[planOf(db.profile).id]; return c ? [c, ...CHIPS] : CHIPS; };
 const CHIPS = [N('What should I eat next to hit my goals today?'), N('How much protein do I still need today?'), N('Give me a high-protein snack that fits my day'),
@@ -4246,12 +4263,15 @@ const PLAN_COACH = {
   bulk: 'Their main goal is a bulk: help them reach the calorie surplus every day with protein-rich meals, plus progressive strength training.',
   lean: 'Their main goal is a lean bulk: prioritise the protein goal, protein spread over 3-5 meals, mostly whole foods, progressive strength training and sleep. Discourage dirty bulking and big calorie overshoots.',
   dirty: 'Their main goal is a dirty bulk: a big surplus is fine and convenient calorie-dense foods are OK, but still help them hit protein and be honest that faster gain means more fat.',
-  recomp: 'Their main goal is body recomposition: slight deficit, very high protein, progressive strength training and sleep. The scale may barely move; judge progress by strength, measurements and the mirror.',
+  recomp: 'Their main goal is body recomposition (lose fat and build muscle at the same time): a small deficit (their weight goes down slowly, or stays about the same if they chose to keep their weight), very high protein spread over the day, progressive strength training 3-5x a week and enough sleep. Judge progress by strength, measurements and the mirror, not only the scale.',
+  sport: 'Their main goal is sport / endurance performance: enough carbs to fuel training (more on hard or long days, carbs before and after training), protein after training, fluids and electrolytes on long sessions. Never let them under-fuel hard training.',
+  preg: 'They are pregnant or breastfeeding. NEVER suggest a calorie deficit, dieting or losing weight; weight gain during pregnancy is normal and healthy. Focus on nutrient-dense food, enough protein, folate, iron, calcium, iodine, vitamin D and omega-3 (low-mercury fish). Point out foods to avoid in pregnancy when relevant: alcohol, raw or undercooked fish, meat and eggs, unpasteurised dairy, high-mercury fish, liver, and too much caffeine (max about 200 mg a day). For anything medical, tell them to ask their doctor or midwife.',
   healthy: 'Their main goal is to eat healthier: favour whole foods, vegetables and fibre (about 30 g/day); limit added sugar, salt (under 2000 mg sodium/day) and ultra-processed food. Use their sugar, fiber and sodium numbers.',
   protein: 'Their main goal is high protein: make sure they hit the protein target every day; suggest protein-dense foods and spreading protein over the day.',
   keto: 'They eat keto / low carb: keep total carbs under their daily carb limit; suggest low-carb foods (meat, fish, eggs, dairy, nuts, low-starch vegetables) and avoid bread, pasta, rice, potatoes and sugar.',
   if: 'They do intermittent fasting: only suggest eating inside their eating window. If they are fasting right now, tell them when the window opens and what to eat then (water, black coffee and unsweetened tea are fine while fasting).'
 };
+const planCoach = p => PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` Right now: ${{ t1: 'pregnant, months 1-3', t2: 'pregnant, months 4-6', t3: 'pregnant, months 7-9', bf: 'breastfeeding' }[p.preg] || 'pregnant'}.` : '');
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
@@ -4259,7 +4279,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for).
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
 - Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
-- Settings: Your goal, Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone; "Back up now"); Privacy; Delete all data.
+- Settings: Your goal (one of 12 goals: lose weight, lose fat & build muscle (recomp, they can lose weight slowly or keep it), maintain, bulk, lean bulk, dirty bulk, sport & endurance (more carbs), eat healthier, high protein, keto / low carb, intermittent fasting, pregnancy & breastfeeding (extra calories by stage, never a deficit)), Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone; "Back up now"); Privacy; Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
   const mem = memList();
@@ -4277,7 +4297,7 @@ RULES
 - You are not a doctor. For medical conditions, medication, pregnancy or signs of an eating disorder, recommend a professional.
 ${isLb() || isIn() || isOz() ? `- UNITS: the user uses ${isLb() ? 'pounds (lb) for body weight' : 'kg for body weight'}, ${isIn() ? 'feet/inches for height' : 'cm for height'} and ${isOz() ? 'fluid ounces (fl oz) for drinks' : 'litres/ml for drinks'}. The data below is in metric: convert when you talk about these. Food amounts and macros stay in grams.\n` : ''}- PHOTOS AND FILES: when the user sends photos (e.g. a restaurant menu, a food label, a fridge, a receipt) or files, first read them carefully, every page and every photo. Only mention dishes, products and numbers that are really visible or written in them, using their exact names (and prices if shown). Never invent items that are not there. If something is too small, blurry or cut off to read, say so and ask for a closer photo instead of guessing. For a menu: recommend the best concrete options from THAT menu for their goal and what is left today, with estimated calories and protein, and say how to order them (e.g. sauce on the side).
 - The app has a weekly meal plan and grocery list (see WEEKLY MEAL PLAN below). For cooking, meal prep or planning questions, base your help on that plan: a concrete prep schedule (which day, what to cook ahead, how to store it and for how long), simple cooking steps, and swaps that keep them on target. Refer to today's planned meals when it fits. If they change something, tell them they can also swap meals or change the plan on the meal plan page.
-${db.profile ? '- ' + PLAN_COACH[planOf(db.profile).id] + '\n' : ''}
+${db.profile ? '- ' + planCoach(db.profile) + '\n' : ''}
 MEMORY
 - Below is what you remember about the user from earlier chats. Use it naturally.
 - When the user tells you something lasting about themselves (food likes/dislikes, allergies, diet style, training schedule, budget, cooking habits, routines, injuries, preferences for how you answer), add one short fact at the very END of your reply like this: <memory>Is lactose intolerant</memory>. One tag per fact, only for new lasting facts, never for today's numbers.
@@ -4921,19 +4941,20 @@ function openPersonalSheet() {
   });
 }
 
-// Settings → Your goal: pick one of the 10 goals; the whole app follows. Past days are not changed.
+// Settings → Your goal: pick one of the 12 goals; the whole app follows. Past days are not changed.
 function openMainGoalSheet() {
   if (!db.profile) return startOnboarding();
   const w = currentWeight(), d = clone(db.profile), custom = Object.keys(db.overrides).length > 0;
-  d.fast = d.fast || { h: 16, start: '12:00' }; d.carbs = d.carbs || 'keto';
+  d.fast = d.fast || { h: 16, start: '12:00' }; d.carbs = d.carbs || 'keto'; d.preg = d.preg || 't2';
   sheet(`<h3>🎯 ${T('Your goal')}</h3><p class="muted" style="margin-top:4px">${T('Everything in the app adapts to it. Your past days stay as they are.')}</p><div id="gBody"></div>`, s => {
     const fill = () => {
       const pl = planOf(d), [mn, , mx] = paceRange(d), paces = [];
       for (let v = mn; v <= mx + 1e-9; v += 0.05) paces.push(Math.round(v * 100) / 100);
       if (!paces.includes(d.pace)) paces.push(d.pace), paces.sort((a, b) => a - b);
       s.querySelector('#gBody').innerHTML = `
-        <div style="margin-top:12px">${PLANS.map(x => `<button class="opt cmp ${x.id === d.plan ? 'on' : ''}" data-plan="${x.id}">${x.ic} ${T(x.name)}<small>${T(x.sub)}</small></button>`).join('')}</div>
-        ${pl.dir === null ? `<label class="lbl">${T('And your weight?')}</label><div class="seg">${DIRS.map(([v, l]) => `<button data-dir="${v}" class="${d.goal === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>` : ''}
+        <div style="margin-top:12px">${plansFor(d).map(x => `<button class="opt cmp ${x.id === d.plan ? 'on' : ''}" data-plan="${x.id}">${x.ic} ${T(x.name)}<small>${T(x.sub)}</small></button>`).join('')}</div>
+        ${pl.id === 'preg' ? `<label class="lbl">${T('Where are you right now?')}</label><div class="seg" style="flex-wrap:wrap">${PREG.map(([v, l]) => `<button data-preg="${v}" class="${d.preg === v ? 'on' : ''}" style="flex:1 1 45%">${T(l)}</button>`).join('')}</div>` : ''}
+        ${planDirs(pl) ? `<label class="lbl">${T('And your weight?')}</label><div class="seg">${DIRS.filter(([v]) => planDirs(pl).includes(v)).map(([v, l]) => `<button data-dir="${v}" class="${d.goal === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>` : ''}
         ${pl.id === 'keto' ? `<label class="lbl">${T('How strict?')}</label><div class="seg">${[['keto', N('Keto (max 30 g carbs)')], ['lowcarb', N('Low carb (max 100 g carbs)')]].map(([v, l]) => `<button data-carb="${v}" class="${d.carbs === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>` : ''}
         ${pl.id === 'if' ? fastPicker(d.fast) : ''}
         ${needsTarget(d) ? `<div class="row"><div class="grow"><label class="lbl">${T('Goal weight (kg)').replace('kg', wUnit())}</label><input id="gT" inputmode="decimal" value="${showW(d.targetWeight)}"></div>
@@ -4944,6 +4965,7 @@ function openMainGoalSheet() {
       box.querySelectorAll('[data-plan]').forEach(b => b.onclick = () => { applyPlan(d, b.dataset.plan, w); fill(); });
       box.querySelectorAll('[data-dir]').forEach(b => b.onclick = () => { d.goal = b.dataset.dir; d.pace = paceRange(d)[1]; fixTarget(d, w); fill(); });
       box.querySelectorAll('[data-carb]').forEach(b => b.onclick = () => { d.carbs = b.dataset.carb; fill(); });
+      box.querySelectorAll('[data-preg]').forEach(b => b.onclick = () => { d.preg = b.dataset.preg; fill(); });
       if (box.querySelector('#fH')) bindFast(box, d.fast, preview);
       if (box.querySelector('#gT')) box.querySelector('#gT').oninput = e => { d.targetWeight = r1(readW(e.target.value)); preview(); };
       if (box.querySelector('#gP')) box.querySelector('#gP').onchange = e => { d.pace = +e.target.value; preview(); };
@@ -4979,18 +5001,19 @@ function openGoalsSheet() {
 
 /* ================= Onboarding ================= */
 let ob = null;
-const OB = ['intro', 'gender', 'workouts', 'body', 'birth', 'goal', 'dir', 'carbs', 'fasting', 'target', 'speed', 'ai', 'ready'];
+const OB = ['intro', 'gender', 'workouts', 'body', 'birth', 'goal', 'dir', 'carbs', 'preg', 'fasting', 'target', 'speed', 'ai', 'ready'];
 function startOnboarding() {
   const base = db.profile ? clone(db.profile) : {};
   ob = { step: 0, p: Object.assign({ sex: '', workouts: '', height: 175, weight: 75, birth: '', plan: '', goal: '', targetWeight: null, pace: 0.5,
-    carbs: 'keto', fast: { h: 16, start: '12:00' } }, base) };
+    carbs: 'keto', preg: '', fast: { h: 16, start: '12:00' } }, base) };
   if (db.profile) ob.p.weight = currentWeight();
   closeSheet(); renderOb();
 }
 // Steps that don't apply to the chosen goal are skipped
 function obSkip(i) {
   const s = OB[i], p = ob.p;
-  if (s === 'dir') return planOf(p).dir !== null;
+  if (s === 'dir') return !planDirs(planOf(p));
+  if (s === 'preg') return p.plan !== 'preg';
   if (s === 'carbs') return p.plan !== 'keto';
   if (s === 'fasting') return p.plan !== 'if';
   if (s === 'target' || s === 'speed') return p.goal === 'maintain';
@@ -5007,7 +5030,9 @@ function planTips(p) {
   if (id === 'healthy') t.push('🥗 ' + T('Aim for 30 g fiber a day and less sugar and salt'));
   t.push('🍗 ' + T('Hit your protein goal every day'));
   if (['lean', 'bulk', 'dirty', 'recomp'].includes(id) || p.goal === 'lean') t.push('🏋️ ' + T('Train with weights 3–5× a week and get stronger over time'));
-  if (id === 'recomp') t.push('🔄 ' + T('Your weight may stay similar while your body changes'));
+  if (id === 'recomp' && p.goal === 'maintain') t.push('🔄 ' + T('Your weight may stay similar while your body changes'));
+  if (id === 'sport') t.push('🍝 ' + T('Eat enough carbs around long or hard training'));
+  if (id === 'preg') { t.push('🩺 ' + T('Ask your doctor or midwife how much weight gain is right for you')); t.push('🚫 ' + T('No alcohol, raw fish, raw meat or unpasteurised cheese')); }
   t.push('⚖️ ' + T('Weigh yourself once a week, in the morning before breakfast'));
   return t;
 }
@@ -5067,9 +5092,12 @@ function renderOb() {
   if (s === 'birth') { title = T('When were you born?'); sub = calib;
     body = birthPicker(p.birth); ok = !!p.birth; }
   if (s === 'goal') { title = T('What is your main goal?'); sub = T('Everything in the app adapts to it. You can change it any time in Settings.');
-    body = PLANS.map(x => `<button class="opt cmp ${p.plan === x.id ? 'on' : ''}" data-plan="${x.id}">${x.ic} ${T(x.name)}<small>${T(x.sub)}</small></button>`).join(''); ok = !!p.plan; }
-  if (s === 'dir') { title = T('What about your weight?'); sub = T('{goal} works with any weight goal.', { goal: T(planOf(p).name) });
-    body = opts('goal', [['lose', T('Lose weight')], ['maintain', T('Keep my weight')], ['lean', T('Gain weight'), T('Slowly, mostly muscle')]]); ok = ['lose', 'maintain', 'lean'].includes(p.goal); }
+    body = plansFor(p).map(x => `<button class="opt cmp ${p.plan === x.id ? 'on' : ''}" data-plan="${x.id}">${x.ic} ${T(x.name)}<small>${T(x.sub)}</small></button>`).join(''); ok = !!p.plan; }
+  if (s === 'dir') { const dirs = planDirs(planOf(p)); title = T('What about your weight?');
+    sub = planOf(p).id === 'recomp' ? T('Lose some weight slowly while you build muscle, or keep your weight the same.') : T('{goal} works with any weight goal.', { goal: T(planOf(p).name) });
+    body = opts('goal', [['lose', T('Lose weight'), planOf(p).id === 'recomp' ? T('Slowly, so you can still build muscle') : ''], ['maintain', T('Keep my weight')], ['lean', T('Gain weight'), T('Slowly, mostly muscle')]].filter(([v]) => dirs.includes(v))); ok = dirs.includes(p.goal); }
+  if (s === 'preg') { title = T('Where are you right now?'); sub = T('Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.');
+    body = opts('preg', PREG.map(([v, l]) => [v, T(l)])); ok = !!p.preg; }
   if (s === 'carbs') { title = T('How strict do you want to be?');
     body = opts('carbs', [['keto', T('Keto'), T('Max 30 g carbs a day')], ['lowcarb', T('Low carb'), T('Max 100 g carbs a day')]]); }
   if (s === 'fasting') { const f = fastState(p); title = T('Choose your fasting rhythm'); sub = T('You only eat inside your eating window.');
