@@ -1047,7 +1047,9 @@ window.I18N = {
 "Delete your template Shortcut (press and hold → <b>Delete</b>). Then connect yourself exactly like a friend: Settings → <b>Watch & tracker</b> → <b>Apple Watch</b>. If that works, it works for everyone.":"Lösche deinen Vorlage-Kurzbefehl (gedrückt halten → <b>Löschen</b>). Verbinde dich dann genau wie ein Freund: Einstellungen → <b>Uhr & Tracker</b> → <b>Apple Watch</b>. Wenn das klappt, klappt es für alle.",
 "Share Apple Health":"Apple Health teilen",
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Bau den Kurzbefehl einmal und teile ihn. Dann tippen Freunde mit Apple Watch, Garmin und allen anderen Uhren nur auf Hinzufügen, fügen ihren Code ein und sind fertig.",
-"Everyone now gets the Add button.":"Alle bekommen jetzt den Hinzufügen-Knopf."
+"Everyone now gets the Add button.":"Alle bekommen jetzt den Hinzufügen-Knopf.",
+"Search <b>Text</b> and tap it. In the box, type exactly these words:":"Suche <b>Text</b> und tippe darauf. Schreibe genau diese Wörter ins Feld:",
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"Nicht dein eigener Code: Diese Wörter sind ein Platzhalter, den jeder Freund durch seinen Code ersetzt."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2096,7 +2098,9 @@ window.I18N = {
 "Delete your template Shortcut (press and hold → <b>Delete</b>). Then connect yourself exactly like a friend: Settings → <b>Watch & tracker</b> → <b>Apple Watch</b>. If that works, it works for everyone.":"Borra tu atajo plantilla (mantén pulsado → <b>Eliminar</b>). Luego conéctate exactamente como un amigo: Ajustes → <b>Reloj y pulsera</b> → <b>Apple Watch</b>. Si funciona, funciona para todos.",
 "Share Apple Health":"Compartir Apple Salud",
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Crea el atajo una vez y compártelo. Así los amigos con Apple Watch, Garmin y cualquier otro reloj solo tocan Añadir, pegan su código y listo.",
-"Everyone now gets the Add button.":"Ahora todos tienen el botón Añadir."
+"Everyone now gets the Add button.":"Ahora todos tienen el botón Añadir.",
+"Search <b>Text</b> and tap it. In the box, type exactly these words:":"Busca <b>Text</b> y tócalo. En el recuadro escribe exactamente estas palabras:",
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"No es tu propio código: estas palabras son un marcador que cada amigo cambia por su código."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3145,7 +3149,9 @@ window.I18N = {
 "Delete your template Shortcut (press and hold → <b>Delete</b>). Then connect yourself exactly like a friend: Settings → <b>Watch & tracker</b> → <b>Apple Watch</b>. If that works, it works for everyone.":"Supprime ton raccourci modèle (appui long → <b>Supprimer</b>). Puis connecte-toi exactement comme un ami : Réglages → <b>Montre et tracker</b> → <b>Apple Watch</b>. Si ça marche, ça marche pour tout le monde.",
 "Share Apple Health":"Partager Apple Santé",
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Crée le raccourci une fois et partage-le. Les amis avec Apple Watch, Garmin et toutes les autres montres n'ont plus qu'à toucher Ajouter, coller leur code, et c'est fini.",
-"Everyone now gets the Add button.":"Tout le monde a maintenant le bouton Ajouter."
+"Everyone now gets the Add button.":"Tout le monde a maintenant le bouton Ajouter.",
+"Search <b>Text</b> and tap it. In the box, type exactly these words:":"Cherche <b>Text</b> et touche-le. Dans la case, écris exactement ces mots :",
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"Pas ton propre code : ces mots sont un repère que chaque ami remplace par son code."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -4194,7 +4200,9 @@ window.I18N = {
 "Delete your template Shortcut (press and hold → <b>Delete</b>). Then connect yourself exactly like a friend: Settings → <b>Watch & tracker</b> → <b>Apple Watch</b>. If that works, it works for everyone.":"Elimina il tuo comando modello (tieni premuto → <b>Elimina</b>). Poi collegati esattamente come un amico: Impostazioni → <b>Orologio e tracker</b> → <b>Apple Watch</b>. Se funziona, funziona per tutti.",
 "Share Apple Health":"Condividi Apple Salute",
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Crea il comando rapido una volta e condividilo. Così gli amici con Apple Watch, Garmin e tutti gli altri orologi toccano solo Aggiungi, incollano il codice e hanno finito.",
-"Everyone now gets the Add button.":"Ora tutti hanno il pulsante Aggiungi."
+"Everyone now gets the Add button.":"Ora tutti hanno il pulsante Aggiungi.",
+"Search <b>Text</b> and tap it. In the box, type exactly these words:":"Cerca <b>Text</b> e toccalo. Nel riquadro scrivi esattamente queste parole:",
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"Non il tuo codice: queste parole sono un segnaposto che ogni amico sostituisce con il proprio codice."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -5243,7 +5251,9 @@ window.I18N = {
 "Delete your template Shortcut (press and hold → <b>Delete</b>). Then connect yourself exactly like a friend: Settings → <b>Watch & tracker</b> → <b>Apple Watch</b>. If that works, it works for everyone.":"テンプレートのショートカットを削除（長押し → <b>削除</b>）。その後、友だちと同じ手順で連携：設定 → <b>ウォッチとトラッカー</b> → <b>Apple Watch</b>。これで動けば全員動きます。",
 "Share Apple Health":"Apple ヘルスケアを共有",
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"ショートカットを一度作って共有しましょう。Apple Watch や Garmin などの友だちは「追加」をタップしてコードを貼るだけで完了します。",
-"Everyone now gets the Add button.":"全員に追加ボタンが表示されるようになりました。"
+"Everyone now gets the Add button.":"全員に追加ボタンが表示されるようになりました。",
+"Search <b>Text</b> and tap it. In the box, type exactly these words:":"<b>Text</b> を検索してタップ。欄にこの言葉をそのまま入力：",
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"あなたのコードではありません。友だちが自分のコードに置き換えるための目印です。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -6292,7 +6302,9 @@ window.I18N = {
 "Delete your template Shortcut (press and hold → <b>Delete</b>). Then connect yourself exactly like a friend: Settings → <b>Watch & tracker</b> → <b>Apple Watch</b>. If that works, it works for everyone.":"Verwijder je sjabloon-opdracht (ingedrukt houden → <b>Verwijder</b>). Koppel jezelf dan precies als een vriend: Instellingen → <b>Horloge & tracker</b> → <b>Apple Watch</b>. Als dat werkt, werkt het voor iedereen.",
 "Share Apple Health":"Apple Gezondheid delen",
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Maak de opdracht één keer en deel hem. Vrienden met Apple Watch, Garmin en alle andere horloges tikken dan alleen op Voeg toe, plakken hun code en zijn klaar.",
-"Everyone now gets the Add button.":"Iedereen krijgt nu de knop Toevoegen."
+"Everyone now gets the Add button.":"Iedereen krijgt nu de knop Toevoegen.",
+"Search <b>Text</b> and tap it. In the box, type exactly these words:":"Zoek <b>Text</b> en tik erop. Typ precies deze woorden in het vak:",
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"Niet je eigen code: deze woorden zijn een plaatshouder die elke vriend vervangt door zijn code."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -7341,7 +7353,9 @@ window.I18N = {
 "Delete your template Shortcut (press and hold → <b>Delete</b>). Then connect yourself exactly like a friend: Settings → <b>Watch & tracker</b> → <b>Apple Watch</b>. If that works, it works for everyone.":"Usuń swój skrót-szablon (przytrzymaj → <b>Usuń</b>). Potem połącz się dokładnie jak znajomy: Ustawienia → <b>Zegarek i opaska</b> → <b>Apple Watch</b>. Jeśli działa, działa dla wszystkich.",
 "Share Apple Health":"Udostępnij Apple Zdrowie",
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Utwórz skrót raz i udostępnij go. Wtedy znajomi z Apple Watch, Garmin i innymi zegarkami tylko stukają Dodaj, wklejają kod i gotowe.",
-"Everyone now gets the Add button.":"Wszyscy mają teraz przycisk Dodaj."
+"Everyone now gets the Add button.":"Wszyscy mają teraz przycisk Dodaj.",
+"Search <b>Text</b> and tap it. In the box, type exactly these words:":"Wyszukaj <b>Text</b> i stuknij. W polu wpisz dokładnie te słowa:",
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"To nie Twój kod: te słowa to miejsce, które każdy znajomy zastąpi swoim kodem."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -8390,7 +8404,9 @@ window.I18N = {
 "Delete your template Shortcut (press and hold → <b>Delete</b>). Then connect yourself exactly like a friend: Settings → <b>Watch & tracker</b> → <b>Apple Watch</b>. If that works, it works for everyone.":"Apague o seu atalho modelo (mantenha premido → <b>Apagar</b>). Depois ligue-se exatamente como um amigo: Definições → <b>Relógio e tracker</b> → <b>Apple Watch</b>. Se funcionar, funciona para todos.",
 "Share Apple Health":"Partilhar a app Saúde",
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Crie o atalho uma vez e partilhe-o. Assim os amigos com Apple Watch, Garmin e todos os outros relógios só tocam em Adicionar, colam o código e pronto.",
-"Everyone now gets the Add button.":"Agora todos têm o botão Adicionar."
+"Everyone now gets the Add button.":"Agora todos têm o botão Adicionar.",
+"Search <b>Text</b> and tap it. In the box, type exactly these words:":"Procure <b>Text</b> e toque. Na caixa escreva exatamente estas palavras:",
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"Não é o seu código: estas palavras são um marcador que cada amigo substitui pelo seu código."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -9439,7 +9455,9 @@ window.I18N = {
 "Delete your template Shortcut (press and hold → <b>Delete</b>). Then connect yourself exactly like a friend: Settings → <b>Watch & tracker</b> → <b>Apple Watch</b>. If that works, it works for everyone.":"Удалите свою команду-шаблон (удерживайте → <b>Удалить</b>). Затем подключитесь точно как друг: Настройки → <b>Часы и трекер</b> → <b>Apple Watch</b>. Если работает, работает у всех.",
 "Share Apple Health":"Поделиться «Здоровьем»",
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Создайте команду один раз и поделитесь. Тогда друзья с Apple Watch, Garmin и любыми другими часами просто нажимают «Добавить», вставляют код — и готово.",
-"Everyone now gets the Add button.":"Теперь у всех есть кнопка «Добавить»."
+"Everyone now gets the Add button.":"Теперь у всех есть кнопка «Добавить».",
+"Search <b>Text</b> and tap it. In the box, type exactly these words:":"Найдите <b>Text</b> и нажмите. В поле напишите ровно эти слова:",
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"Это не ваш код: эти слова — заполнитель, который каждый друг заменит своим кодом."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -10488,7 +10506,9 @@ window.I18N = {
 "Delete your template Shortcut (press and hold → <b>Delete</b>). Then connect yourself exactly like a friend: Settings → <b>Watch & tracker</b> → <b>Apple Watch</b>. If that works, it works for everyone.":"Şablon kestirmeni sil (basılı tut → <b>Sil</b>). Sonra tam bir arkadaş gibi bağlan: Ayarlar → <b>Saat ve takip cihazı</b> → <b>Apple Watch</b>. Çalışırsa herkes için çalışır.",
 "Share Apple Health":"Apple Sağlık'ı paylaş",
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"Kestirmeyi bir kez oluşturup paylaş. Böylece Apple Watch, Garmin ve diğer saatleri olan arkadaşlar sadece Ekle'ye dokunur, kodlarını yapıştırır ve biter.",
-"Everyone now gets the Add button.":"Artık herkes Ekle düğmesini görüyor."
+"Everyone now gets the Add button.":"Artık herkes Ekle düğmesini görüyor.",
+"Search <b>Text</b> and tap it. In the box, type exactly these words:":"<b>Text</b>'i ara ve dokun. Kutuya tam olarak şu kelimeleri yaz:",
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"Kendi kodun değil: bu kelimeler, her arkadaşın kendi koduyla değiştireceği bir yer tutucudur."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -11537,6 +11557,8 @@ window.I18N = {
 "Delete your template Shortcut (press and hold → <b>Delete</b>). Then connect yourself exactly like a friend: Settings → <b>Watch & tracker</b> → <b>Apple Watch</b>. If that works, it works for everyone.":"删除你的模板快捷指令（长按 → <b>删除</b>）。然后像朋友一样连接：设置 → <b>手表和手环</b> → <b>Apple Watch</b>。如果成功，所有人都能用。",
 "Share Apple Health":"共享 Apple 健康",
 "Make the Shortcut once and share it. Then friends with an Apple Watch, Garmin and all other watches only tap Add, paste their code and are done.":"只需创建一次快捷指令并共享。这样使用 Apple Watch、Garmin 和其他手表的朋友只要点“添加”、粘贴代码就完成了。",
-"Everyone now gets the Add button.":"现在所有人都能看到添加按钮。"
+"Everyone now gets the Add button.":"现在所有人都能看到添加按钮。",
+"Search <b>Text</b> and tap it. In the box, type exactly these words:":"搜索 <b>Text</b> 并点它。在框中准确输入这几个词：",
+"Not your own code: these words are a placeholder that each friend replaces with their code.":"不是你自己的代码：这些词只是占位符，每位朋友会换成自己的代码。"
 }
 };

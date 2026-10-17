@@ -741,7 +741,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v89';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v90';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2595,7 +2595,7 @@ function openSharePage() {
     build: `${LANG !== 'en' ? `<p class="small muted" style="margin:0 0 6px">${T('The action names below are in English. On an iPhone in your language they are translated: search for the matching words.')}</p>` : ''}
       ${[
         [T('Open <b>Shortcuts</b>, tap <b>+</b> (top right), then tap the name at the top → <b>Rename</b> → <b>Food Tracker calories</b>.'), open],
-        [T('Search <b>Text</b> and tap it. In the box, type: <b>PASTE YOUR CODE</b>'), `<button class="chipbtn" id="shTxt" style="margin-top:6px">${T('Copy')}</button>`],
+        [T('Search <b>Text</b> and tap it. In the box, type exactly these words:'), `<div style="font-family:ui-monospace,monospace;font-size:14px;font-weight:700;margin-top:6px;padding:8px 10px;border-radius:10px;background:var(--chip);display:inline-block">PASTE YOUR CODE</div> <button class="chipbtn" id="shTxt" style="margin-top:6px">${T('Copy')}</button><p class="small muted" style="margin:6px 0 0">${T('Not your own code: these words are a placeholder that each friend replaces with their code.')}</p>`],
         [T('Search <b>Health Samples</b> → <b>Find Health Samples</b>: <b>Type</b> → <b>Active Energy</b>, <b>Add Filter</b> → <b>Start Date</b> · <b>is today</b>, <b>Group By</b> (under <b>Show More</b>) → <b>Day</b>.')],
         [T('Search <b>Calculate Statistics</b>, tap it and choose <b>Sum</b>.')],
         [T('Search <b>Get Contents of URL</b>, tap the blue <b>URL</b> and paste:'), `<div style="font-family:ui-monospace,monospace;font-size:12px;word-break:break-all;margin-top:4px">${base}</div><button class="chipbtn" id="shUrl" style="margin-top:6px">${T('Copy address')}</button>`],
