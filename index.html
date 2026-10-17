@@ -718,13 +718,14 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
   display:flex;align-items:center;justify-content:center;color:var(--muted);will-change:transform,opacity}
 .ptr-in{display:flex}
 #ptr svg{width:22px;height:22px}
-#ptr .ptr-arc{stroke-dasharray:100;stroke-dashoffset:100}
-#ptr.spin .ptr-arc{transition:stroke-dashoffset .3s ease}
+#ptr .ptr-logo{transform-box:view-box;transform-origin:12px 12px}
+#ptr .ptr-arc{stroke-dasharray:83.33 100;stroke-dashoffset:83.33}
+#ptr .ptr-dot{opacity:0;transform-box:fill-box;transform-origin:center;transition:opacity .15s,transform .3s cubic-bezier(.34,1.6,.5,1)}
 #ptr.ready{color:var(--text)}
-#ptr.spin svg{animation:rot .8s linear infinite}
+#ptr.spin .ptr-logo{animation:rot .9s linear infinite}
 #ptr .ptr-ok{stroke-dasharray:100;stroke-dashoffset:100;opacity:0}
 #ptr.done{color:var(--good)}
-#ptr.done .ptr-arc{opacity:0;transition:opacity .15s}
+#ptr.done .ptr-logo{opacity:0;transition:opacity .15s}
 #ptr.done .ptr-ok{opacity:1;stroke-dashoffset:0;transition:stroke-dashoffset .38s cubic-bezier(.65,0,.35,1) .05s}
 </style>
 <script src="lang.js"></script>
@@ -888,7 +889,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v113';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v114';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -4813,9 +4814,9 @@ async function pullRefresh() {
 (() => {
   const sc = $('#scroller'), view = $('#view'), ind = document.createElement('div');
   ind.id = 'ptr';
-  ind.innerHTML = '<span class="ptr-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle class="ptr-arc" cx="12" cy="12" r="8" pathLength="100"/><path class="ptr-ok" d="M7.5 12.4l3 3 6-6.4" pathLength="100" stroke-linejoin="round"/></svg></span>';
+  ind.innerHTML = '<span class="ptr-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><g class="ptr-logo"><circle class="ptr-arc" cx="12" cy="12" r="6.9" stroke-width="2.3" pathLength="100" transform="rotate(-60 12 12)"/><circle class="ptr-dot" cx="15.5" cy="5.95" r="1.95" fill="#ff9500" stroke="none"/></g><path class="ptr-ok" d="M7.5 12.4l3 3 6-6.4" stroke-width="2.2" stroke-linejoin="round" pathLength="100"/></svg></span>';   // the app logo: a ring with an orange dot
   document.body.appendChild(ind);
-  const svg = ind.querySelector('svg'), arc = ind.querySelector('.ptr-arc');
+  const logo = ind.querySelector('.ptr-logo'), arc = ind.querySelector('.ptr-arc'), dot = ind.querySelector('.ptr-dot');
   const GO = 64, HOLD = 44;
   const rubber = x => (1 - 1 / (x * 0.55 / 320 + 1)) * 320;   // like iOS: light at first, heavier the further you pull
   const ease = 'cubic-bezier(.22,1,.36,1)';
@@ -4830,8 +4831,9 @@ async function pullRefresh() {
     raf = 0;
     const d = rubber(raw), p = Math.min(1, d / GO);
     place(d, p, 1);
-    arc.style.strokeDashoffset = 100 - p * 78;             // the circle draws itself while pulling
-    svg.style.transform = `rotate(${p * 200 - 110}deg)`;
+    arc.style.strokeDashoffset = 83.33 * (1 - p);           // the logo's ring draws itself while pulling, then its dot pops in
+    dot.style.opacity = p >= 1 ? 1 : 0; dot.style.transform = `scale(${p >= 1 ? 1 : 0})`;
+    logo.style.transform = `rotate(${p * 180 - 180}deg)`;
     const r = d >= GO; if (r !== armed) { armed = r; ind.classList.toggle('ready', r); }
   };
   sc.addEventListener('touchstart', e => {
@@ -4860,7 +4862,7 @@ async function pullRefresh() {
     if (!armed) return back();
     ptrBusy = true;
     anim(`.45s ${ease}`); place(HOLD, 1, 1);               // settles softly into place and starts spinning
-    svg.style.transform = ''; arc.style.strokeDashoffset = 28; ind.classList.add('spin');
+    logo.style.transform = ''; arc.style.strokeDashoffset = 0; dot.style.opacity = 1; dot.style.transform = ''; ind.classList.add('spin');   // the whole logo turns
     const t0 = Date.now();
     try { await pullRefresh(); } catch {}
     await new Promise(r => setTimeout(r, Math.max(0, 700 - (Date.now() - t0))));   // long enough to see that it happened
