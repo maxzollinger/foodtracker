@@ -757,7 +757,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v96';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v97';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -939,7 +939,12 @@ function unitWalk(root) {
 }
 new MutationObserver(ms => { for (const m of ms) { if (m.type === 'characterData') unitWalk(m.target); else m.addedNodes.forEach(unitWalk); } })
   .observe(document.body, { childList: true, subtree: true, characterData: true });
-const unitsName = () => { const u = units(); return u.w === 'kg' && u.h === 'cm' && u.v === 'ml' ? T('Metric') : u.w === 'lb' && u.h === 'in' && u.v === 'oz' ? T('US') : `${u.w} · ${u.h === 'in' ? 'ft' : 'cm'} · ${u.v === 'oz' ? 'fl oz' : 'L'}`; };
+// Clock: 24-hour (13:00) or 12-hour (1:00 PM). Stored times stay "HH:MM"; only what is shown changes.
+const use12h = () => { const v = LS.get('ft_time', ''); if (v) return v === '12'; try { return !!new Intl.DateTimeFormat(navigator.language || 'en', { hour: 'numeric' }).resolvedOptions().hour12; } catch { return false; } };
+const fmtHM = t => { const m = /^(\d{1,2}):(\d{2})/.exec(t || ''); if (!m || !use12h()) return t || ''; const h = +m[1] % 24; return `${h % 12 || 12}:${m[2]} ${h < 12 ? 'AM' : 'PM'}`; };
+const fmtHour = h => fmtHM(String(h).padStart(2, '0') + ':00');
+const fmtClock = d => fmtHM(`${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`);
+const unitsName = () => { const u = units(), base = u.w === 'kg' && u.h === 'cm' && u.v === 'ml' ? T('Metric') : u.w === 'lb' && u.h === 'in' && u.v === 'oz' ? T('US') : `${u.w} · ${u.h === 'in' ? 'ft' : 'cm'} · ${u.v === 'oz' ? 'fl oz' : 'L'}`; return `${base} · ${use12h() ? '12h' : '24h'}`; };
 function setUnits(u) { db.settings.units = { ...units(), ...u }; if (db.profile) save(); render(); }
 function openUnitsSheet() {
   const u = units(), row = (key, label, opts) => `<label class="lbl">${label}</label><div class="seg">${opts.map(([v, l]) => `<button data-u="${key}:${v}" class="${u[key] === v ? 'on' : ''}">${l}</button>`).join('')}</div>`;
@@ -949,7 +954,9 @@ function openUnitsSheet() {
     ${row('w', T('Body weight'), [['kg', 'kg'], ['lb', 'lb']])}
     ${row('h', T('Height'), [['cm', 'cm'], ['in', 'ft / in']])}
     ${row('v', T('Drinks'), [['ml', 'L / ml'], ['oz', 'fl oz']])}
+    <label class="lbl">${T('Time')}</label><div class="seg"><button data-clock="24" class="${use12h() ? '' : 'on'}">13:00</button><button data-clock="12" class="${use12h() ? 'on' : ''}">1:00 PM</button></div>
     <p class="small muted" style="margin:14px 0 0">${T('Food is still shown in grams, like on nutrition labels.')}</p>`, sh => {
+    sh.querySelectorAll('[data-clock]').forEach(b => b.onclick = () => { LS.set('ft_time', b.dataset.clock); openUnitsSheet(); render(); });
     sh.querySelectorAll('[data-preset]').forEach(b => b.onclick = () => { setUnits(b.dataset.preset === 'us' ? { w: 'lb', h: 'in', v: 'oz' } : { w: 'kg', h: 'cm', v: 'ml' }); openUnitsSheet(); });
     sh.querySelectorAll('[data-u]').forEach(b => b.onclick = () => { const [k, v] = b.dataset.u.split(':'); setUnits({ [k]: v }); openUnitsSheet(); });
   });
@@ -1129,7 +1136,7 @@ function fastState(p) {
   const inside = t => s < e ? (t >= s && t < e) : (t >= s || t < e);
   const until = x => ((x - mins) % 1440 + 1440) % 1440;
   const hm = v => `${Math.floor(v / 60)}h ${String(v % 60).padStart(2, '0')}m`;
-  const fmt = x => `${String(Math.floor(x / 60)).padStart(2, '0')}:${String(x % 60).padStart(2, '0')}`;
+  const fmt = x => fmtHM(`${String(Math.floor(x / 60)).padStart(2, '0')}:${String(x % 60).padStart(2, '0')}`);
   return { h: f.h, win, inWin: inside(mins), inside, startStr: fmt(s), endStr: fmt(e), toEnd: hm(until(e)), toStart: hm(until(s)),
     fasted: hm(f.h * 60 - until(s)), pct: inside(mins) ? 1 - until(e) / (win * 60) : 1 - until(s) / (f.h * 60) };
 }
@@ -1279,7 +1286,7 @@ function renderHome() {
     }
     const m = en.m, mt = mealTotals(m);
     return `<button class="entry" onclick="openMeal('${m.id}')"><div class="thumb">${m.photo ? `<img data-photo="${m.id}" alt="">` : (m.source === 'barcode' ? '🏷️' : '🍽️')}</div>
-      <div class="einfo"><div class="spread"><span class="ename">${esc(m.name)}${(m.servings || 1) !== 1 ? `<span class="ptag">${fmtPortion(m.servings)}</span>` : ''}</span><span class="etime">${esc(m.time || '')}</span></div>
+      <div class="einfo"><div class="spread"><span class="ename">${esc(m.name)}${(m.servings || 1) !== 1 ? `<span class="ptag">${fmtPortion(m.servings)}</span>` : ''}</span><span class="etime">${esc(fmtHM(m.time || ''))}</span></div>
       <div class="ecal">🔥 ${T('{n} calories', { n: r0(mt.kcal) })}</div>
       <div class="emac"><span>🍗 ${r0(mt.protein)}g</span><span>🌾 ${r0(mt.carbs)}g</span><span>🥑 ${r0(mt.fat)}g</span>${mealHealth(m) ? `<span style="color:${healthColor(mealHealth(m))}">💚 ${mealHealth(m)}</span>` : ''}</div></div></button>`;
   }).join('');
@@ -2066,7 +2073,7 @@ function askAccount(first, then) {
 function backupCard() {
   if (!SERVER_URL) return '';
   const a = acct(), last = +LS.get('ft_bk_last', 0);
-  const when = last ? `${fmtDate(iso(new Date(last)))} ${new Date(last).toLocaleTimeString(LOC, { hour: '2-digit', minute: '2-digit' })}` : '';
+  const when = last ? `${fmtDate(iso(new Date(last)))} ${fmtClock(new Date(last))}` : '';
   if (!a) return `<div class="card" id="bkCard"><b>☁️ ${T('Account & backup')}</b>
     <p class="small muted" style="margin:4px 0 12px">${T('Create a free account with your email and a password. Your data is then backed up every day, and you can get it back on any new phone.')}</p>
     <div class="row"><button class="btn sm grow" id="acUp">${T('Create account')}</button><button class="btn sm outline grow" id="acIn">${T('Sign in')}</button></div></div>`;
@@ -2337,7 +2344,7 @@ const HABITS = [
   { id: 'custom', ic: '✏️', name: N('My own habit'), desc: N('Any habit you want to change. You tick it off each evening.'), auto: false, ifs: [], thens: [] }
 ];
 const habitTpl = h => HABITS.find(x => x.id === (h && h.type)) || HABITS[HABITS.length - 1];
-const habitName = h => h.type === 'custom' ? h.name : T(habitTpl(h).name) + (h.type === 'late' ? ` (${h.cut})` : '');
+const habitName = h => h.type === 'custom' ? h.name : T(habitTpl(h).name) + (h.type === 'late' ? ` (${fmtHM(h.cut)})` : '');
 const SUGARY_RX = /(cola\b|coke\b|pepsi|fanta|sprite|soda\b|soft ?drink|lemonade|limonade|energy ?drink|red ?bull|monster energy|ice ?tea|iced tea|eistee|juice|fruchtsaft|orangensaft|apfelsaft|\bsaft\b|\bjus\b|zumo|succo|vruchtensap|\bsok\b|сок|газировк|лимонад|кола|gazoz|meyve suyu|refresco|gaseosa|bibita|frisdrank|napój|汽水|可乐|果汁|コーラ|ジュース|ソーダ)/i;
 const ZERO_RX = /(zero|light|diet|sugar.?free|zuckerfrei|ohne zucker|sans sucre|sin azúcar|senza zucchero|suikervrij|bez cukru|без сахара|şekersiz|无糖|ゼロ|water|wasser)/i;
 const SWEET_RX = /(chocolate|schokolade|chocolat|cioccolat|chocolade|czekolad|шоколад|çikolata|巧克力|チョコ|candy|sweets|süßigkeit|bonbon|gummi|gummy|haribo|cookie|keks|biscuit|kuchen|torte|\bcake|donut|doughnut|muffin|brownie|ice cream|eiscreme|glace|gelato|helado|dessert|pudding|tiramisu|pastry|gebäck|pâtisserie|nutella|waffel|waffle|snoep|cukierk|конфет|торт|печень|tatlı|lokum|糖果|蛋糕|甜点|ケーキ|お菓子)/i;
@@ -2452,14 +2459,14 @@ function openHabitPlan(type, edit) {
   sheet(`<h3>${t.ic} ${T(t.name)}</h3>
     <p class="muted" style="margin-top:4px">${T(t.desc)}</p>
     ${type === 'custom' ? `<label class="lbl">${T('Your habit')}</label><input id="hbName" maxlength="60" placeholder="${T('e.g. No chips while watching TV')}" value="${esc(h ? h.name : '')}">` : ''}
-    ${type === 'late' ? `<label class="lbl">${T('No food after')}</label><select id="hbCut">${['19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00'].map(x => `<option ${x === (h ? h.cut : '21:00') ? 'selected' : ''}>${x}</option>`).join('')}</select>` : ''}
+    ${type === 'late' ? `<label class="lbl">${T('No food after')}</label><select id="hbCut">${['19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00'].map(x => `<option value="${x}" ${x === (h ? h.cut : '21:00') ? 'selected' : ''}>${fmtHM(x)}</option>`).join('')}</select>` : ''}
     <div class="h2" style="margin:18px 0 6px">${T('Your plan')}</div>
     <p class="small muted" style="margin:0 0 8px">${T('A small "if … then …" plan works best: decide now what you will do in that moment.')}</p>
     <label class="lbl">${T('If')}</label><input id="hbIf" maxlength="80" value="${esc(h ? h.if || '' : t.ifs[0] ? T(t.ifs[0]) : '')}" placeholder="${T('e.g. I get home tired')}">
     <label class="lbl">${T('then')}</label><input id="hbThen" maxlength="80" value="${esc(h ? h.then || '' : t.thens[0] ? T(t.thens[0]) : '')}" placeholder="${T('e.g. I drink a glass of water first')}">
     ${t.thens.length ? `<div class="quick" style="margin-top:8px">${t.thens.map(x => `<button class="chipbtn" data-then="${esc(T(x))}">${esc(T(x))}</button>`).join('')}</div>` : ''}
     <label class="lbl">${T('Reminder (optional)')}</label>
-    <select id="hbRem" ${hasPush ? '' : 'disabled'}><option value="-1">${T('Off')}</option>${hrs.map(x => `<option value="${x}" ${x === rem ? 'selected' : ''}>${String(x).padStart(2, '0')}:00</option>`).join('')}</select>
+    <select id="hbRem" ${hasPush ? '' : 'disabled'}><option value="-1">${T('Off')}</option>${hrs.map(x => `<option value="${x}" ${x === rem ? 'selected' : ''}>${fmtHour(x)}</option>`).join('')}</select>
     ${hasPush ? '' : `<p class="small muted" style="margin:6px 0 0">${T('Turn on notifications in Settings to get a reminder.')}</p>`}
     <p class="small muted" style="margin:14px 0 0">${t.auto ? '✓ ' + T('Checked automatically from your food log. You can still correct a day yourself.') : T('Each evening you tap ✓ or ✕ on Home.')}</p>
     <button class="btn" id="hbStart" style="margin-top:14px">${edit ? T('Save') : T('Start this habit')}</button>`, sh => {
@@ -2638,7 +2645,7 @@ async function openTrackerSheet() {
     if ($('.backdrop') !== before) return;   // something else was opened meanwhile
   }
   const today = db.exercises.find(e => e.id === 'auto-' + iso());
-  const when = L && L.ok ? new Date(L.ok).toLocaleTimeString(LOC, { hour: '2-digit', minute: '2-digit' }) : '';
+  const when = L && L.ok ? fmtClock(new Date(L.ok)) : '';
   const ios = isIOS(), direct = id => !!(trackersAvail || {})[id];
   const brandWay = b => b.via !== 'apple' && b.via !== 'none' && direct(b.via) ? 'direct' : b.via === 'none' ? 'none' : ios ? 'apple' : 'none';
   const html = `<div id="trkSheet"><h3>⌚ ${T('Watch & tracker')}</h3>
@@ -3327,7 +3334,7 @@ const userTZ = () => { try { return Intl.DateTimeFormat().resolvedOptions().time
 // Each reminder: a row with a switch; when it is on, its day and time are chosen underneath
 function reminderTimesHTML() {
   const p = pushPrefs(), hrs = [...Array(18)].map((_, i) => i + 6);
-  const hourOpts = v => hrs.map(h => `<option value="${h}" ${h === v ? 'selected' : ''}>${String(h).padStart(2, '0')}:00</option>`).join('');
+  const hourOpts = v => hrs.map(h => `<option value="${h}" ${h === v ? 'selected' : ''}>${fmtHour(h)}</option>`).join('');
   const dayName = i => dt(addDays(iso(), i - dt(iso()).getDay())).toLocaleDateString(LOC, { weekday: 'long' });
   const dayOpts = v => [1, 2, 3, 4, 5, 6, 0].map(i => `<option value="${i}" ${i === v ? 'selected' : ''}>${dayName(i)}</option>`).join('');
   const row = (key, ic, title, sub, on, pick) => `<div class="rrow"><div class="rhead"><span class="ic">${ic}</span><span class="rt">${title}${sub ? `<small>${sub}</small>` : ''}</span>
@@ -3775,7 +3782,7 @@ function renderDetail() {
     <div class="hero ${m.photo ? '' : 'short'}">${m.photo ? `<img data-photo="${m.id}" alt="">` : ''}
       <div class="herobar"><button class="circ" id="dBack">‹</button><span class="row" style="gap:10px"><button class="circ" id="dFav" aria-label="${T('Save to favorites')}">${isFav(m) ? '★' : '☆'}</button>${det.isNew ? '' : '<button class="circ" id="dDel">🗑</button>'}</span></div></div>
     <div class="dbody">
-      <div class="spread"><span class="etime">${esc(fmtDate(m.date, { weekday: 'short', day: 'numeric', month: 'short' }))} · ${esc(m.time || '')}</span></div>
+      <div class="spread"><span class="etime">${esc(fmtDate(m.date, { weekday: 'short', day: 'numeric', month: 'short' }))} · ${esc(fmtHM(m.time || ''))}</span></div>
       <div class="spread" style="margin:8px 0 10px"><textarea class="tinput grow" id="dName" rows="1" placeholder="${T('Meal name')}">${esc(m.name)}</textarea></div>
       <div class="spread" style="margin-bottom:8px"><span class="small muted" style="font-weight:600">${T('Portion eaten')}</span>
         <div class="stepper sm"><button id="sMinus" aria-label="−">−</button><b id="sVal"></b><button id="sPlus" aria-label="+">+</button></div></div>
@@ -4147,7 +4154,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for).
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
 - Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
-- Settings: Your goal, Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone; "Back up now"); Privacy; Delete all data.
+- Settings: Your goal, Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone; "Back up now"); Privacy; Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
   const mem = memList();
@@ -4160,6 +4167,7 @@ RULES
 - When they ask how to do something in the app, explain it step by step using THE APP below.
 - Be practical, specific and encouraging. Keep answers short and easy to read on a phone: short paragraphs or bullet points, no tables.
 - When suggesting food, give concrete foods with grams plus calories and protein, and make them fit exactly what is left today. Vary suggestions; look at what they ate recently.
+- Write clock times as ${use12h() ? '12-hour times with AM/PM (e.g. 7:30 PM)' : '24-hour times (e.g. 19:30)'}.
 - Use metric units. The app is set to ${langInfo().ai}: answer in ${langInfo().ai} unless the user writes in another language, then answer in theirs.
 - You are not a doctor. For medical conditions, medication, pregnancy or signs of an eating disorder, recommend a professional.
 ${isLb() || isIn() || isOz() ? `- UNITS: the user uses ${isLb() ? 'pounds (lb) for body weight' : 'kg for body weight'}, ${isIn() ? 'feet/inches for height' : 'cm for height'} and ${isOz() ? 'fluid ounces (fl oz) for drinks' : 'litres/ml for drinks'}. The data below is in metric: convert when you talk about these. Food amounts and macros stay in grams.\n` : ''}- PHOTOS AND FILES: when the user sends photos (e.g. a restaurant menu, a food label, a fridge, a receipt) or files, first read them carefully, every page and every photo. Only mention dishes, products and numbers that are really visible or written in them, using their exact names (and prices if shown). Never invent items that are not there. If something is too small, blurry or cut off to read, say so and ask for a closer photo instead of guessing. For a menu: recommend the best concrete options from THAT menu for their goal and what is left today, with estimated calories and protein, and say how to order them (e.g. sauce on the side).
@@ -4734,7 +4742,7 @@ function goalPreview(el, p, w, custom) {
     (custom ? `<br><span class="muted">${T('Your custom macro numbers will be replaced by these.')}</span>` : '');
 }
 const fastPicker = f => `<div class="row"><div class="grow"><label class="lbl">${T('Fasting rhythm')}</label><select id="fH">${FASTS.map(([h, l]) => `<option value="${h}" ${h === f.h ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
-  <div class="grow"><label class="lbl">${T('Eating window starts')}</label><select id="fS">${[...Array(13)].map((_, i) => { const t = String(i + 6).padStart(2, '0') + ':00'; return `<option ${t === f.start ? 'selected' : ''}>${t}</option>`; }).join('')}</select></div></div>`;
+  <div class="grow"><label class="lbl">${T('Eating window starts')}</label><select id="fS">${[...Array(13)].map((_, i) => { const t = String(i + 6).padStart(2, '0') + ':00'; return `<option value="${t}" ${t === f.start ? 'selected' : ''}>${fmtHM(t)}</option>`; }).join('')}</select></div></div>`;
 function bindFast(root, f, cb) {
   root.querySelector('#fH').onchange = e => { f.h = +e.target.value; cb(); };
   root.querySelector('#fS').onchange = e => { f.start = e.target.value; cb(); };

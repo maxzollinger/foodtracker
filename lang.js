@@ -1159,7 +1159,8 @@ window.I18N = {
 "Habit plan":"Gewohnheits-Plan",
 "Reminder on":"Erinnerung an",
 "Reminder off":"Erinnerung aus",
-"Turn on only the reminders you want, and choose when they come.":"Schalte nur die Erinnerungen ein, die du willst, und wähle, wann sie kommen."
+"Turn on only the reminders you want, and choose when they come.":"Schalte nur die Erinnerungen ein, die du willst, und wähle, wann sie kommen.",
+"Time":"Uhrzeit"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2320,7 +2321,8 @@ window.I18N = {
 "Habit plan":"Plan de hábito",
 "Reminder on":"Recordatorio activado",
 "Reminder off":"Recordatorio desactivado",
-"Turn on only the reminders you want, and choose when they come.":"Activa solo los recordatorios que quieras y elige cuándo llegan."
+"Turn on only the reminders you want, and choose when they come.":"Activa solo los recordatorios que quieras y elige cuándo llegan.",
+"Time":"Hora"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3481,7 +3483,8 @@ window.I18N = {
 "Habit plan":"Plan d'habitude",
 "Reminder on":"Rappel activé",
 "Reminder off":"Rappel désactivé",
-"Turn on only the reminders you want, and choose when they come.":"Active seulement les rappels que tu veux, et choisis quand ils arrivent."
+"Turn on only the reminders you want, and choose when they come.":"Active seulement les rappels que tu veux, et choisis quand ils arrivent.",
+"Time":"Heure"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -4642,7 +4645,8 @@ window.I18N = {
 "Habit plan":"Piano abitudine",
 "Reminder on":"Promemoria attivo",
 "Reminder off":"Promemoria disattivato",
-"Turn on only the reminders you want, and choose when they come.":"Attiva solo i promemoria che vuoi e scegli quando arrivano."
+"Turn on only the reminders you want, and choose when they come.":"Attiva solo i promemoria che vuoi e scegli quando arrivano.",
+"Time":"Orario"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -5803,7 +5807,8 @@ window.I18N = {
 "Habit plan":"習慣の計画",
 "Reminder on":"リマインダー オン",
 "Reminder off":"リマインダー オフ",
-"Turn on only the reminders you want, and choose when they come.":"必要なリマインダーだけをオンにして、届く時間を選びましょう。"
+"Turn on only the reminders you want, and choose when they come.":"必要なリマインダーだけをオンにして、届く時間を選びましょう。",
+"Time":"時刻"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -6964,7 +6969,8 @@ window.I18N = {
 "Habit plan":"Gewoonteplan",
 "Reminder on":"Herinnering aan",
 "Reminder off":"Herinnering uit",
-"Turn on only the reminders you want, and choose when they come.":"Zet alleen de herinneringen aan die je wilt, en kies wanneer ze komen."
+"Turn on only the reminders you want, and choose when they come.":"Zet alleen de herinneringen aan die je wilt, en kies wanneer ze komen.",
+"Time":"Tijd"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -8125,7 +8131,8 @@ window.I18N = {
 "Habit plan":"Plan nawyku",
 "Reminder on":"Przypomnienie włączone",
 "Reminder off":"Przypomnienie wyłączone",
-"Turn on only the reminders you want, and choose when they come.":"Włącz tylko te przypomnienia, które chcesz, i wybierz, kiedy mają przychodzić."
+"Turn on only the reminders you want, and choose when they come.":"Włącz tylko te przypomnienia, które chcesz, i wybierz, kiedy mają przychodzić.",
+"Time":"Godzina"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -9286,7 +9293,8 @@ window.I18N = {
 "Habit plan":"Plano do hábito",
 "Reminder on":"Lembrete ligado",
 "Reminder off":"Lembrete desligado",
-"Turn on only the reminders you want, and choose when they come.":"Ligue só os lembretes que quiser e escolha quando chegam."
+"Turn on only the reminders you want, and choose when they come.":"Ligue só os lembretes que quiser e escolha quando chegam.",
+"Time":"Hora"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -10447,7 +10455,8 @@ window.I18N = {
 "Habit plan":"План привычки",
 "Reminder on":"Напоминание включено",
 "Reminder off":"Напоминание выключено",
-"Turn on only the reminders you want, and choose when they come.":"Включите только нужные напоминания и выберите, когда они приходят."
+"Turn on only the reminders you want, and choose when they come.":"Включите только нужные напоминания и выберите, когда они приходят.",
+"Time":"Время"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -11608,7 +11617,8 @@ window.I18N = {
 "Habit plan":"Alışkanlık planı",
 "Reminder on":"Hatırlatıcı açık",
 "Reminder off":"Hatırlatıcı kapalı",
-"Turn on only the reminders you want, and choose when they come.":"Yalnızca istediğin hatırlatıcıları aç ve ne zaman geleceklerini seç."
+"Turn on only the reminders you want, and choose when they come.":"Yalnızca istediğin hatırlatıcıları aç ve ne zaman geleceklerini seç.",
+"Time":"Saat"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -12769,6 +12779,7 @@ window.I18N = {
 "Habit plan":"习惯计划",
 "Reminder on":"提醒已开启",
 "Reminder off":"提醒已关闭",
-"Turn on only the reminders you want, and choose when they come.":"只开启你需要的提醒，并选择提醒时间。"
+"Turn on only the reminders you want, and choose when they come.":"只开启你需要的提醒，并选择提醒时间。",
+"Time":"时间"
 }
 };
