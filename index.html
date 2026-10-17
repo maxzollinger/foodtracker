@@ -4,6 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
 <title>Food Tracker</title>
+<meta name="description" content="Snap a photo of your meal and AI counts the calories, protein, carbs and fat. Free calorie tracker with an AI coach.">
+<!-- Link preview in WhatsApp, Snapchat, iMessage, Instagram etc. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Food Tracker">
+<meta property="og:title" content="Food Tracker">
+<meta property="og:description" content="Snap a photo of your meal. AI counts the calories. Free.">
+<meta property="og:url" content="https://foodtrackerapp.pages.dev/">
+<meta property="og:image" content="https://foodtrackerapp.pages.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Food Tracker app icon">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://foodtrackerapp.pages.dev/og.png">
+<link rel="canonical" href="https://foodtrackerapp.pages.dev/">
 <meta name="theme-color" content="#0b0b0d">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -846,7 +860,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v104';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v105';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
