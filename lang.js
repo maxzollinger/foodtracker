@@ -1164,7 +1164,14 @@ window.I18N = {
 "Day":"Tag",
 "Month":"Monat",
 "Year":"Jahr",
-"You are {n} years old.":"Du bist {n} Jahre alt."
+"You are {n} years old.":"Du bist {n} Jahre alt.",
+"The most important button. Let us look at what it opens.":"Der wichtigste Knopf. Schauen wir, was er öffnet.",
+"Log something you eat often again with one tap.":"Trag etwas, das du oft isst, mit einem Tipp erneut ein.",
+"Take a photo of your plate. The AI recognises the food and counts calories, protein, carbs and fat. With \"Upload photo\" you can use a photo you already took.":"Fotografiere deinen Teller. Die KI erkennt das Essen und zählt Kalorien, Protein, Kohlenhydrate und Fett. Mit „Foto hochladen“ nimmst du ein Foto, das du schon gemacht hast.",
+"Scan the barcode of packaged food for the exact values from the label.":"Scanne den Barcode von verpacktem Essen für die genauen Werte vom Etikett.",
+"Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Schreib oder sag einfach, was du gegessen hast, z. B. „2 Eier und eine Scheibe Toast“. Training und manuelle Einträge findest du hier auch.",
+"What the + offers":"Was das + bietet",
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Neue Unterhaltung beginnt von vorn. Bild hochladen: ein Foto aus deiner Mediathek, z. B. eine Speisekarte. Foto aufnehmen: direkt mit der Kamera. Datei hochladen: ein PDF oder Dokument, z. B. ein Ernährungsplan."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2330,7 +2337,14 @@ window.I18N = {
 "Day":"Día",
 "Month":"Mes",
 "Year":"Año",
-"You are {n} years old.":"Tienes {n} años."
+"You are {n} years old.":"Tienes {n} años.",
+"The most important button. Let us look at what it opens.":"El botón más importante. Veamos qué abre.",
+"Log something you eat often again with one tap.":"Vuelve a registrar algo que comes a menudo con un toque.",
+"Take a photo of your plate. The AI recognises the food and counts calories, protein, carbs and fat. With \"Upload photo\" you can use a photo you already took.":"Haz una foto de tu plato. La IA reconoce la comida y cuenta calorías, proteína, carbohidratos y grasa. Con «Subir foto» usas una foto que ya tienes.",
+"Scan the barcode of packaged food for the exact values from the label.":"Escanea el código de barras de alimentos envasados para obtener los valores exactos de la etiqueta.",
+"Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Escribe o di lo que comiste, p. ej. «2 huevos y una tostada». El ejercicio y las entradas manuales también están aquí.",
+"What the + offers":"Lo que ofrece el +",
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nueva conversación empieza de cero. Subir imagen: una foto de tu galería, p. ej. una carta. Hacer foto: usa la cámara al momento. Subir archivo: un PDF o documento, p. ej. un plan de comidas."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3496,7 +3510,14 @@ window.I18N = {
 "Day":"Jour",
 "Month":"Mois",
 "Year":"Année",
-"You are {n} years old.":"Tu as {n} ans."
+"You are {n} years old.":"Tu as {n} ans.",
+"The most important button. Let us look at what it opens.":"Le bouton le plus important. Voyons ce qu’il ouvre.",
+"Log something you eat often again with one tap.":"Note à nouveau en un geste ce que tu manges souvent.",
+"Take a photo of your plate. The AI recognises the food and counts calories, protein, carbs and fat. With \"Upload photo\" you can use a photo you already took.":"Prends ton assiette en photo. L'IA reconnaît les aliments et compte calories, protéines, glucides et lipides. Avec « Importer une photo », tu utilises une photo déjà prise.",
+"Scan the barcode of packaged food for the exact values from the label.":"Scanne le code-barres d'un aliment emballé pour les valeurs exactes de l'étiquette.",
+"Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Écris ou dis simplement ce que tu as mangé, p. ex. « 2 œufs et une tranche de pain grillé ». L'exercice et les saisies manuelles sont ici aussi.",
+"What the + offers":"Ce que propose le +",
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nouvelle conversation repart de zéro. Importer une image : une photo de ta galerie, p. ex. une carte. Prendre une photo : avec l’appareil tout de suite. Importer un fichier : un PDF ou document, p. ex. un plan de repas."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -4662,7 +4683,14 @@ window.I18N = {
 "Day":"Giorno",
 "Month":"Mese",
 "Year":"Anno",
-"You are {n} years old.":"Hai {n} anni."
+"You are {n} years old.":"Hai {n} anni.",
+"The most important button. Let us look at what it opens.":"Il pulsante più importante. Vediamo cosa apre.",
+"Log something you eat often again with one tap.":"Registra di nuovo con un tocco qualcosa che mangi spesso.",
+"Take a photo of your plate. The AI recognises the food and counts calories, protein, carbs and fat. With \"Upload photo\" you can use a photo you already took.":"Fotografa il tuo piatto. L'IA riconosce il cibo e conta calorie, proteine, carboidrati e grassi. Con «Carica foto» usi una foto già scattata.",
+"Scan the barcode of packaged food for the exact values from the label.":"Scansiona il codice a barre dei cibi confezionati per i valori esatti dell'etichetta.",
+"Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Scrivi o di’ cosa hai mangiato, es. «2 uova e una fetta di pane tostato». Anche allenamento e inserimento manuale sono qui.",
+"What the + offers":"Cosa offre il +",
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nuova conversazione riparte da zero. Carica immagine: una foto dalla galleria, es. un menu. Scatta foto: subito con la fotocamera. Carica file: un PDF o documento, es. un piano alimentare."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -5828,7 +5856,14 @@ window.I18N = {
 "Day":"日",
 "Month":"月",
 "Year":"年",
-"You are {n} years old.":"あなたは {n} 歳です。"
+"You are {n} years old.":"あなたは {n} 歳です。",
+"The most important button. Let us look at what it opens.":"いちばん大事なボタンです。何が開くか見てみましょう。",
+"Log something you eat often again with one tap.":"よく食べるものをワンタップでもう一度記録できます。",
+"Take a photo of your plate. The AI recognises the food and counts calories, protein, carbs and fat. With \"Upload photo\" you can use a photo you already took.":"お皿の写真を撮ると、AI が食べ物を認識してカロリー・たんぱく質・炭水化物・脂質を計算します。「写真をアップロード」では撮影済みの写真を使えます。",
+"Scan the barcode of packaged food for the exact values from the label.":"パッケージ食品のバーコードを読み取ると、表示どおりの正確な値になります。",
+"Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"食べたものを入力するか話すだけ。例：「卵2個とトースト1枚」。運動や手入力もここにあります。",
+"What the + offers":"＋でできること",
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"新しい会話：最初から始めます。画像をアップロード：ライブラリの写真（例：メニュー）。写真を撮る：すぐにカメラで。ファイルをアップロード：PDF や書類（例：食事プラン）。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -6994,7 +7029,14 @@ window.I18N = {
 "Day":"Dag",
 "Month":"Maand",
 "Year":"Jaar",
-"You are {n} years old.":"Je bent {n} jaar oud."
+"You are {n} years old.":"Je bent {n} jaar oud.",
+"The most important button. Let us look at what it opens.":"De belangrijkste knop. Laten we kijken wat hij opent.",
+"Log something you eat often again with one tap.":"Log iets dat je vaak eet opnieuw met één tik.",
+"Take a photo of your plate. The AI recognises the food and counts calories, protein, carbs and fat. With \"Upload photo\" you can use a photo you already took.":"Maak een foto van je bord. De AI herkent het eten en telt calorieën, eiwit, koolhydraten en vet. Met \"Foto uploaden\" gebruik je een foto die je al hebt.",
+"Scan the barcode of packaged food for the exact values from the label.":"Scan de barcode van verpakt eten voor de exacte waarden van het etiket.",
+"Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Typ of zeg gewoon wat je at, bijv. \"2 eieren en een sneetje toast\". Beweging en handmatige invoer staan hier ook.",
+"What the + offers":"Wat de + biedt",
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nieuw gesprek begint opnieuw. Afbeelding uploaden: een foto uit je bibliotheek, bijv. een menukaart. Foto maken: meteen met de camera. Bestand uploaden: een pdf of document, bijv. een voedingsschema."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -8160,7 +8202,14 @@ window.I18N = {
 "Day":"Dzień",
 "Month":"Miesiąc",
 "Year":"Rok",
-"You are {n} years old.":"Masz {n} lat."
+"You are {n} years old.":"Masz {n} lat.",
+"The most important button. Let us look at what it opens.":"Najważniejszy przycisk. Zobaczmy, co otwiera.",
+"Log something you eat often again with one tap.":"Zapisz ponownie jednym stuknięciem coś, co jesz często.",
+"Take a photo of your plate. The AI recognises the food and counts calories, protein, carbs and fat. With \"Upload photo\" you can use a photo you already took.":"Zrób zdjęcie talerza. AI rozpozna jedzenie i policzy kalorie, białko, węglowodany i tłuszcz. „Prześlij zdjęcie” pozwala użyć zrobionego wcześniej zdjęcia.",
+"Scan the barcode of packaged food for the exact values from the label.":"Zeskanuj kod kreskowy pakowanej żywności, aby mieć dokładne wartości z etykiety.",
+"Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Po prostu wpisz lub powiedz, co zjadłeś, np. „2 jajka i kromka tostu”. Trening i wpisy ręczne też są tutaj.",
+"What the + offers":"Co oferuje +",
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nowa rozmowa zaczyna od nowa. Prześlij obraz: zdjęcie z galerii, np. menu. Zrób zdjęcie: od razu aparatem. Prześlij plik: PDF lub dokument, np. plan posiłków."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -9326,7 +9375,14 @@ window.I18N = {
 "Day":"Dia",
 "Month":"Mês",
 "Year":"Ano",
-"You are {n} years old.":"Tem {n} anos."
+"You are {n} years old.":"Tem {n} anos.",
+"The most important button. Let us look at what it opens.":"O botão mais importante. Vamos ver o que abre.",
+"Log something you eat often again with one tap.":"Registe de novo com um toque algo que come muitas vezes.",
+"Take a photo of your plate. The AI recognises the food and counts calories, protein, carbs and fat. With \"Upload photo\" you can use a photo you already took.":"Tire uma foto do prato. A IA reconhece a comida e conta calorias, proteína, hidratos e gordura. Com \"Carregar foto\" usa uma foto que já tirou.",
+"Scan the barcode of packaged food for the exact values from the label.":"Leia o código de barras de alimentos embalados para os valores exatos do rótulo.",
+"Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Escreva ou diga o que comeu, p. ex. \"2 ovos e uma torrada\". Exercício e entradas manuais também estão aqui.",
+"What the + offers":"O que o + oferece",
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nova conversa começa do zero. Carregar imagem: uma foto da galeria, p. ex. um menu. Tirar foto: com a câmara na hora. Carregar ficheiro: um PDF ou documento, p. ex. um plano alimentar."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -10492,7 +10548,14 @@ window.I18N = {
 "Day":"День",
 "Month":"Месяц",
 "Year":"Год",
-"You are {n} years old.":"Вам {n} лет."
+"You are {n} years old.":"Вам {n} лет.",
+"The most important button. Let us look at what it opens.":"Самая важная кнопка. Посмотрим, что она открывает.",
+"Log something you eat often again with one tap.":"Повторно запишите одним касанием то, что едите часто.",
+"Take a photo of your plate. The AI recognises the food and counts calories, protein, carbs and fat. With \"Upload photo\" you can use a photo you already took.":"Сфотографируйте тарелку. ИИ распознает еду и посчитает калории, белки, углеводы и жиры. «Загрузить фото» — использовать уже сделанное фото.",
+"Scan the barcode of packaged food for the exact values from the label.":"Сканируйте штрихкод упакованных продуктов, чтобы получить точные значения с этикетки.",
+"Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Просто напишите или скажите, что съели, например «2 яйца и тост». Тренировки и ручной ввод тоже здесь.",
+"What the + offers":"Что даёт +",
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Новый разговор начинается с чистого листа. Загрузить изображение: фото из галереи, например меню. Сделать фото: сразу камерой. Загрузить файл: PDF или документ, например план питания."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -11658,7 +11721,14 @@ window.I18N = {
 "Day":"Gün",
 "Month":"Ay",
 "Year":"Yıl",
-"You are {n} years old.":"{n} yaşındasın."
+"You are {n} years old.":"{n} yaşındasın.",
+"The most important button. Let us look at what it opens.":"En önemli düğme. Neler açtığına bakalım.",
+"Log something you eat often again with one tap.":"Sık yediğin bir şeyi tek dokunuşla yeniden kaydet.",
+"Take a photo of your plate. The AI recognises the food and counts calories, protein, carbs and fat. With \"Upload photo\" you can use a photo you already took.":"Tabağının fotoğrafını çek. Yapay zekâ yemeği tanır ve kalori, protein, karbonhidrat ve yağı hesaplar. \"Fotoğraf yükle\" ile önceden çektiğin bir fotoğrafı kullanırsın.",
+"Scan the barcode of packaged food for the exact values from the label.":"Paketli gıdaların barkodunu tara, etiketteki kesin değerleri al.",
+"Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Ne yediğini yaz ya da söyle, ör. \"2 yumurta ve bir dilim tost\". Egzersiz ve manuel giriş de burada.",
+"What the + offers":"+'nın sundukları",
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Yeni sohbet sıfırdan başlar. Görsel yükle: galeriden bir fotoğraf, ör. bir menü. Fotoğraf çek: hemen kamerayla. Dosya yükle: bir PDF veya belge, ör. bir beslenme planı."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -12824,6 +12894,13 @@ window.I18N = {
 "Day":"日",
 "Month":"月",
 "Year":"年",
-"You are {n} years old.":"你 {n} 岁。"
+"You are {n} years old.":"你 {n} 岁。",
+"The most important button. Let us look at what it opens.":"最重要的按钮。来看看它能打开什么。",
+"Log something you eat often again with one tap.":"一键再次记录你常吃的食物。",
+"Take a photo of your plate. The AI recognises the food and counts calories, protein, carbs and fat. With \"Upload photo\" you can use a photo you already took.":"给你的餐盘拍照，AI 会识别食物并计算卡路里、蛋白质、碳水和脂肪。用“上传照片”可以使用已经拍好的照片。",
+"Scan the barcode of packaged food for the exact values from the label.":"扫描包装食品的条形码，获得标签上的准确数值。",
+"Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"直接输入或说出你吃了什么，例如“2 个鸡蛋和一片吐司”。运动和手动记录也在这里。",
+"What the + offers":"+ 能做什么",
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"新对话：重新开始。上传图片：相册中的照片，例如菜单。拍照：直接用相机。上传文件：PDF 或文档，例如饮食计划。"
 }
 };

@@ -757,7 +757,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v98';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v99';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3031,7 +3031,11 @@ const TOUR_STEPS = [
   { tab: 'home', sel: '.hcard', title: N('Health score'), text: N('How healthy your food is today, from 1 to 10. Bigger meals count more than a small snack.') },
   { tab: 'home', sel: '.minirow', title: N('Water and calories burned'), text: N('Tap + to add a glass of water or your burned calories. Tap a tile for more options.') },
   { tab: 'home', sel: '#mpCard', title: N('Meal plan & groceries'), text: N('Your weekly meal plan and shopping list, made for your goal. A new one comes every Saturday.') },
-  { tab: 'home', sel: '#fab', title: N('Log your food'), text: N('The most important button: take a photo of your meal, scan a barcode, describe it in words, or pick a favorite.') },
+  { tab: 'home', sel: '#fab', title: N('Log your food'), text: N('The most important button. Let us look at what it opens.') },
+  { tab: 'home', open: 'add', sel: '#aFav', title: N('Favorites & recent'), text: N('Log something you eat often again with one tap.') },
+  { tab: 'home', open: 'add', sel: '#aScan', title: N('Scan food'), text: N('Take a photo of your plate. The AI recognises the food and counts calories, protein, carbs and fat. With "Upload photo" you can use a photo you already took.') },
+  { tab: 'home', open: 'add', sel: '#aBar', title: N('Barcode'), text: N('Scan the barcode of packaged food for the exact values from the label.') },
+  { tab: 'home', open: 'add', sel: '#aText', title: N('Describe food'), text: N('Just type or say what you ate, e.g. "2 eggs and a slice of toast". Exercise and manual entries are here too.') },
   { tab: 'home', sel: '.tab[data-tab="progress"]', title: N('Progress'), text: N('Next stop: your progress.') },
   { tab: 'progress', sel: '.two', title: N('Weight and streak'), text: N('Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.') },
   { tab: 'progress', sel: '#badgeCard', title: N('Badges'), text: N('Earn badges for streaks, protein, water and milestones. Tap one to see what it is for.') },
@@ -3040,6 +3044,7 @@ const TOUR_STEPS = [
   { tab: 'progress', sel: '.tab[data-tab="chat"]', title: N('Coach'), text: N('Now your personal AI coach.') },
   { tab: 'chat', sel: '#chatScreen .chatbar .chips button', title: N('Suggestions'), text: N('Not sure what to ask? Tap a suggestion to start a conversation.') },
   { tab: 'chat', sel: '#chatScreen .chatbar .plusbtn', title: N('Photos and files'), text: N('Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.') },
+  { tab: 'chat', open: 'chatmenu', sel: '#cMenu', title: N('What the + offers'), text: N('New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.') },
   { tab: 'chat', sel: '#chatScreen .chatbar .composer', title: N('Ask your coach anything'), text: N('Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.') },
   { tab: 'chat', sel: '.tab[data-tab="settings"]', title: N('Settings'), text: N('Finally, your settings.') },
   { tab: 'settings', sel: '#sGoal', title: N('Your goal'), text: N('Change your main goal any time. Your past days stay as they are.') },
@@ -3063,7 +3068,7 @@ function openTour(onDone) {
   const spot = layer.querySelector('.tspot'), tip = layer.querySelector('.ttip'), body = layer.querySelector('.ttip-body'), wait = ms => new Promise(r => setTimeout(r, ms));
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   tip.style.opacity = '0';   // shown once it knows where to go
-  let i = 0, dir = 1, target = null, busy = false, tipGoal = null, alive = true;
+  let i = 0, dir = 1, target = null, busy = false, tipGoal = null, alive = true, openMenu = '';
   // Where things are now (cur) and where they're going; one animation loop moves both smoothly every frame
   let cur = null, tipTop = null, last = performance.now();
   const rectOf = el => {
@@ -3094,6 +3099,7 @@ function openTour(onDone) {
   requestAnimationFrame(frame);
   const finish = () => {
     LS.set('ft_tour', '1'); window.removeEventListener('resize', onResize); layer.classList.add('out');
+    if (openMenu === 'add') closeSheet(); if (openMenu === 'chatmenu') closeChatMenu(); openMenu = '';
     setTimeout(() => { alive = false; layer.remove(); if (tab !== 'home') go('home'); if (onDone) onDone(); }, 300);
   };
   async function show(n) {
@@ -3102,7 +3108,19 @@ function openTour(onDone) {
     busy = true; i = n;
     const s = TOUR_STEPS[i], t0 = performance.now();
     body.classList.add('swap');   // the old text fades out while things move
+    // Menus the step talks about: opened for it, closed again when the tour moves on
+    if (openMenu !== (s.open || '')) {
+      if (openMenu === 'add') closeSheet();
+      if (openMenu === 'chatmenu') closeChatMenu();
+      openMenu = '';
+      if (!s.open) await wait(250);
+    }
     if (s.tab !== tab) { switchTab(s.tab); await wait(260); }   // the light stays on the tab button and then glides to the new page
+    if (s.open && openMenu !== s.open) {
+      if (s.open === 'add') openAddMenu();
+      if (s.open === 'chatmenu') { const bar = $('#chatScreen .chatbar'); if (bar) { bar.classList.add('menuOpen'); bar.querySelector('#cPlus').textContent = '✕'; } }
+      openMenu = s.open; await wait(380);   // let it slide in before measuring
+    }
     const el = s.sel ? document.querySelector(s.sel) : null;
     if (s.sel && (!el || !el.offsetParent && el.id !== 'fab')) { busy = false; return show(i + dir); }   // not on this phone (e.g. no account option)
     target = el;
@@ -3127,6 +3145,7 @@ function openTour(onDone) {
     busy = false;
   }
   const onResize = () => { if (target) tipGoal = placeTip(rectOf(target)); else tipGoal = placeTip(null); };
+  layer.addEventListener('click', e => e.stopPropagation());   // taps on the tour never reach the app (e.g. would close an open menu)
   layer.querySelector('.ttip-next').onclick = () => { dir = 1; show(i + 1); };
   layer.querySelector('.ttip-back').onclick = () => { dir = -1; show(i - 1); };
   layer.querySelector('.ttip-skip').onclick = finish;
