@@ -747,6 +747,23 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .bd-tag{position:absolute;left:8px;top:8px;padding:3px 9px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:700;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .bd-row{padding:9px 0;border-top:1px solid var(--line);font-size:14px;gap:8px}
 .bd-row:first-of-type{margin-top:8px}
+/* Your goals: three groups */
+.gsec{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.gsec:first-child{margin-top:12px;padding-top:0;border-top:0}
+.gsec-h{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px}
+.gsec-h span{font-weight:600;text-transform:none;letter-spacing:0;opacity:.8;margin-left:4px}
+.gchips{display:grid;gap:8px}
+.gchip{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;border-radius:16px;background:var(--chip);transition:background-color .2s,color .2s,transform .18s var(--spring)}
+.gchip:active{transform:scale(.98)}
+.gchip b{display:block;font-size:15px}
+.gchip small{display:block;font-size:13px;color:var(--muted);margin-top:1px}
+.gc-ic{font-size:22px;width:28px;text-align:center;flex:none}
+.gc-ck{width:24px;height:24px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:transparent;box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--muted) 50%,transparent)}
+.gchip.on{background:var(--ink);color:var(--on-ink);background-image:var(--btnimg);box-shadow:var(--btnshadow)}
+.gchip.on small{color:inherit;opacity:.7}
+.gchip.on .gc-ck{background:var(--good);color:#fff;box-shadow:none}
+.onb .gchip:not(.on){background-color:var(--card);background-image:var(--sheen);box-shadow:var(--shadow)}
+.wdays button{padding:9px 2px;font-size:13px}
 </style>
 <script src="lang.js"></script>
 </head>
@@ -887,6 +904,15 @@ function migrate(d) {
   if (pr && !pr.plan) pr.plan = { lose: 'cut', maintain: 'maintain', lean: 'lean', gain: 'bulk' }[pr.goal] || 'maintain';
   if (pr && !pr.fast) pr.fast = { h: 16, start: '12:00' };
   if (pr && !pr.carbs) pr.carbs = 'keto';
+  // Goals in three groups (2026-10-18): weight & muscle (one), lifestyle (any) and fasting (one).
+  // The old diet-style goals move into their group; the weight direction becomes the matching weight goal.
+  if (pr && !pr.life) {
+    const old = pr.plan;
+    pr.life = ['sport', 'healthy', 'protein'].includes(old) ? [old] : old === 'keto' ? [pr.carbs === 'lowcarb' ? 'lowcarb' : 'keto'] : [];
+    pr.fasting = old === 'if' ? { type: 'if' } : pr.fasting || { type: '' };
+    if (['sport', 'healthy', 'protein', 'keto', 'if'].includes(old)) pr.plan = { lose: 'cut', maintain: 'maintain', lean: 'lean', gain: 'bulk' }[pr.goal] || 'maintain';
+  }
+  if (pr && !pr.fasting) pr.fasting = { type: '' };
   if (!d.settings.burnV3) { d.settings.burnMode = 'smart'; d.settings.burnV3 = true; }
   d.settings.burnMode = d.settings.burnMode || 'smart';
   d.exercises = d.exercises || [];
@@ -909,7 +935,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v118';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v119';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1134,32 +1160,62 @@ const ACT = { '0-2': 1.375, '3-5': 1.55, '6+': 1.725 };
 // "lean" = build lean muscle: a small surplus so most of the gain is muscle, not fat.
 const isGain = g => g === 'gain' || g === 'lean';
 const LEAN_MAX = 0.5;   // kg/week; faster than this mostly adds fat
-/* The 12 main goals. "dir" is the weight direction the rest of the app works with (profile.goal:
-   lose / maintain / lean / gain). Diet-style goals (dir: null) let the user pick the weight direction. */
+/* Goals come in three groups:
+   - Weight & muscle (exactly one). "dir" is the weight direction the rest of the app works with (profile.goal:
+     lose / maintain / lean / gain). Recomp can lose slowly or keep the weight.
+   - Lifestyle (any, optional): profile.life
+   - Fasting (one, optional): profile.fasting = { type: '' | 'if' | '52' | 'adf' | 'once', ... } (the daily window stays in profile.fast) */
 const PLANS = [
   { id: 'cut', ic: '🔥', name: N('Lose weight'), sub: N('Cutting / fat loss: eat in a calorie deficit'), dir: 'lose' },
-  { id: 'recomp', ic: '🔄', name: N('Lose fat & build muscle'), sub: N('Recomp: lose fat slowly and get stronger at the same time'), dir: null, dirs: ['lose', 'maintain'] },
+  { id: 'recomp', ic: '🔄', name: N('Lose fat & build muscle'), sub: N('Recomp: lose fat slowly and get stronger at the same time'), dir: 'lose' },
   { id: 'maintain', ic: '⚖️', name: N('Maintain weight'), sub: N('Eat at maintenance'), dir: 'maintain' },
   { id: 'bulk', ic: '💪', name: N('Build muscle (bulk)'), sub: N('Calorie surplus to gain weight and muscle'), dir: 'gain' },
   { id: 'lean', ic: '🥩', name: N('Lean bulk'), sub: N('Small surplus, mostly whole foods, little fat'), dir: 'lean' },
   { id: 'dirty', ic: '🍔', name: N('Dirty bulk'), sub: N('Big surplus, fast gain, more fat'), dir: 'gain' },
-  { id: 'sport', ic: '🏃', name: N('Sport & endurance'), sub: N('More carbs for running, cycling and team sports'), dir: null },
-  { id: 'healthy', ic: '🥗', name: N('Eat healthier'), sub: N('Less sugar, salt and processed food'), dir: null },
-  { id: 'protein', ic: '🍗', name: N('High protein'), sub: N('Hit a daily protein target'), dir: null },
-  { id: 'keto', ic: '🥑', name: N('Keto / low carb'), sub: N('Very few carbs, more fat'), dir: null },
-  { id: 'if', ic: '⏱️', name: N('Intermittent fasting'), sub: N('Eat within a daily time window (16:8 etc.)'), dir: null },
   { id: 'preg', ic: '🤰', name: N('Pregnancy & breastfeeding'), sub: N('Enough energy for you and your baby, no dieting'), dir: 'maintain' }
 ];
+const LIFE = [
+  { id: 'sport', ic: '🏃', name: N('Sport & endurance'), sub: N('More carbs for running, cycling and team sports') },
+  { id: 'healthy', ic: '🥗', name: N('Eat healthier'), sub: N('Less sugar, salt and processed food') },
+  { id: 'protein', ic: '🍗', name: N('High protein'), sub: N('Hit a daily protein target') },
+  { id: 'keto', ic: '🥑', name: N('Keto'), sub: N('Max 30 g carbs a day') },
+  { id: 'lowcarb', ic: '🥬', name: N('Low carb'), sub: N('Max 100 g carbs a day') }
+];
+const FAST_TYPES = [
+  { id: '', ic: '🍽️', name: N('No fasting'), sub: N('Eat whenever it suits you') },
+  { id: 'if', ic: '⏱️', name: N('Intermittent fasting'), sub: N('Eat within a daily time window (16:8 etc.)') },
+  { id: '52', ic: '📅', name: N('5:2 fasting'), sub: N('2 days a week with only 500–600 kcal, 5 normal days') },
+  { id: 'adf', ic: '🔁', name: N('Alternate-day fasting'), sub: N('Every other day only 500–600 kcal') },
+  { id: 'once', ic: '⏳', name: N('One-time fast'), sub: N('A single longer fast with a timer, e.g. 24 or 36 hours') }
+];
 const planOf = p => PLANS.find(x => x.id === (p && p.plan)) || PLANS.find(x => x.id === 'maintain');
-// Which weight directions a goal allows (null = fixed by the goal itself)
-const planDirs = pl => pl.dirs || (pl.dir === null ? ['lose', 'maintain', 'lean'] : null);
-// Goals offered to this person (pregnancy is not shown to men)
-const plansFor = p => PLANS.filter(x => !(x.id === 'preg' && p && p.sex === 'm'));
+const hasLife = (p, id) => !!(p && (p.life || []).includes(id));
+const lifeOf = p => LIFE.filter(x => hasLife(p, x.id));
+const fastOf = p => (p && p.fasting) || { type: '' };
+const fastType = p => fastOf(p).type || '';
+const fastInfo = p => FAST_TYPES.find(x => x.id === fastType(p)) || FAST_TYPES[0];
+const carbCap = p => hasLife(p, 'keto') ? 30 : hasLife(p, 'lowcarb') ? 100 : 0;
+const FAST_KCAL = p => p && p.sex === 'm' ? 600 : 500;
+// 5:2 and alternate-day fasting: is this date a fast day?
+function isFastDay(p, date) {
+  const f = fastOf(p);
+  if (f.type === '52') return (f.days || [1, 4]).includes(dt(date).getDay());
+  if (f.type === 'adf') return Math.abs(daysBetween(f.from || date, date)) % 2 === 0;
+  return false;
+}
+// "Your weight?" first, then the goals that fit it (recomp fits losing and keeping; pregnancy is not shown to men)
+const DIRS = [['lose', N('Lose weight')], ['maintain', N('Keep my weight')], ['gain', N('Gain weight')]];
+const WEIGHT_BY_DIR = { lose: ['cut', 'recomp'], maintain: ['maintain', 'recomp', 'preg'], gain: ['bulk', 'lean', 'dirty'] };
+const DIR_DEFAULT = { lose: 'cut', maintain: 'maintain', gain: 'lean' };
+const uiDir = p => p.goal === 'lose' ? 'lose' : isGain(p.goal) ? 'gain' : 'maintain';
+const plansFor = (p, dir) => WEIGHT_BY_DIR[dir].map(id => PLANS.find(x => x.id === id)).filter(x => !(x.id === 'preg' && p && p.sex === 'm'));
 const PREG = [['t1', N('Pregnant, months 1–3')], ['t2', N('Pregnant, months 4–6')], ['t3', N('Pregnant, months 7–9')], ['bf', N('Breastfeeding')]];
 const PREG_KCAL = { t1: 0, t2: 340, t3: 450, bf: 400 };
-const DIRS = [['lose', N('Lose weight')], ['maintain', N('Keep my weight')], ['lean', N('Gain weight')]];
-const FASTS = [[14, '14:10'], [16, '16:8'], [18, '18:6'], [20, '20:4']];
+const FASTS = [[12, '12:12'], [14, '14:10'], [16, '16:8'], [18, '18:6'], [20, '20:4'], [23, '23:1 · OMAD']];
 const needsTarget = p => p.goal !== 'maintain';
+// A short list of everything chosen, for chips and the coach
+const goalExtras = p => [...lifeOf(p).map(x => `${x.ic} ${T(x.name)}`), ...(fastType(p) ? [`${fastInfo(p).ic} ${fastType(p) === 'if' ? fastState(p).h + ':' + fastState(p).win : T(fastInfo(p).name)}`] : [])];
+const goalsText = p => `${planOf(p).name} (${planOf(p).sub})${lifeOf(p).length ? '; lifestyle: ' + lifeOf(p).map(x => `${x.name} (${x.sub})`).join(', ') : ''}${fastType(p) ? '; fasting: ' + fastInfo(p).name : ''}`;
 // Speed limits per goal in kg/week: [min, default, max]
 function paceRange(p) {
   const id = planOf(p).id;
@@ -1170,13 +1226,12 @@ function paceRange(p) {
   return [0.1, 0.5, 1];
 }
 // Picking a goal sets the weight direction, a sensible goal weight and a speed inside the allowed range
-function applyPlan(p, id, w) {
-  const pl = PLANS.find(x => x.id === id), was = p.plan;
+function applyPlan(p, id, w, dir) {
+  const pl = PLANS.find(x => x.id === id);
   p.plan = id;
-  const dirs = planDirs(pl);
-  if (!dirs) p.goal = pl.dir;
-  else if (pl.dirs && was !== id) p.goal = pl.dirs[0];   // e.g. recomp starts with a slow loss; the person can switch to keeping the weight
-  else if (!dirs.includes(p.goal)) p.goal = p.goal === 'gain' && dirs.includes('lean') ? 'lean' : pl.dirs ? pl.dirs[0] : 'maintain';
+  // Recomp follows the chosen "Your weight?" (lose slowly or keep); every other goal has its own direction
+  p.goal = id === 'recomp' ? (dir === 'maintain' || (!dir && p.goal === 'maintain') ? 'maintain' : 'lose') : pl.dir;
+  if (id === 'preg') p.fasting = { type: '' };   // no fasting during pregnancy and breastfeeding
   p.pace = paceRange(p)[1];   // each goal starts at its typical speed (adjustable)
   fixTarget(p, w);
   p.goalStart = { kg: w, date: iso() };
@@ -1206,18 +1261,19 @@ function calcTargets(p, w) {
   if (plan === 'preg') kcal = tdee + (PREG_KCAL[p.preg] ?? 340);   // never a deficit; extra energy as the baby grows / for breastfeeding
   kcal = Math.max(kcal, p.sex === 'm' ? 1500 : plan === 'preg' ? 1800 : 1200);
   let perKg = p.goal === 'lose' || p.goal === 'lean' ? 2.0 : p.goal === 'gain' ? 1.8 : 1.6;
-  if (plan === 'cut' || plan === 'recomp' || plan === 'protein') perKg = 2.2;
+  if (plan === 'cut' || plan === 'recomp') perKg = 2.2;
   if (plan === 'dirty') perKg = 1.6;
-  if (plan === 'sport') perKg = p.goal === 'lose' ? 1.8 : 1.6;
   if (plan === 'preg') perKg = 1.3;
+  if (hasLife(p, 'protein')) perKg = Math.max(perKg, 2.2);
+  if (hasLife(p, 'sport')) perKg = Math.max(perKg, p.goal === 'lose' ? 1.8 : 1.6);
   // Protein comes from the body weight, but above a BMI of 27 from the weight at BMI 27 (extra body fat needs no extra protein)
   const protein = Math.min(w, 27 * Math.pow((p.height || 170) / 100, 2)) * perKg;
   let fat, carbs;
-  if (plan === 'keto') {
-    carbs = p.carbs === 'lowcarb' ? 100 : 30;
+  if (carbCap(p)) {
+    carbs = carbCap(p);
     fat = Math.max(0, (kcal - protein * 4 - carbs * 4) / 9);
   } else {
-    fat = kcal * (plan === 'healthy' || plan === 'dirty' || plan === 'preg' ? 0.3 : plan === 'sport' ? 0.25 : 0.27) / 9;
+    fat = kcal * (hasLife(p, 'sport') ? 0.25 : hasLife(p, 'healthy') || plan === 'dirty' || plan === 'preg' ? 0.3 : 0.27) / 9;
     carbs = Math.max(0, (kcal - protein * 4 - fat * 9) / 4);
   }
   return { kcal: r0(kcal), protein: r0(protein), carbs: r0(carbs), fat: r0(fat), tdee: r0(tdee), bmr: r0(bmr) };
@@ -1255,7 +1311,12 @@ function includedExercise() { const t = targets(), p = db.profile; return p ? r0
 function dayGoals(date) {
   const t = targets(), burned = r0(dayBurned(date)), mode = db.settings.burnMode, included = includedExercise();
   const extra = !burned || mode === 'off' ? 0 : mode === 'all' ? (burnWholeDay() ? Math.max(0, burned - included) : burned) : Math.max(0, r0(burned * 0.75 - included));
-  const keto = db.profile && planOf(db.profile).id === 'keto';
+  const keto = !!carbCap(db.profile);
+  // 5:2 / alternate-day fasting: on a fast day only about 500-600 kcal, mostly protein
+  if (db.profile && isFastDay(db.profile, date)) {
+    const k = FAST_KCAL(db.profile), pr = Math.min(t.protein, r0(k * 0.4 / 4)), c = Math.min(keto ? t.carbs : 999, r0(k * 0.35 / 4));
+    return { ...t, kcal: k, protein: pr, carbs: c, fat: r0(Math.max(0, k - pr * 4 - c * 4) / 9), burned, extra: 0, included, fastDay: true };
+  }
   return { ...t, kcal: t.kcal + extra, carbs: t.carbs + (keto ? 0 : r0(extra * 0.75 / 4)), fat: t.fat + r0(extra * (keto ? 1 : 0.25) / 9), burned, extra, included };
 }
 /* Health score (1-10). AI gives one per meal; meals without one (manual entries, older meals)
@@ -1317,43 +1378,70 @@ function fastingHTML() {
     <div class="hbar"><i style="width:${r0(f.pct * 100)}%;background:${f.inWin ? 'var(--good)' : 'var(--flame)'}"></i></div>
     ${outside ? `<p class="small" style="color:var(--bad);margin:8px 0 0">${T('Meals outside your eating window today: {n}', { n: outside })}</p>` : ''}</div>`;
 }
-// The extra Home card that fits the chosen goal
+// 5:2 / alternate-day fasting on Home: fast day or normal day, and when the next one is
+function fastDayHTML(date) {
+  const p = db.profile, f = fastOf(p), on = isFastDay(p, date);
+  let next = '';
+  if (!on) for (let i = 1; i <= 7; i++) { const d = addDays(date, i); if (isFastDay(p, d)) { next = i === 1 ? T('tomorrow') : fmtDate(d, { weekday: 'long' }); break; } }
+  return `<div class="card"><div class="spread"><b>${f.type === '52' ? '📅 ' + T('5:2 fasting') : '🔁 ' + T('Alternate-day fasting')}</b><span class="etime">${on ? T('Fast day') : T('Normal day')}</span></div>
+    <div style="font-size:20px;font-weight:800;margin-top:8px">${on ? T('About {n} kcal on this fast day', { n: FAST_KCAL(p) }) : T('Eat normally')}</div>
+    <div class="small muted" style="margin-top:2px">${on ? T('Mostly protein and vegetables keep you full.') : T('Next fast day: {d}', { d: next })}</div></div>`;
+}
+// One-time fast: a timer on Home until it is done
+function onceFastHTML() {
+  const f = fastOf(db.profile), h = f.h || 24, start = f.t || Date.now(), el = Date.now() - start, tot = h * 3600e3, done = el >= tot;
+  const hm = ms => { const m = Math.max(0, Math.round(ms / 60000)); return `${Math.floor(m / 60)}h ${String(m % 60).padStart(2, '0')}m`; };
+  return `<div class="card" id="fastCard"><div class="spread"><b>⏳ ${T('One-time fast')} · ${h} h</b><span class="etime">${T('since {t}', { t: fmtClock(new Date(start)) })}</span></div>
+    <div style="font-size:22px;font-weight:800;margin-top:8px">${done ? '🎉 ' + T('Fast complete!') : '🌙 ' + T('Fasting')}</div>
+    <div class="small muted" style="margin-top:2px">${done ? T('{h} hours done. Break your fast gently with a small meal.', { h }) : T('{d} fasted · {r} to go', { d: hm(el), r: hm(tot - el) })}</div>
+    <div class="hbar"><i style="width:${r0(Math.min(1, el / tot) * 100)}%;background:${done ? 'var(--good)' : 'var(--flame)'}"></i></div>
+    <button class="chipbtn" style="margin-top:12px" onclick="endOnceFast()">${done ? T('Done') : T('End fast')}</button></div>`;
+}
+function endOnceFast() {
+  const p = db.profile; if (!p) return;
+  const f = fastOf(p), done = f.t && Date.now() - f.t >= (f.h || 24) * 3600e3;
+  if (!done && !confirm(T('End your fast now?'))) return;
+  p.fasting = { type: '' }; save(); renderHome(); toast(done ? '🎉 ' + T('Well done!') : T('Fast ended'));
+}
+// The extra Home cards that fit the chosen goals (fasting, carb limit, healthy eating, protein)
 function focusCard(date, t, tot) {
   const p = db.profile; if (!p) return '';
-  const id = planOf(p).id, bar = (v, max, color) => `<div class="hbar"><i style="width:${clamp(v / max * 100, 0, 100)}%;background:${color}"></i></div>`;
-  if (id === 'if') return date === iso() ? fastingHTML() : '';
-  if (id === 'healthy') {
+  const id = planOf(p).id, ft = fastType(p), out = [], bar = (v, max, color) => `<div class="hbar"><i style="width:${clamp(v / max * 100, 0, 100)}%;background:${color}"></i></div>`;
+  if (ft === 'if' && date === iso()) out.push(fastingHTML());
+  if (ft === '52' || ft === 'adf') out.push(fastDayHTML(date));
+  if (ft === 'once' && date === iso()) out.push(onceFastHTML());
+  if (hasLife(p, 'healthy')) {
     const x = dayExtras(date), sugarMax = r0(t.kcal * 0.1 / 4);
     const row = (ic, label, v, lim, unit, isMax) => `<div class="frow"><div class="spread"><span>${ic} ${label}</span><span><b>${r0(v)}</b> <span class="muted">/ ${isMax ? T('max') + ' ' : ''}${lim} ${unit}</span></span></div>
       ${bar(v, lim, isMax ? (v > lim ? 'var(--bad)' : 'var(--good)') : (v >= lim ? 'var(--good)' : 'var(--carbs)'))}</div>`;
-    return `<div class="card"><b>🥗 ${T('Healthy eating')}</b>
+    out.push(`<div class="card"><b>🥗 ${T('Healthy eating')}</b>
       ${row('🍬', T('Sugar'), x.sugar, sugarMax, 'g', true)}${row('🌾', T('Fiber'), x.fiber, 30, 'g', false)}${row('🧂', T('Sodium'), x.sodium, 2000, 'mg', true)}
-      ${x.meals > x.known ? `<p class="small muted" style="margin:10px 0 0">${T('Meals logged before this goal have no sugar, fiber or sodium data.')}</p>` : ''}</div>`;
+      ${x.meals > x.known ? `<p class="small muted" style="margin:10px 0 0">${T('Meals logged before this goal have no sugar, fiber or sodium data.')}</p>` : ''}</div>`);
   }
-  if (id === 'keto') {
+  if (carbCap(p)) {
     const v = tot.carbs, lim = t.carbs, over = v > lim;
-    return `<div class="card"><div class="spread"><b>🥑 ${T('Carb limit')}</b><span><b style="${over ? 'color:var(--bad)' : ''}">${r0(v)}</b> <span class="muted">/ ${lim} g</span></span></div>${bar(v, lim, over ? 'var(--bad)' : 'var(--good)')}
-      <p class="small muted" style="margin:8px 0 0">${over ? T('You are over your carb limit today.') : p.carbs === 'lowcarb' ? T('Stay under {n} g of carbs today.', { n: lim }) : T('Stay under {n} g of carbs to keep ketosis.', { n: lim })}</p></div>`;
+    out.push(`<div class="card"><div class="spread"><b>🥑 ${T('Carb limit')}</b><span><b style="${over ? 'color:var(--bad)' : ''}">${r0(v)}</b> <span class="muted">/ ${lim} g</span></span></div>${bar(v, lim, over ? 'var(--bad)' : 'var(--good)')}
+      <p class="small muted" style="margin:8px 0 0">${over ? T('You are over your carb limit today.') : hasLife(p, 'lowcarb') ? T('Stay under {n} g of carbs today.', { n: lim }) : T('Stay under {n} g of carbs to keep ketosis.', { n: lim })}</p></div>`);
   }
-  if (id === 'protein' || id === 'recomp') {
+  if (hasLife(p, 'protein') || id === 'recomp') {
     const v = tot.protein, g = t.protein, left = r0(g - v);
-    return `<div class="card"><div class="spread"><b>${id === 'recomp' ? '🔄 ' + T('Lose fat & build muscle') : '🍗 ' + T('Protein target')}</b><span><b>${r0(v)}</b> <span class="muted">/ ${g} g</span></span></div>${bar(v, g, 'var(--protein)')}
-      <p class="small muted" style="margin:8px 0 0">${left > 0 ? T('{n} g protein to go today.', { n: left }) : T('Protein goal reached! 🎉')}${id === 'recomp' ? ' ' + (p.goal === 'lose' ? T('Train with weights so the weight you lose is fat, not muscle.') : T('Train with weights; your weight may stay similar while your body changes.')) : ''}</p></div>`;
+    out.push(`<div class="card"><div class="spread"><b>${id === 'recomp' ? '🔄 ' + T('Lose fat & build muscle') : '🍗 ' + T('Protein target')}</b><span><b>${r0(v)}</b> <span class="muted">/ ${g} g</span></span></div>${bar(v, g, 'var(--protein)')}
+      <p class="small muted" style="margin:8px 0 0">${left > 0 ? T('{n} g protein to go today.', { n: left }) : T('Protein goal reached! 🎉')}${id === 'recomp' ? ' ' + (p.goal === 'lose' ? T('Train with weights so the weight you lose is fat, not muscle.') : T('Train with weights; your weight may stay similar while your body changes.')) : ''}</p></div>`);
   }
-  return '';
+  return out.join('');
 }
 // Small "your goal" pill on Home
 function planChip() {
   const p = db.profile; if (!p) return '';
   const pl = planOf(p), t = targets(), diff = r0(t.kcal - t.tdee);
   let detail;
-  if (pl.id === 'keto') detail = T('max {n} g carbs', { n: t.carbs });
-  else if (pl.id === 'if') { const f = fastState(p); detail = `${f.h}:${f.win} · ${f.startStr}–${f.endStr}`; }
+  if (carbCap(p) && !fastType(p)) detail = T('max {n} g carbs', { n: t.carbs });
   else detail = diff > 30 ? T('+{n} kcal/day surplus', { n: diff }) : diff < -30 ? T('{n} kcal/day deficit', { n: diff }) : T('maintenance calories');
   const gp = goalProgress(), kd = keepDays();
   const extra = gp ? `<span class="chipprog"><i style="width:${r0(gp.pct)}%"></i></span><b class="chippct">${r0(gp.pct)}%</b><span class="chipsub">${goalLine(gp)}</span>`
     : p.goal === 'maintain' && p.maintainSince ? `<span class="muted">· 🛡️ ${T('{n} days steady', { n: kd })}</span>` : '';
-  return `<button class="planchip" id="planChip"><span>${pl.ic}</span><b>${T(pl.name)}</b>${gp || (p.goal === 'maintain' && p.maintainSince) ? '' : `<span class="muted">· ${detail}</span>`}${extra}</button>`;
+  const more = goalExtras(p);
+  return `<button class="planchip" id="planChip"><span>${pl.ic}</span><b>${T(pl.name)}</b>${gp || (p.goal === 'maintain' && p.maintainSince) ? '' : `<span class="muted">· ${detail}</span>`}${extra}${more.length ? `<span class="chipsub">${more.join(' · ')}</span>` : ''}</button>`;
 }
 // Days logged in a row. One rest day per week is fine and doesn't break it (it just doesn't count).
 function streak() {
@@ -3252,7 +3340,7 @@ function showMoved() {
 const TOUR_STEPS = [
   { tab: 'home', title: N('Welcome to Food Tracker'), text: N('Let me show you around. It takes about a minute, and you can skip any time.') },
   { tab: 'home', sel: '.week', title: N('Your days'), text: N('Tap a day to see it or add something you forgot. The arrow goes back to earlier weeks.') },
-  { tab: 'home', sel: '#planChip', title: N('Your goal'), text: N('Your goal and how far along you are. The second line shows what is left and if you are on track. Tap it to change your goal.') },
+  { tab: 'home', sel: '#planChip', title: N('Your goals'), text: N('Your goals and how far along you are: weight & muscle first, then lifestyle and fasting. Tap it to change your goals.') },
   { tab: 'home', sel: '.calcard', title: N('Calories for today'), text: N('How many calories you have left today. Tap the card to switch between left and eaten.') },
   { tab: 'home', sel: '.macros', title: N('Protein, carbs and fat'), text: N('What is left of each today. Protein matters most for your body goals.') },
   { tab: 'home', sel: '.hcard', title: N('Health score'), text: N('How healthy your food is today, from 1 to 10. Bigger meals count more than a small snack.') },
@@ -3272,7 +3360,7 @@ const TOUR_STEPS = [
   { tab: 'chat', open: 'chatmenu', sel: '#cMenu', title: N('What the + offers'), text: N('New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.') },
   { tab: 'chat', sel: '#chatScreen .chatbar .composer', title: N('Ask your coach anything'), text: N('Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.') },
   { tab: 'chat', sel: '.tab[data-tab="settings"]', title: N('Settings'), text: N('Finally, your settings.') },
-  { tab: 'settings', sel: '#sGoal', title: N('Your goal'), text: N('Change your main goal any time. Your past days stay as they are.') },
+  { tab: 'settings', sel: '#sGoal', title: N('Your goals'), text: N('Three groups: weight & muscle, lifestyle and fasting. Change them any time; your past days stay as they are.') },
   { tab: 'settings', sel: '#sPers', title: N('Personal details'), text: N('Height, weight, age and training. Your goals update automatically when they change.') },
   { tab: 'settings', sel: '#sTrk', title: N('Watch & tracker'), text: N('Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.') },
   { tab: 'settings', sel: '#sGoals', title: N('Adjust macronutrients'), text: N('Set your own calorie and macro targets if you prefer.') },
@@ -3477,7 +3565,8 @@ function waterAuto(d = sel) {
   if (ex > train) parts.push([burnWholeDay() ? T('Extra activity that day ({n} kcal burned)', { n: r0(burned) }) : T('Exercise that day ({n} kcal)', { n: r0(burned) }), ex]);
   else if (train) parts.push([T('Training {n}× a week', { n: p.workouts }), train]);
   const pl = planOf(p);
-  if (['protein', 'keto', 'bulk', 'lean', 'dirty', 'recomp', 'sport', 'preg'].includes(pl.id) || p.goal === 'lean') parts.push([T('Your goal: {g}', { g: T(pl.name) }), pl.id === 'preg' && p.preg === 'bf' ? 500 : 250]);
+  const wl = ['bulk', 'lean', 'dirty', 'recomp', 'preg'].includes(pl.id) || p.goal === 'lean' ? pl : LIFE.find(x => ['protein', 'keto', 'lowcarb', 'sport'].includes(x.id) && hasLife(p, x.id));
+  if (wl) parts.push([T('Your goal: {g}', { g: T(wl.name) }), pl.id === 'preg' && p.preg === 'bf' ? 500 : 250]);
   return { total: clamp(Math.round(parts.reduce((a, x) => a + x[1], 0) / 250) * 250, 1500, 5000), parts };
 }
 const waterGoal = (d = sel) => db.settings.waterGoal || waterAuto(d).total;
@@ -3591,7 +3680,7 @@ function reminderTimesHTML() {
   const row = (key, ic, title, sub, on, pick) => `<div class="rrow"><div class="rhead"><span class="ic">${ic}</span><span class="rt">${title}${sub ? `<small>${sub}</small>` : ''}</span>
       <button class="tog ${on ? 'on' : ''}" data-rt="${key}" role="switch" aria-checked="${on}" aria-label="${title}"></button></div>
       ${on && pick ? `<div class="rpick">${pick}</div>` : ''}</div>`;
-  const fasting = db.profile && planOf(db.profile).id === 'if';
+  const fasting = db.profile && fastType(db.profile) === 'if';
   return `<div class="rtimes">
     ${row('burn', '🏃', T('Calories burned'), T('Daily'), p.burn >= 0, `<select id="rBurn" class="rsel">${hourOpts(p.burn)}</select>`)}
     ${row('weight', '⚖️', T('Weigh-in'), T('Once a week'), p.wDay >= 0, `<select id="rWDay" class="rsel">${dayOpts(p.wDay)}</select><select id="rWTime" class="rsel">${hourOpts(p.wTime)}</select>`)}
@@ -3738,9 +3827,11 @@ function prefsText(pr) {
   return `diet: ${lab(MP_DIET, pr.diet)}; allergies / does not eat: ${pr.avoid || 'nothing special'}; loves: ${pr.likes || 'no special wishes'}; cooking time: ${lab(MP_COOK, pr.cook)}; budget: ${lab(MP_BUDGET, pr.budget)}; meals per day: ${lab(MP_MEALS, pr.meals)}; cooking for ${pr.people} person(s)`;
 }
 function planGoalText() {
-  const p = db.profile, t = targets(), id = planOf(p).id;
-  let s = `Daily targets per person: ${t.kcal} kcal, ${t.protein} g protein, ${t.carbs} g carbs, ${t.fat} g fat. Main goal: ${planOf(p).name} (${planOf(p).sub}). ${planCoach(p)}`;
-  if (id === 'if') { const f = fastState(p); s += ` Eating window ${f.startStr}-${f.endStr}: every meal must fit inside it.`; }
+  const p = db.profile, t = targets(), ft = fastType(p);
+  let s = `Daily targets per person: ${t.kcal} kcal, ${t.protein} g protein, ${t.carbs} g carbs, ${t.fat} g fat. Goals: ${goalsText(p)}. ${planCoach(p)}`;
+  if (ft === 'if') { const f = fastState(p); s += ` Eating window ${f.startStr}-${f.endStr}: every meal must fit inside it.`; }
+  if (ft === '52' || ft === 'adf') { const days = [...Array(7)].map((_, i) => addDays(iso(), i)).filter(d => isFastDay(p, d)).map(d => dt(d).toLocaleDateString('en', { weekday: 'long' }));
+    s += ` Fast days (${days.join(', ')}): only about ${FAST_KCAL(p)} kcal per person, e.g. a protein-rich soup with vegetables; normal meals on the other days.`; }
   return s;
 }
 function planBrief(plan, withList) {
@@ -4386,10 +4477,10 @@ try { chat = JSON.parse(LS.get('ft_chat', '[]')) || []; } catch { chat = []; }
 let chatBusy = false, chatAtt = [];
 const saveChat = () => { chat = chat.slice(-80); if (!LS.set('ft_chat', JSON.stringify(chat))) { chat = chat.slice(-30).map(m => ({ ...m, img: null })); LS.set('ft_chat', JSON.stringify(chat)); } };
 // One extra suggestion that fits the chosen goal
-const PLAN_CHIP = { cut: N('What are filling low-calorie meals?'), bulk: N('How do I eat enough to gain weight?'), dirty: N('Give me easy high-calorie meals'),
+const PLAN_CHIP = { lowcarb: N('Give me a low-carb meal idea for today'), '52': N('What should I eat on a fast day?'), adf: N('What should I eat on a fast day?'), once: N('How do I get through my fast?'), cut: N('What are filling low-calorie meals?'), bulk: N('How do I eat enough to gain weight?'), dirty: N('Give me easy high-calorie meals'),
   recomp: N('How do I lose fat and build muscle at the same time?'), sport: N('What should I eat before and after training?'), preg: N('What should I eat and avoid right now?'), healthy: N('How can I eat healthier today?'), protein: N('Give me high-protein meal ideas'),
   keto: N('Give me a keto meal idea for today'), if: N('What should I eat when my eating window opens?') };
-const chipsFor = () => { const c = PLAN_CHIP[planOf(db.profile).id]; return c ? [c, ...CHIPS] : CHIPS; };
+const chipsFor = () => { const p = db.profile; if (!p) return CHIPS; const c = [PLAN_CHIP[planOf(p).id], ...lifeOf(p).map(x => PLAN_CHIP[x.id]), PLAN_CHIP[fastType(p)]].filter(Boolean).slice(0, 2); return [...c, ...CHIPS]; };
 const CHIPS = [N('What should I eat next to hit my goals today?'), N('How much protein do I still need today?'), N('Give me a high-protein snack that fits my day'),
   N('How was my week?'), N('Make me a meal plan for tomorrow'), N('Am I on track with my goal?')];
 
@@ -4492,7 +4583,7 @@ ${todayMeals.map(meal).join('\n') || '- nothing logged yet'}
 ${todayEx.length ? `\n=== TODAY'S EXERCISE ===\n${todayEx.map(e => `- ${e.time || ''} ${e.name}: ${r0(e.kcal)} kcal${e.minutes ? `, ${e.minutes} min` : ''}`).join('\n')}\n` : ''}
 === PROFILE & GOAL ===
 ${p ? `${{ m: 'Male', f: 'Female', o: 'Other' }[p.sex]}, ${age(p)} years, ${p.height} cm, ${cur} kg (BMI ${r1(cur / Math.pow(p.height / 100, 2))}), ${p.workouts} workouts per week.` : 'No profile yet.'}
-Main goal chosen in the app: ${p ? `${planOf(p).name} (${planOf(p).sub})` : 'none'}${p && planOf(p).id === 'keto' ? `; daily carb limit ${base.carbs} g` : ''}${p && planOf(p).id === 'if' ? `; fasting ${fastState(p).h}:${fastState(p).win}, eating window ${fastState(p).startStr}-${fastState(p).endStr}, right now ${fastState(p).inWin ? 'INSIDE the eating window' : 'FASTING (outside the window)'}` : ''}.
+Goals chosen in the app: ${p ? goalsText(p) : 'none'}${p && carbCap(p) ? `; daily carb limit ${base.carbs} g` : ''}${p && isFastDay(p, iso()) ? `; TODAY IS A FAST DAY (about ${FAST_KCAL(p)} kcal)` : ''}${p && fastType(p) === 'once' ? `; one-time fast of ${fastOf(p).h || 24} h started ${new Date(fastOf(p).t || Date.now()).toLocaleString('en')}` : ''}${p && fastType(p) === 'if' ? `; fasting ${fastState(p).h}:${fastState(p).win}, eating window ${fastState(p).startStr}-${fastState(p).endStr}, right now ${fastState(p).inWin ? 'INSIDE the eating window' : 'FASTING (outside the window)'}` : ''}.
 Weight goal: ${goalTxt}${eta ? `. Expected to reach it around ${eta}` : ''}.
 Real weight change over the last 4 weeks: ${rate === null ? 'not enough weigh-ins yet (needs 2+ weeks)' : `${rate > 0 ? '+' : ''}${rate} kg/week`}
 The app asks the user to weigh in once a week (morning, before breakfast). Never ask them to weigh more often; judge progress over weeks, not single weigh-ins.
@@ -4518,14 +4609,22 @@ const PLAN_COACH = {
   lean: 'Their main goal is a lean bulk: prioritise the protein goal, protein spread over 3-5 meals, mostly whole foods, progressive strength training and sleep. Discourage dirty bulking and big calorie overshoots.',
   dirty: 'Their main goal is a dirty bulk: a big surplus is fine and convenient calorie-dense foods are OK, but still help them hit protein and be honest that faster gain means more fat.',
   recomp: 'Their main goal is body recomposition (lose fat and build muscle at the same time): a small deficit (their weight goes down slowly, or stays about the same if they chose to keep their weight), very high protein spread over the day, progressive strength training 3-5x a week and enough sleep. Judge progress by strength, measurements and the mirror, not only the scale.',
-  sport: 'Their main goal is sport / endurance performance: enough carbs to fuel training (more on hard or long days, carbs before and after training), protein after training, fluids and electrolytes on long sessions. Never let them under-fuel hard training.',
   preg: 'They are pregnant or breastfeeding. NEVER suggest a calorie deficit, dieting or losing weight; weight gain during pregnancy is normal and healthy. Focus on nutrient-dense food, enough protein, folate, iron, calcium, iodine, vitamin D and omega-3 (low-mercury fish). Point out foods to avoid in pregnancy when relevant: alcohol, raw or undercooked fish, meat and eggs, unpasteurised dairy, high-mercury fish, liver, and too much caffeine (max about 200 mg a day). For anything medical, tell them to ask their doctor or midwife.',
-  healthy: 'Their main goal is to eat healthier: favour whole foods, vegetables and fibre (about 30 g/day); limit added sugar, salt (under 2000 mg sodium/day) and ultra-processed food. Use their sugar, fiber and sodium numbers.',
-  protein: 'Their main goal is high protein: make sure they hit the protein target every day; suggest protein-dense foods and spreading protein over the day.',
-  keto: 'They eat keto / low carb: keep total carbs under their daily carb limit; suggest low-carb foods (meat, fish, eggs, dairy, nuts, low-starch vegetables) and avoid bread, pasta, rice, potatoes and sugar.',
-  if: 'They do intermittent fasting: only suggest eating inside their eating window. If they are fasting right now, tell them when the window opens and what to eat then (water, black coffee and unsweetened tea are fine while fasting).'
 };
-const planCoach = p => PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` Right now: ${{ t1: 'pregnant, months 1-3', t2: 'pregnant, months 4-6', t3: 'pregnant, months 7-9', bf: 'breastfeeding' }[p.preg] || 'pregnant'}.` : '');
+const LIFE_COACH = {
+  sport: 'Lifestyle: sport / endurance: enough carbs to fuel training (more on hard or long days, carbs before and after training), protein after training, fluids and electrolytes on long sessions. Never let them under-fuel hard training.',
+  healthy: 'Lifestyle: eat healthier: favour whole foods, vegetables and fibre (about 30 g/day); limit added sugar, salt (under 2000 mg sodium/day) and ultra-processed food. Use their sugar, fiber and sodium numbers.',
+  protein: 'Lifestyle: high protein: make sure they hit the protein target every day; suggest protein-dense foods and spreading protein over the day.',
+  keto: 'Lifestyle: keto: keep total carbs under 30 g a day; suggest low-carb foods (meat, fish, eggs, dairy, nuts, low-starch vegetables) and avoid bread, pasta, rice, potatoes and sugar.',
+  lowcarb: 'Lifestyle: low carb: keep total carbs under 100 g a day; favour protein, vegetables and healthy fats, small portions of whole-grain carbs.'
+};
+const FAST_COACH = {
+  if: 'Fasting: intermittent fasting: only suggest eating inside their eating window. If they are fasting right now, tell them when the window opens and what to eat then (water, black coffee and unsweetened tea are fine while fasting).',
+  '52': 'Fasting: 5:2: on their 2 fast days a week they eat only about 500-600 kcal (mostly protein and vegetables); normal eating on the other days.',
+  adf: 'Fasting: alternate-day fasting: every other day only about 500-600 kcal (mostly protein and vegetables); normal eating on the other days.',
+  once: 'Fasting: a one-time longer fast with a timer. Encourage water and electrolytes, tell them to stop if they feel dizzy or unwell, and to break the fast gently with a small meal. People with diabetes, eating disorders or medical conditions should only fast with a doctor.'
+};
+const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` Right now: ${{ t1: 'pregnant, months 1-3', t2: 'pregnant, months 4-6', t3: 'pregnant, months 7-9', bf: 'breastfeeding' }[p.preg] || 'pregnant'}.` : ''), ...lifeOf(p).map(x => LIFE_COACH[x.id]), FAST_COACH[fastType(p)] || ''].filter(Boolean).join(' ');
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
@@ -4534,7 +4633,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
 - Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
-- Settings: Your goal (one of 12 goals: lose weight, lose fat & build muscle (recomp, they can lose weight slowly or keep it), maintain, bulk, lean bulk, dirty bulk, sport & endurance (more carbs), eat healthier, high protein, keto / low carb, intermittent fasting, pregnancy & breastfeeding (extra calories by stage, never a deficit)), Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy; Delete all data.
+- Settings: Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy; Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
   const mem = memList();
@@ -4910,7 +5009,7 @@ async function syncPush() {
     const reg = await navigator.serviceWorker.ready;
     const sub = await reg.pushManager.getSubscription() || await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToBytes(VAPID_PUBLIC) });
     const js = JSON.stringify(sub); LS.set('ft_push', js);
-    const pf = db.profile, fasting = pf && planOf(pf).id === 'if' && pf.fast;
+    const pf = db.profile, fasting = pf && fastType(pf) === 'if' && pf.fast;
     const prefs = { ...pushPrefs(), tz: userTZ(), fo: fasting && pushPrefs().fo ? 1 : 0, fs: fasting ? pf.fast.start : '', fh: fasting ? pf.fast.h : 0 },
       sent = js + JSON.stringify(prefs);   // resend when the address, times or time zone change
     if (LS.get('ft_push_sent', '') === sent) return;
@@ -5085,7 +5184,7 @@ function renderSettings() {
       <div><b>${age(p)}</b><span class="small muted">${T('Age')}</span></div><div><b>${p.height} cm</b><span class="small muted">${T('Height')}</span></div><div><b>${currentWeight()} kg</b><span class="small muted">${T('Weight')}</span></div></div></div>` : ''}
     <div class="h2">${T('Customization')}</div>
     <div class="list">
-      ${p ? `<button class="li" id="sGoal"><span class="ic">${planOf(p).ic}</span><span class="grow">${T('Your goal')}<br><span class="small muted">${T(planOf(p).name)}</span></span><span class="chev">›</span></button>` : ''}
+      ${p ? `<button class="li" id="sGoal"><span class="ic">${planOf(p).ic}</span><span class="grow">${T('Your goals')}<br><span class="small muted">${[T(planOf(p).name), ...goalExtras(p)].join(' · ')}</span></span><span class="chev">›</span></button>` : ''}
       <button class="li" id="sPers"><span class="ic">👤</span><span class="grow">${T('Personal details')}</span><span class="chev">›</span></button>
       <button class="li" id="sTrk"><span class="ic">⌚</span><span class="grow">${T('Watch & tracker')}</span><span class="val">${setupLeft() ? T('Step {n} of {of}', { n: setupLeft().n, of: setupLeft().of }) : linkInfo() ? esc(linkName(linkInfo().p)) : T('Not connected')}</span><span class="chev">›</span></button>
       <button class="li" id="sGoals"><span class="ic">🎯</span><span class="grow">${T('Adjust macronutrients')}<br><span class="small muted">${t.kcal} kcal · ${t.protein}g P · ${t.carbs}g C · ${t.fat}g F</span></span><span class="chev">›</span></button>
@@ -5266,32 +5365,79 @@ function openPersonalSheet() {
   });
 }
 
-// Settings → Your goal: pick one of the 12 goals; the whole app follows. Past days are not changed.
+// Lifestyle (any, optional): keto and low carb exclude each other
+const lifeChips = d => `<div class="gchips">${LIFE.map(x => `<button class="gchip ${hasLife(d, x.id) ? 'on' : ''}" data-life="${x.id}"><span class="gc-ic">${x.ic}</span><span class="grow"><b>${T(x.name)}</b><small>${T(x.sub)}</small></span><span class="gc-ck">✓</span></button>`).join('')}</div>`;
+function bindLife(root, d, redraw) {
+  root.querySelectorAll('[data-life]').forEach(b => b.onclick = () => {
+    const id = b.dataset.life, on = hasLife(d, id);
+    d.life = (d.life || []).filter(x => x !== id && !(!on && (id === 'keto' || id === 'lowcarb') && (x === 'keto' || x === 'lowcarb')));
+    if (!on) d.life.push(id);
+    redraw();
+  });
+}
+// Fasting (one, optional) with the settings of the chosen kind
+const dayShort = i => dt(addDays(iso(), i - dt(iso()).getDay())).toLocaleDateString(LOC, { weekday: 'short' });
+function fastingChoice(d) {
+  const f = d.fasting || { type: '' }, t = f.type || '';
+  const extra = t === 'if' ? fastPicker(d.fast || { h: 16, start: '12:00' }) + `<div class="tip" style="margin-top:12px">${T('Eating window: {a} – {b}', { a: fastState(d).startStr, b: fastState(d).endStr })}</div>`
+    : t === '52' ? `<label class="lbl">${T('Your 2 fast days')}</label><div class="seg wdays">${[1, 2, 3, 4, 5, 6, 0].map(i => `<button data-fday="${i}" class="${(f.days || [1, 4]).includes(i) ? 'on' : ''}">${dayShort(i)}</button>`).join('')}</div>
+        <p class="small muted" style="margin:8px 0 0">${T('On fast days you eat about {n} kcal, on the other days normally.', { n: FAST_KCAL(d) })}</p>`
+    : t === 'adf' ? `<label class="lbl">${T('First fast day')}</label><div class="seg">${[[0, T('Today')], [1, T('Tomorrow')]].map(([k, l]) => `<button data-ffrom="${k}" class="${(f.from || iso()) === addDays(iso(), k) ? 'on' : ''}">${l}</button>`).join('')}</div>
+        <p class="small muted" style="margin:8px 0 0">${T('On fast days you eat about {n} kcal, on the other days normally.', { n: FAST_KCAL(d) })}</p>`
+    : t === 'once' ? `<label class="lbl">${T('How long?')}</label><div class="seg">${[16, 24, 36, 48, 72].map(h => `<button data-fh="${h}" class="${(f.h || 24) === h ? 'on' : ''}">${h} h</button>`).join('')}</div>
+        <p class="small muted" style="margin:8px 0 0">${f.t ? T('Started {t}', { t: `${fmtDate(iso(new Date(f.t)), { weekday: 'short' })} ${fmtClock(new Date(f.t))}` }) : T('The timer starts when you save.')}${(f.h || 24) >= 48 ? ' ' + T('Fasts longer than 48 hours only with a doctor’s OK.') : ''}</p>` : '';
+  return FAST_TYPES.map(x => `<button class="opt cmp ${t === x.id ? 'on' : ''}" data-ftype="${x.id}">${x.ic} ${T(x.name)}<small>${T(x.sub)}</small></button>`).join('') + extra;
+}
+function bindFasting(root, d, redraw, change = redraw) {
+  root.querySelectorAll('[data-ftype]').forEach(b => b.onclick = () => {
+    const t = b.dataset.ftype; if (t === fastType(d)) return;
+    d.fasting = { type: t, ...(t === '52' ? { days: [1, 4] } : t === 'adf' ? { from: iso() } : t === 'once' ? { h: 24 } : {}) };
+    if (t === 'if') d.fast = d.fast || { h: 16, start: '12:00' };
+    redraw();
+  });
+  root.querySelectorAll('[data-fday]').forEach(b => b.onclick = () => {   // always 2 days: a new one replaces the older pick
+    const i = +b.dataset.fday, ds = d.fasting.days || [1, 4]; if (ds.includes(i)) return;
+    d.fasting.days = [ds[ds.length - 1], i]; redraw();
+  });
+  root.querySelectorAll('[data-ffrom]').forEach(b => b.onclick = () => { d.fasting.from = addDays(iso(), +b.dataset.ffrom); redraw(); });
+  root.querySelectorAll('[data-fh]').forEach(b => b.onclick = () => { d.fasting.h = +b.dataset.fh; redraw(); });
+  if (root.querySelector('#fH')) bindFast(root, d.fast, () => { redraw(); change(); });
+}
+// Settings → Your goals in three groups: weight & muscle (one), lifestyle (any) and fasting (one).
+// The whole app follows. Past days are not changed.
 function openMainGoalSheet() {
   if (!db.profile) return startOnboarding();
   const w = currentWeight(), d = clone(db.profile), custom = Object.keys(db.overrides).length > 0;
-  d.fast = d.fast || { h: 16, start: '12:00' }; d.carbs = d.carbs || 'keto'; d.preg = d.preg || 't2';
-  sheet(`<h3>🎯 ${T('Your goal')}</h3><p class="muted" style="margin-top:4px">${T('Everything in the app adapts to it. Your past days stay as they are.')}</p><div id="gBody"></div>`, s => {
+  d.fast = d.fast || { h: 16, start: '12:00' }; d.preg = d.preg || 't2'; d.life = d.life || []; d.fasting = d.fasting || { type: '' };
+  let dir = uiDir(d);
+  sheet(`<h3>🎯 ${T('Your goals')}</h3><p class="muted" style="margin-top:4px">${T('Everything in the app adapts to them. Your past days stay as they are.')}</p><div id="gBody"></div>`, s => {
     const fill = () => {
-      const pl = planOf(d), [mn, , mx] = paceRange(d), paces = [];
+      const pl = planOf(d), [mn, , mx] = paceRange(d), paces = [], y = s.scrollTop;
       for (let v = mn; v <= mx + 1e-9; v += 0.05) paces.push(Math.round(v * 100) / 100);
       if (!paces.includes(d.pace)) paces.push(d.pace), paces.sort((a, b) => a - b);
       s.querySelector('#gBody').innerHTML = `
-        <div style="margin-top:12px">${plansFor(d).map(x => `<button class="opt cmp ${x.id === d.plan ? 'on' : ''}" data-plan="${x.id}">${x.ic} ${T(x.name)}<small>${T(x.sub)}</small></button>`).join('')}</div>
-        ${pl.id === 'preg' ? `<label class="lbl">${T('Where are you right now?')}</label><div class="seg" style="flex-wrap:wrap">${PREG.map(([v, l]) => `<button data-preg="${v}" class="${d.preg === v ? 'on' : ''}" style="flex:1 1 45%">${T(l)}</button>`).join('')}</div>` : ''}
-        ${planDirs(pl) ? `<label class="lbl">${T('And your weight?')}</label><div class="seg">${DIRS.filter(([v]) => planDirs(pl).includes(v)).map(([v, l]) => `<button data-dir="${v}" class="${d.goal === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>` : ''}
-        ${pl.id === 'keto' ? `<label class="lbl">${T('How strict?')}</label><div class="seg">${[['keto', N('Keto (max 30 g carbs)')], ['lowcarb', N('Low carb (max 100 g carbs)')]].map(([v, l]) => `<button data-carb="${v}" class="${d.carbs === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>` : ''}
-        ${pl.id === 'if' ? fastPicker(d.fast) : ''}
-        ${needsTarget(d) ? `<div class="row"><div class="grow"><label class="lbl">${T('Goal weight (kg)').replace('kg', wUnit())}</label><input id="gT" inputmode="decimal" value="${showW(d.targetWeight)}"></div>
-          <div class="grow"><label class="lbl">${T('Speed (kg / week)')}</label><select id="gP">${paces.map(v => `<option value="${v}" ${v === d.pace ? 'selected' : ''}>${v} kg</option>`).join('')}</select></div></div>` : ''}
+        <div class="gsec"><div class="gsec-h">⚖️ ${T('Weight & muscle')}</div>
+          <label class="lbl" style="margin-top:4px">${T('Your weight?')}</label>
+          <div class="seg">${DIRS.map(([v, l]) => `<button data-dir="${v}" class="${dir === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>
+          <div style="margin-top:12px">${plansFor(d, dir).map(x => `<button class="opt cmp ${x.id === d.plan ? 'on' : ''}" data-plan="${x.id}">${x.ic} ${T(x.name)}<small>${T(x.sub)}</small></button>`).join('')}</div>
+          ${pl.id === 'preg' ? `<label class="lbl">${T('Where are you right now?')}</label><div class="seg" style="flex-wrap:wrap">${PREG.map(([v, l]) => `<button data-preg="${v}" class="${d.preg === v ? 'on' : ''}" style="flex:1 1 45%">${T(l)}</button>`).join('')}</div>` : ''}
+          ${needsTarget(d) ? `<div class="row"><div class="grow"><label class="lbl">${T('Goal weight (kg)').replace('kg', wUnit())}</label><input id="gT" inputmode="decimal" value="${showW(d.targetWeight)}"></div>
+            <div class="grow"><label class="lbl">${T('Speed (kg / week)')}</label><select id="gP">${paces.map(v => `<option value="${v}" ${v === d.pace ? 'selected' : ''}>${v} kg</option>`).join('')}</select></div></div>` : ''}</div>
+        <div class="gsec"><div class="gsec-h">🥗 ${T('Lifestyle')} <span>${T('optional')}</span></div>${lifeChips(d)}</div>
+        <div class="gsec"><div class="gsec-h">⏱️ ${T('Fasting')} <span>${T('optional')}</span></div>
+          ${d.plan === 'preg' ? `<p class="small muted" style="margin:0">${T('No fasting during pregnancy and breastfeeding.')}</p>` : fastingChoice(d)}</div>
         <div class="tip" id="gPrev"></div>
         <button class="btn" id="gGo" style="margin-top:16px">${T('Save & update goals')}</button>`;
+      s.scrollTop = y;
       const box = s.querySelector('#gBody'), preview = () => goalPreview(box.querySelector('#gPrev'), d, w, custom);
-      box.querySelectorAll('[data-plan]').forEach(b => b.onclick = () => { applyPlan(d, b.dataset.plan, w); fill(); });
-      box.querySelectorAll('[data-dir]').forEach(b => b.onclick = () => { d.goal = b.dataset.dir; d.pace = paceRange(d)[1]; fixTarget(d, w); fill(); });
-      box.querySelectorAll('[data-carb]').forEach(b => b.onclick = () => { d.carbs = b.dataset.carb; fill(); });
+      box.querySelectorAll('[data-dir]').forEach(b => b.onclick = () => {
+        dir = b.dataset.dir;
+        applyPlan(d, plansFor(d, dir).some(x => x.id === d.plan) ? d.plan : DIR_DEFAULT[dir], w, dir); fill();
+      });
+      box.querySelectorAll('[data-plan]').forEach(b => b.onclick = () => { applyPlan(d, b.dataset.plan, w, dir); fill(); });
       box.querySelectorAll('[data-preg]').forEach(b => b.onclick = () => { d.preg = b.dataset.preg; fill(); });
-      if (box.querySelector('#fH')) bindFast(box, d.fast, preview);
+      bindLife(box, d, fill);
+      bindFasting(box, d, fill, preview);
       if (box.querySelector('#gT')) box.querySelector('#gT').oninput = e => { d.targetWeight = r1(readW(e.target.value)); preview(); };
       if (box.querySelector('#gP')) box.querySelector('#gP').onchange = e => { d.pace = +e.target.value; preview(); };
       box.querySelector('#gGo').onclick = () => {
@@ -5299,10 +5445,12 @@ function openMainGoalSheet() {
           if (d.goal === 'lose' && !(d.targetWeight < w)) return toast(T('Your goal weight must be below your current {w} kg', { w }));
           if (isGain(d.goal) && !(d.targetWeight > w)) return toast(T('Your goal weight must be above your current {w} kg', { w }));
         } else d.targetWeight = w;
+        if (d.plan === 'preg') d.fasting = { type: '' };
+        if (fastType(d) === 'once' && !d.fasting.t) d.fasting.t = Date.now();   // the one-time fast starts now
         db.profile = d; db.overrides = {};
         save(); closeSheet();
         const t = targets(); toast(T('✓ Updated: {k} kcal · {p} g protein', { k: t.kcal, p: t.protein }));
-        render();
+        syncPush(); render();
       };
       preview();
     };
@@ -5351,21 +5499,19 @@ function openGoalsSheet() {
 
 /* ================= Onboarding ================= */
 let ob = null;
-const OB = ['intro', 'gender', 'workouts', 'body', 'birth', 'goal', 'dir', 'carbs', 'preg', 'fasting', 'target', 'speed', 'ai', 'ready'];
+const OB = ['intro', 'gender', 'workouts', 'body', 'birth', 'dir', 'goal', 'preg', 'target', 'speed', 'life', 'fasting', 'ai', 'ready'];
 function startOnboarding() {
   const base = db.profile ? clone(db.profile) : {};
   ob = { step: 0, p: Object.assign({ sex: '', workouts: '', height: 175, weight: 75, birth: '', plan: '', goal: '', targetWeight: null, pace: 0.5,
-    carbs: 'keto', preg: '', fast: { h: 16, start: '12:00' } }, base) };
+    preg: '', fast: { h: 16, start: '12:00' }, life: [], fasting: { type: '' } }, base) };
   if (db.profile) ob.p.weight = currentWeight();
   closeSheet(); renderOb();
 }
 // Steps that don't apply to the chosen goal are skipped
 function obSkip(i) {
   const s = OB[i], p = ob.p;
-  if (s === 'dir') return !planDirs(planOf(p));
   if (s === 'preg') return p.plan !== 'preg';
-  if (s === 'carbs') return p.plan !== 'keto';
-  if (s === 'fasting') return p.plan !== 'if';
+  if (s === 'fasting') return p.plan === 'preg';   // no fasting during pregnancy and breastfeeding
   if (s === 'target' || s === 'speed') return p.goal === 'maintain';
   if (s === 'ai') return !!SERVER_URL;
   return false;
@@ -5375,13 +5521,16 @@ function obMove(d) { let i = ob.step + d; while (i > 0 && i < OB.length - 1 && o
 function planTips(p) {
   const t = [], id = planOf(p).id;
   t.push('📷 ' + T('Snap every meal, even snacks'));
-  if (id === 'keto') t.push('🥑 ' + T('Keep carbs under {n} g a day', { n: p.carbs === 'lowcarb' ? 100 : 30 }));
-  if (id === 'if') { const f = fastState(p); t.push('⏱️ ' + T('Eat only between {a} and {b}', { a: f.startStr, b: f.endStr })); }
-  if (id === 'healthy') t.push('🥗 ' + T('Aim for 30 g fiber a day and less sugar and salt'));
+  const ft = fastType(p);
+  if (carbCap(p)) t.push('🥑 ' + T('Keep carbs under {n} g a day', { n: carbCap(p) }));
+  if (ft === 'if') { const f = fastState(p); t.push('⏱️ ' + T('Eat only between {a} and {b}', { a: f.startStr, b: f.endStr })); }
+  if (ft === '52' || ft === 'adf') t.push('📅 ' + T('On fast days eat about {n} kcal, mostly protein and vegetables', { n: FAST_KCAL(p) }));
+  if (ft === 'once') t.push('⏳ ' + T('Drink plenty of water during your fast and stop if you feel unwell'));
+  if (hasLife(p, 'sport')) t.push('🍝 ' + T('Eat enough carbs around long or hard training'));
+  if (hasLife(p, 'healthy')) t.push('🥗 ' + T('Aim for 30 g fiber a day and less sugar and salt'));
   t.push('🍗 ' + T('Hit your protein goal every day'));
   if (['lean', 'bulk', 'dirty', 'recomp'].includes(id) || p.goal === 'lean') t.push('🏋️ ' + T('Train with weights 3–5× a week and get stronger over time'));
   if (id === 'recomp' && p.goal === 'maintain') t.push('🔄 ' + T('Your weight may stay similar while your body changes'));
-  if (id === 'sport') t.push('🍝 ' + T('Eat enough carbs around long or hard training'));
   if (id === 'preg') { t.push('🩺 ' + T('Ask your doctor or midwife how much weight gain is right for you')); t.push('🚫 ' + T('No alcohol, raw fish, raw meat or unpasteurised cheese')); }
   t.push('⚖️ ' + T('Weigh yourself once a week, in the morning before breakfast'));
   return t;
@@ -5441,17 +5590,17 @@ function renderOb() {
     body = `<div class="seg" style="margin-bottom:14px"><button data-obu="metric" class="${isLb() ? '' : 'on'}">kg · cm</button><button data-obu="us" class="${isLb() ? 'on' : ''}">lb · ft</button></div><div class="row"><div class="grow"><label class="lbl">${T('Height')}</label><select id="obH">${h}</select></div><div class="grow"><label class="lbl">${T('Weight')}</label><select id="obW">${kgOpts(isLb() ? p.weight : Math.round(p.weight * 2) / 2, 35, 250)}</select></div></div>`; }
   if (s === 'birth') { title = T('When were you born?'); sub = calib;
     body = birthPicker(p.birth); ok = !!p.birth; }
-  if (s === 'goal') { title = T('What is your main goal?'); sub = T('Everything in the app adapts to it. You can change it any time in Settings.');
-    body = plansFor(p).map(x => `<button class="opt cmp ${p.plan === x.id ? 'on' : ''}" data-plan="${x.id}">${x.ic} ${T(x.name)}<small>${T(x.sub)}</small></button>`).join(''); ok = !!p.plan; }
-  if (s === 'dir') { const dirs = planDirs(planOf(p)); title = T('What about your weight?');
-    sub = planOf(p).id === 'recomp' ? T('Lose some weight slowly while you build muscle, or keep your weight the same.') : T('{goal} works with any weight goal.', { goal: T(planOf(p).name) });
-    body = opts('goal', [['lose', T('Lose weight'), planOf(p).id === 'recomp' ? T('Slowly, so you can still build muscle') : ''], ['maintain', T('Keep my weight')], ['lean', T('Gain weight'), T('Slowly, mostly muscle')]].filter(([v]) => dirs.includes(v))); ok = dirs.includes(p.goal); }
+  if (s === 'dir') { const dir = p.plan ? uiDir(p) : '';
+    title = T('What about your weight?'); sub = T('Your main goal first. Lifestyle and fasting come next and are optional.');
+    body = [['lose', '🔥', T('Lose weight')], ['maintain', '⚖️', T('Keep my weight')], ['gain', '💪', T('Gain weight')]]
+      .map(([v, ic, l]) => `<button class="opt ${dir === v ? 'on' : ''}" data-obdir="${v}">${ic} ${l}</button>`).join(''); ok = !!dir; }
+  if (s === 'goal') { const list = plansFor(p, uiDir(p));
+    title = T('Which one fits you best?'); sub = T('Everything in the app adapts to it. You can change it any time in Settings.');
+    body = list.map(x => `<button class="opt cmp ${p.plan === x.id ? 'on' : ''}" data-plan="${x.id}">${x.ic} ${T(x.name)}<small>${T(x.sub)}</small></button>`).join(''); ok = list.some(x => x.id === p.plan); }
   if (s === 'preg') { title = T('Where are you right now?'); sub = T('Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.');
     body = opts('preg', PREG.map(([v, l]) => [v, T(l)])); ok = !!p.preg; }
-  if (s === 'carbs') { title = T('How strict do you want to be?');
-    body = opts('carbs', [['keto', T('Keto'), T('Max 30 g carbs a day')], ['lowcarb', T('Low carb'), T('Max 100 g carbs a day')]]); }
-  if (s === 'fasting') { const f = fastState(p); title = T('Choose your fasting rhythm'); sub = T('You only eat inside your eating window.');
-    body = fastPicker(p.fast) + `<div class="tip">${T('Eating window: {a} – {b}', { a: f.startStr, b: f.endStr })}</div>`; }
+  if (s === 'life') { title = T('Your lifestyle'); sub = T('Optional: pick everything that fits you, or just continue.'); body = lifeChips(p); }
+  if (s === 'fasting') { title = T('Do you want to fast?'); sub = T('Optional. You can change it any time in Settings.'); body = fastingChoice(p); }
   if (s === 'target') {
     fixTarget(p, p.weight);
     title = T('What is your desired weight?');
@@ -5483,7 +5632,7 @@ function renderOb() {
     if (needsTarget(p)) { const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(p.targetWeight - p.weight) / p.pace * 7));
       reach = `<div class="tip" style="text-align:center;margin:0 0 18px">${p.goal === 'lose' ? T('You should lose:') : T('You should gain:')}<br><b style="font-size:18px">${T('{n} kg by {d}', { n: r1(Math.abs(p.targetWeight - p.weight)), d: fmtLong(d) })}</b></div>`; }
     title = T('Congratulations, your custom plan is ready!');
-    sub = `${planOf(p).ic} ${T(planOf(p).name)}`;
+    sub = [`${planOf(p).ic} ${T(planOf(p).name)}`, ...goalExtras(p)].join(' · ');
     body = `${reach}<b>${T('Daily recommendation')}</b><p class="small muted" style="margin:2px 0 12px">${T('You can edit this any time in Settings.')}</p>
       <div class="plan4">${[['🔥', T('Calories'), t.kcal, '', 'var(--ink)'], ['🌾', T('Carbs'), t.carbs, 'g', 'var(--carbs)'], ['🍗', T('Protein'), t.protein, 'g', 'var(--protein)'], ['🥑', T('Fats'), t.fat, 'g', 'var(--fat)']]
         .map(([ic, l, v, u, c]) => `<div class="card"><span class="small" style="font-weight:600">${ic} ${l}</span>${ring(80, 7, 0.75, c, `<b style="font-size:17px">${v}${u}</b>`)}</div>`).join('')}</div>
@@ -5497,9 +5646,11 @@ function renderOb() {
     <button class="btn" id="obNext" ${ok ? '' : 'disabled'} style="margin-top:20px">${cta}</button></div>`;
   pg.scrollTo(0, 0);
   pg.querySelector('#obBack').onclick = () => obMove(-1);
-  pg.querySelectorAll('[data-plan]').forEach(b => b.onclick = () => { applyPlan(p, b.dataset.plan, p.weight); renderOb(); });
+  pg.querySelectorAll('[data-obdir]').forEach(b => b.onclick = () => { const dir = b.dataset.obdir; applyPlan(p, p.plan && plansFor(p, dir).some(x => x.id === p.plan) ? p.plan : DIR_DEFAULT[dir], p.weight, dir); renderOb(); });
+  pg.querySelectorAll('[data-plan]').forEach(b => b.onclick = () => { applyPlan(p, b.dataset.plan, p.weight, uiDir(p)); renderOb(); });
+  bindLife(pg, p, renderOb);
+  bindFasting(pg, p, renderOb);
   pg.querySelectorAll('[data-set]').forEach(b => b.onclick = () => { p[b.dataset.set] = b.dataset.v; if (b.dataset.set === 'goal') { p.pace = paceRange(p)[1]; fixTarget(p, p.weight); } renderOb(); });
-  if (pg.querySelector('#fH')) bindFast(pg, p.fast, renderOb);
   const bind = (id, fn) => { const el = pg.querySelector(id); if (el) el.onchange = el.oninput = () => fn(el); };
   bind('#obH', el => p.height = +el.value);
   pg.querySelectorAll('[data-obu]').forEach(b => b.onclick = () => { db.settings.units = b.dataset.obu === 'us' ? { w: 'lb', h: 'in', v: 'oz' } : { w: 'kg', h: 'cm', v: 'ml' }; renderOb(); });
@@ -5535,6 +5686,8 @@ function finishOnboarding() {
   const p = ob.p;
   if (p.goal === 'maintain') p.targetWeight = p.weight;
   p.pace = num(p.pace) || 0.5; p.height = num(p.height); p.weight = num(p.weight);
+  if (p.plan === 'preg') p.fasting = { type: '' };
+  if (fastType(p) === 'once' && !p.fasting.t) p.fasting.t = Date.now();   // the one-time fast starts now
   db.profile = p; db.overrides = {};
   if (!db.weights.length || currentWeight() !== p.weight) { db.weights = db.weights.filter(w => w.date !== iso()); db.weights.push({ date: iso(), kg: p.weight }); }
   LS.set('ft_lang', LANG);
@@ -5590,7 +5743,7 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   navigator.serviceWorker.addEventListener('message', e => handleOpen(e.data && e.data.open));
 }
 saveReminderTexts();
-setInterval(() => { const c = $('#fastCard'); if (c && tab === 'home') c.outerHTML = fastingHTML(); }, 30000);
+setInterval(() => { const c = $('#fastCard'); if (c && tab === 'home') c.outerHTML = fastType(db.profile) === 'once' ? onceFastHTML() : fastingHTML(); }, 30000);
 const openParam = new URLSearchParams(location.search).get('open');
 if (openParam) { history.replaceState(null, '', location.pathname); handleOpen(openParam); }
 syncPush();
