@@ -1021,7 +1021,8 @@ window.I18N = {
 "Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Tippe direkt nach dem Einfügen in der Leiste über der Tastatur auf <b>Statistics</b>. Die Adresse endet jetzt mit <b>kcal=</b> und einer blauen <b>Statistics</b>-Blase.",
 "No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Kein <b>Statistics</b> über der Tastatur? Tippe ganz ans Ende der Adresse, dann auf <b>Select Variable</b> (oder lange drücken → <b>Variable einfügen</b>) und tippe auf <b>Statistics</b>.",
 "Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Tippe oben auf <b>Fertig</b> oder <b>✕</b>. Es speichert von selbst.",
-"Choose another watch or way":"Andere Uhr oder anderen Weg wählen"
+"Choose another watch or way":"Andere Uhr oder anderen Weg wählen",
+"{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.":"{name} zählt bisher insgesamt {t} kcal. Davon verbrennt dein Körper etwa {r} kcal in Ruhe, das steckt schon in deinem Tagesziel. Deshalb werden {a} kcal Aktivität dazugerechnet."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2044,7 +2045,8 @@ window.I18N = {
 "Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Justo después de pegar, toca <b>Statistics</b> en la barra encima del teclado. La dirección ahora termina en <b>kcal=</b> y una burbuja azul <b>Statistics</b>.",
 "No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"¿No ves <b>Statistics</b> encima del teclado? Toca justo al final de la dirección, luego <b>Select Variable</b> (o mantén pulsado → <b>Insertar variable</b>) y toca <b>Statistics</b>.",
 "Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Toca <b>OK</b> o <b>✕</b> arriba. Se guarda solo.",
-"Choose another watch or way":"Elegir otro reloj u otra forma"
+"Choose another watch or way":"Elegir otro reloj u otra forma",
+"{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.":"{name} cuenta {t} kcal en total hasta ahora. Unas {r} kcal son lo que tu cuerpo quema en reposo, que ya está en tu objetivo diario. Por eso se suman {a} kcal de actividad."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3067,7 +3069,8 @@ window.I18N = {
 "Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Juste après avoir collé, touche <b>Statistics</b> dans la barre au-dessus du clavier. L'adresse se termine maintenant par <b>kcal=</b> et une bulle bleue <b>Statistics</b>.",
 "No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Pas de <b>Statistics</b> au-dessus du clavier ? Touche tout à la fin de l'adresse, puis <b>Select Variable</b> (ou appui long → <b>Insérer une variable</b>) et touche <b>Statistics</b>.",
 "Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Touche <b>OK</b> ou <b>✕</b> en haut. Ça s'enregistre tout seul.",
-"Choose another watch or way":"Choisir une autre montre ou un autre moyen"
+"Choose another watch or way":"Choisir une autre montre ou un autre moyen",
+"{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.":"{name} compte {t} kcal au total jusqu'ici. Environ {r} kcal correspondent à ce que ton corps brûle au repos, déjà inclus dans ton objectif du jour. Donc {a} kcal d'activité sont ajoutées."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -4090,7 +4093,8 @@ window.I18N = {
 "Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Subito dopo aver incollato, tocca <b>Statistics</b> nella barra sopra la tastiera. L'indirizzo ora finisce con <b>kcal=</b> e una bolla blu <b>Statistics</b>.",
 "No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Non vedi <b>Statistics</b> sopra la tastiera? Tocca alla fine dell'indirizzo, poi <b>Select Variable</b> (o tieni premuto → <b>Inserisci variabile</b>) e tocca <b>Statistics</b>.",
 "Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Tocca <b>Fine</b> o <b>✕</b> in alto. Si salva da solo.",
-"Choose another watch or way":"Scegli un altro orologio o un altro modo"
+"Choose another watch or way":"Scegli un altro orologio o un altro modo",
+"{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.":"{name} conta finora {t} kcal in totale. Circa {r} kcal sono ciò che il tuo corpo brucia a riposo, già incluso nel tuo obiettivo giornaliero. Quindi vengono aggiunte {a} kcal di attività."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -5113,7 +5117,8 @@ window.I18N = {
 "Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"貼り付けた直後に、キーボード上のバーにある <b>Statistics</b> をタップ。アドレスの最後が <b>kcal=</b> と青い <b>Statistics</b> になります。",
 "No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"キーボード上に <b>Statistics</b> がない？アドレスの一番最後をタップし、<b>Select Variable</b>（または長押し → <b>変数を挿入</b>）で <b>Statistics</b> をタップ。",
 "Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"上の <b>完了</b> または <b>✕</b> をタップ。自動で保存されます。",
-"Choose another watch or way":"別のウォッチや方法を選ぶ"
+"Choose another watch or way":"別のウォッチや方法を選ぶ",
+"{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.":"{name} の今日の合計は {t} kcal です。そのうち約 {r} kcal は安静時に体が消費する分で、すでに1日の目標に含まれています。そのため活動分の {a} kcal が加算されます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -6136,7 +6141,8 @@ window.I18N = {
 "Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Tik direct na het plakken op <b>Statistics</b> in de balk boven het toetsenbord. Het adres eindigt nu op <b>kcal=</b> en een blauwe <b>Statistics</b>-bel.",
 "No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Geen <b>Statistics</b> boven het toetsenbord? Tik helemaal aan het eind van het adres, dan op <b>Select Variable</b> (of houd ingedrukt → <b>Voeg variabele in</b>) en tik op <b>Statistics</b>.",
 "Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Tik bovenaan op <b>Gereed</b> of <b>✕</b>. Het bewaart vanzelf.",
-"Choose another watch or way":"Kies een ander horloge of een andere manier"
+"Choose another watch or way":"Kies een ander horloge of een andere manier",
+"{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.":"{name} telt tot nu toe {t} kcal in totaal. Ongeveer {r} kcal daarvan verbrandt je lichaam in rust, en dat zit al in je dagdoel. Daarom wordt {a} kcal activiteit toegevoegd."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -7159,7 +7165,8 @@ window.I18N = {
 "Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Zaraz po wklejeniu stuknij <b>Statistics</b> na pasku nad klawiaturą. Adres kończy się teraz na <b>kcal=</b> i niebieskim dymkiem <b>Statistics</b>.",
 "No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Nie ma <b>Statistics</b> nad klawiaturą? Stuknij na samym końcu adresu, potem <b>Select Variable</b> (lub przytrzymaj → <b>Wstaw zmienną</b>) i stuknij <b>Statistics</b>.",
 "Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Stuknij <b>Gotowe</b> lub <b>✕</b> u góry. Zapisuje się samo.",
-"Choose another watch or way":"Wybierz inny zegarek lub inny sposób"
+"Choose another watch or way":"Wybierz inny zegarek lub inny sposób",
+"{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.":"{name} liczy dotąd łącznie {t} kcal. Około {r} kcal z tego Twoje ciało spala w spoczynku, co już jest w Twoim dziennym celu. Dlatego dodawane jest {a} kcal aktywności."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -8182,7 +8189,8 @@ window.I18N = {
 "Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Logo depois de colar, toque em <b>Statistics</b> na barra acima do teclado. O endereço termina agora em <b>kcal=</b> e uma bolha azul <b>Statistics</b>.",
 "No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Não vê <b>Statistics</b> acima do teclado? Toque mesmo no fim do endereço, depois em <b>Select Variable</b> (ou mantenha premido → <b>Inserir variável</b>) e toque em <b>Statistics</b>.",
 "Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Toque em <b>OK</b> ou <b>✕</b> em cima. Guarda sozinho.",
-"Choose another watch or way":"Escolher outro relógio ou outra forma"
+"Choose another watch or way":"Escolher outro relógio ou outra forma",
+"{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.":"{name} conta {t} kcal no total até agora. Cerca de {r} kcal são o que o seu corpo gasta em repouso, já incluído no seu objetivo diário. Por isso são somadas {a} kcal de atividade."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -9205,7 +9213,8 @@ window.I18N = {
 "Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Сразу после вставки нажмите <b>Statistics</b> на панели над клавиатурой. Адрес теперь заканчивается на <b>kcal=</b> и синий пузырёк <b>Statistics</b>.",
 "No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Нет <b>Statistics</b> над клавиатурой? Нажмите в самом конце адреса, затем <b>Select Variable</b> (или удерживайте → <b>Вставить переменную</b>) и нажмите <b>Statistics</b>.",
 "Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Нажмите <b>Готово</b> или <b>✕</b> вверху. Сохраняется само.",
-"Choose another watch or way":"Выбрать другие часы или способ"
+"Choose another watch or way":"Выбрать другие часы или способ",
+"{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.":"{name} насчитывает пока всего {t} ккал. Около {r} ккал из них тело тратит в покое, и это уже учтено в вашей дневной цели. Поэтому добавляется {a} ккал активности."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -10228,7 +10237,8 @@ window.I18N = {
 "Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"Yapıştırdıktan hemen sonra klavyenin üstündeki çubukta <b>Statistics</b>'e dokun. Adres artık <b>kcal=</b> ve mavi bir <b>Statistics</b> balonuyla bitiyor.",
 "No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"Klavyenin üstünde <b>Statistics</b> yok mu? Adresin en sonuna dokun, sonra <b>Select Variable</b>'a (veya basılı tut → <b>Değişken Ekle</b>) ve <b>Statistics</b>'e dokun.",
 "Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"Üstte <b>Bitti</b> veya <b>✕</b>'e dokun. Kendiliğinden kaydedilir.",
-"Choose another watch or way":"Başka bir saat veya yol seç"
+"Choose another watch or way":"Başka bir saat veya yol seç",
+"{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.":"{name} şu ana kadar toplam {t} kcal sayıyor. Bunun yaklaşık {r} kcal'si vücudunun dinlenirken yaktığı kısım ve zaten günlük hedefinde var. Bu yüzden {a} kcal aktivite ekleniyor."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -11251,6 +11261,7 @@ window.I18N = {
 "Right after pasting, tap <b>Statistics</b> in the bar above the keyboard. The address now ends with <b>kcal=</b> and a blue <b>Statistics</b> bubble.":"粘贴后立刻点键盘上方栏里的 <b>Statistics</b>。地址末尾现在是 <b>kcal=</b> 加一个蓝色的 <b>Statistics</b> 气泡。",
 "No <b>Statistics</b> above the keyboard? Tap at the very end of the address, then <b>Select Variable</b> (or press and hold → <b>Insert Variable</b>) and tap <b>Statistics</b>.":"键盘上方没有 <b>Statistics</b>？点地址的最末尾，再点 <b>Select Variable</b>（或长按 → <b>插入变量</b>），然后点 <b>Statistics</b>。",
 "Tap <b>Done</b> or <b>✕</b> at the top. It saves by itself.":"点顶部的 <b>完成</b> 或 <b>✕</b>。会自动保存。",
-"Choose another watch or way":"选择其他手表或方式"
+"Choose another watch or way":"选择其他手表或方式",
+"{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.":"{name} 目前共计 {t} kcal。其中约 {r} kcal 是身体静息时消耗的，已经包含在你的每日目标中。因此只加上 {a} kcal 的活动消耗。"
 }
 };
