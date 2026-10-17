@@ -722,7 +722,7 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 #ptr .ptr-arc{stroke-dasharray:83.33 100;stroke-dashoffset:83.33}
 #ptr .ptr-dot{opacity:0;transform-box:fill-box;transform-origin:center;transition:opacity .15s,transform .3s cubic-bezier(.34,1.6,.5,1)}
 #ptr.ready{color:var(--text)}
-#ptr.spin .ptr-logo{animation:rot .9s linear infinite}
+#ptr.turning .ptr-logo{animation:rot .9s linear infinite}
 #ptr .ptr-ok{stroke-dasharray:100;stroke-dashoffset:100;opacity:0}
 #ptr.done{color:var(--good)}
 #ptr.done .ptr-logo{opacity:0;transition:opacity .15s}
@@ -889,7 +889,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v114';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v115';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -4853,7 +4853,7 @@ async function pullRefresh() {
   }, { passive: false });
   const back = () => {
     anim(`.5s ${ease}`); place(0, 0, 1);
-    setTimeout(() => { if (!pulling) { view.style.transition = view.style.willChange = ''; ind.classList.remove('ready', 'spin', 'done'); armed = false; } }, 560);
+    setTimeout(() => { if (!pulling) { view.style.transition = view.style.willChange = ''; ind.classList.remove('ready', 'turning', 'done'); armed = false; } }, 560);
   };
   const end = async () => {
     if (y0 === null) return; y0 = null;
@@ -4862,11 +4862,11 @@ async function pullRefresh() {
     if (!armed) return back();
     ptrBusy = true;
     anim(`.45s ${ease}`); place(HOLD, 1, 1);               // settles softly into place and starts spinning
-    logo.style.transform = ''; arc.style.strokeDashoffset = 0; dot.style.opacity = 1; dot.style.transform = ''; ind.classList.add('spin');   // the whole logo turns
+    logo.style.transform = ''; arc.style.strokeDashoffset = 0; dot.style.opacity = 1; dot.style.transform = ''; ind.classList.add('turning');   // the whole logo turns (not 'spin': that is the button spinner style)
     const t0 = Date.now();
     try { await pullRefresh(); } catch {}
     await new Promise(r => setTimeout(r, Math.max(0, 700 - (Date.now() - t0))));   // long enough to see that it happened
-    ind.classList.remove('spin'); ind.classList.add('done');   // a green check mark draws itself
+    ind.classList.remove('turning'); ind.classList.add('done');   // a green check mark draws itself
     await new Promise(r => setTimeout(r, 550));
     back(); setTimeout(() => { ptrBusy = false; }, 560);
   };
