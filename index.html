@@ -889,7 +889,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v115';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v116';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2019,7 +2019,7 @@ async function runBackup(manual, a = acct()) {
     const zz = await zipText(payload);
     const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await aesKey(a.key), zz.bytes));
     const rep = OLD_HOME ? {} : aiReport();
-    const r = await fetch(SERVER_URL + '/backup', { method: 'POST', headers: { 'Content-Type': 'text/plain', 'X-Id': a.id, 'X-Auth': a.auth, ...(OLD_HOME ? {} : { 'X-Dev': devId(), 'X-AI': JSON.stringify(rep) }) },
+    const r = await fetch(SERVER_URL + '/backup', { method: 'POST', headers: { 'Content-Type': 'text/plain', 'X-Id': a.id, 'X-Auth': a.auth, ...(OLD_HOME ? {} : { 'X-Dev': devId(), 'X-AI': JSON.stringify(rep) }), ...(a.email && LS.get('ft_email_note', '') ? { 'X-Email': encodeURIComponent(a.email) } : {}) },
       body: (zz.z ? 'z' : 'p') + '.' + b64(iv) + '.' + b64(ct) });
     if (!r.ok) throw new Error('HTTP ' + r.status);
     LS.set('ft_bk_last', String(Date.now()));
@@ -2171,6 +2171,7 @@ function openAccountSheet(mode = 'signup') {
     </form>
     <p class="small" id="acMsg" style="text-align:center;min-height:20px;margin:10px 0 0"></p>
     ${up ? `<p class="small muted" style="margin:4px 0 0">🔒 ${T("Your iPhone can save the password for you. Without the password the data can't be opened, not even by us.")}</p>` : ''}
+    <p class="small muted" style="margin:6px 0 0">👤 ${T('The app owner can see your account email, but never your data.')}</p>
     <button class="small muted" id="acSwitch" style="display:block;margin:14px auto 0;padding:6px">${up ? T('Already have an account? Sign in') : T('New here? Create an account')}</button>`, s => {
     const msg = (t, bad) => { const m = s.querySelector('#acMsg'); m.innerHTML = t; m.style.color = bad ? 'var(--bad)' : ''; };
     s.querySelector('#acSwitch').onclick = () => openAccountSheet(up ? 'login' : 'signup');
@@ -2190,7 +2191,7 @@ function openAccountSheet(mode = 'signup') {
           if (err.message === 'busy') return msg(T('Too many tries. Please wait a few minutes and try again.'), true);
           if (!up) return msg(T('No account with this email. Check it, or create a new account.'), true);
         }
-        LS.set('ft_acct', JSON.stringify(a)); LS.set('ft_acct_ask', '1'); dropOldCode();
+        LS.set('ft_acct', JSON.stringify(a)); LS.set('ft_acct_ask', '1'); LS.set('ft_email_note', '1'); dropOldCode();
         if (data && (!db.profile || !db.meals.length || confirm(T('Load the data from your account onto this phone? (Cancel keeps the data on this phone and saves it to your account.)')))) {
           LS.set('ft_bk_last', String(Date.now())); return applyAccountData(data);
         }
@@ -2225,6 +2226,14 @@ function askAccount(first, then) {
     sh.querySelector('#aaIn').onclick = () => { openAccountSheet('login'); watch(); };
     sh.querySelector('#aaNo').onclick = () => { if (!laterDue) LS.set('ft_acct_ask', 'later:' + Date.now()); dismissSheet(); setTimeout(next, 350); };
   });
+}
+// People who made an account before the owner could see emails are told once, before their email is sent
+function emailNote() {
+  if (!acct() || LS.get('ft_email_note', '') || $('.backdrop') || $('#onb') || $('.page') || $('#tourLayer')) return;
+  sheet(`<div style="text-align:center;padding:6px 4px 0"><div class="askbell">👤</div>
+    <h3 style="margin:14px 0 6px">${T('A small privacy update')}</h3>
+    <p class="muted" style="margin:0 0 18px">${T('So the app owner can help you if you ever forget your login, your account email is now visible to them. Your meals, photos and everything else stay encrypted: only you can read them.')}</p>
+    <button class="btn" id="enOk">${T('OK')}</button></div>`, sh => { sh.querySelector('#enOk').onclick = () => { LS.set('ft_email_note', '1'); dismissSheet(); setTimeout(() => runBackup(false), 600); }; });
 }
 function backupCard() {
   if (!SERVER_URL) return '';
@@ -3111,6 +3120,7 @@ async function loadUsers() {
     box.innerHTML = `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
         ${tile(st.total, T('Total users'))}${tile(st.today, T('Active today'))}${tile(st.week, T('This week'))}
         ${tile(st.month, T('This month'))}${tile(st.newWeek, T('New this week'))}${tile(st.accounts, T('With account'))}</div>
+      <button class="btn sm outline" id="usAcc" style="width:100%;margin-top:10px">📧 ${T('Show accounts')}</button>
       <div class="small muted" style="margin:14px 0 6px;font-weight:600;text-align:left">${T('Active per day (last 14 days)')}</div>
       <div style="display:flex;align-items:flex-end;gap:4px;height:70px">${st.days.map(x => `<div title="${x.d}: ${x.n}" style="flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;gap:3px">
         <span style="font-size:10px;color:var(--muted);font-weight:600">${x.n || ''}</span><div style="width:100%;max-width:16px;border-radius:5px;background:var(--ink);opacity:${x.d === st.date ? 1 : .55};height:${Math.max(3, x.n / max * 48)}px"></div></div>`).join('')}</div>
@@ -3121,7 +3131,28 @@ async function loadUsers() {
           <div class="small" style="margin-top:6px">${T('Yesterday: {n} AI requests', { n: y.n.toLocaleString(LOC) })}${y.refused ? ` · ${T('{n} refused by Google', { n: y.refused })}` : ''}</div>
           <div class="small" style="margin-top:6px;font-weight:600;color:${hit ? 'var(--bad)' : 'var(--good)'}">${hit ? '⚠️ ' + T('People saw "AI busy" {n} times this week. You are close to the free limit.', { n: hit }) : '✓ ' + T('Within the free limit: nobody had to wait.')}</div>
           <div class="small muted" style="margin-top:6px">${T('Phones report a day once they open the app the next day.')}</div></div>`; })()}`;
+    if ($('#usAcc')) $('#usAcc').onclick = openAccountsList;
   } catch { box.innerHTML = `<p class="small muted" style="margin:0">${T('No connection')}</p>`; }
+}
+// Admin: who has an account (email, first day, last active, last backup). Their data stays encrypted.
+async function openAccountsList() {
+  sheet(`<h3>📧 ${T('Accounts')}</h3><div id="alBody" style="margin-top:12px;text-align:center"><span class="spin"></span></div>`);
+  const box = $('#alBody');
+  try {
+    const r = await fetch(SERVER_URL + '/accounts', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + LS.get('ft_admin_token', '') } });
+    if (!r.ok) throw new Error(r.status === 403 ? T('Wrong admin password.') : 'HTTP ' + r.status);
+    const list = (await r.json()).accounts || [], withE = list.filter(x => x.e), none = list.length - withE.length;
+    const day = d => d ? fmtDate(d, { day: 'numeric', month: 'short', year: '2-digit' }) : '–';
+    if (!box) return;
+    box.style.textAlign = 'left';
+    box.innerHTML = `<p class="small muted" style="margin:0 0 10px">${T('{n} accounts', { n: list.length })}${none ? ' · ' + T('{n} show their email after their next backup (once they open the app).', { n: none }) : ''}</p>
+      ${withE.length ? `<input id="alQ" type="search" placeholder="${T('Search')}" autocomplete="off" style="margin-bottom:10px">
+      <div class="list" id="alList" style="box-shadow:none;background:var(--chip)">${withE.map(x => `<div class="li" data-e="${esc(x.e)}" style="align-items:flex-start"><span class="grow" style="min-width:0"><b style="overflow-wrap:anywhere">${esc(x.e)}</b><br>
+        <span class="small muted">${T('Since {d}', { d: day(x.f) })} · ${T('Last active {d}', { d: day(x.l) })}</span></span></div>`).join('')}</div>
+      <button class="btn sm outline" id="alCopy" style="width:100%;margin-top:12px">${T('Copy all emails')}</button>` : ''}`;
+    const q = $('#alQ'); if (q) q.oninput = () => box.querySelectorAll('[data-e]').forEach(r => r.style.display = r.dataset.e.includes(q.value.trim().toLowerCase()) ? '' : 'none');
+    const c = $('#alCopy'); if (c) c.onclick = async () => { try { await navigator.clipboard.writeText(withE.map(x => x.e).join('\n')); toast(T('✓ Copied')); } catch { toast(T('Could not copy')); } };
+  } catch (e) { if (box) box.innerHTML = `<p class="small muted" style="margin:0">${esc(e.message === 'Failed to fetch' ? T('No connection') : e.message)}</p>`; }
 }
 function bindUsersCard() {
   if ($('#usSave')) $('#usSave').onclick = () => { const v = $('#usTok').value.trim(); if (v.length < 10) return; LS.set('ft_admin_token', v); renderSettings(); };
@@ -3323,12 +3354,13 @@ function openPrivacy() {
     <p class="muted" style="margin:4px 0 14px">${T('Food Tracker is a private app shared among friends and family. This is exactly what happens with your data.')}</p>
     ${sec('📱', T('On your phone'), T('Your meals, photos, weights, goals, meal plans and coach chats are stored on your phone.'))}
     ${sec('☁️', T('Account & backup'), T("If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner."))}
+    ${sec('👤', T('Your account email'), T('The app owner can see the email address of each account, for example to help if you forget your login. Your meals, photos and everything else stay encrypted.'))}
     ${sec('✨', T('AI'), T('When you scan food, chat with the coach, use voice input or create a meal plan, that photo, text or recording is sent through the Food Tracker server to Google Gemini to get an answer. The server does not keep it. Google handles it under the Gemini API terms, so please don\'t send very sensitive things like medical documents.'))}
     ${sec('🔔', T('Notifications'), T("If you turn on reminders, the server keeps your phone's notification address, your reminder times and your time zone. Nothing else."))}
     ${sec('⌚', T('Watch & tracker'), T('If you connect Apple Health or a tracker, only your active calories per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.'))}
     ${sec('🏷️', T('Barcodes'), T('When you scan a barcode, only its number is sent to Open Food Facts, a free food database, to find the product.'))}
     ${sec('📊', T('Usage count'), T('To know how many people use Food Tracker, the app sends a random number once a day. It is not linked to you, your email or your food. Only the number of users is counted.'))}
-    ${sec('🚫', T('What never happens'), T('No ads, no tracking, no selling of data and no emails. Your email address is only the name of your account.'))}
+    ${sec('🚫', T('What never happens'), T('No ads, no tracking and no selling of data. No emails are sent to you.'))}
     ${sec('🗑️', T('Deleting'), T('Settings → Delete all data removes everything on this phone and your account backup on the server.'))}
     <p class="small muted" style="text-align:center;margin:16px 0 0">${T('Questions? Ask the person who shared the app with you.')}</p>`);
 }
@@ -4342,7 +4374,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for).
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
 - Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
-- Settings: Your goal (one of 12 goals: lose weight, lose fat & build muscle (recomp, they can lose weight slowly or keep it), maintain, bulk, lean bulk, dirty bulk, sport & endurance (more carbs), eat healthier, high protein, keto / low carb, intermittent fasting, pregnancy & breastfeeding (extra calories by stage, never a deficit)), Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone; "Back up now"); Privacy; Delete all data.
+- Settings: Your goal (one of 12 goals: lose weight, lose fat & build muscle (recomp, they can lose weight slowly or keep it), maintain, bulk, lean bulk, dirty bulk, sport & endurance (more carbs), eat healthier, high protein, keto / low carb, intermittent fasting, pregnancy & breastfeeding (extra calories by stage, never a deficit)), Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy; Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
   const mem = memList();
@@ -5410,6 +5442,7 @@ setInterval(checkPlanWeek, 5 * 60e3);
 setTimeout(autoBackup, 9000);
 setInterval(autoBackup, 60 * 60e3);
 setTimeout(askAccount, 11000);
+setTimeout(emailNote, 7000);
 setTimeout(weeklyCheckin, 6500);
 setInterval(weeklyCheckin, 30 * 60e3);
 idb.kvGet('ft_pending').then(q => {
