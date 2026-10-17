@@ -713,6 +713,13 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .mg-bar{display:flex;gap:2px;height:8px;border-radius:4px;overflow:hidden;margin-top:14px;background:var(--track)}
 .mg-bar i{display:block;height:100%;flex:1 1 0;transition:flex-grow .3s ease}
 .mg-legend{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:600;margin-top:6px}
+/* Pull to refresh */
+#ptr{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 6px);width:38px;height:38px;margin-left:-19px;border-radius:50%;z-index:25;pointer-events:none;opacity:0;transform:translateY(-44px);
+  display:flex;align-items:center;justify-content:center;background:var(--solid,var(--card));color:var(--muted);box-shadow:var(--shadow),0 8px 20px -6px rgba(0,0,0,.35)}
+#ptr svg{width:19px;height:19px}
+#ptr.ready{color:var(--text)}
+#ptr.spin svg{animation:rot .7s linear infinite}
+#ptr.done{color:var(--good)}
 </style>
 <script src="lang.js"></script>
 </head>
@@ -875,7 +882,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v109';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v110';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -4322,6 +4329,7 @@ const PLAN_COACH = {
 const planCoach = p => PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` Right now: ${{ t1: 'pregnant, months 1-3', t2: 'pregnant, months 4-6', t3: 'pregnant, months 7-9', bf: 'breastfeeding' }[p.preg] || 'pregnant'}.` : '');
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
+- Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
 - Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for).
@@ -4787,6 +4795,47 @@ document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') { checkUpdate(); setTimeout(processQueue, 1000); setTimeout(() => linkSync(false), 1200); if ($('#setupPg')) setTimeout(openSetupPage, 600); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); setTimeout(askAccount, 5000); setTimeout(weeklyCheckin, 1500); setTimeout(syncDone, 2500); }
   else { if (!rec) micOff(); cameraOff(); if (updReady) kvWait().then(() => location.reload()); }   // in the background: nobody sees the reload
 });
+
+/* ---------- Pull to refresh: pull the page down at the top and everything updates (tracker calories, new version, etc.) ---------- */
+let ptrBusy = false;
+async function pullRefresh() {
+  updChecked = 0;
+  await Promise.allSettled([linkSync(true), checkUpdate(), processQueue(), syncDone(), syncPush()]);
+  setTimeout(checkPlanWeek, 300); setTimeout(checkRewards, 600);
+  if (!$('.page') && !$('.backdrop')) render();
+}
+(() => {
+  const sc = $('#scroller'), view = $('#view'), ind = document.createElement('div');
+  ind.id = 'ptr'; ind.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>';
+  document.body.appendChild(ind);
+  const MAX = 96, GO = 64;
+  let y0 = null, x0 = 0, dy = 0, pulling = false;
+  const show = d => { const p = Math.min(1, d / GO); ind.style.opacity = p; ind.style.transform = `translateY(${Math.min(d, MAX) * 0.55 - 44}px) rotate(${d * 3}deg)`; view.style.transform = d ? `translateY(${Math.min(d, MAX + 20) * 0.8}px)` : ''; ind.classList.toggle('ready', d >= GO); };
+  sc.addEventListener('touchstart', e => {
+    if (ptrBusy || sc.scrollTop > 0 || e.touches.length > 1 || $('.backdrop') || $('#tourLayer')) { y0 = null; return; }
+    y0 = e.touches[0].clientY; x0 = e.touches[0].clientX; dy = 0; pulling = false;
+  }, { passive: true });
+  sc.addEventListener('touchmove', e => {
+    if (y0 === null) return;
+    const d = e.touches[0].clientY - y0, dx = Math.abs(e.touches[0].clientX - x0);
+    if (!pulling) { if (d > 8 && d > dx && sc.scrollTop <= 0) { pulling = true; view.style.transition = 'none'; ind.style.transition = 'none'; } else if (d < 0 || dx > 12) { y0 = null; return; } else return; }
+    e.preventDefault();
+    dy = Math.max(0, d - 8) * 0.6; show(dy);   // gets heavier the further you pull
+  }, { passive: false });
+  const end = async () => {
+    if (y0 === null) return; y0 = null;
+    if (!pulling) return; pulling = false;
+    view.style.transition = ind.style.transition = 'transform .3s cubic-bezier(.2,.9,.3,1),opacity .25s';
+    if (dy < GO) return show(0);
+    ptrBusy = true; ind.classList.add('spin'); view.style.transform = 'translateY(54px)'; ind.style.transform = 'translateY(4px)'; ind.style.opacity = 1;
+    const t0 = Date.now();
+    try { await pullRefresh(); } catch {}
+    await new Promise(r => setTimeout(r, Math.max(0, 600 - (Date.now() - t0))));   // long enough to see that it happened
+    ind.classList.remove('spin'); ind.classList.add('done');
+    setTimeout(() => { show(0); ind.classList.remove('done', 'ready'); ptrBusy = false; }, 350);
+  };
+  sc.addEventListener('touchend', end); sc.addEventListener('touchcancel', end);
+})();
 
 // Opening the app from a notification: ?open=burn or ?open=weight
 function handleOpen(what) {
