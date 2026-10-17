@@ -397,9 +397,21 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .wwhy .spread{padding:3px 0}
 .addtile .wicon{height:64px;display:flex;align-items:flex-end;justify-content:center}
 .addtile .wicon svg{width:auto;display:block}
-.rtimes{margin-top:12px;display:flex;flex-direction:column;gap:10px}
-.rtimes .spread{gap:10px;font-weight:600;font-size:15px}
-.rsel{width:auto;padding:8px 10px;border-radius:12px;font-size:15px}
+.rtimes{margin-top:12px;border-radius:16px;background:var(--chip);overflow:hidden}
+.rrow{padding:12px 14px}
+.rrow+.rrow{border-top:1px solid var(--line)}
+.rhead{display:flex;align-items:center;gap:12px}
+.rhead .ic{font-size:20px;width:26px;text-align:center;flex:none}
+.rhead .rt{flex:1;min-width:0;font-weight:600;font-size:15px;line-height:1.25}
+.rhead .rt small{display:block;font-weight:500;font-size:12.5px;color:var(--muted);margin-top:2px}
+.rpick{display:flex;gap:8px;margin:10px 0 0 38px}
+.rpick .rsel{flex:1;min-width:0}
+.rpick .rsel:first-child:not(:last-child){flex:1.5}
+.rsel{width:auto;padding:9px 10px;border-radius:12px;font-size:15px;background:var(--card)}
+.tog{position:relative;width:51px;height:31px;border-radius:999px;background:color-mix(in srgb,var(--muted) 40%,transparent);flex:none;transition:background .2s}
+.tog::after{content:'';position:absolute;left:2px;top:2px;width:27px;height:27px;border-radius:50%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .2s}
+.tog.on{background:var(--good)}
+.tog.on::after{transform:translateX(20px)}
 .confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:2000}
 .celpop{position:fixed;inset:0;z-index:1500;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.28);animation:fade .2s;padding:20px}
 .celpop.out{opacity:0;transition:opacity .3s}
@@ -745,7 +757,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v95';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v96';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3312,31 +3324,41 @@ Write my WEEKLY CHECK-IN for this week. First line: a short title starting with 
 const PUSH_DEF = { burn: 20, wDay: 0, wTime: 9, ci: 18, cd: 0, fo: 1, hb: -1 };   // cd = check-in day (0 = Sunday)
 const pushPrefs = () => { try { return { ...PUSH_DEF, ...JSON.parse(LS.get('ft_push_prefs', '{}')) }; } catch { return { ...PUSH_DEF }; } };
 const userTZ = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Zurich'; } catch { return 'Europe/Zurich'; } };
+// Each reminder: a row with a switch; when it is on, its day and time are chosen underneath
 function reminderTimesHTML() {
   const p = pushPrefs(), hrs = [...Array(18)].map((_, i) => i + 6);
-  const hourOpts = (v, off) => (off ? `<option value="-1" ${v < 0 ? 'selected' : ''}>${T('Off')}</option>` : '') +
-    hrs.map(h => `<option value="${h}" ${h === v ? 'selected' : ''}>${String(h).padStart(2, '0')}:00</option>`).join('');
+  const hourOpts = v => hrs.map(h => `<option value="${h}" ${h === v ? 'selected' : ''}>${String(h).padStart(2, '0')}:00</option>`).join('');
   const dayName = i => dt(addDays(iso(), i - dt(iso()).getDay())).toLocaleDateString(LOC, { weekday: 'long' });
+  const dayOpts = v => [1, 2, 3, 4, 5, 6, 0].map(i => `<option value="${i}" ${i === v ? 'selected' : ''}>${dayName(i)}</option>`).join('');
+  const row = (key, ic, title, sub, on, pick) => `<div class="rrow"><div class="rhead"><span class="ic">${ic}</span><span class="rt">${title}${sub ? `<small>${sub}</small>` : ''}</span>
+      <button class="tog ${on ? 'on' : ''}" data-rt="${key}" role="switch" aria-checked="${on}" aria-label="${title}"></button></div>
+      ${on && pick ? `<div class="rpick">${pick}</div>` : ''}</div>`;
+  const fasting = db.profile && planOf(db.profile).id === 'if';
   return `<div class="rtimes">
-    <div class="spread"><span>🏃 ${T('Calories burned')}</span><select id="rBurn" class="rsel">${hourOpts(p.burn, true)}</select></div>
-    <div class="spread"><span>⚖️ ${T('Weigh-in')}</span><span class="row" style="gap:6px">
-      <select id="rWDay" class="rsel"><option value="-1" ${p.wDay < 0 ? 'selected' : ''}>${T('Off')}</option>${[1, 2, 3, 4, 5, 6, 0].map(i => `<option value="${i}" ${i === p.wDay ? 'selected' : ''}>${dayName(i)}</option>`).join('')}</select>
-      ${p.wDay >= 0 ? `<select id="rWTime" class="rsel">${hourOpts(p.wTime, false)}</select>` : ''}</span></div>
-    <div class="spread"><span>📊 ${T('Weekly check-in')}</span><span class="row" style="gap:6px">
-      <select id="rCd" class="rsel">${[1, 2, 3, 4, 5, 6, 0].map(i => `<option value="${i}" ${i === p.cd ? 'selected' : ''}>${dayName(i)}</option>`).join('')}</select>
-      <select id="rCi" class="rsel">${hourOpts(p.ci, true)}</select></span></div>
-    ${db.profile && planOf(db.profile).id === 'if' ? `<div class="spread"><span>⏱️ ${T('Eating window')}</span><select id="rFo" class="rsel"><option value="1" ${p.fo ? 'selected' : ''}>${T('On')}</option><option value="0" ${p.fo ? '' : 'selected'}>${T('Off')}</option></select></div>
-    <div class="small muted" style="margin-top:-4px">${T('When it opens, and 30 minutes before it closes.')}</div>` : ''}</div>`;
+    ${row('burn', '🏃', T('Calories burned'), T('Daily'), p.burn >= 0, `<select id="rBurn" class="rsel">${hourOpts(p.burn)}</select>`)}
+    ${row('weight', '⚖️', T('Weigh-in'), T('Once a week'), p.wDay >= 0, `<select id="rWDay" class="rsel">${dayOpts(p.wDay)}</select><select id="rWTime" class="rsel">${hourOpts(p.wTime)}</select>`)}
+    ${row('checkin', '📊', T('Weekly check-in'), T('Once a week'), p.ci >= 0, `<select id="rCd" class="rsel">${dayOpts(p.cd ?? 0)}</select><select id="rCi" class="rsel">${hourOpts(p.ci)}</select>`)}
+    ${fasting ? row('fast', '⏱️', T('Eating window'), T('When it opens, and 30 minutes before it closes.'), !!p.fo, '') : ''}
+    ${db.habit ? row('habit', '🎯', T('Habit plan'), esc(habitName(db.habit)), p.hb >= 0, `<select id="rHb" class="rsel">${hourOpts(p.hb)}</select>`) : ''}
+  </div>`;
 }
 function bindReminderTimes() {
-  const set = (k, v) => { const p = pushPrefs(); p[k] = +v; LS.set('ft_push_prefs', JSON.stringify(p)); syncPush(); toast(T('✓ Saved')); renderSettings(); };
-  if ($('#rBurn')) $('#rBurn').onchange = e => set('burn', e.target.value);
-  if ($('#rWDay')) $('#rWDay').onchange = e => set('wDay', e.target.value);
-  if ($('#rWTime')) $('#rWTime').onchange = e => set('wTime', e.target.value);
-  if ($('#rCi')) $('#rCi').onchange = e => set('ci', e.target.value);
-  if ($('#rCd')) $('#rCd').onchange = e => set('cd', e.target.value);
-  if ($('#rFo')) $('#rFo').onchange = e => set('fo', e.target.value);
+  const save = (changes, msg) => { const p = { ...pushPrefs(), ...changes }; LS.set('ft_push_prefs', JSON.stringify(p)); saveReminderTexts(); syncPush(); toast(msg || T('✓ Saved')); renderSettings(); };
+  const num = (id, key) => { if ($(id)) $(id).onchange = e => save({ [key]: +e.target.value }); };
+  num('#rBurn', 'burn'); num('#rWDay', 'wDay'); num('#rWTime', 'wTime'); num('#rCd', 'cd'); num('#rCi', 'ci');
+  if ($('#rHb')) $('#rHb').onchange = e => { if (db.habit) { db.habit.remind = +e.target.value; save_db(); } save({ hb: +e.target.value }); };
+  // Switching off keeps the last day/time, so switching on again brings it back
+  document.querySelectorAll('[data-rt]').forEach(b => b.onclick = () => {
+    const p = pushPrefs(), on = !b.classList.contains('on'), k = b.dataset.rt, last = p.last || {};
+    const ch = { burn: () => on ? { burn: last.burn ?? 20 } : { burn: -1, last: { ...last, burn: p.burn } },
+      weight: () => on ? { wDay: last.wDay ?? 0 } : { wDay: -1, last: { ...last, wDay: p.wDay } },
+      checkin: () => on ? { ci: last.ci ?? 18 } : { ci: -1, last: { ...last, ci: p.ci } },
+      fast: () => ({ fo: on ? 1 : 0 }),
+      habit: () => { const v = on ? (last.hb ?? 20) : -1; if (db.habit) { db.habit.remind = v; save_db(); } return on ? { hb: v } : { hb: -1, last: { ...last, hb: p.hb } }; } }[k]();
+    save(ch, on ? '🔔 ' + T('Reminder on') : T('Reminder off'));
+  });
 }
+const save_db = () => save();
 
 /* ================= Exercise ================= */
 // Quick entry from the Home screen: "how many calories did I burn?"
@@ -4477,7 +4499,7 @@ function remindersCard() {
       <div class="row" style="margin-top:10px">${SERVER_URL ? '' : `<button class="btn sm grow" id="rCopy">📋 ${T('Copy code')}</button>`}<button class="btn sm outline grow" id="rTest">${T('Test')}</button></div>`;
   }
   return `<div class="card" id="remCard"><b>🔔 ${T('Notifications')}</b>
-    <p class="small muted" style="margin:4px 0 0">${SERVER_URL ? T('A reminder to log your calories burned, and one for your weekly weigh-in. Choose the times that suit you.') : T('Every evening at about 20:00: log your calories burned. Every Sunday morning: log your weight.')}</p>${body}</div>`;
+    <p class="small muted" style="margin:4px 0 0">${SERVER_URL ? T('Turn on only the reminders you want, and choose when they come.') : T('Every evening at about 20:00: log your calories burned. Every Sunday morning: log your weight.')}</p>${body}</div>`;
 }
 function bindReminders() {
   bindReminderTimes();

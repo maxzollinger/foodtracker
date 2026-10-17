@@ -1153,7 +1153,13 @@ window.I18N = {
 "Hide password":"Passwort verbergen",
 "Encrypted with your password: nobody else can read it.":"Mit deinem Passwort verschlüsselt: Niemand sonst kann es lesen.",
 "You can always do it later in Settings → Account & backup.":"Du kannst es jederzeit später unter Einstellungen → Konto & Backup machen.",
-"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Schreib deine Frage oder tippe auf das Mikrofon, um zu sprechen. Einmal pro Woche erscheint hier dein Wochen-Check-in."
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Schreib deine Frage oder tippe auf das Mikrofon, um zu sprechen. Einmal pro Woche erscheint hier dein Wochen-Check-in.",
+"Daily":"Täglich",
+"Once a week":"Einmal pro Woche",
+"Habit plan":"Gewohnheits-Plan",
+"Reminder on":"Erinnerung an",
+"Reminder off":"Erinnerung aus",
+"Turn on only the reminders you want, and choose when they come.":"Schalte nur die Erinnerungen ein, die du willst, und wähle, wann sie kommen."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2308,7 +2314,13 @@ window.I18N = {
 "Hide password":"Ocultar contraseña",
 "Encrypted with your password: nobody else can read it.":"Cifrado con tu contraseña: nadie más puede leerlo.",
 "You can always do it later in Settings → Account & backup.":"Siempre puedes hacerlo más tarde en Ajustes → Cuenta y copia de seguridad.",
-"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Escribe tu pregunta o toca el micrófono para hablar. Una vez por semana aparece aquí tu resumen semanal."
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Escribe tu pregunta o toca el micrófono para hablar. Una vez por semana aparece aquí tu resumen semanal.",
+"Daily":"Diario",
+"Once a week":"Una vez por semana",
+"Habit plan":"Plan de hábito",
+"Reminder on":"Recordatorio activado",
+"Reminder off":"Recordatorio desactivado",
+"Turn on only the reminders you want, and choose when they come.":"Activa solo los recordatorios que quieras y elige cuándo llegan."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3463,7 +3475,13 @@ window.I18N = {
 "Hide password":"Masquer le mot de passe",
 "Encrypted with your password: nobody else can read it.":"Chiffré avec ton mot de passe : personne d’autre ne peut le lire.",
 "You can always do it later in Settings → Account & backup.":"Tu peux toujours le faire plus tard dans Réglages → Compte et sauvegarde.",
-"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Écris ta question ou touche le micro pour parler. Une fois par semaine, ton bilan de la semaine apparaît ici."
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Écris ta question ou touche le micro pour parler. Une fois par semaine, ton bilan de la semaine apparaît ici.",
+"Daily":"Chaque jour",
+"Once a week":"Une fois par semaine",
+"Habit plan":"Plan d'habitude",
+"Reminder on":"Rappel activé",
+"Reminder off":"Rappel désactivé",
+"Turn on only the reminders you want, and choose when they come.":"Active seulement les rappels que tu veux, et choisis quand ils arrivent."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -4618,7 +4636,13 @@ window.I18N = {
 "Hide password":"Nascondi password",
 "Encrypted with your password: nobody else can read it.":"Cifrato con la tua password: nessun altro può leggerlo.",
 "You can always do it later in Settings → Account & backup.":"Puoi sempre farlo più tardi in Impostazioni → Account e backup.",
-"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Scrivi la tua domanda o tocca il microfono per parlare. Una volta a settimana qui appare il tuo check-in settimanale."
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Scrivi la tua domanda o tocca il microfono per parlare. Una volta a settimana qui appare il tuo check-in settimanale.",
+"Daily":"Ogni giorno",
+"Once a week":"Una volta a settimana",
+"Habit plan":"Piano abitudine",
+"Reminder on":"Promemoria attivo",
+"Reminder off":"Promemoria disattivato",
+"Turn on only the reminders you want, and choose when they come.":"Attiva solo i promemoria che vuoi e scegli quando arrivano."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -5773,7 +5797,13 @@ window.I18N = {
 "Hide password":"パスワードを隠す",
 "Encrypted with your password: nobody else can read it.":"パスワードで暗号化されるので、他の人は読めません。",
 "You can always do it later in Settings → Account & backup.":"あとでいつでも 設定 → アカウントとバックアップ からできます。",
-"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"質問を入力するか、マイクをタップして話しかけましょう。週に1回、ここで週間チェックインが届きます。"
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"質問を入力するか、マイクをタップして話しかけましょう。週に1回、ここで週間チェックインが届きます。",
+"Daily":"毎日",
+"Once a week":"週に1回",
+"Habit plan":"習慣の計画",
+"Reminder on":"リマインダー オン",
+"Reminder off":"リマインダー オフ",
+"Turn on only the reminders you want, and choose when they come.":"必要なリマインダーだけをオンにして、届く時間を選びましょう。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -6928,7 +6958,13 @@ window.I18N = {
 "Hide password":"Wachtwoord verbergen",
 "Encrypted with your password: nobody else can read it.":"Versleuteld met je wachtwoord: niemand anders kan het lezen.",
 "You can always do it later in Settings → Account & backup.":"Je kunt het altijd later doen via Instellingen → Account & back-up.",
-"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Typ je vraag of tik op de microfoon om te praten. Eén keer per week verschijnt hier je wekelijkse check-in."
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Typ je vraag of tik op de microfoon om te praten. Eén keer per week verschijnt hier je wekelijkse check-in.",
+"Daily":"Dagelijks",
+"Once a week":"Eén keer per week",
+"Habit plan":"Gewoonteplan",
+"Reminder on":"Herinnering aan",
+"Reminder off":"Herinnering uit",
+"Turn on only the reminders you want, and choose when they come.":"Zet alleen de herinneringen aan die je wilt, en kies wanneer ze komen."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -8083,7 +8119,13 @@ window.I18N = {
 "Hide password":"Ukryj hasło",
 "Encrypted with your password: nobody else can read it.":"Zaszyfrowane Twoim hasłem: nikt inny tego nie odczyta.",
 "You can always do it later in Settings → Account & backup.":"Zawsze możesz zrobić to później w Ustawienia → Konto i kopia zapasowa.",
-"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Wpisz pytanie albo stuknij mikrofon, aby mówić. Raz w tygodniu pojawia się tu Twoje tygodniowe podsumowanie."
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Wpisz pytanie albo stuknij mikrofon, aby mówić. Raz w tygodniu pojawia się tu Twoje tygodniowe podsumowanie.",
+"Daily":"Codziennie",
+"Once a week":"Raz w tygodniu",
+"Habit plan":"Plan nawyku",
+"Reminder on":"Przypomnienie włączone",
+"Reminder off":"Przypomnienie wyłączone",
+"Turn on only the reminders you want, and choose when they come.":"Włącz tylko te przypomnienia, które chcesz, i wybierz, kiedy mają przychodzić."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -9238,7 +9280,13 @@ window.I18N = {
 "Hide password":"Ocultar palavra-passe",
 "Encrypted with your password: nobody else can read it.":"Encriptado com a sua palavra-passe: mais ninguém o consegue ler.",
 "You can always do it later in Settings → Account & backup.":"Pode sempre fazê-lo mais tarde em Definições → Conta e cópia de segurança.",
-"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Escreva a sua pergunta ou toque no microfone para falar. Uma vez por semana o seu resumo semanal aparece aqui."
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Escreva a sua pergunta ou toque no microfone para falar. Uma vez por semana o seu resumo semanal aparece aqui.",
+"Daily":"Diário",
+"Once a week":"Uma vez por semana",
+"Habit plan":"Plano do hábito",
+"Reminder on":"Lembrete ligado",
+"Reminder off":"Lembrete desligado",
+"Turn on only the reminders you want, and choose when they come.":"Ligue só os lembretes que quiser e escolha quando chegam."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -10393,7 +10441,13 @@ window.I18N = {
 "Hide password":"Скрыть пароль",
 "Encrypted with your password: nobody else can read it.":"Зашифровано вашим паролем: никто другой не сможет прочитать.",
 "You can always do it later in Settings → Account & backup.":"Это всегда можно сделать позже: Настройки → Аккаунт и резервная копия.",
-"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Напишите вопрос или нажмите на микрофон, чтобы говорить. Раз в неделю здесь появляется ваш недельный отчёт."
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Напишите вопрос или нажмите на микрофон, чтобы говорить. Раз в неделю здесь появляется ваш недельный отчёт.",
+"Daily":"Ежедневно",
+"Once a week":"Раз в неделю",
+"Habit plan":"План привычки",
+"Reminder on":"Напоминание включено",
+"Reminder off":"Напоминание выключено",
+"Turn on only the reminders you want, and choose when they come.":"Включите только нужные напоминания и выберите, когда они приходят."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -11548,7 +11602,13 @@ window.I18N = {
 "Hide password":"Şifreyi gizle",
 "Encrypted with your password: nobody else can read it.":"Şifrenle şifrelenir: başka kimse okuyamaz.",
 "You can always do it later in Settings → Account & backup.":"Bunu daha sonra her zaman Ayarlar → Hesap ve yedekleme bölümünden yapabilirsin.",
-"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Sorunu yaz veya konuşmak için mikrofona dokun. Haftada bir kez haftalık değerlendirmen burada görünür."
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"Sorunu yaz veya konuşmak için mikrofona dokun. Haftada bir kez haftalık değerlendirmen burada görünür.",
+"Daily":"Her gün",
+"Once a week":"Haftada bir",
+"Habit plan":"Alışkanlık planı",
+"Reminder on":"Hatırlatıcı açık",
+"Reminder off":"Hatırlatıcı kapalı",
+"Turn on only the reminders you want, and choose when they come.":"Yalnızca istediğin hatırlatıcıları aç ve ne zaman geleceklerini seç."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -12703,6 +12763,12 @@ window.I18N = {
 "Hide password":"隐藏密码",
 "Encrypted with your password: nobody else can read it.":"用你的密码加密：其他人都无法读取。",
 "You can always do it later in Settings → Account & backup.":"你随时可以稍后在 设置 → 账户与备份 中完成。",
-"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"输入你的问题，或点麦克风说话。每周一次，你的每周回顾会显示在这里。"
+"Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.":"输入你的问题，或点麦克风说话。每周一次，你的每周回顾会显示在这里。",
+"Daily":"每天",
+"Once a week":"每周一次",
+"Habit plan":"习惯计划",
+"Reminder on":"提醒已开启",
+"Reminder off":"提醒已关闭",
+"Turn on only the reminders you want, and choose when they come.":"只开启你需要的提醒，并选择提醒时间。"
 }
 };
