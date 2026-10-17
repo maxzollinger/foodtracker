@@ -678,7 +678,7 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .onb select,.onb input:not([type=range]){background-color:var(--card);box-shadow:var(--shadow)}
 .onb .tip{background:var(--card);box-shadow:var(--shadow)}
 /* Badge names may wrap onto two lines instead of being cut off */
-.badge .bname{white-space:normal;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.badge .bname{font-size:10px;letter-spacing:-.01em;white-space:normal;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 /* App icon with a warm glow (welcome + install screens) */
 .appglow{position:relative;display:inline-block;margin:0 auto}
 .appglow::before{content:'';position:absolute;left:50%;top:50%;width:280px;height:280px;margin:-140px 0 0 -140px;border-radius:50%;pointer-events:none;z-index:-1;
@@ -727,6 +727,26 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 #ptr.done{color:var(--good)}
 #ptr.done .ptr-logo{opacity:0;transition:opacity .15s}
 #ptr.done .ptr-ok{opacity:1;stroke-dashoffset:0;transition:stroke-dashoffset .38s cubic-bezier(.65,0,.35,1) .05s}
+/* Body measurements & progress photos */
+.bd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.bd-tile{background:var(--chip);border-radius:16px;padding:10px 10px 8px;min-width:0}
+.bd-v{font-size:22px;font-weight:800;letter-spacing:-.02em;margin-top:2px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.bd-v small{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:0}
+.bd-spark{display:block;width:100%;height:24px;margin-top:4px}
+.bd-photos{display:flex;gap:8px;overflow-x:auto;margin:14px -18px 0;padding:0 18px;scrollbar-width:none}
+.bd-photos::-webkit-scrollbar{display:none}
+.bd-ph{flex:none;width:72px;text-align:center}
+.bd-ph img,.bd-ph .ph-miss{width:72px;height:96px;object-fit:cover;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--chip);font-size:24px}
+.bd-ph>span:last-child{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:4px}
+.bd-pick{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:150px;height:200px;margin:4px auto 0;border-radius:18px;background:var(--chip);overflow:hidden;font-weight:600;color:var(--muted);font-size:14px}
+.bd-pick img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.bd-pick-x{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:700;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.bd-cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.bd-cmpimg{position:relative;aspect-ratio:3/4;border-radius:18px;overflow:hidden;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:30px}
+.bd-cmpimg img{width:100%;height:100%;object-fit:cover;display:block}
+.bd-tag{position:absolute;left:8px;top:8px;padding:3px 9px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:700;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.bd-row{padding:9px 0;border-top:1px solid var(--line);font-size:14px;gap:8px}
+.bd-row:first-of-type{margin-top:8px}
 </style>
 <script src="lang.js"></script>
 </head>
@@ -889,7 +909,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v116';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v117';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -926,7 +946,7 @@ async function hydratePhotos(root = document) {
     const id = img.dataset.photo;
     if (!(id in photoCache)) photoCache[id] = await idb.get(id);
     if (photoCache[id]) img.src = photoCache[id];
-    else img.replaceWith(Object.assign(document.createElement('span'), { textContent: '🍽️' }));
+    else img.replaceWith(Object.assign(document.createElement('span'), { textContent: img.dataset.ph || '🍽️', className: 'ph-miss' }));
   }
 }
 
@@ -2104,6 +2124,7 @@ async function photoSync(force, onStatus = () => {}) {
     const server = Object.fromEntries((await r.json()).map(x => [x.m, x])), byMonth = {};
     let seen = {}; try { seen = JSON.parse(LS.get('ft_ph_seen', '{}')) || {}; } catch {}
     for (const m of db.meals) if (m.photo && /^\d{4}-\d{2}/.test(m.date || '')) (byMonth[m.date.slice(0, 7)] ||= []).push(m.id);
+    for (const e of db.body || []) if (e.photo && /^\d{4}-\d{2}/.test(e.date || '')) (byMonth[e.date.slice(0, 7)] ||= []).push(e.photo);   // progress photos
     const key = await aesKey(a.key);
     for (const mo of [...new Set([...Object.keys(byMonth), ...Object.keys(server)])].sort().reverse()) {
       const mine = new Set(byMonth[mo] || []), local = {};
@@ -2131,7 +2152,7 @@ async function photoSync(force, onStatus = () => {}) {
       if (s && s.h === h) continue;
       onStatus('up');
       // The backup keeps a lighter copy of each photo (about half the size; the phone keeps its own)
-      for (const id of Object.keys(merged)) if (merged[id].length > 40000) { try { merged[id] = await scaleImage(merged[id], 400, 0.72); } catch {} }
+      for (const id of Object.keys(merged)) if (merged[id].length > (id.startsWith('pp-') ? 160000 : 40000)) { try { merged[id] = await scaleImage(merged[id], id.startsWith('pp-') ? 900 : 400, 0.75); } catch {} }
       const box = await sealText(JSON.stringify(merged), key);
       if (box.length > 20e6) continue;   // far more photos than anyone takes in a month
       const u = await call('/photos/put?m=' + mo, box, { 'X-Hash': h, 'X-Count': String(ids.length) });
@@ -2139,7 +2160,7 @@ async function photoSync(force, onStatus = () => {}) {
       up += Math.max(0, ids.length - (s ? +s.n || 0 : 0)); seen[mo] = { h, ids };
     }
     LS.set('ft_ph_seen', JSON.stringify(seen)); LS.set('ft_ph_sync', String(Date.now())); LS.set('ft_ph_day', iso());
-    if (got) { if (!$('.backdrop') && !$('#moved')) render(); toast('✓ ' + T('{n} meal photos are back', { n: got })); }
+    if (got) { if (!$('.backdrop') && !$('#moved')) render(); toast('✓ ' + T((db.body || []).some(e => e.photo) ? '{n} photos are back' : '{n} meal photos are back', { n: got })); }
     return { up, got, total };
   } catch { return null; } finally { phBusy = false; }
 }
@@ -3227,6 +3248,7 @@ const TOUR_STEPS = [
   { tab: 'progress', sel: '.two', title: N('Weight and streak'), text: N('Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.') },
   { tab: 'progress', sel: '#badgeCard', title: N('Badges'), text: N('Earn badges for streaks, protein, water and milestones. Tap one to see what it is for.') },
   { tab: 'progress', sel: '#goalCard', title: N('Goal progress'), text: N('Your weight trend, how much is left, and when you will reach your goal.') },
+  { tab: 'progress', sel: '#bodyCard', title: N('Body'), text: N('Waist, hips, arms and private progress photos. When you build muscle, they show progress the scale can not.') },
   { tab: 'progress', sel: '#habitProgCard', title: N('Habits (optional)'), text: N('Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don\'t want this, simply ignore it.') },
   { tab: 'progress', sel: '.tab[data-tab="chat"]', title: N('Coach'), text: N('Now your personal AI coach.') },
   { tab: 'chat', sel: '#chatScreen .chatbar .chips button', title: N('Suggestions'), text: N('Not sure what to ask? Tap a suggestion to start a conversation.') },
@@ -4158,6 +4180,7 @@ function renderProgress() {
       <div class="pills" style="margin-top:12px">${[[90, N('90 D')], [180, N('6 M')], [365, N('1 Y')], [0, N('All')]].map(([v, l]) => `<button data-r="${v}" class="${progRange === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>
       ${expectedText(p, gpr ? gpr.cur : cur)}
     </div>
+    ${bodyCard()}
     ${habitProgCard()}
     <div class="card"><div class="spread"><b style="font-size:17px">${T('Nutrition')}</b>
       <div class="pills" style="width:200px"><button data-w="0" class="${nutWeek === 0 ? 'on' : ''}">${T('This week')}</button><button data-w="-1" class="${nutWeek === -1 ? 'on' : ''}">${T('Last week')}</button></div></div>
@@ -4172,6 +4195,7 @@ function renderProgress() {
   document.querySelectorAll('[data-badge]').forEach(b => b.onclick = () => openBadge(b.dataset.badge));
   if ($('#badgeMore')) $('#badgeMore').onclick = () => { LS.set('ft_badges_open', LS.get('ft_badges_open', '') === '1' ? '' : '1'); const y = $('#scroller').scrollTop; renderProgress(); $('#scroller').scrollTop = y; };
   $('#logW').onclick = openWeightSheet;
+  bindBodyCard(); hydratePhotos($('#view'));
   document.querySelectorAll('[data-r]').forEach(b => b.onclick = () => { progRange = +b.dataset.r; renderProgress(); });
   document.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { nutWeek = +b.dataset.w; renderProgress(); });
 }
@@ -4192,6 +4216,125 @@ function expectedText(p, cur) {
   }
   const d = new Date(); d.setDate(d.getDate() + Math.ceil(Math.abs(rem) / p.pace * 7));
   return `<div class="tip">${T("At your pace you'll reach <b>{w} kg</b> around <b>{d}</b>.", { w: p.targetWeight, d: fmtLong(d) })}${check}</div>`;
+}
+/* ================= Body measurements & progress photos =================
+   Waist, hips and arms (stored in cm) and private progress photos. The photos stay on the phone and in the
+   encrypted backup; they are never sent to the AI. When people build muscle, these show progress the scale can't. */
+const BODY = [['waist', N('Waist'), N('At belly-button height, relaxed'), -1], ['hips', N('Hips'), N('At the widest point'), -1], ['arm', N('Arms'), N('Flexed, at the thickest point'), 1]];
+const bodyList = () => (db.body = db.body || []).slice().sort((a, b) => a.date.localeCompare(b.date));
+const cmShow = v => r1(isIn() ? v / CM_IN : v);
+const cmUnit = () => isIn() ? 'in' : 'cm';
+const cmRead = v => { const n = num(v); return n > 0 ? Math.round((isIn() ? n * CM_IN : n) * 10) / 10 : null; };
+const weightOn = date => { const w = [...db.weights].sort((a, b) => a.date.localeCompare(b.date)).filter(x => x.date <= date).at(-1); return w ? w.kg : null; };
+const signed = (d, u) => `${d > 0 ? '+' : d < 0 ? '−' : '±'}${Math.abs(d)}${u ? ' ' + u : ''}`;
+function spark(vals, c) {
+  if (vals.length < 2) return '<div class="bd-spark"></div>';
+  const mn = Math.min(...vals), mx = Math.max(...vals), sp = mx - mn || 1;
+  const pts = vals.map((v, i) => `${(i / (vals.length - 1) * 100).toFixed(1)},${(25 - (v - mn) / sp * 21).toFixed(1)}`).join(' ');
+  return `<svg class="bd-spark" viewBox="0 0 100 28" preserveAspectRatio="none"><polyline points="${pts}" fill="none" stroke="${c}" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+function bodyCard() {
+  if (!db.profile) return '';
+  const L = bodyList(), photos = L.filter(e => e.photo), measured = L.filter(e => BODY.some(([k]) => e[k] > 0));
+  const tiles = BODY.map(([k, label, , good]) => {
+    const vals = L.filter(e => e[k] > 0), last = vals.at(-1), first = vals[0];
+    const d = vals.length > 1 ? r1(cmShow(last[k]) - cmShow(first[k])) : null;
+    const col = d === null || Math.abs(d) < 0.1 ? 'var(--muted)' : d * good > 0 ? 'var(--good)' : 'var(--carbs)';
+    return `<div class="bd-tile"><div class="small muted" style="font-weight:600">${T(label)}</div>
+      <div class="bd-v">${last ? cmShow(last[k]) : '–'}<small> ${cmUnit()}</small></div>
+      <div class="small" style="font-weight:700;color:${col}">${d === null ? '&nbsp;' : signed(d)}</div>${spark(vals.map(e => cmShow(e[k])), col)}</div>`;
+  }).join('');
+  return `<div class="card" id="bodyCard"><div class="spread"><b style="font-size:17px">📏 ${T('Body')}</b><button class="chipbtn" id="bdAdd">＋ ${T('Add')}</button></div>
+    ${measured.length ? `<div class="bd-grid">${tiles}</div>${measured.length > 1 ? `<p class="small muted" style="margin:8px 0 0">${T('Change since {d}', { d: fmtDate(measured[0].date, { day: 'numeric', month: 'short' }) })}</p>` : ''}`
+      : `<p class="small muted" style="margin:8px 0 0;line-height:1.45">${T('Measure your waist, hips and arms every 1–2 weeks and take a progress photo. When you build muscle, they show progress the scale can not.')}</p>`}
+    ${photos.length ? `<div class="bd-photos">${photos.slice(-12).reverse().map(e => `<button class="bd-ph" data-bph="${e.date}"><img data-photo="${e.photo}" data-ph="📷" alt=""><span>${fmtDate(e.date, { day: 'numeric', month: 'short' })}</span></button>`).join('')}</div>` : ''}
+    ${photos.length >= 2 ? `<button class="btn sm outline" id="bdCmp" style="width:100%;margin-top:12px">↔️ ${T('Compare before & after')}</button>` : ''}
+    <div class="spread" style="margin-top:10px"><span class="small muted">🔒 ${T('Photos stay private: only on your phone and in your encrypted backup.')}</span>${L.length ? `<button class="chipbtn" id="bdHist" style="flex:none">${T('History')}</button>` : ''}</div></div>`;
+}
+function bindBodyCard() {
+  if ($('#bdAdd')) $('#bdAdd').onclick = () => openBodySheet();
+  if ($('#bdCmp')) $('#bdCmp').onclick = () => openBodyCompare();
+  if ($('#bdHist')) $('#bdHist').onclick = openBodyHistory;
+  document.querySelectorAll('[data-bph]').forEach(b => b.onclick = () => openBodySheet(b.dataset.bph));
+}
+function openBodySheet(date = iso()) {
+  const e = (db.body = db.body || []).find(x => x.date === date) || { date }, prev = bodyList().filter(x => x.date < date && BODY.some(([k]) => x[k] > 0)).at(-1) || {};
+  let newPhoto = null, dropPhoto = false;
+  const pick = () => { const src = newPhoto || (!dropPhoto && e.photo ? photoCache[e.photo] : null);
+    return src ? `<img src="${src}" alt=""><span class="bd-pick-x">${T('Change')}</span>` : `<span style="font-size:30px">📷</span>${T('Add photo')}`; };
+  sheet(`<h3>📏 ${T('Body measurements')}</h3><p class="muted" style="margin-top:4px">${fmtDate(date, { weekday: 'long', day: 'numeric', month: 'long' })} · ${T('Best in the morning, before eating.')}</p>
+    ${BODY.map(([k, label, how]) => `<label class="lbl">${T(label)} (${cmUnit()}) <span style="font-weight:400">· ${T(how)}</span></label>
+      <input data-bd="${k}" inputmode="decimal" value="${e[k] ? cmShow(e[k]) : ''}" placeholder="${prev[k] ? T('Last time: {n}', { n: cmShow(prev[k]) }) : ''}">`).join('')}
+    <label class="lbl">${T('Progress photo (optional)')}</label>
+    <button class="bd-pick" id="bdPick">${pick()}</button>
+    ${e.photo ? `<button class="small muted" id="bdNoPh" style="display:block;margin:8px auto 0;padding:4px">${T('Remove photo')}</button>` : ''}
+    <p class="small muted" style="margin:10px 0 0;text-align:center">${T('Same place, light and pose each time makes the comparison honest.')}</p>
+    <button class="btn" id="bdSave" style="margin-top:16px">${T('Save')}</button>
+    ${db.body.includes(e) ? `<button class="btn outline" id="bdDel" style="margin-top:10px;color:var(--bad)">${T('Delete this entry')}</button>` : ''}`, async sh => {
+    if (e.photo && !(e.photo in photoCache)) { photoCache[e.photo] = await idb.get(e.photo); sh.querySelector('#bdPick').innerHTML = pick(); }
+    sh.querySelector('#bdPick').onclick = () => {
+      const inp = Object.assign(document.createElement('input'), { type: 'file', accept: 'image/*', className: 'hiddenfile' });
+      document.body.appendChild(inp);
+      inp.onchange = async () => { const f = inp.files && inp.files[0]; inp.remove(); if (!f) return;
+        try { newPhoto = await scaleImage(f, 1400, 0.85); dropPhoto = false; sh.querySelector('#bdPick').innerHTML = pick(); } catch (err) { toast(err.message); } };
+      inp.click();
+    };
+    if (sh.querySelector('#bdNoPh')) sh.querySelector('#bdNoPh').onclick = () => { dropPhoto = true; newPhoto = null; sh.querySelector('#bdPick').innerHTML = pick(); sh.querySelector('#bdNoPh').remove(); };
+    sh.querySelector('#bdSave').onclick = async () => {
+      const vals = {}; let bad = false;
+      sh.querySelectorAll('[data-bd]').forEach(i => { const v = i.value.trim() ? cmRead(i.value) : null; if (i.value.trim() && !(v >= 10 && v <= 250)) bad = true; vals[i.dataset.bd] = v; });
+      if (bad) return toast(T('Please check the numbers.'));
+      const hasPhoto = newPhoto || (e.photo && !dropPhoto);
+      if (!BODY.some(([k]) => vals[k]) && !hasPhoto) return toast(T('Enter a measurement or add a photo.'));
+      const out = { date };
+      for (const [k] of BODY) if (vals[k]) out[k] = vals[k];
+      if (newPhoto) { out.photo = e.photo && !dropPhoto ? e.photo : 'pp-' + date + '-' + Math.random().toString(36).slice(2, 7); await idb.set(out.photo, newPhoto); photoCache[out.photo] = newPhoto; }
+      else if (e.photo && !dropPhoto) out.photo = e.photo;
+      if (e.photo && e.photo !== out.photo) { idb.del(e.photo); delete photoCache[e.photo]; }
+      db.body = db.body.filter(x => x.date !== date); db.body.push(out); save();
+      closeSheet(); toast('✓ ' + T('Saved')); if (tab === 'progress') renderProgress();
+      if (newPhoto && acct()) setTimeout(() => photoSync(true), 1500);   // the photo goes into the encrypted backup
+    };
+    if (sh.querySelector('#bdDel')) sh.querySelector('#bdDel').onclick = () => {
+      if (!confirm(T('Delete this entry?'))) return;
+      if (e.photo) { idb.del(e.photo); delete photoCache[e.photo]; }
+      db.body = db.body.filter(x => x.date !== date); save(); closeSheet(); if (tab === 'progress') renderProgress();
+    };
+  });
+}
+function openBodyHistory() {
+  const L = bodyList().reverse();
+  sheet(`<h3>📏 ${T('History')}</h3><div class="list" style="box-shadow:none;background:var(--chip);margin-top:12px">${L.map(e => `<button class="li" data-bh="${e.date}">
+      <span class="grow"><b>${fmtDate(e.date, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</b><br><span class="small muted">${BODY.filter(([k]) => e[k]).map(([k, l]) => `${T(l)} ${cmShow(e[k])}`).join(' · ') || '–'}</span></span>
+      ${e.photo ? '<span>📷</span>' : ''}<span class="chev">›</span></button>`).join('')}</div>`, sh => {
+    sh.querySelectorAll('[data-bh]').forEach(b => b.onclick = () => openBodySheet(b.dataset.bh));
+  });
+}
+function openBodyCompare() {
+  const P = bodyList().filter(e => e.photo); if (P.length < 2) return;
+  let i = 0, j = P.length - 1;
+  const pg = document.createElement('div'); pg.className = 'page'; pg.id = 'bdCmpPg'; pg.style.zIndex = 40;
+  document.body.appendChild(pg);
+  const draw = () => {
+    const A = P[i], B = P[j], days = Math.abs(daysBetween(A.date, B.date)), u = cmUnit();
+    const rows = BODY.filter(([k]) => A[k] && B[k]).map(([k, l, , good]) => { const d = r1(cmShow(B[k]) - cmShow(A[k]));
+      return `<div class="spread bd-row"><span>${T(l)}</span><span>${cmShow(A[k])} → <b>${cmShow(B[k])}</b> ${u} <b style="color:${Math.abs(d) < 0.1 ? 'var(--muted)' : d * good > 0 ? 'var(--good)' : 'var(--carbs)'}">${signed(d)}</b></span></div>`; });
+    const wa = weightOn(A.date), wb = weightOn(B.date);
+    if (wa && wb) rows.push(`<div class="spread bd-row"><span>${T('Weight')}</span><span>${showW(wa)} → <b>${showW(wb)}</b> ${wUnit()} <b class="muted">${signed(r1(showW(wb) - showW(wa)))}</b></span></div>`);
+    const recomp = wa && wb && Math.abs(wb - wa) < 1.5 && A.waist && B.waist && B.waist - A.waist <= -1;
+    pg.innerHTML = `<div class="mp-head"><button class="mp-back" id="bcBack" aria-label="${T('Back')}">‹</button><div class="mp-title">${T('Before & after')}</div></div>
+      <div class="wrap mp-body"><div class="bd-cmp">${[[A, i, 'bcA', T('Before')], [B, j, 'bcB', T('After')]].map(([E, n, id, lab]) => `<div style="min-width:0">
+        <div class="bd-cmpimg"><img data-photo="${E.photo}" data-ph="📷" alt=""><span class="bd-tag">${lab}</span></div>
+        <select id="${id}" class="rsel" style="width:100%;margin-top:8px;background:var(--chip)">${P.map((x, k) => `<option value="${k}" ${k === n ? 'selected' : ''}>${fmtDate(x.date, { day: 'numeric', month: 'short', year: 'numeric' })}</option>`).join('')}</select></div>`).join('')}</div>
+        <div class="card" style="margin-top:14px"><b>${days ? T('{n} days apart', { n: days }) : T('Same day')}</b>${rows.join('') || `<p class="small muted" style="margin:8px 0 0">${T('Add measurements on both days to see the numbers here too.')}</p>`}
+          ${recomp ? `<div class="tip">💪 ${T('Your weight barely changed, but your waist got smaller: you are losing fat and building muscle.')}</div>` : ''}</div>
+        <p class="small muted" style="text-align:center">🔒 ${T('Photos stay private: only on your phone and in your encrypted backup.')}</p></div>`;
+    pg.querySelector('#bcBack').onclick = () => pg.remove();
+    pg.querySelector('#bcA').onchange = ev => { i = +ev.target.value; draw(); };
+    pg.querySelector('#bcB').onchange = ev => { j = +ev.target.value; draw(); };
+    hydratePhotos(pg);
+  };
+  draw();
 }
 // Real weight change per week over the last ~4 weeks (null until there are 2+ weeks of weigh-ins)
 function weeklyRate() {
@@ -4347,6 +4490,7 @@ ${days.join('\n')}
 
 === WEIGHT LOG (oldest → newest) ===
 ${ws.slice(-15).map(w => `${fmtD(w.date)}: ${w.kg} kg`).join('; ') || 'no entries'}
+Body measurements in cm (waist / hips / flexed arm; progress photos exist but you never see them): ${bodyList().filter(e => BODY.some(([k]) => e[k])).slice(-8).map(e => `${fmtD(e.date)}: ${e.waist || '-'} / ${e.hips || '-'} / ${e.arm || '-'}`).join('; ') || 'none yet'}
 
 Logging streak: ${streak()} days (1 rest day per week allowed). Total meals ever logged: ${db.meals.length}. Badges earned: ${Object.keys(earned()).length} of ${BADGES.length}${goalProgress() ? `; ${r0(goalProgress().pct)}% of the way to the goal weight (trend weight ${goalProgress().cur} kg, ${goalProgress().toGo} kg to go, status: ${goalProgress().status}, where they should be today at their pace: ${goalProgress().shouldBe} kg)` : ''}${db.profile && db.profile.goal === 'maintain' && db.profile.maintainSince ? `; in maintenance mode since ${db.profile.maintainSince}, weight steady for ${keepDays()} days` : ''}.${mealPlanContext()}`;
 }
@@ -4371,7 +4515,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
 - Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal.
-- Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for).
+- Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
 - Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
 - Settings: Your goal (one of 12 goals: lose weight, lose fat & build muscle (recomp, they can lose weight slowly or keep it), maintain, bulk, lean bulk, dirty bulk, sport & endurance (more carbs), eat healthier, high protein, keto / low carb, intermittent fasting, pregnancy & breastfeeding (extra calories by stage, never a deficit)), Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy; Delete all data.
