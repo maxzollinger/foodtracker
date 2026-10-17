@@ -1,6 +1,6 @@
 // Offline support: keeps the app shell cached, always tries the network first so updates arrive.
 // Also shows the reminder notifications that the GitHub workflow sends.
-const CACHE = 'foodtracker-v99';
+const CACHE = 'foodtracker-v100';
 const KEEP = [CACHE, 'ft-meta'];   // ft-meta holds the notification texts in the app's language
 const ASSETS = ['./', './index.html', './lang.js', './manifest.json', './icon-180.png', './icon-512.png'];
 

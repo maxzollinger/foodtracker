@@ -1171,7 +1171,9 @@ window.I18N = {
 "Scan the barcode of packaged food for the exact values from the label.":"Scanne den Barcode von verpacktem Essen für die genauen Werte vom Etikett.",
 "Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Schreib oder sag einfach, was du gegessen hast, z. B. „2 Eier und eine Scheibe Toast“. Training und manuelle Einträge findest du hier auch.",
 "What the + offers":"Was das + bietet",
-"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Neue Unterhaltung beginnt von vorn. Bild hochladen: ein Foto aus deiner Mediathek, z. B. eine Speisekarte. Foto aufnehmen: direkt mit der Kamera. Datei hochladen: ein PDF oder Dokument, z. B. ein Ernährungsplan."
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Neue Unterhaltung beginnt von vorn. Bild hochladen: ein Foto aus deiner Mediathek, z. B. eine Speisekarte. Foto aufnehmen: direkt mit der Kamera. Datei hochladen: ein PDF oder Dokument, z. B. ein Ernährungsplan.",
+"Everything you can add":"Alles, was du eintragen kannst",
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoriten: eine übliche Mahlzeit mit einem Tipp erneut eintragen. Essen scannen oder Foto hochladen: Die KI zählt Kalorien und Makros aus dem Bild. Barcode: genaue Werte vom Etikett. Essen beschreiben: schreib oder sag, was du gegessen hast. Dazu Training und manuelle Einträge."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2344,7 +2346,9 @@ window.I18N = {
 "Scan the barcode of packaged food for the exact values from the label.":"Escanea el código de barras de alimentos envasados para obtener los valores exactos de la etiqueta.",
 "Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Escribe o di lo que comiste, p. ej. «2 huevos y una tostada». El ejercicio y las entradas manuales también están aquí.",
 "What the + offers":"Lo que ofrece el +",
-"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nueva conversación empieza de cero. Subir imagen: una foto de tu galería, p. ej. una carta. Hacer foto: usa la cámara al momento. Subir archivo: un PDF o documento, p. ej. un plan de comidas."
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nueva conversación empieza de cero. Subir imagen: una foto de tu galería, p. ej. una carta. Hacer foto: usa la cámara al momento. Subir archivo: un PDF o documento, p. ej. un plan de comidas.",
+"Everything you can add":"Todo lo que puedes añadir",
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoritos: vuelve a registrar una comida habitual con un toque. Escanear comida o Subir foto: la IA cuenta calorías y macros desde una imagen. Código de barras: valores exactos de la etiqueta. Describir comida: escribe o di lo que comiste. Además, ejercicio y entradas manuales."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3517,7 +3521,9 @@ window.I18N = {
 "Scan the barcode of packaged food for the exact values from the label.":"Scanne le code-barres d'un aliment emballé pour les valeurs exactes de l'étiquette.",
 "Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Écris ou dis simplement ce que tu as mangé, p. ex. « 2 œufs et une tranche de pain grillé ». L'exercice et les saisies manuelles sont ici aussi.",
 "What the + offers":"Ce que propose le +",
-"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nouvelle conversation repart de zéro. Importer une image : une photo de ta galerie, p. ex. une carte. Prendre une photo : avec l’appareil tout de suite. Importer un fichier : un PDF ou document, p. ex. un plan de repas."
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nouvelle conversation repart de zéro. Importer une image : une photo de ta galerie, p. ex. une carte. Prendre une photo : avec l’appareil tout de suite. Importer un fichier : un PDF ou document, p. ex. un plan de repas.",
+"Everything you can add":"Tout ce que tu peux ajouter",
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoris : note à nouveau un repas habituel en un geste. Scanner ou Importer une photo : l'IA compte calories et macros à partir d'une image. Code-barres : valeurs exactes de l'étiquette. Décrire : écris ou dis ce que tu as mangé. Plus l'exercice et la saisie manuelle."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -4690,7 +4696,9 @@ window.I18N = {
 "Scan the barcode of packaged food for the exact values from the label.":"Scansiona il codice a barre dei cibi confezionati per i valori esatti dell'etichetta.",
 "Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Scrivi o di’ cosa hai mangiato, es. «2 uova e una fetta di pane tostato». Anche allenamento e inserimento manuale sono qui.",
 "What the + offers":"Cosa offre il +",
-"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nuova conversazione riparte da zero. Carica immagine: una foto dalla galleria, es. un menu. Scatta foto: subito con la fotocamera. Carica file: un PDF o documento, es. un piano alimentare."
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nuova conversazione riparte da zero. Carica immagine: una foto dalla galleria, es. un menu. Scatta foto: subito con la fotocamera. Carica file: un PDF o documento, es. un piano alimentare.",
+"Everything you can add":"Tutto ciò che puoi aggiungere",
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Preferiti: registra di nuovo un pasto abituale con un tocco. Scansiona cibo o Carica foto: l'IA conta calorie e macro da un'immagine. Codice a barre: valori esatti dell'etichetta. Descrivi il cibo: scrivi o di' cosa hai mangiato. In più allenamento e inserimento manuale."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -5863,7 +5871,9 @@ window.I18N = {
 "Scan the barcode of packaged food for the exact values from the label.":"パッケージ食品のバーコードを読み取ると、表示どおりの正確な値になります。",
 "Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"食べたものを入力するか話すだけ。例：「卵2個とトースト1枚」。運動や手入力もここにあります。",
 "What the + offers":"＋でできること",
-"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"新しい会話：最初から始めます。画像をアップロード：ライブラリの写真（例：メニュー）。写真を撮る：すぐにカメラで。ファイルをアップロード：PDF や書類（例：食事プラン）。"
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"新しい会話：最初から始めます。画像をアップロード：ライブラリの写真（例：メニュー）。写真を撮る：すぐにカメラで。ファイルをアップロード：PDF や書類（例：食事プラン）。",
+"Everything you can add":"追加できるものすべて",
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"お気に入り：いつもの食事をワンタップで再記録。食べ物をスキャン・写真をアップロード：AI が画像からカロリーと PFC を計算。バーコード：表示どおりの正確な値。食べ物を説明：食べたものを入力するか話すだけ。運動や手入力もあります。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -7036,7 +7046,9 @@ window.I18N = {
 "Scan the barcode of packaged food for the exact values from the label.":"Scan de barcode van verpakt eten voor de exacte waarden van het etiket.",
 "Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Typ of zeg gewoon wat je at, bijv. \"2 eieren en een sneetje toast\". Beweging en handmatige invoer staan hier ook.",
 "What the + offers":"Wat de + biedt",
-"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nieuw gesprek begint opnieuw. Afbeelding uploaden: een foto uit je bibliotheek, bijv. een menukaart. Foto maken: meteen met de camera. Bestand uploaden: een pdf of document, bijv. een voedingsschema."
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nieuw gesprek begint opnieuw. Afbeelding uploaden: een foto uit je bibliotheek, bijv. een menukaart. Foto maken: meteen met de camera. Bestand uploaden: een pdf of document, bijv. een voedingsschema.",
+"Everything you can add":"Alles wat je kunt toevoegen",
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favorieten: log een vaste maaltijd opnieuw met één tik. Eten scannen of Foto uploaden: de AI telt calorieën en macro’s uit een foto. Barcode: exacte waarden van het etiket. Eten beschrijven: typ of zeg wat je at. Plus beweging en handmatige invoer."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -8209,7 +8221,9 @@ window.I18N = {
 "Scan the barcode of packaged food for the exact values from the label.":"Zeskanuj kod kreskowy pakowanej żywności, aby mieć dokładne wartości z etykiety.",
 "Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Po prostu wpisz lub powiedz, co zjadłeś, np. „2 jajka i kromka tostu”. Trening i wpisy ręczne też są tutaj.",
 "What the + offers":"Co oferuje +",
-"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nowa rozmowa zaczyna od nowa. Prześlij obraz: zdjęcie z galerii, np. menu. Zrób zdjęcie: od razu aparatem. Prześlij plik: PDF lub dokument, np. plan posiłków."
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nowa rozmowa zaczyna od nowa. Prześlij obraz: zdjęcie z galerii, np. menu. Zrób zdjęcie: od razu aparatem. Prześlij plik: PDF lub dokument, np. plan posiłków.",
+"Everything you can add":"Wszystko, co możesz dodać",
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Ulubione: jednym stuknięciem zapisz ponownie zwykły posiłek. Skanuj jedzenie lub Prześlij zdjęcie: AI liczy kalorie i makro ze zdjęcia. Kod kreskowy: dokładne wartości z etykiety. Opisz jedzenie: wpisz lub powiedz, co zjadłeś. Do tego trening i wpisy ręczne."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -9382,7 +9396,9 @@ window.I18N = {
 "Scan the barcode of packaged food for the exact values from the label.":"Leia o código de barras de alimentos embalados para os valores exatos do rótulo.",
 "Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Escreva ou diga o que comeu, p. ex. \"2 ovos e uma torrada\". Exercício e entradas manuais também estão aqui.",
 "What the + offers":"O que o + oferece",
-"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nova conversa começa do zero. Carregar imagem: uma foto da galeria, p. ex. um menu. Tirar foto: com a câmara na hora. Carregar ficheiro: um PDF ou documento, p. ex. um plano alimentar."
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Nova conversa começa do zero. Carregar imagem: uma foto da galeria, p. ex. um menu. Tirar foto: com a câmara na hora. Carregar ficheiro: um PDF ou documento, p. ex. um plano alimentar.",
+"Everything you can add":"Tudo o que pode adicionar",
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoritos: registe de novo uma refeição habitual com um toque. Digitalizar comida ou Carregar foto: a IA conta calorias e macros a partir de uma imagem. Código de barras: valores exatos do rótulo. Descrever comida: escreva ou diga o que comeu. Mais exercício e entradas manuais."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -10555,7 +10571,9 @@ window.I18N = {
 "Scan the barcode of packaged food for the exact values from the label.":"Сканируйте штрихкод упакованных продуктов, чтобы получить точные значения с этикетки.",
 "Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Просто напишите или скажите, что съели, например «2 яйца и тост». Тренировки и ручной ввод тоже здесь.",
 "What the + offers":"Что даёт +",
-"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Новый разговор начинается с чистого листа. Загрузить изображение: фото из галереи, например меню. Сделать фото: сразу камерой. Загрузить файл: PDF или документ, например план питания."
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Новый разговор начинается с чистого листа. Загрузить изображение: фото из галереи, например меню. Сделать фото: сразу камерой. Загрузить файл: PDF или документ, например план питания.",
+"Everything you can add":"Всё, что можно добавить",
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Избранное: повторно запишите привычный приём пищи одним касанием. Сканировать еду или Загрузить фото: ИИ считает калории и БЖУ по снимку. Штрихкод: точные значения с этикетки. Описать еду: напишите или скажите, что съели. А также тренировки и ручной ввод."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -11728,7 +11746,9 @@ window.I18N = {
 "Scan the barcode of packaged food for the exact values from the label.":"Paketli gıdaların barkodunu tara, etiketteki kesin değerleri al.",
 "Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"Ne yediğini yaz ya da söyle, ör. \"2 yumurta ve bir dilim tost\". Egzersiz ve manuel giriş de burada.",
 "What the + offers":"+'nın sundukları",
-"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Yeni sohbet sıfırdan başlar. Görsel yükle: galeriden bir fotoğraf, ör. bir menü. Fotoğraf çek: hemen kamerayla. Dosya yükle: bir PDF veya belge, ör. bir beslenme planı."
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"Yeni sohbet sıfırdan başlar. Görsel yükle: galeriden bir fotoğraf, ör. bir menü. Fotoğraf çek: hemen kamerayla. Dosya yükle: bir PDF veya belge, ör. bir beslenme planı.",
+"Everything you can add":"Ekleyebileceğin her şey",
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"Favoriler: alışık olduğun bir öğünü tek dokunuşla yeniden kaydet. Yemek tara veya Fotoğraf yükle: yapay zekâ fotoğraftan kalori ve makroları hesaplar. Barkod: etiketteki kesin değerler. Yemeği anlat: ne yediğini yaz ya da söyle. Ayrıca egzersiz ve manuel giriş."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -12901,6 +12921,8 @@ window.I18N = {
 "Scan the barcode of packaged food for the exact values from the label.":"扫描包装食品的条形码，获得标签上的准确数值。",
 "Just type or say what you ate, e.g. \"2 eggs and a slice of toast\". Exercise and manual entries are here too.":"直接输入或说出你吃了什么，例如“2 个鸡蛋和一片吐司”。运动和手动记录也在这里。",
 "What the + offers":"+ 能做什么",
-"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"新对话：重新开始。上传图片：相册中的照片，例如菜单。拍照：直接用相机。上传文件：PDF 或文档，例如饮食计划。"
+"New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.":"新对话：重新开始。上传图片：相册中的照片，例如菜单。拍照：直接用相机。上传文件：PDF 或文档，例如饮食计划。",
+"Everything you can add":"你可以添加的全部内容",
+"Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.":"收藏：一键再次记录常吃的一餐。扫描食物或上传照片：AI 根据图片计算卡路里和营养素。条形码：标签上的准确数值。描述食物：输入或说出你吃了什么。另外还有运动和手动记录。"
 }
 };

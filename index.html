@@ -757,7 +757,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v99';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v100';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3032,10 +3032,7 @@ const TOUR_STEPS = [
   { tab: 'home', sel: '.minirow', title: N('Water and calories burned'), text: N('Tap + to add a glass of water or your burned calories. Tap a tile for more options.') },
   { tab: 'home', sel: '#mpCard', title: N('Meal plan & groceries'), text: N('Your weekly meal plan and shopping list, made for your goal. A new one comes every Saturday.') },
   { tab: 'home', sel: '#fab', title: N('Log your food'), text: N('The most important button. Let us look at what it opens.') },
-  { tab: 'home', open: 'add', sel: '#aFav', title: N('Favorites & recent'), text: N('Log something you eat often again with one tap.') },
-  { tab: 'home', open: 'add', sel: '#aScan', title: N('Scan food'), text: N('Take a photo of your plate. The AI recognises the food and counts calories, protein, carbs and fat. With "Upload photo" you can use a photo you already took.') },
-  { tab: 'home', open: 'add', sel: '#aBar', title: N('Barcode'), text: N('Scan the barcode of packaged food for the exact values from the label.') },
-  { tab: 'home', open: 'add', sel: '#aText', title: N('Describe food'), text: N('Just type or say what you ate, e.g. "2 eggs and a slice of toast". Exercise and manual entries are here too.') },
+  { tab: 'home', open: 'add', sel: '.backdrop .addgrid', title: N('Everything you can add'), text: N('Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.') },
   { tab: 'home', sel: '.tab[data-tab="progress"]', title: N('Progress'), text: N('Next stop: your progress.') },
   { tab: 'progress', sel: '.two', title: N('Weight and streak'), text: N('Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.') },
   { tab: 'progress', sel: '#badgeCard', title: N('Badges'), text: N('Earn badges for streaks, protein, water and milestones. Tap one to see what it is for.') },
