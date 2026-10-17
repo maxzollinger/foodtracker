@@ -1305,7 +1305,11 @@ window.I18N = {
 "since {t}":"seit {t}",
 "tomorrow":"morgen",
 "{d} fasted · {r} to go":"{d} gefastet · noch {r}",
-"{h} hours done. Break your fast gently with a small meal.":"{h} Stunden geschafft. Brich dein Fasten sanft mit einer kleinen Mahlzeit."
+"{h} hours done. Break your fast gently with a small meal.":"{h} Stunden geschafft. Brich dein Fasten sanft mit einer kleinen Mahlzeit.",
+"Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Dein Kalorienziel folgt deiner echten Aktivität: an ruhigen Tagen ist es niedriger, an aktiven höher.",
+"Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Dein tägliches Kalorienziel folgt dann deiner echten Aktivität statt dem Trainingslevel aus der Einrichtung.",
+"{r} kcal active on this day.":"{r} kcal aktiv an diesem Tag.",
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Bisher {r} kcal aktiv + etwa {e} kcal noch erwartet (dein 7-Tage-Schnitt: {a} kcal)."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2612,7 +2616,11 @@ window.I18N = {
 "since {t}":"desde {t}",
 "tomorrow":"mañana",
 "{d} fasted · {r} to go":"{d} de ayuno · faltan {r}",
-"{h} hours done. Break your fast gently with a small meal.":"{h} horas completadas. Rompe el ayuno con suavidad con una comida pequeña."
+"{h} hours done. Break your fast gently with a small meal.":"{h} horas completadas. Rompe el ayuno con suavidad con una comida pequeña.",
+"Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Tu objetivo de calorías sigue tu actividad real: en días tranquilos es menor y en días activos, mayor.",
+"Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Tu objetivo diario de calorías sigue entonces tu actividad real en lugar del nivel de entrenamiento de la configuración.",
+"{r} kcal active on this day.":"{r} kcal activas este día.",
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal activas hasta ahora + unas {e} kcal aún esperadas (tu media de 7 días: {a} kcal)."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3919,7 +3927,11 @@ window.I18N = {
 "since {t}":"depuis {t}",
 "tomorrow":"demain",
 "{d} fasted · {r} to go":"{d} de jeûne · encore {r}",
-"{h} hours done. Break your fast gently with a small meal.":"{h} heures réussies. Romps ton jeûne en douceur avec un petit repas."
+"{h} hours done. Break your fast gently with a small meal.":"{h} heures réussies. Romps ton jeûne en douceur avec un petit repas.",
+"Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Ton objectif calorique suit ton activité réelle : plus bas les jours calmes, plus haut les jours actifs.",
+"Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Ton objectif calorique quotidien suit alors ton activité réelle au lieu du niveau d’entraînement de la configuration.",
+"{r} kcal active on this day.":"{r} kcal actives ce jour-là.",
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal actives jusqu’ici + environ {e} kcal encore attendues (ta moyenne sur 7 jours : {a} kcal)."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5226,7 +5238,11 @@ window.I18N = {
 "since {t}":"dalle {t}",
 "tomorrow":"domani",
 "{d} fasted · {r} to go":"{d} di digiuno · mancano {r}",
-"{h} hours done. Break your fast gently with a small meal.":"{h} ore completate. Interrompi il digiuno con delicatezza con un pasto piccolo."
+"{h} hours done. Break your fast gently with a small meal.":"{h} ore completate. Interrompi il digiuno con delicatezza con un pasto piccolo.",
+"Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Il tuo obiettivo calorico segue la tua attività reale: nei giorni tranquilli è più basso, in quelli attivi più alto.",
+"Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Il tuo obiettivo calorico giornaliero segue così la tua attività reale invece del livello di allenamento della configurazione.",
+"{r} kcal active on this day.":"{r} kcal attive in questo giorno.",
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal attive finora + circa {e} kcal ancora previste (la tua media di 7 giorni: {a} kcal)."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6533,7 +6549,11 @@ window.I18N = {
 "since {t}":"{t} から",
 "tomorrow":"明日",
 "{d} fasted · {r} to go":"{d} 経過・残り {r}",
-"{h} hours done. Break your fast gently with a small meal.":"{h} 時間達成。少量の食事でゆっくり断食を終えましょう。"
+"{h} hours done. Break your fast gently with a small meal.":"{h} 時間達成。少量の食事でゆっくり断食を終えましょう。",
+"Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"カロリー目標は実際の活動量に合わせて変わります。静かな日は低く、活発な日は高くなります。",
+"Your daily calorie goal then follows your real activity instead of the training level from the setup.":"1日のカロリー目標は、初期設定のトレーニング量ではなく実際の活動量に合わせて変わります。",
+"{r} kcal active on this day.":"この日のアクティブ {r} kcal。",
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"ここまでアクティブ {r} kcal + 残り約 {e} kcal の見込み（7日間の平均：{a} kcal）。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -7840,7 +7860,11 @@ window.I18N = {
 "since {t}":"sinds {t}",
 "tomorrow":"morgen",
 "{d} fasted · {r} to go":"{d} gevast · nog {r}",
-"{h} hours done. Break your fast gently with a small meal.":"{h} uur gehaald. Doorbreek je vasten rustig met een kleine maaltijd."
+"{h} hours done. Break your fast gently with a small meal.":"{h} uur gehaald. Doorbreek je vasten rustig met een kleine maaltijd.",
+"Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Je caloriedoel volgt je echte activiteit: op rustige dagen lager, op actieve dagen hoger.",
+"Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Je dagelijkse caloriedoel volgt dan je echte activiteit in plaats van het trainingsniveau uit de instellingen.",
+"{r} kcal active on this day.":"{r} kcal actief op deze dag.",
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Tot nu toe {r} kcal actief + nog ongeveer {e} kcal verwacht (je 7-daags gemiddelde: {a} kcal)."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9147,7 +9171,11 @@ window.I18N = {
 "since {t}":"od {t}",
 "tomorrow":"jutro",
 "{d} fasted · {r} to go":"{d} postu · zostało {r}",
-"{h} hours done. Break your fast gently with a small meal.":"Ukończono {h} godzin. Przerwij post łagodnie małym posiłkiem."
+"{h} hours done. Break your fast gently with a small meal.":"Ukończono {h} godzin. Przerwij post łagodnie małym posiłkiem.",
+"Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Twój cel kalorii podąża za prawdziwą aktywnością: w spokojne dni jest niższy, w aktywne wyższy.",
+"Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Twój dzienny cel kalorii podąża wtedy za prawdziwą aktywnością zamiast poziomem treningu z konfiguracji.",
+"{r} kcal active on this day.":"{r} kcal aktywnych tego dnia.",
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Dotąd {r} kcal aktywnych + jeszcze około {e} kcal oczekiwanych (twoja średnia z 7 dni: {a} kcal)."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -10454,7 +10482,11 @@ window.I18N = {
 "since {t}":"desde {t}",
 "tomorrow":"amanhã",
 "{d} fasted · {r} to go":"{d} em jejum · faltam {r}",
-"{h} hours done. Break your fast gently with a small meal.":"{h} horas concluídas. Quebre o jejum com calma com uma refeição pequena."
+"{h} hours done. Break your fast gently with a small meal.":"{h} horas concluídas. Quebre o jejum com calma com uma refeição pequena.",
+"Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"A sua meta de calorias segue a sua atividade real: em dias calmos é mais baixa, em dias ativos mais alta.",
+"Your daily calorie goal then follows your real activity instead of the training level from the setup.":"A sua meta diária de calorias segue então a sua atividade real em vez do nível de treino da configuração.",
+"{r} kcal active on this day.":"{r} kcal ativas neste dia.",
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal ativas até agora + cerca de {e} kcal ainda esperadas (a sua média de 7 dias: {a} kcal)."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -11761,7 +11793,11 @@ window.I18N = {
 "since {t}":"с {t}",
 "tomorrow":"завтра",
 "{d} fasted · {r} to go":"{d} без еды · осталось {r}",
-"{h} hours done. Break your fast gently with a small meal.":"Пройдено {h} ч. Выходите из голодания мягко, с небольшой еды."
+"{h} hours done. Break your fast gently with a small meal.":"Пройдено {h} ч. Выходите из голодания мягко, с небольшой еды.",
+"Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Цель по калориям следует за вашей реальной активностью: в спокойные дни она ниже, в активные — выше.",
+"Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Дневная цель по калориям тогда следует за реальной активностью, а не за уровнем тренировок из настройки.",
+"{r} kcal active on this day.":"{r} ккал активности в этот день.",
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Пока {r} ккал активности + ещё около {e} ккал ожидается (ваше среднее за 7 дней: {a} ккал)."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -13068,7 +13104,11 @@ window.I18N = {
 "since {t}":"{t} itibarıyla",
 "tomorrow":"yarın",
 "{d} fasted · {r} to go":"{d} oruç · {r} kaldı",
-"{h} hours done. Break your fast gently with a small meal.":"{h} saat tamamlandı. Orucunu küçük bir öğünle yavaşça aç."
+"{h} hours done. Break your fast gently with a small meal.":"{h} saat tamamlandı. Orucunu küçük bir öğünle yavaşça aç.",
+"Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Kalori hedefin gerçek hareketine göre değişir: sakin günlerde daha düşük, hareketli günlerde daha yüksek.",
+"Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Günlük kalori hedefin artık kurulumdaki antrenman seviyesi yerine gerçek hareketine göre belirlenir.",
+"{r} kcal active on this day.":"Bu gün {r} kcal aktif.",
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Şu ana kadar {r} kcal aktif + yaklaşık {e} kcal daha bekleniyor (7 günlük ortalaman: {a} kcal)."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -14375,6 +14415,10 @@ window.I18N = {
 "since {t}":"自 {t}",
 "tomorrow":"明天",
 "{d} fasted · {r} to go":"已断食 {d} · 还剩 {r}",
-"{h} hours done. Break your fast gently with a small meal.":"已完成 {h} 小时。用一小份餐温和地结束断食。"
+"{h} hours done. Break your fast gently with a small meal.":"已完成 {h} 小时。用一小份餐温和地结束断食。",
+"Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"你的热量目标会跟随真实活动量：安静的日子更低，活跃的日子更高。",
+"Your daily calorie goal then follows your real activity instead of the training level from the setup.":"这样你的每日热量目标会跟随真实活动量，而不是设置中的训练水平。",
+"{r} kcal active on this day.":"这一天活动 {r} kcal。",
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"目前已活动 {r} kcal + 预计还有约 {e} kcal（你的 7 天平均：{a} kcal）。"
 }
 };

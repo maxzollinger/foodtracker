@@ -935,7 +935,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v120';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v121';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1249,9 +1249,9 @@ function currentWeight() {
   if (db.weights.length) return [...db.weights].sort((a, b) => a.date.localeCompare(b.date)).at(-1).kg;
   return db.profile ? db.profile.weight : 0;
 }
-function calcTargets(p, w) {
+function calcTargets(p, w, fac) {   // fac: activity factor of one day (from the tracker); default from the setup
   const bmr = 10 * w + 6.25 * p.height - 5 * age(p) + (p.sex === 'm' ? 5 : p.sex === 'f' ? -161 : -78);
-  const tdee = bmr * (ACT[p.workouts] || 1.375), plan = planOf(p).id;
+  const tdee = bmr * (fac || ACT[p.workouts] || 1.375), plan = planOf(p).id;
   let kcal = tdee;
   if (p.goal === 'lose') kcal -= p.pace * 7700 / 7;
   if (p.goal === 'gain') kcal += p.pace * 7700 / 7;
@@ -1305,6 +1305,26 @@ const dayBurned = date => db.exercises.filter(e => e.date === date).reduce((a, e
 // for a whole-day number that is everything above resting + digestion (x1.1), for workouts the step from x1.2.
 const burnWholeDay = () => (db.settings.burnType || 'day') === 'day';
 function includedExercise() { const t = targets(), p = db.profile; return p ? r0(t.bmr * ((ACT[p.workouts] || 1.375) - (burnWholeDay() ? 1.1 : 1.2))) : 0; }
+// Tracker connected (whole-day numbers, no own calorie goal): the daily goal follows the real activity
+const trackerMode = () => !!(db.profile && linkInfo() && burnWholeDay() && !(num(db.overrides.kcal) > 0));
+const autoOn = d => db.exercises.find(e => e.id === 'auto-' + d);
+// Average active calories of the last 7 days with tracker numbers (until there are 2 such days: the training level from the setup)
+function activeAvg(date) {
+  const v = [...Array(7)].map((_, i) => autoOn(addDays(date, -1 - i))).filter(Boolean).map(e => num(e.kcal));
+  if (v.length >= 2) return r0(v.reduce((a, b) => a + b, 0) / v.length);
+  return r0((targets().bmr || 1600) * ((ACT[db.profile.workouts] || 1.375) - 1.1) / 0.75);
+}
+// The active calories a day's goal is built on: measured so far, plus (today) the 7-day average for the hours still to come
+function activeFor(date) {
+  const today = iso(), real = r0(dayBurned(date)), avg = activeAvg(date);
+  if (date > today) return { used: avg, real: 0, avg, est: avg };
+  // No tracker numbers for that day yet (phone not opened, tracker not synced): the 7-day average
+  if (!autoOn(date)) return { used: Math.max(real, avg), real, avg, est: Math.max(0, avg - real) };
+  if (date < today) return { used: real, real, avg, est: 0 };
+  const now = new Date(), h = now.getHours() + now.getMinutes() / 60, left = clamp((22 - Math.max(h, 7)) / 15, 0, 1);   // the active part of the day: 7:00-22:00
+  const est = r0(avg * left);
+  return { used: real + est, real, avg, est };
+}
 // The goals for one day. "smart": watches overestimate, so count 75% of what was logged, and only the part
 // beyond the training already in the base goal is added. "all": add everything. "off": never add.
 // Extra energy is given back mostly as carbs (75%) and some fat (25%); protein stays the same.
@@ -1316,6 +1336,13 @@ function dayGoals(date) {
   if (db.profile && isFastDay(db.profile, date)) {
     const k = FAST_KCAL(db.profile), pr = Math.min(t.protein, r0(k * 0.4 / 4)), c = Math.min(keto ? t.carbs : 999, r0(k * 0.35 / 4));
     return { ...t, kcal: k, protein: pr, carbs: c, fat: r0(Math.max(0, k - pr * 4 - c * 4) / 9), burned, extra: 0, included, fastDay: true };
+  }
+  // With a tracker the goal follows what was really done: the body at rest (x1.1) plus 75% of the day's active
+  // calories (steps, workouts, everything). A sick or travel week gives lower goals, a hard training day a higher one.
+  if (trackerMode() && mode !== 'off') {
+    const a = activeFor(date), tt = calcTargets(db.profile, currentWeight(), 1.1 + 0.75 * a.used / (t.bmr || 1600));
+    for (const k of ['protein', 'carbs', 'fat']) if (num(db.overrides[k]) > 0) tt[k] = r0(num(db.overrides[k]));
+    return { ...t, kcal: tt.kcal, protein: tt.protein, carbs: tt.carbs, fat: tt.fat, burned, extra: tt.kcal - t.kcal, included, track: a };
   }
   return { ...t, kcal: t.kcal + extra, carbs: t.carbs + (keto ? 0 : r0(extra * 0.75 / 4)), fat: t.fat + r0(extra * (keto ? 1 : 0.25) / 9), burned, extra, included };
 }
@@ -2926,7 +2953,7 @@ async function openTrackerSheet() {
   const ios = isIOS(), direct = id => !!(trackersAvail || {})[id];
   const brandWay = b => b.via !== 'apple' && b.via !== 'none' && direct(b.via) ? 'direct' : b.via === 'none' ? 'none' : ios ? 'apple' : 'none';
   const html = `<div id="trkSheet"><h3>⌚ ${T('Watch & tracker')}</h3>
-    <p class="muted" style="margin-top:4px">${T('Your active calories of the whole day are filled in automatically, every time you open the app.')}</p>
+    <p class="muted" style="margin-top:4px">${T('Your active calories of the whole day are filled in automatically, every time you open the app.')} ${T('Your daily calorie goal then follows your real activity instead of the training level from the setup.')}</p>
     ${L ? `<div class="card" style="background:var(--chip);box-shadow:none;margin-top:12px">
         <div class="spread"><b>${L.err === 'reconnect' ? '⚠️' : '✓'} ${esc(linkName(L.p))}</b><span class="small muted">${when ? T('Updated {t}', { t: when }) : T('Waiting for the first numbers…')}</span></div>
         <p class="small" style="margin:6px 0 0">${today ? T('Today: <b>{n} kcal</b> active', { n: r0(today.kcal) }) : L.p === 'apple' ? T('No numbers yet. Run the Shortcut once (see below).') : T('No numbers for today yet.')}</p>
@@ -3723,6 +3750,7 @@ function openBurnSheet() {
   sheet(`<h3>${T('Calories burned')}</h3>
     <div class="seg" style="margin-top:10px">${[['day', N('Whole day')], ['workout', N('Workouts only')]].map(([v, l]) => `<button data-bt="${v}" class="${(db.settings.burnType || 'day') === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>
     ${linkInfo() ? `<p class="small" style="margin:10px 0 0;font-weight:600">⌚ ${T('Filled in automatically from {name}.', { name: esc(linkName(linkInfo().p)) })} <button class="chipbtn" id="bTrk" style="margin-left:4px">${T('Settings')}</button></p>`
+      + (trackerMode() ? (() => { const a = activeFor(sel); return `<div class="tip" style="margin-top:10px">${T('Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.')}<br><b>${a.est ? T('{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).', { r: a.real, e: a.est, a: a.avg }) : T('{r} kcal active on this day.', { r: a.real })}</b></div>`; })() : '')
       + (() => { const a = db.exercises.find(e => e.id === 'auto-' + sel && e.total != null); return a ? `<p class="small muted" style="margin:6px 0 0;line-height:1.45">${T('{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.', { name: esc(a.name), t: r0(a.total).toLocaleString(LOC), r: r0(a.rest).toLocaleString(LOC), a: r0(a.kcal).toLocaleString(LOC) })}</p>` : ''; })()
       : `<button class="bgrow" id="bTrk" style="margin-top:12px"><span style="font-size:26px">⌚</span><span class="grow"><b>${T('Wear a watch or ring?')}</b><br><span class="small muted">${T('Connect it once and this is filled in automatically.')}</span></span><span class="chev">›</span></button>`}
     <p class="muted small" style="margin-top:8px">${burnWholeDay() ? T('Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not "total").') : T('Enter the <b>active</b> calories of each workout (not "total").')} ${T('Your normal day and training are already in your goal, so only extra activity raises it.')}</p>
@@ -4573,7 +4601,7 @@ Calories: ${r0(tot.kcal)} eaten of ${g.kcal} kcal goal → ${left('kcal')}
 Protein: ${r0(tot.protein)} of ${g.protein} g → ${left('protein')}
 Carbs: ${r0(tot.carbs)} of ${g.carbs} g → ${left('carbs')}
 Fats: ${r0(tot.fat)} of ${g.fat} g → ${left('fat')}
-Calories burned today: ${g.burned} kcal${linkInfo() ? ` (filled in automatically from ${linkName(linkInfo().p)})` : ''} (${burnWholeDay() ? 'active calories of the WHOLE day from their watch: all movement incl. workouts' : 'workouts only'}) → ${g.extra} kcal added to today's goal (mode "${db.settings.burnMode}"; ~${g.included} kcal/day of normal ${burnWholeDay() ? 'daily activity and training' : 'training'} is already part of the base goal)
+Calories burned today: ${g.burned} kcal${linkInfo() ? ` (filled in automatically from ${linkName(linkInfo().p)})` : ''} (${burnWholeDay() ? 'active calories of the WHOLE day from their watch: all movement incl. workouts' : 'workouts only'}) ${g.track ? `→ the goal FOLLOWS THE TRACKER: body at rest x1.1 plus 75% of today's active calories (${g.track.real} measured so far${g.track.est ? ` + ${g.track.est} still expected for the rest of the day from the 7-day average of ${g.track.avg}` : ''}). Today's goal ${g.kcal} kcal; an average day at their setup training level would be ${base.kcal} kcal. Quiet days (sick, travel) give lower goals, active days higher ones.` : `→ ${g.extra} kcal added to today's goal (mode "${db.settings.burnMode}"; ~${g.included} kcal/day of normal ${burnWholeDay() ? 'daily activity and training' : 'training'} is already part of the base goal)`}
 Health score today: ${healthAvg(todayMeals) ?? 'no meals yet'}/10
 Water today: ${waterOn(today)} of ${waterGoal(today)} ml (${db.settings.waterGoal ? 'goal set by the user' : 'personal goal from body weight, training, goal and the exercise of today'})
 Sugar ${r0(dayExtras(today).sugar)} g, fiber ${r0(dayExtras(today).fiber)} g, sodium ${r0(dayExtras(today).sodium)} mg today (known for ${dayExtras(today).known} of ${dayExtras(today).meals} meals)${pend ? `\nStill analysing: ${pend} food photo(s), not counted yet` : ''}
@@ -4629,7 +4657,7 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
 - Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
-- Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal.
+- Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
 - Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
