@@ -1251,7 +1251,12 @@ window.I18N = {
 "Waist, hips, arms and private progress photos. When you build muscle, they show progress the scale can not.":"Taille, Hüfte, Arme und private Fortschrittsfotos. Beim Muskelaufbau zeigen sie Fortschritte, die die Waage nicht zeigt.",
 "Your weight barely changed, but your waist got smaller: you are losing fat and building muscle.":"Dein Gewicht hat sich kaum verändert, aber deine Taille ist schmaler geworden: Du verlierst Fett und baust Muskeln auf.",
 "{n} days apart":"{n} Tage dazwischen",
-"{n} photos are back":"{n} Fotos sind wieder da"
+"{n} photos are back":"{n} Fotos sind wieder da",
+"If you connect Apple Health or a tracker, only your calories burned per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. When the key is renewed, the server keeps the new one for one hour, locked so only your phone can open it, so the connection does not break if an answer gets lost. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.":"Wenn du Apple Health oder einen Tracker verbindest, werden nur deine verbrannten Kalorien pro Tag gelesen. Der Verbindungsschlüssel bleibt auf deinem Handy; der Food-Tracker-Server reicht nur die Zahlen weiter. Wird der Schlüssel erneuert, behält der Server den neuen eine Stunde lang, so verschlossen, dass nur dein Handy ihn öffnen kann. So bricht die Verbindung nicht ab, wenn eine Antwort verloren geht. Zahlen aus dem Apple-Health-Kurzbefehl warten ein paar Tage auf dem Server, bis deine App sie abholt.",
+"Updated":"Aktualisiert",
+"Updated. No numbers for today yet.":"Aktualisiert. Für heute gibt es noch keine Zahlen.",
+"Updated: {n} kcal active today":"Aktualisiert: heute {n} kcal aktiv",
+"{name} is disconnected.":"{name} ist getrennt."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2504,7 +2509,12 @@ window.I18N = {
 "Waist, hips, arms and private progress photos. When you build muscle, they show progress the scale can not.":"Cintura, caderas, brazos y fotos de progreso privadas. Cuando ganas músculo, muestran avances que la báscula no ve.",
 "Your weight barely changed, but your waist got smaller: you are losing fat and building muscle.":"Tu peso apenas cambió, pero tu cintura es más pequeña: estás perdiendo grasa y ganando músculo.",
 "{n} days apart":"{n} días de diferencia",
-"{n} photos are back":"{n} fotos han vuelto"
+"{n} photos are back":"{n} fotos han vuelto",
+"If you connect Apple Health or a tracker, only your calories burned per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. When the key is renewed, the server keeps the new one for one hour, locked so only your phone can open it, so the connection does not break if an answer gets lost. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.":"Si conectas Apple Health o un dispositivo, solo se leen tus calorías quemadas por día. La clave de conexión se queda en tu teléfono; el servidor de Food Tracker solo pasa los números. Cuando la clave se renueva, el servidor guarda la nueva durante una hora, cerrada para que solo tu teléfono pueda abrirla, así la conexión no se corta si se pierde una respuesta. Los números del Atajo de Apple Health esperan unos días en el servidor hasta que tu app los recoge.",
+"Updated":"Actualizado",
+"Updated. No numbers for today yet.":"Actualizado. Aún no hay números de hoy.",
+"Updated: {n} kcal active today":"Actualizado: {n} kcal activas hoy",
+"{name} is disconnected.":"{name} se ha desconectado."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3757,7 +3767,12 @@ window.I18N = {
 "Waist, hips, arms and private progress photos. When you build muscle, they show progress the scale can not.":"Taille, hanches, bras et photos de progrès privées. Quand tu prends du muscle, elles montrent des progrès que la balance ne voit pas.",
 "Your weight barely changed, but your waist got smaller: you are losing fat and building muscle.":"Ton poids a à peine bougé, mais ton tour de taille a diminué : tu perds du gras et tu prends du muscle.",
 "{n} days apart":"{n} jours d’écart",
-"{n} photos are back":"{n} photos sont de retour"
+"{n} photos are back":"{n} photos sont de retour",
+"If you connect Apple Health or a tracker, only your calories burned per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. When the key is renewed, the server keeps the new one for one hour, locked so only your phone can open it, so the connection does not break if an answer gets lost. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.":"Si tu connectes Apple Santé ou un tracker, seules tes calories brûlées par jour sont lues. La clé de connexion reste sur ton téléphone ; le serveur Food Tracker ne fait que transmettre les chiffres. Quand la clé est renouvelée, le serveur garde la nouvelle pendant une heure, verrouillée pour que seul ton téléphone puisse l’ouvrir, afin que la connexion ne se coupe pas si une réponse se perd. Les chiffres du raccourci Apple Santé attendent quelques jours sur le serveur jusqu’à ce que ton app les récupère.",
+"Updated":"Mis à jour",
+"Updated. No numbers for today yet.":"Mis à jour. Pas encore de chiffres pour aujourd’hui.",
+"Updated: {n} kcal active today":"Mis à jour : {n} kcal actives aujourd’hui",
+"{name} is disconnected.":"{name} est déconnecté."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5010,7 +5025,12 @@ window.I18N = {
 "Waist, hips, arms and private progress photos. When you build muscle, they show progress the scale can not.":"Vita, fianchi, braccia e foto dei progressi private. Quando costruisci muscoli, mostrano progressi che la bilancia non vede.",
 "Your weight barely changed, but your waist got smaller: you are losing fat and building muscle.":"Il tuo peso è quasi invariato, ma la vita si è ridotta: stai perdendo grasso e costruendo muscoli.",
 "{n} days apart":"{n} giorni di distanza",
-"{n} photos are back":"{n} foto sono tornate"
+"{n} photos are back":"{n} foto sono tornate",
+"If you connect Apple Health or a tracker, only your calories burned per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. When the key is renewed, the server keeps the new one for one hour, locked so only your phone can open it, so the connection does not break if an answer gets lost. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.":"Se colleghi Apple Salute o un tracker, vengono lette solo le calorie bruciate al giorno. La chiave di connessione resta sul tuo telefono; il server di Food Tracker passa solo i numeri. Quando la chiave viene rinnovata, il server conserva quella nuova per un’ora, bloccata in modo che solo il tuo telefono possa aprirla, così la connessione non si interrompe se una risposta va persa. I numeri del Comando rapido di Apple Salute restano sul server per qualche giorno finché l’app non li prende.",
+"Updated":"Aggiornato",
+"Updated. No numbers for today yet.":"Aggiornato. Ancora nessun dato per oggi.",
+"Updated: {n} kcal active today":"Aggiornato: {n} kcal attive oggi",
+"{name} is disconnected.":"{name} è scollegato."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6263,7 +6283,12 @@ window.I18N = {
 "Waist, hips, arms and private progress photos. When you build muscle, they show progress the scale can not.":"ウエスト・ヒップ・腕と非公開の進捗写真。筋肉をつけるとき、体重計ではわからない変化がわかります。",
 "Your weight barely changed, but your waist got smaller: you are losing fat and building muscle.":"体重はほとんど変わっていませんが、ウエストは細くなりました。脂肪が減って筋肉がついています。",
 "{n} days apart":"{n} 日の差",
-"{n} photos are back":"{n} 枚の写真が戻りました"
+"{n} photos are back":"{n} 枚の写真が戻りました",
+"If you connect Apple Health or a tracker, only your calories burned per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. When the key is renewed, the server keeps the new one for one hour, locked so only your phone can open it, so the connection does not break if an answer gets lost. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.":"ヘルスケアやトラッカーを接続すると、1日の消費カロリーだけが読み取られます。接続キーはあなたのスマホに保存され、Food Tracker のサーバーは数値を中継するだけです。キーが更新されると、サーバーは新しいキーを1時間だけ、あなたのスマホしか開けない形で保管します。応答が届かなかった場合でも接続が切れないためです。ヘルスケアのショートカットからの数値は、アプリが受け取るまで数日間サーバーで待機します。",
+"Updated":"更新しました",
+"Updated. No numbers for today yet.":"更新しました。今日の数値はまだありません。",
+"Updated: {n} kcal active today":"更新しました：今日のアクティブ {n} kcal",
+"{name} is disconnected.":"{name} の接続を解除しました。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -7516,7 +7541,12 @@ window.I18N = {
 "Waist, hips, arms and private progress photos. When you build muscle, they show progress the scale can not.":"Taille, heupen, armen en privé voortgangsfoto’s. Als je spieren opbouwt, laten ze vooruitgang zien die de weegschaal niet ziet.",
 "Your weight barely changed, but your waist got smaller: you are losing fat and building muscle.":"Je gewicht is nauwelijks veranderd, maar je taille is kleiner: je verliest vet en bouwt spieren op.",
 "{n} days apart":"{n} dagen ertussen",
-"{n} photos are back":"{n} foto’s zijn terug"
+"{n} photos are back":"{n} foto’s zijn terug",
+"If you connect Apple Health or a tracker, only your calories burned per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. When the key is renewed, the server keeps the new one for one hour, locked so only your phone can open it, so the connection does not break if an answer gets lost. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.":"Als je Apple Gezondheid of een tracker koppelt, worden alleen je verbrande calorieën per dag gelezen. De verbindingssleutel blijft op je telefoon; de Food Tracker-server geeft alleen de getallen door. Wordt de sleutel vernieuwd, dan bewaart de server de nieuwe een uur lang, zo afgesloten dat alleen je telefoon hem kan openen, zodat de verbinding niet verbroken wordt als een antwoord verloren gaat. Getallen uit de Apple Gezondheid-opdracht wachten een paar dagen op de server tot je app ze ophaalt.",
+"Updated":"Bijgewerkt",
+"Updated. No numbers for today yet.":"Bijgewerkt. Nog geen getallen voor vandaag.",
+"Updated: {n} kcal active today":"Bijgewerkt: vandaag {n} kcal actief",
+"{name} is disconnected.":"{name} is ontkoppeld."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -8769,7 +8799,12 @@ window.I18N = {
 "Waist, hips, arms and private progress photos. When you build muscle, they show progress the scale can not.":"Talia, biodra, ramiona i prywatne zdjęcia postępów. Gdy budujesz mięśnie, pokazują postęp, którego waga nie widzi.",
 "Your weight barely changed, but your waist got smaller: you are losing fat and building muscle.":"Waga prawie się nie zmieniła, ale talia jest mniejsza: tracisz tłuszcz i budujesz mięśnie.",
 "{n} days apart":"{n} dni różnicy",
-"{n} photos are back":"Zdjęcia wróciły: {n}"
+"{n} photos are back":"Zdjęcia wróciły: {n}",
+"If you connect Apple Health or a tracker, only your calories burned per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. When the key is renewed, the server keeps the new one for one hour, locked so only your phone can open it, so the connection does not break if an answer gets lost. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.":"Jeśli połączysz Apple Zdrowie lub tracker, odczytywane są tylko spalone kalorie na dzień. Klucz połączenia zostaje na twoim telefonie; serwer Food Tracker tylko przekazuje liczby. Gdy klucz jest odnawiany, serwer przechowuje nowy przez godzinę, zablokowany tak, że otworzyć go może tylko twój telefon, aby połączenie nie zerwało się, jeśli odpowiedź się zgubi. Liczby ze skrótu Apple Zdrowie czekają na serwerze kilka dni, aż aplikacja je pobierze.",
+"Updated":"Zaktualizowano",
+"Updated. No numbers for today yet.":"Zaktualizowano. Brak jeszcze danych na dziś.",
+"Updated: {n} kcal active today":"Zaktualizowano: dziś {n} kcal aktywnych",
+"{name} is disconnected.":"Odłączono: {name}."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -10022,7 +10057,12 @@ window.I18N = {
 "Waist, hips, arms and private progress photos. When you build muscle, they show progress the scale can not.":"Cintura, ancas, braços e fotos de progresso privadas. Quando ganha músculo, mostram progresso que a balança não vê.",
 "Your weight barely changed, but your waist got smaller: you are losing fat and building muscle.":"O seu peso quase não mudou, mas a cintura diminuiu: está a perder gordura e a ganhar músculo.",
 "{n} days apart":"{n} dias de diferença",
-"{n} photos are back":"{n} fotos estão de volta"
+"{n} photos are back":"{n} fotos estão de volta",
+"If you connect Apple Health or a tracker, only your calories burned per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. When the key is renewed, the server keeps the new one for one hour, locked so only your phone can open it, so the connection does not break if an answer gets lost. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.":"Se ligar a app Saúde ou um dispositivo, só são lidas as calorias gastas por dia. A chave de ligação fica no seu telemóvel; o servidor do Food Tracker só passa os números. Quando a chave é renovada, o servidor guarda a nova durante uma hora, trancada para que só o seu telemóvel a possa abrir, para a ligação não cair se uma resposta se perder. Os números do Atalho da app Saúde esperam alguns dias no servidor até a app os ir buscar.",
+"Updated":"Atualizado",
+"Updated. No numbers for today yet.":"Atualizado. Ainda não há números de hoje.",
+"Updated: {n} kcal active today":"Atualizado: {n} kcal ativas hoje",
+"{name} is disconnected.":"{name} foi desligado."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -11275,7 +11315,12 @@ window.I18N = {
 "Waist, hips, arms and private progress photos. When you build muscle, they show progress the scale can not.":"Талия, бёдра, руки и личные фото прогресса. Когда вы набираете мышцы, они показывают прогресс, который не видят весы.",
 "Your weight barely changed, but your waist got smaller: you are losing fat and building muscle.":"Вес почти не изменился, но талия стала меньше: вы теряете жир и набираете мышцы.",
 "{n} days apart":"{n} дн. между ними",
-"{n} photos are back":"Фото восстановлены: {n}"
+"{n} photos are back":"Фото восстановлены: {n}",
+"If you connect Apple Health or a tracker, only your calories burned per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. When the key is renewed, the server keeps the new one for one hour, locked so only your phone can open it, so the connection does not break if an answer gets lost. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.":"Если вы подключите «Здоровье» или трекер, считываются только сожжённые калории за день. Ключ подключения остаётся на вашем телефоне; сервер Food Tracker только передаёт цифры. Когда ключ обновляется, сервер хранит новый один час в закрытом виде, открыть его может только ваш телефон, чтобы подключение не обрывалось, если ответ потеряется. Цифры из быстрой команды «Здоровья» ждут на сервере несколько дней, пока приложение их не заберёт.",
+"Updated":"Обновлено",
+"Updated. No numbers for today yet.":"Обновлено. За сегодня цифр пока нет.",
+"Updated: {n} kcal active today":"Обновлено: сегодня {n} ккал активности",
+"{name} is disconnected.":"{name} отключён."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -12528,7 +12573,12 @@ window.I18N = {
 "Waist, hips, arms and private progress photos. When you build muscle, they show progress the scale can not.":"Bel, kalça, kollar ve gizli ilerleme fotoğrafları. Kas yaparken tartının göremediği ilerlemeyi gösterirler.",
 "Your weight barely changed, but your waist got smaller: you are losing fat and building muscle.":"Kilon neredeyse değişmedi ama belin inceldi: yağ kaybediyor ve kas yapıyorsun.",
 "{n} days apart":"Aralarında {n} gün",
-"{n} photos are back":"{n} fotoğraf geri geldi"
+"{n} photos are back":"{n} fotoğraf geri geldi",
+"If you connect Apple Health or a tracker, only your calories burned per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. When the key is renewed, the server keeps the new one for one hour, locked so only your phone can open it, so the connection does not break if an answer gets lost. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.":"Apple Sağlık’ı veya bir takip cihazını bağlarsan yalnızca günlük yaktığın kaloriler okunur. Bağlantı anahtarı telefonunda kalır; Food Tracker sunucusu yalnızca sayıları iletir. Anahtar yenilendiğinde sunucu yenisini bir saat boyunca, yalnızca telefonunun açabileceği şekilde kilitli tutar; böylece bir yanıt kaybolursa bağlantı kopmaz. Apple Sağlık kestirmesinden gelen sayılar, uygulaman alana kadar birkaç gün sunucuda bekler.",
+"Updated":"Güncellendi",
+"Updated. No numbers for today yet.":"Güncellendi. Bugün için henüz sayı yok.",
+"Updated: {n} kcal active today":"Güncellendi: bugün {n} kcal aktif",
+"{name} is disconnected.":"{name} bağlantısı kesildi."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -13781,6 +13831,11 @@ window.I18N = {
 "Waist, hips, arms and private progress photos. When you build muscle, they show progress the scale can not.":"腰围、臀围、手臂和私密进度照。增肌时，它们能显示体重秤看不到的进步。",
 "Your weight barely changed, but your waist got smaller: you are losing fat and building muscle.":"你的体重几乎没变，但腰围变小了：你正在减脂增肌。",
 "{n} days apart":"相隔 {n} 天",
-"{n} photos are back":"{n} 张照片已恢复"
+"{n} photos are back":"{n} 张照片已恢复",
+"If you connect Apple Health or a tracker, only your calories burned per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. When the key is renewed, the server keeps the new one for one hour, locked so only your phone can open it, so the connection does not break if an answer gets lost. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.":"如果你连接 Apple 健康或手环，只会读取你每天消耗的卡路里。连接密钥保存在你的手机上；Food Tracker 服务器只负责传递数字。密钥更新时，服务器会把新密钥加锁保存一小时，只有你的手机能打开，这样即使某次响应丢失，连接也不会断开。来自 Apple 健康快捷指令的数字会在服务器上等待几天，直到你的 App 取走。",
+"Updated":"已更新",
+"Updated. No numbers for today yet.":"已更新。今天还没有数据。",
+"Updated: {n} kcal active today":"已更新：今天活动 {n} kcal",
+"{name} is disconnected.":"{name} 已断开连接。"
 }
 };

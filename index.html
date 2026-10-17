@@ -909,7 +909,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v117';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v118';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2858,10 +2858,26 @@ async function openTrackerSheet() {
       if (way === 'none') return openBrandInfo(b);
       startSetup(b.id, way);
     });
-    if (sh.querySelector('#tkSync')) sh.querySelector('#tkSync').onclick = () => { sh.querySelector('#tkSync').innerHTML = '<span class="spin"></span>'; linkSync(true); };
+    if (sh.querySelector('#tkSync')) sh.querySelector('#tkSync').onclick = async () => {
+      const b = sh.querySelector('#tkSync'); b.disabled = true; b.innerHTML = '<span class="spin"></span>';
+      const t0 = Date.now();
+      while (linkBusy) await new Promise(r => setTimeout(r, 200));   // an update that is already running counts
+      await linkSync(true);
+      const sp = $('#tkSync'); if (sp) { sp.disabled = true; sp.innerHTML = '<span class="spin"></span>'; }   // the window was redrawn with the new numbers
+      await new Promise(r => setTimeout(r, Math.max(0, 700 - (Date.now() - t0))));   // long enough to see that something happened
+      // Clear feedback: what came in, or why not
+      const L2 = linkInfo(), a = db.exercises.find(e => e.id === 'auto-' + iso()), ok = L2 && !L2.err;
+      if (!L2) return;
+      toast(L2.err === 'reconnect' ? '⚠️ ' + T('The connection expired. Please connect again.') : L2.err ? T('Could not update right now. It tries again by itself.')
+        : a ? '✓ ' + T('Updated: {n} kcal active today', { n: r0(a.kcal) }) : '✓ ' + T('Updated. No numbers for today yet.'));
+      const nb = $('#tkSync');
+      if (nb) { nb.disabled = false; nb.innerHTML = ok ? '✓ ' + T('Updated') : T('Update now'); if (ok) setTimeout(() => { if (nb.isConnected) nb.innerHTML = T('Update now'); }, 2500); }
+    };
     if (sh.querySelector('#tkOff')) sh.querySelector('#tkOff').onclick = () => {
       if (!confirm(T('Disconnect {name}? Calories already filled in stay.', { name: linkName(L.p) }))) return;
+      const name = linkName(L.p);
       LS.del('ft_link'); LS.del('ft_brand'); openTrackerSheet(); if (tab === 'settings') renderSettings();
+      toast('✓ ' + T('{name} is disconnected.', { name }));
     };
     if (sh.querySelector('#tkHow')) sh.querySelector('#tkHow').onclick = () => { saveSetup({ brand: LS.get('ft_brand', '') || 'applewatch', via: 'apple', done: {}, show: '' }); closeSheet(); setTimeout(openSetupPage, 200); };
     if (sh.querySelector('#tkLink')) sh.querySelector('#tkLink').onclick = () => { closeSheet(); setTimeout(openSharePage, 200); };
@@ -3379,7 +3395,7 @@ function openPrivacy() {
     ${sec('👤', T('Your account email'), T('The app owner can see the email address of each account, for example to help if you forget your login. Your meals, photos and everything else stay encrypted.'))}
     ${sec('✨', T('AI'), T('When you scan food, chat with the coach, use voice input or create a meal plan, that photo, text or recording is sent through the Food Tracker server to Google Gemini to get an answer. The server does not keep it. Google handles it under the Gemini API terms, so please don\'t send very sensitive things like medical documents.'))}
     ${sec('🔔', T('Notifications'), T("If you turn on reminders, the server keeps your phone's notification address, your reminder times and your time zone. Nothing else."))}
-    ${sec('⌚', T('Watch & tracker'), T('If you connect Apple Health or a tracker, only your active calories per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.'))}
+    ${sec('⌚', T('Watch & tracker'), T('If you connect Apple Health or a tracker, only your calories burned per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. When the key is renewed, the server keeps the new one for one hour, locked so only your phone can open it, so the connection does not break if an answer gets lost. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.'))}
     ${sec('🏷️', T('Barcodes'), T('When you scan a barcode, only its number is sent to Open Food Facts, a free food database, to find the product.'))}
     ${sec('📊', T('Usage count'), T('To know how many people use Food Tracker, the app sends a random number once a day. It is not linked to you, your email or your food. Only the number of users is counted.'))}
     ${sec('🚫', T('What never happens'), T('No ads, no tracking and no selling of data. No emails are sent to you.'))}
