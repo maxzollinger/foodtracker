@@ -741,7 +741,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v92';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v93';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1283,7 +1283,7 @@ function renderHome() {
     <div class="minirow">${waterCard(sel)}
       <div class="card mini burncard"><div class="spread"><div class="mini-ic">🏃</div><button class="mini-plus" id="burnAdd" aria-label="${T('Add')}">＋</button></div>
         <div><div class="mini-v">${burned}<small> kcal</small></div><div class="mini-l">${T('Calories burned')}</div></div></div></div>
-    ${setupBanner()}${mealPlanCard()}
+    ${habitHomeCard()}${setupBanner()}${mealPlanCard()}
     <div class="h2">${sel === today ? T('Recently uploaded') : fmtDate(sel, { weekday: 'long', day: 'numeric', month: 'long' })}</div>
     ${list}`;
   document.querySelectorAll('.day').forEach(b => b.onclick = () => { sel = b.dataset.d; renderHome(); });
@@ -2137,7 +2137,10 @@ const BADGES = [
   { id: 'goal', ic: '🏆', name: N('Goal reached'), desc: N('Reach your goal weight'), need: s => [s.goals, 1] },
   { id: 'keep30', ic: '🛡️', name: N('Steady 1 month'), desc: N('Keep your weight for 30 days'), need: s => [s.keep, 30] },
   { id: 'keep90', ic: '🏅', name: N('Steady 3 months'), desc: N('Keep your weight for 90 days'), need: s => [s.keep, 90] },
-  { id: 'keep365', ic: '💎', name: N('Steady 1 year'), desc: N('Keep your weight for a whole year'), need: s => [s.keep, 365] }
+  { id: 'keep365', ic: '💎', name: N('Steady 1 year'), desc: N('Keep your weight for a whole year'), need: s => [s.keep, 365] },
+  { id: 'habit7', ic: '🌱', name: N('New habit'), desc: N('Keep a habit on 7 days'), need: s => [s.habitOk, 7] },
+  { id: 'habit21', ic: '🌿', name: N('Habit growing'), desc: N('Keep a habit on 21 days'), need: s => [s.habitOk, 21] },
+  { id: 'habit66', ic: '🌳', name: N('Habit for life'), desc: N('Keep a habit on 66 days'), need: s => [s.habitOk, 66] }
 ];
 const earned = () => (db.badges = db.badges || {});
 function badgeStats() {
@@ -2149,7 +2152,8 @@ function badgeStats() {
     proteinDays: dates.filter(d => dayTotals(d).protein >= dayGoals(d).protein * 0.95).length,
     waterDays: Object.keys(waterLog()).filter(d => waterOn(d) >= waterGoal(d)).length,
     weighs: db.weights.length, plans: Object.keys(db.mealPlans || {}).length,
-    kgDone: gp ? gp.kgDone : 0, pct: gp ? gp.pct : 0, goals: (db.goalsReached || []).length, keep: keepDays()
+    kgDone: gp ? gp.kgDone : 0, pct: gp ? gp.pct : 0, goals: (db.goalsReached || []).length, keep: keepDays(),
+    habitOk: Math.max(db.habitBest || 0, db.habit ? habitStats(db.habit).ok : 0)
   };
 }
 let badgeT;
@@ -2271,6 +2275,196 @@ function shareJourney(j) {
   if (navigator.canShare && navigator.canShare({ files: [file] })) navigator.share({ files: [file] }).catch(() => {});
   else { const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); }
 }
+
+/* ================= Habits (optional) =================
+   One habit at a time, only if the user wants one. The app suggests habits from the food log (can be hidden),
+   helps make an if-then plan, checks it automatically where the log allows it, and counts progress fairly:
+   one slip is fine, only two in a row reset the streak ("never miss twice"). */
+const HABITS = [
+  { id: 'late', ic: '🌙', name: N('No food late in the evening'), desc: N('Stop eating after a set time.'), auto: true,
+    ifs: [N('I feel like a snack after dinner')], thens: [N('I drink a cup of tea'), N('I brush my teeth'), N('I go for a short walk')] },
+  { id: 'drinks', ic: '🥤', name: N('No sugary drinks'), desc: N('Water, tea or zero drinks instead of soda and juice.'), auto: true,
+    ifs: [N('I want a soda or juice')], thens: [N('I drink sparkling water'), N('I take a zero drink'), N('I make tea with lemon')] },
+  { id: 'sweets', ic: '🍫', name: N('Fewer sweets'), desc: N('A day without sweets counts as a success.'), auto: true,
+    ifs: [N('I crave something sweet')], thens: [N('I eat fruit or yogurt'), N('I wait 10 minutes and drink water'), N('I have a protein snack')] },
+  { id: 'weekend', ic: '🎉', name: N('Calm weekends'), desc: N('Stay close to your goal on Saturday and Sunday.'), auto: true,
+    ifs: [N('It is the weekend and I eat out')], thens: [N('I order protein and vegetables first'), N('I plan one treat, not the whole day'), N('I log before I eat')] },
+  { id: 'breakfast', ic: '🍳', name: N('Protein breakfast'), desc: N('At least 25 g protein before 11:00, so you snack less later.'), auto: true,
+    ifs: [N('I make breakfast')], thens: [N('I add eggs, skyr or protein yogurt'), N('I have a protein shake'), N('I eat cottage cheese with fruit')] },
+  { id: 'water', ic: '💧', name: N('Drink enough water'), desc: N('Reach your daily water goal.'), auto: true,
+    ifs: [N('I finish a meal')], thens: [N('I drink a big glass of water'), N('I refill my bottle'), N('I log a glass right away')] },
+  { id: 'custom', ic: '✏️', name: N('My own habit'), desc: N('Any habit you want to change. You tick it off each evening.'), auto: false, ifs: [], thens: [] }
+];
+const habitTpl = h => HABITS.find(x => x.id === (h && h.type)) || HABITS[HABITS.length - 1];
+const habitName = h => h.type === 'custom' ? h.name : T(habitTpl(h).name) + (h.type === 'late' ? ` (${h.cut})` : '');
+const SUGARY_RX = /(cola\b|coke\b|pepsi|fanta|sprite|soda\b|soft ?drink|lemonade|limonade|energy ?drink|red ?bull|monster energy|ice ?tea|iced tea|eistee|juice|fruchtsaft|orangensaft|apfelsaft|\bsaft\b|\bjus\b|zumo|succo|vruchtensap|\bsok\b|сок|газировк|лимонад|кола|gazoz|meyve suyu|refresco|gaseosa|bibita|frisdrank|napój|汽水|可乐|果汁|コーラ|ジュース|ソーダ)/i;
+const ZERO_RX = /(zero|light|diet|sugar.?free|zuckerfrei|ohne zucker|sans sucre|sin azúcar|senza zucchero|suikervrij|bez cukru|без сахара|şekersiz|无糖|ゼロ|water|wasser)/i;
+const SWEET_RX = /(chocolate|schokolade|chocolat|cioccolat|chocolade|czekolad|шоколад|çikolata|巧克力|チョコ|candy|sweets|süßigkeit|bonbon|gummi|gummy|haribo|cookie|keks|biscuit|kuchen|torte|\bcake|donut|doughnut|muffin|brownie|ice cream|eiscreme|glace|gelato|helado|dessert|pudding|tiramisu|pastry|gebäck|pâtisserie|nutella|waffel|waffle|snoep|cukierk|конфет|торт|печень|tatlı|lokum|糖果|蛋糕|甜点|ケーキ|お菓子)/i;
+const mealNames = m => [m.name, ...(m.items || []).map(i => i.name)].filter(Boolean);
+const isSugaryDrink = m => mealNames(m).some(n => SUGARY_RX.test(n) && !ZERO_RX.test(n));
+const isSweet = m => mealNames(m).some(n => SWEET_RX.test(n)) || (m.items || []).reduce((a, i) => a + num(i.sugar) * (m.servings || 1), 0) >= 30;
+// How a day went: true = kept, false = slip, null = not counted (no data yet, not a weekend, …)
+function habitDay(h, d) {
+  if (!h || d < h.start || d > iso()) return null;
+  if (h.log && h.log[d] !== undefined) return h.log[d];
+  if (h.type === 'custom') return null;
+  const ms = db.meals.filter(m => m.date === d), today = d === iso(), done = ok => ok === false ? false : today ? null : ms.length ? true : null;
+  if (h.type === 'late') return done(ms.some(m => (m.time || '') >= h.cut) ? false : true);
+  if (h.type === 'drinks') return done(ms.some(isSugaryDrink) ? false : true);
+  if (h.type === 'sweets') return done(ms.some(isSweet) ? false : true);
+  if (h.type === 'weekend') {
+    const wd = dt(d).getDay(); if (wd !== 0 && wd !== 6) return null;
+    const x = dayTotals(d); if (!x.count) return null;
+    if (x.kcal > dayGoals(d).kcal * 1.1) return false;
+    return today ? null : true;
+  }
+  if (h.type === 'breakfast') {
+    const prot = ms.filter(m => (m.time || '') < '11:00').reduce((a, m) => a + mealTotals(m).protein, 0);
+    if (prot >= 25) return true;
+    if (today && nowTime() < '11:00') return null;
+    return ms.length ? false : null;
+  }
+  if (h.type === 'water') {
+    if (waterOn(d) >= waterGoal(d)) return true;
+    return today ? null : waterOn(d) > 0 ? false : null;
+  }
+  return null;
+}
+// Streak with "never miss twice": one slip keeps the streak, two in a row start it again
+function habitStats(h) {
+  let streak = 0, ok = 0, slip = 0, prevMiss = false;
+  for (let d = h.start; d <= iso(); d = addDays(d, 1)) {
+    const v = habitDay(h, d);
+    if (v === true) { streak++; ok++; prevMiss = false; }
+    else if (v === false) { slip++; if (prevMiss) streak = 0; prevMiss = true; }
+  }
+  const next = [7, 21, 66].find(n => ok < n) || null;
+  return { streak, ok, slip, next };
+}
+// Suggestions from the last 14 days of the log (only clear patterns, at most two)
+function habitSuggestions() {
+  const days = [...Array(14)].map((_, i) => addDays(iso(), -i - 1)), logged = days.filter(d => db.meals.some(m => m.date === d));
+  if (logged.length < 5) return [];
+  const per = d => db.meals.filter(m => m.date === d), out = [];
+  const late = logged.filter(d => per(d).some(m => (m.time || '') >= '21:00')).length;
+  if (late >= 3) out.push({ id: 'late', n: late, why: T('You ate after 21:00 on {n} of the last 14 days.', { n: late }) });
+  const drinks = logged.filter(d => per(d).some(isSugaryDrink)).length;
+  if (drinks >= 3) out.push({ id: 'drinks', n: drinks, why: T('Sugary drinks on {n} of the last 14 days.', { n: drinks }) });
+  const sweets = logged.filter(d => per(d).some(isSweet)).length;
+  if (sweets >= 5) out.push({ id: 'sweets', n: sweets, why: T('Sweets on {n} of the last 14 days.', { n: sweets }) });
+  const we = logged.filter(d => [0, 6].includes(dt(d).getDay())), over = we.length >= 2 ? r0(we.reduce((a, d) => a + dayTotals(d).kcal - dayGoals(d).kcal, 0) / we.length) : 0;
+  if (over >= 300) out.push({ id: 'weekend', n: 6, why: T('Weekend days are about {n} kcal over your goal.', { n: over }) });
+  const bf = logged.filter(d => per(d).some(m => (m.time || '') < '11:00') && per(d).filter(m => (m.time || '') < '11:00').reduce((a, m) => a + mealTotals(m).protein, 0) < 15).length;
+  if (bf >= 4) out.push({ id: 'breakfast', n: bf, why: T('Breakfast had little protein on {n} days.', { n: bf }) });
+  const wdays = days.slice(0, 7).filter(d => waterOn(d) > 0), low = wdays.filter(d => waterOn(d) < waterGoal(d)).length;
+  if (wdays.length >= 3 && low >= 4) out.push({ id: 'water', n: low, why: T('Below your water goal on {n} of the last 7 days.', { n: low }) });
+  return out.sort((a, b) => b.n - a.n).slice(0, 2);
+}
+const habitDots = h => [...Array(14)].map((_, i) => addDays(iso(), i - 13)).map(d => {
+  const v = habitDay(h, d), before = d < h.start;
+  return `<span title="${d}" style="flex:1;height:22px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;${before ? 'opacity:.25;' : ''}background:${v === true ? 'var(--good)' : v === false ? 'color-mix(in srgb,var(--bad) 70%,transparent)' : 'var(--chip)'};color:${v === null ? 'var(--muted)' : '#fff'}">${v === true ? '✓' : v === false ? '✕' : d === iso() ? '•' : ''}</span>`;
+}).join('');
+// Home: only when a habit was chosen
+function habitHomeCard() {
+  const h = db.habit; if (!h) return '';
+  const st = habitStats(h), td = habitDay(h, iso()), manual = h.type === 'custom', ans = h.log && h.log[iso()];
+  const notToday = h.type === 'weekend' && ![0, 6].includes(dt(iso()).getDay());
+  const right = manual && ans === undefined
+    ? `<span class="row" style="gap:6px"><button class="chipbtn" onclick="event.stopPropagation();habitMark(true)">✓</button><button class="chipbtn" onclick="event.stopPropagation();habitMark(false)">✕</button></span>`
+    : `<span class="small" style="font-weight:700;color:${td === false ? 'var(--bad)' : td === true ? 'var(--good)' : 'var(--muted)'}">${notToday ? T('Counts on weekends') : td === true ? '✓ ' + T('Done today') : td === false ? T('Not today, that is okay') : T('So far so good')}</span>`;
+  return `<div class="card" id="habitHome" role="button" tabindex="0" onclick="openHabitPage()" style="cursor:pointer;margin-bottom:14px">
+    <div class="spread"><b>${habitTpl(h).ic} ${esc(habitName(h))}</b>${right}</div>
+    <div class="small muted" style="margin-top:4px">🔥 ${T('Streak: {n}', { n: st.streak })} · ${T('{n} of {m} days done', { n: st.ok, m: st.next || 66 })}</div></div>`;
+}
+// Progress: one calm card; suggestions can be hidden
+function habitProgCard() {
+  const h = db.habit;
+  if (h) {
+    const st = habitStats(h), next = st.next;
+    return `<div class="card" id="habitProgCard"><div class="spread"><b style="font-size:17px">${habitTpl(h).ic} ${esc(habitName(h))}</b><button class="chipbtn" onclick="openHabitPage()">${T('Open')}</button></div>
+      ${h.if || h.then ? `<p class="small" style="margin:8px 0 0;line-height:1.45">${h.if ? `<b>${T('If')}</b> ${esc(h.if)}, ` : ''}<b>${T('then')}</b> ${esc(h.then || '')}</p>` : ''}
+      <div class="row" style="gap:4px;margin-top:12px">${habitDots(h)}</div>
+      <div class="spread small" style="margin-top:10px"><span>🔥 ${T('Streak: {n}', { n: `<b>${st.streak}</b>` })}</span><span class="muted">${next ? T('{n} of {m} days to the next badge', { n: st.ok, m: next }) : '🏅 ' + T('All milestones reached')}</span></div>
+      ${next ? `<div class="hbar" style="margin-top:8px"><i style="width:${Math.min(100, st.ok / next * 100)}%;background:var(--good)"></i></div>` : ''}
+      <p class="small muted" style="margin:8px 0 0">${T('One slip is fine. Only two in a row start the streak again.')}</p></div>`;
+  }
+  const sug = db.settings.habitHints === false ? [] : habitSuggestions();
+  return `<div class="card" id="habitProgCard"><div class="spread"><b style="font-size:17px">🎯 ${T('Habits')}</b><span class="small muted">${T('optional')}</span></div>
+    <p class="small muted" style="margin:6px 0 0;line-height:1.45">${T('Want to change a habit? Pick one, make a small plan, and the app keeps track for you.')}</p>
+    ${sug.map(x => { const t = HABITS.find(y => y.id === x.id); return `<button class="bgrow" onclick="openHabitPlan('${x.id}')" style="margin-top:10px"><span style="font-size:22px">${t.ic}</span><span class="grow"><b>${T(t.name)}</b><br><span class="small muted">${esc(x.why)}</span></span><span class="chev">›</span></button>`; }).join('')}
+    <div class="row" style="margin-top:12px;gap:8px"><button class="btn sm outline grow" onclick="openHabitChooser()">${T('Choose a habit')}</button></div>
+    ${sug.length || db.settings.habitHints === false ? `<button class="small muted" onclick="habitHints(${db.settings.habitHints === false})" style="display:block;margin:10px auto 0;padding:4px;text-decoration:underline">${db.settings.habitHints === false ? T('Show suggestions') : T('Hide suggestions')}</button>` : ''}</div>`;
+}
+function habitHints(on) { db.settings.habitHints = !!on; save(); renderProgress(); }
+function openHabitChooser() {
+  const sug = db.settings.habitHints === false ? [] : habitSuggestions(), sid = sug.map(x => x.id);
+  const list = [...HABITS.filter(h => sid.includes(h.id)), ...HABITS.filter(h => !sid.includes(h.id))];
+  sheet(`<h3>🎯 ${T('Choose a habit')}</h3>
+    <p class="muted" style="margin-top:4px">${T('Pick one habit at a time. Small steps last longer.')}</p>
+    <div class="list" style="margin-top:12px">${list.map(t => { const g = sug.find(x => x.id === t.id); return `<button class="li" data-hab="${t.id}"><span class="ic">${t.ic}</span><span class="grow"><b>${T(t.name)}</b>${g ? ` <span class="ptag" style="background:var(--good);color:#fff">${T('Suggested')}</span>` : ''}<br><span class="small muted">${g ? esc(g.why) : T(t.desc)}</span></span><span class="chev">›</span></button>`; }).join('')}</div>`, sh => {
+    sh.querySelectorAll('[data-hab]').forEach(b => b.onclick = () => openHabitPlan(b.dataset.hab));
+  });
+}
+function openHabitPlan(type, edit) {
+  const t = HABITS.find(x => x.id === type) || HABITS[0], h = edit ? db.habit : null, hasPush = !!LS.get('ft_push', '');
+  const hrs = [...Array(18)].map((_, i) => i + 6), rem = h ? (h.remind ?? -1) : -1;
+  sheet(`<h3>${t.ic} ${T(t.name)}</h3>
+    <p class="muted" style="margin-top:4px">${T(t.desc)}</p>
+    ${type === 'custom' ? `<label class="lbl">${T('Your habit')}</label><input id="hbName" maxlength="60" placeholder="${T('e.g. No chips while watching TV')}" value="${esc(h ? h.name : '')}">` : ''}
+    ${type === 'late' ? `<label class="lbl">${T('No food after')}</label><select id="hbCut">${['19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00', '22:30', '23:00'].map(x => `<option ${x === (h ? h.cut : '21:00') ? 'selected' : ''}>${x}</option>`).join('')}</select>` : ''}
+    <div class="h2" style="margin:18px 0 6px">${T('Your plan')}</div>
+    <p class="small muted" style="margin:0 0 8px">${T('A small "if … then …" plan works best: decide now what you will do in that moment.')}</p>
+    <label class="lbl">${T('If')}</label><input id="hbIf" maxlength="80" value="${esc(h ? h.if || '' : t.ifs[0] ? T(t.ifs[0]) : '')}" placeholder="${T('e.g. I get home tired')}">
+    <label class="lbl">${T('then')}</label><input id="hbThen" maxlength="80" value="${esc(h ? h.then || '' : t.thens[0] ? T(t.thens[0]) : '')}" placeholder="${T('e.g. I drink a glass of water first')}">
+    ${t.thens.length ? `<div class="quick" style="margin-top:8px">${t.thens.map(x => `<button class="chipbtn" data-then="${esc(T(x))}">${esc(T(x))}</button>`).join('')}</div>` : ''}
+    <label class="lbl">${T('Reminder (optional)')}</label>
+    <select id="hbRem" ${hasPush ? '' : 'disabled'}><option value="-1">${T('Off')}</option>${hrs.map(x => `<option value="${x}" ${x === rem ? 'selected' : ''}>${String(x).padStart(2, '0')}:00</option>`).join('')}</select>
+    ${hasPush ? '' : `<p class="small muted" style="margin:6px 0 0">${T('Turn on notifications in Settings to get a reminder.')}</p>`}
+    <p class="small muted" style="margin:14px 0 0">${t.auto ? '✓ ' + T('Checked automatically from your food log. You can still correct a day yourself.') : T('Each evening you tap ✓ or ✕ on Home.')}</p>
+    <button class="btn" id="hbStart" style="margin-top:14px">${edit ? T('Save') : T('Start this habit')}</button>`, sh => {
+    sh.querySelectorAll('[data-then]').forEach(b => b.onclick = () => { sh.querySelector('#hbThen').value = b.dataset.then; });
+    sh.querySelector('#hbStart').onclick = () => {
+      const name = type === 'custom' ? sh.querySelector('#hbName').value.trim() : '';
+      if (type === 'custom' && !name) return toast(T('Give your habit a short name'));
+      const base = edit && db.habit ? db.habit : { type, start: iso(), log: {} };
+      db.habit = { ...base, type, name, if: sh.querySelector('#hbIf').value.trim(), then: sh.querySelector('#hbThen').value.trim(),
+        cut: type === 'late' ? sh.querySelector('#hbCut').value : undefined, remind: +sh.querySelector('#hbRem').value };
+      save(); setHabitReminder(db.habit.remind); closeSheet();
+      toast(edit ? '✓ ' + T('Saved') : '🎯 ' + T('Habit started. Small steps, every day.'));
+      if (tab === 'progress') renderProgress(); if (tab === 'home') renderHome();
+    };
+  });
+}
+function openHabitPage() {
+  const h = db.habit; if (!h) return openHabitChooser();
+  const st = habitStats(h), y = addDays(iso(), -1), yv = habitDay(h, y), t = habitTpl(h);
+  sheet(`<h3>${t.ic} ${esc(habitName(h))}</h3>
+    ${h.if || h.then ? `<p style="margin:6px 0 0;line-height:1.45">${h.if ? `<b>${T('If')}</b> ${esc(h.if)}, ` : ''}<b>${T('then')}</b> ${esc(h.then || '')}</p>` : ''}
+    <div class="row" style="gap:4px;margin-top:14px">${habitDots(h)}</div>
+    <div class="spread small" style="margin-top:10px"><span>🔥 ${T('Streak: {n}', { n: `<b>${st.streak}</b>` })}</span><span>✓ ${st.ok} · ✕ ${st.slip}</span></div>
+    <div class="h2" style="margin:18px 0 8px">${T('Correct a day')}</div>
+    <div class="list">${[[iso(), T('Today')], [y, T('Yesterday')]].map(([d, l]) => `<div class="li"><span class="grow">${l}</span><span class="row" style="gap:6px"><button class="chipbtn" data-hd="${d}" data-hv="1" style="${habitDay(h, d) === true ? 'background:var(--good);color:#fff' : ''}">✓</button><button class="chipbtn" data-hd="${d}" data-hv="0" style="${habitDay(h, d) === false ? 'background:var(--bad);color:#fff' : ''}">✕</button></span></div>`).join('')}</div>
+    ${t.auto ? `<p class="small muted" style="margin:8px 0 0">${T('Checked automatically from your food log. Only correct it if something is missing.')}</p>` : ''}
+    <div class="row" style="margin-top:16px"><button class="btn sm outline grow" id="hbEdit">${T('Edit plan')}</button><button class="btn sm outline grow" id="hbAsk">💬 ${T('Ask the coach')}</button></div>
+    <button class="small muted" id="hbStop" style="display:block;margin:16px auto 0;padding:6px;text-decoration:underline">${T('Stop this habit')}</button>`, sh => {
+    sh.querySelectorAll('[data-hd]').forEach(b => b.onclick = () => { h.log = h.log || {}; h.log[b.dataset.hd] = b.dataset.hv === '1'; save(); openHabitPage(); if (tab === 'home') renderHome(); if (tab === 'progress') renderProgress(); });
+    sh.querySelector('#hbEdit').onclick = () => openHabitPlan(h.type, true);
+    sh.querySelector('#hbAsk').onclick = () => { closeSheet(); go('chat'); setTimeout(() => sendChat(T('Help me with my habit: {h}. What can I do when it gets hard?', { h: habitName(h) })), 400); };
+    sh.querySelector('#hbStop').onclick = () => {
+      if (!confirm(T('Stop this habit? Your progress is kept in your badges.'))) return;
+      db.habitBest = Math.max(db.habitBest || 0, st.ok);
+      (db.habitPast = db.habitPast || []).push({ type: h.type, name: h.name, start: h.start, end: iso(), ok: st.ok });
+      db.habit = null; save(); setHabitReminder(-1); closeSheet();
+      if (tab === 'progress') renderProgress(); if (tab === 'home') renderHome();
+    };
+  });
+}
+function habitMark(v) { const h = db.habit; if (!h) return; h.log = h.log || {}; h.log[iso()] = v; save(); renderHome(); toast(v ? '✓ ' + T('Well done!') : T('Not today, that is okay. Tomorrow counts.')); checkRewards(); }
+function setHabitReminder(hour) {
+  let pf = {}; try { pf = JSON.parse(LS.get('ft_push_prefs', '{}')) || {}; } catch {}
+  pf.hb = hour; LS.set('ft_push_prefs', JSON.stringify(pf)); saveReminderTexts(); syncPush();
+}
+const habitReminderText = () => { const h = db.habit; if (!h) return T('Remember your habit plan 🎯'); return '🎯 ' + (h.then ? T('Your plan: {p}', { p: h.then }) : habitName(h)); };
 
 /* ================= Watch & tracker: calories burned filled in automatically =================
    Apple Health (through a small iPhone Shortcut that sends today's active calories) or a direct connection
@@ -2794,6 +2988,7 @@ const TOUR_STEPS = [
   { tab: 'progress', sel: '.two', title: N('Weight and streak'), text: N('Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.') },
   { tab: 'progress', sel: '#badgeCard', title: N('Badges'), text: N('Earn badges for streaks, protein, water and milestones. Tap one to see what it is for.') },
   { tab: 'progress', sel: '#goalCard', title: N('Goal progress'), text: N('Your weight trend, how much is left, and when you will reach your goal.') },
+  { tab: 'progress', sel: '#habitProgCard', title: N('Habits (optional)'), text: N('Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don\'t want this, simply ignore it.') },
   { tab: 'progress', sel: '.tab[data-tab="chat"]', title: N('Coach'), text: N('Now your personal AI coach.') },
   { tab: 'chat', sel: '#chatScreen .chatbar .chips button', title: N('Suggestions'), text: N('Not sure what to ask? Tap a suggestion to start a conversation.') },
   { tab: 'chat', sel: '#chatScreen .chatbar .plusbtn', title: N('Photos and files'), text: N('Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.') },
@@ -3070,7 +3265,7 @@ Averages on logged days: ${avg(d => dayTotals(d).kcal)} kcal (goal ${avg(d => da
 Days within ±10% of the calorie goal: ${logged.filter(d => Math.abs(dayTotals(d).kcal - dayGoals(d).kcal) <= dayGoals(d).kcal * 0.1).length}. Days that hit the protein goal: ${logged.filter(d => dayTotals(d).protein >= dayGoals(d).protein * 0.95).length}.
 Health score of the week: ${healthAvg(db.meals.filter(m => days.includes(m.date))) ?? 'n/a'}/10. Calories burned (logged, ${burnWholeDay() ? 'whole-day active calories' : 'workouts only'}): ${days.reduce((a, d) => a + dayBurned(d), 0)} kcal in total.
 Weight: ${w1 == null ? 'no weigh-ins' : w0 == null || w0 === w1 ? `${w1} kg` : `${w0} → ${w1} kg (${w1 - w0 > 0 ? '+' : ''}${r1(w1 - w0)} kg this week)`}.
-Water: ${wd.length ? `${avg(d => waterOn(d))} ml on average on ${wd.length} days (goal ${waterGoal()} ml)` : 'not tracked'}.
+${db.habit ? `Habit "${habitName(db.habit)}": kept on ${days.filter(d => habitDay(db.habit, d) === true).length}, slipped on ${days.filter(d => habitDay(db.habit, d) === false).length} days this week.\n` : ''}Water: ${wd.length ? `${avg(d => waterOn(d))} ml on average on ${wd.length} days (goal ${waterGoal()} ml)` : 'not tracked'}.
 Best day: ${(() => { const sc = d => Math.min(1, dayTotals(d).protein / Math.max(1, dayGoals(d).protein)) - Math.abs(dayTotals(d).kcal - dayGoals(d).kcal) / Math.max(1, dayGoals(d).kcal); const b = [...logged].sort((x, y) => sc(y) - sc(x))[0]; return `${dt(b).toLocaleDateString('en-GB', { weekday: 'long' })} (${r0(dayTotals(b).kcal)} kcal, ${r0(dayTotals(b).protein)} g protein)`; })()}.`;
   const prompt = `${stats}
 
@@ -3085,7 +3280,7 @@ Write my WEEKLY CHECK-IN for this week. First line: a short title starting with 
 }
 
 /* ================= Reminder times (per person) ================= */
-const PUSH_DEF = { burn: 20, wDay: 0, wTime: 9, ci: 18, fo: 1 };
+const PUSH_DEF = { burn: 20, wDay: 0, wTime: 9, ci: 18, fo: 1, hb: -1 };
 const pushPrefs = () => { try { return { ...PUSH_DEF, ...JSON.parse(LS.get('ft_push_prefs', '{}')) }; } catch { return { ...PUSH_DEF }; } };
 const userTZ = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Zurich'; } catch { return 'Europe/Zurich'; } };
 function reminderTimesHTML() {
@@ -3687,6 +3882,7 @@ function renderProgress() {
       <div class="pills" style="margin-top:12px">${[[90, N('90 D')], [180, N('6 M')], [365, N('1 Y')], [0, N('All')]].map(([v, l]) => `<button data-r="${v}" class="${progRange === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>
       ${expectedText(p, gpr ? gpr.cur : cur)}
     </div>
+    ${habitProgCard()}
     <div class="card"><div class="spread"><b style="font-size:17px">${T('Nutrition')}</b>
       <div class="pills" style="width:200px"><button data-w="0" class="${nutWeek === 0 ? 'on' : ''}">${T('This week')}</button><button data-w="-1" class="${nutWeek === -1 ? 'on' : ''}">${T('Last week')}</button></div></div>
       <div style="margin-top:12px"><span style="font-size:26px;font-weight:800">${avg}</span> <span class="muted small">${T('avg. calories / day')}</span></div>
@@ -3865,7 +4061,10 @@ Weight goal: ${goalTxt}${eta ? `. Expected to reach it around ${eta}` : ''}.
 Real weight change over the last 4 weeks: ${rate === null ? 'not enough weigh-ins yet (needs 2+ weeks)' : `${rate > 0 ? '+' : ''}${rate} kg/week`}
 The app asks the user to weigh in once a week (morning, before breakfast). Never ask them to weigh more often; judge progress over weeks, not single weigh-ins.
 Base daily targets (before burned calories): ${base.kcal} kcal, ${base.protein} g protein, ${base.carbs} g carbs, ${base.fat} g fat${Object.keys(db.overrides).length ? ' (some set manually by the user)' : ''}. Maintenance (TDEE) ≈ ${base.tdee ?? '?'} kcal.
-
+${db.habit ? `
+=== HABIT THEY ARE WORKING ON (optional feature, chosen by the user) ===
+${habitName(db.habit)}${db.habit.if || db.habit.then ? `; plan: if ${db.habit.if || '…'}, then ${db.habit.then || '…'}` : ''}. Started ${db.habit.start}. Last 7 days (oldest first): ${[...Array(7)].map((_, i) => { const v = habitDay(db.habit, addDays(iso(), i - 6)); return v === true ? 'kept' : v === false ? 'slip' : '-'; }).join(', ')}. Streak ${habitStats(db.habit).streak} (one slip allowed, two in a row reset). Be encouraging, never shaming; help with the plan when it gets hard.
+` : ''}
 === PREVIOUS 14 DAYS ===
 ${days.join('\n')}
 
@@ -3892,6 +4091,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for).
+- Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
 - Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Every Sunday a weekly check-in appears here. You remember lasting facts about them.
 - Settings: Your goal, Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, Sunday check-in, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone; "Back up now"); Privacy; Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
@@ -4208,7 +4408,7 @@ function b64ToBytes(b) { const p = '='.repeat((4 - b.length % 4) % 4), raw = ato
 // The service worker shows the notifications in the app's language; it reads the texts from here.
 // Minimal look: just the short message in bold; iPhone adds "from <app name>" below it by itself.
 const reminderData = () => ({ burn: T('Calories burned today?'), weight: T('Weekly weigh-in'), checkin: T('Your weekly check-in is ready 📊'),
-  fastOpen: T('Your eating window is open now ⏱️'), fastClose: T('Your eating window closes in 30 min ⏱️') });
+  fastOpen: T('Your eating window is open now ⏱️'), fastClose: T('Your eating window closes in 30 min ⏱️'), habit: habitReminderText() });
 const reminderContent = (R, kind) => ({ title: R[kind], body: '' });
 let remT;
 function saveReminderTexts() {
@@ -4356,6 +4556,7 @@ function handleOpen(what) {
   if (what === 'burn') openBurnSheet();
   if (what === 'weight') openWeightSheet();
   if (what === 'checkin') { go('chat'); weeklyCheckin(); }
+  if (what === 'habit') setTimeout(openHabitPage, 300);
 }
 
 /* ================= Settings ================= */
