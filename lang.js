@@ -1199,7 +1199,8 @@ window.I18N = {
 "Lose some weight slowly while you build muscle, or keep your weight the same.":"Nimm langsam etwas ab, während du Muskeln aufbaust, oder halte dein Gewicht.",
 "Slowly, so you can still build muscle":"Langsam, damit du trotzdem Muskeln aufbaust",
 "Where are you right now?":"Wo stehst du gerade?",
-"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Deine Kalorien steigen etwas, während dein Baby wächst. Folge bitte auch dem Rat deiner Ärztin, deines Arztes oder deiner Hebamme."
+"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Deine Kalorien steigen etwas, während dein Baby wächst. Folge bitte auch dem Rat deiner Ärztin, deines Arztes oder deiner Hebamme.",
+"Burned · {n} active":"Verbrannt · {n} aktiv"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2400,7 +2401,8 @@ window.I18N = {
 "Lose some weight slowly while you build muscle, or keep your weight the same.":"Pierde algo de peso poco a poco mientras ganas músculo, o mantén tu peso.",
 "Slowly, so you can still build muscle":"Despacio, para que aún puedas ganar músculo",
 "Where are you right now?":"¿En qué etapa estás?",
-"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Tus calorías suben un poco a medida que crece tu bebé. Sigue también los consejos de tu médico o matrona."
+"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Tus calorías suben un poco a medida que crece tu bebé. Sigue también los consejos de tu médico o matrona.",
+"Burned · {n} active":"Quemadas · {n} activas"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3601,7 +3603,8 @@ window.I18N = {
 "Lose some weight slowly while you build muscle, or keep your weight the same.":"Perds un peu de poids lentement en prenant du muscle, ou garde ton poids.",
 "Slowly, so you can still build muscle":"Lentement, pour pouvoir quand même prendre du muscle",
 "Where are you right now?":"Où en es-tu ?",
-"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Tes calories augmentent un peu à mesure que ton bébé grandit. Suis aussi les conseils de ton médecin ou de ta sage-femme."
+"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Tes calories augmentent un peu à mesure que ton bébé grandit. Suis aussi les conseils de ton médecin ou de ta sage-femme.",
+"Burned · {n} active":"Brûlées · {n} actives"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -4802,7 +4805,8 @@ window.I18N = {
 "Lose some weight slowly while you build muscle, or keep your weight the same.":"Perdi un po’ di peso lentamente mentre costruisci muscoli, oppure mantieni il tuo peso.",
 "Slowly, so you can still build muscle":"Lentamente, così puoi comunque costruire muscoli",
 "Where are you right now?":"A che punto sei?",
-"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Le tue calorie aumentano un po’ man mano che il bambino cresce. Segui anche i consigli del tuo medico o dell’ostetrica."
+"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Le tue calorie aumentano un po’ man mano che il bambino cresce. Segui anche i consigli del tuo medico o dell’ostetrica.",
+"Burned · {n} active":"Bruciate · {n} attive"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6003,7 +6007,8 @@ window.I18N = {
 "Lose some weight slowly while you build muscle, or keep your weight the same.":"筋肉をつけながらゆっくり少し減量するか、体重を維持します。",
 "Slowly, so you can still build muscle":"ゆっくり。筋肉もつけられるように",
 "Where are you right now?":"今はどの時期ですか？",
-"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"赤ちゃんの成長に合わせてカロリーが少し増えます。医師や助産師のアドバイスにも従ってください。"
+"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"赤ちゃんの成長に合わせてカロリーが少し増えます。医師や助産師のアドバイスにも従ってください。",
+"Burned · {n} active":"消費 · アクティブ {n}"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -7204,7 +7209,8 @@ window.I18N = {
 "Lose some weight slowly while you build muscle, or keep your weight the same.":"Val langzaam wat af terwijl je spieren opbouwt, of houd je gewicht gelijk.",
 "Slowly, so you can still build muscle":"Langzaam, zodat je nog steeds spieren opbouwt",
 "Where are you right now?":"Waar sta je nu?",
-"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Je calorieën stijgen een beetje naarmate je baby groeit. Volg ook het advies van je arts of verloskundige."
+"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Je calorieën stijgen een beetje naarmate je baby groeit. Volg ook het advies van je arts of verloskundige.",
+"Burned · {n} active":"Verbrand · {n} actief"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -8405,7 +8411,8 @@ window.I18N = {
 "Lose some weight slowly while you build muscle, or keep your weight the same.":"Powoli schudnij trochę, budując mięśnie, albo utrzymaj wagę.",
 "Slowly, so you can still build muscle":"Powoli, aby nadal budować mięśnie",
 "Where are you right now?":"Na jakim jesteś etapie?",
-"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Twoje kalorie rosną nieco wraz z rozwojem dziecka. Stosuj się też do zaleceń lekarza lub położnej."
+"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Twoje kalorie rosną nieco wraz z rozwojem dziecka. Stosuj się też do zaleceń lekarza lub położnej.",
+"Burned · {n} active":"Spalone · {n} aktywne"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -9606,7 +9613,8 @@ window.I18N = {
 "Lose some weight slowly while you build muscle, or keep your weight the same.":"Perca algum peso devagar enquanto ganha músculo, ou mantenha o seu peso.",
 "Slowly, so you can still build muscle":"Devagar, para continuar a ganhar músculo",
 "Where are you right now?":"Em que fase está?",
-"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"As suas calorias sobem um pouco à medida que o bebé cresce. Siga também os conselhos do seu médico ou parteira."
+"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"As suas calorias sobem um pouco à medida que o bebé cresce. Siga também os conselhos do seu médico ou parteira.",
+"Burned · {n} active":"Gastas · {n} ativas"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -10807,7 +10815,8 @@ window.I18N = {
 "Lose some weight slowly while you build muscle, or keep your weight the same.":"Медленно сбросьте немного веса, набирая мышцы, или сохраните вес.",
 "Slowly, so you can still build muscle":"Медленно, чтобы мышцы всё равно росли",
 "Where are you right now?":"На каком вы этапе?",
-"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Калорий становится немного больше по мере роста малыша. Также следуйте советам врача или акушерки."
+"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Калорий становится немного больше по мере роста малыша. Также следуйте советам врача или акушерки.",
+"Burned · {n} active":"Сожжено · {n} активных"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -12008,7 +12017,8 @@ window.I18N = {
 "Lose some weight slowly while you build muscle, or keep your weight the same.":"Kas yaparken yavaşça biraz kilo ver ya da kilonu koru.",
 "Slowly, so you can still build muscle":"Yavaşça, böylece yine de kas yapabilirsin",
 "Where are you right now?":"Şu anda hangi dönemdesin?",
-"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Bebeğin büyüdükçe kalorilerin biraz artar. Lütfen doktorunun veya ebenin tavsiyelerine de uy."
+"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"Bebeğin büyüdükçe kalorilerin biraz artar. Lütfen doktorunun veya ebenin tavsiyelerine de uy.",
+"Burned · {n} active":"Yakılan · {n} aktif"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -13209,6 +13219,7 @@ window.I18N = {
 "Lose some weight slowly while you build muscle, or keep your weight the same.":"一边增肌一边慢慢减一点体重，或保持体重不变。",
 "Slowly, so you can still build muscle":"慢慢来，这样仍能增肌",
 "Where are you right now?":"你现在处于哪个阶段？",
-"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"随着宝宝长大，你的热量会稍微增加。也请遵循医生或助产士的建议。"
+"Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.":"随着宝宝长大，你的热量会稍微增加。也请遵循医生或助产士的建议。",
+"Burned · {n} active":"消耗 · 活动 {n}"
 }
 };

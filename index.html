@@ -860,7 +860,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v106';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v107';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1424,7 +1424,7 @@ function renderHome() {
     ${healthCard(sel)}
     <div class="minirow">${waterCard(sel)}
       <div class="card mini burncard"><div class="spread"><div class="mini-ic">🏃</div><button class="mini-plus" id="burnAdd" aria-label="${T('Add')}">＋</button></div>
-        <div><div class="mini-v">${burned}<small> kcal</small></div><div class="mini-l">${T('Calories burned')}</div></div></div></div>
+        ${burnTileHTML(sel, burned)}</div></div>
     ${habitHomeCard()}${setupBanner()}${mealPlanCard()}
     <div class="h2">${sel === today ? T('Recently uploaded') : fmtDate(sel, { weekday: 'long', day: 'numeric', month: 'long' })}</div>
     ${list}`;
@@ -1439,6 +1439,14 @@ function renderHome() {
   $('#wPrev').onclick = () => { weekOff--; renderHome(); };
   $('#wNext').onclick = () => { if (weekOff < 0) { weekOff++; renderHome(); } };
   hydratePhotos($('#view'));
+}
+
+// Calories burned on Home. With a tracker that counts the total (WHOOP, Oura, Polar, Withings) the big number is that
+// total, the same as in its own app; the active part (what is added to the goal) is shown below it.
+function burnTileHTML(date, burned) {
+  const a = db.exercises.find(e => e.id === 'auto-' + date && e.total != null);
+  if (!a) return `<div><div class="mini-v">${burned}<small> kcal</small></div><div class="mini-l">${T('Calories burned')}</div></div>`;
+  return `<div><div class="mini-v">${r0(num(a.total) + burned - num(a.kcal))}<small> kcal</small></div><div class="mini-l">${T('Burned · {n} active', { n: burned })}</div></div>`;
 }
 
 /* ================= Sheets ================= */
@@ -2716,7 +2724,8 @@ async function linkSync(force) {
       const { days } = await r.json(), bmr = targets().bmr || 1600;
       for (const d of days || []) {
         // WHOOP gives the total burn incl. what the body burns at rest; the app wants the active part
-        if (d.active != null) { changed = applyAutoBurn(d.date, d.active, L.p) || changed; continue; }
+        // Oura, Polar, Withings: the active part directly, plus their total (shown like in their own app)
+        if (d.active != null) { const tt = num(d.total); changed = applyAutoBurn(d.date, d.active, L.p, tt > 0 ? { total: tt, rest: Math.max(0, tt - num(d.active)) } : null) || changed; continue; }
         const rest = bmr * Math.min(30, d.hours || 24) / 24;   // what the body burns at rest in that time (already in the daily goal)
         changed = applyAutoBurn(d.date, Math.max(0, (d.total || 0) - rest), L.p, { total: d.total || 0, rest }) || changed;
       }
@@ -3522,6 +3531,7 @@ function openBurnSheet() {
   sheet(`<h3>${T('Calories burned')}</h3>
     <div class="seg" style="margin-top:10px">${[['day', N('Whole day')], ['workout', N('Workouts only')]].map(([v, l]) => `<button data-bt="${v}" class="${(db.settings.burnType || 'day') === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>
     ${linkInfo() ? `<p class="small" style="margin:10px 0 0;font-weight:600">⌚ ${T('Filled in automatically from {name}.', { name: esc(linkName(linkInfo().p)) })} <button class="chipbtn" id="bTrk" style="margin-left:4px">${T('Settings')}</button></p>`
+      + (() => { const a = db.exercises.find(e => e.id === 'auto-' + sel && e.total != null); return a ? `<p class="small muted" style="margin:6px 0 0;line-height:1.45">${T('{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.', { name: esc(a.name), t: r0(a.total).toLocaleString(LOC), r: r0(a.rest).toLocaleString(LOC), a: r0(a.kcal).toLocaleString(LOC) })}</p>` : ''; })()
       : `<button class="bgrow" id="bTrk" style="margin-top:12px"><span style="font-size:26px">⌚</span><span class="grow"><b>${T('Wear a watch or ring?')}</b><br><span class="small muted">${T('Connect it once and this is filled in automatically.')}</span></span><span class="chev">›</span></button>`}
     <p class="muted small" style="margin-top:8px">${burnWholeDay() ? T('Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not "total").') : T('Enter the <b>active</b> calories of each workout (not "total").')} ${T('Your normal day and training are already in your goal, so only extra activity raises it.')}</p>
     ${already ? `<p class="small" style="margin:0">${T('Already logged: <b>{n} kcal</b>. This adds on top.', { n: already })}</p>
@@ -4294,7 +4304,7 @@ const planCoach = p => PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` R
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
-- Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand.
+- Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference (e.g. WHOOP 450 vs 48 active in the morning) is normal.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for).
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
 - Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
