@@ -757,7 +757,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v97';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v98';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -4901,6 +4901,20 @@ function planTips(p) {
   t.push('⚖️ ' + T('Weigh yourself once a week, in the morning before breakfast'));
   return t;
 }
+// Three pickers (day, month, year) in the order people write dates in their language
+function birthPicker(birth) {
+  const [by, bm, bd] = (birth || '').split('-').map(Number), thisYear = new Date().getFullYear();
+  const mName = m => new Date(2000, m - 1, 1).toLocaleDateString(LOC, { month: 'long' });
+  const sel = (id, label, opts, v) => `<div style="min-width:0;flex:${id === 'obBm' ? 1.6 : 1}"><label class="lbl" for="${id}" style="text-align:center">${label}</label>
+      <select id="${id}" style="font-size:18px;font-weight:700;text-align:center;text-align-last:center;padding:16px 8px"><option value="">–</option>${opts.map(([val, txt]) => `<option value="${val}" ${val === v ? 'selected' : ''}>${txt}</option>`).join('')}</select></div>`;
+  const parts = { d: sel('obBd', T('Day'), [...Array(31)].map((_, i) => [i + 1, i + 1]), bd),
+    m: sel('obBm', T('Month'), [...Array(12)].map((_, i) => [i + 1, mName(i + 1)]), bm),
+    y: sel('obBy', T('Year'), [...Array(thisYear - 12 - 1920 + 1)].map((_, i) => [thisYear - 12 - i, thisYear - 12 - i]), by) };
+  let order = ['d', 'm', 'y'];
+  try { order = new Intl.DateTimeFormat(LOC).formatToParts(new Date(2000, 10, 22)).map(x => ({ day: 'd', month: 'm', year: 'y' })[x.type]).filter(Boolean); } catch {}
+  return `<div class="row" style="gap:10px;align-items:flex-end">${order.map(k => parts[k]).join('')}</div>
+    <p class="small muted" id="obAge" style="text-align:center;margin:14px 0 0;font-weight:600">${birth ? T('You are {n} years old.', { n: age({ birth }) }) : ''}</p>`;
+}
 function renderOb() {
   let pg = $('#onb');
   if (!pg) { pg = document.createElement('div'); pg.id = 'onb'; pg.className = 'page'; pg.style.zIndex = 45; document.body.appendChild(pg); }
@@ -4940,7 +4954,7 @@ function renderOb() {
     else for (let c = 120; c <= 230; c++) h += `<option value="${c}" ${c === r0(p.height) ? 'selected' : ''}>${c} cm</option>`;
     body = `<div class="seg" style="margin-bottom:14px"><button data-obu="metric" class="${isLb() ? '' : 'on'}">kg · cm</button><button data-obu="us" class="${isLb() ? 'on' : ''}">lb · ft</button></div><div class="row"><div class="grow"><label class="lbl">${T('Height')}</label><select id="obH">${h}</select></div><div class="grow"><label class="lbl">${T('Weight')}</label><select id="obW">${kgOpts(isLb() ? p.weight : Math.round(p.weight * 2) / 2, 35, 250)}</select></div></div>`; }
   if (s === 'birth') { title = T('When were you born?'); sub = calib;
-    body = `<input type="date" id="obB" value="${p.birth}" max="${addDays(iso(), -365 * 12)}" min="1920-01-01" style="font-size:20px;text-align:center;padding:18px">`; ok = !!p.birth; }
+    body = birthPicker(p.birth); ok = !!p.birth; }
   if (s === 'goal') { title = T('What is your main goal?'); sub = T('Everything in the app adapts to it. You can change it any time in Settings.');
     body = PLANS.map(x => `<button class="opt cmp ${p.plan === x.id ? 'on' : ''}" data-plan="${x.id}">${x.ic} ${T(x.name)}<small>${T(x.sub)}</small></button>`).join(''); ok = !!p.plan; }
   if (s === 'dir') { title = T('What about your weight?'); sub = T('{goal} works with any weight goal.', { goal: T(planOf(p).name) });
@@ -5001,7 +5015,17 @@ function renderOb() {
   bind('#obH', el => p.height = +el.value);
   pg.querySelectorAll('[data-obu]').forEach(b => b.onclick = () => { db.settings.units = b.dataset.obu === 'us' ? { w: 'lb', h: 'in', v: 'oz' } : { w: 'kg', h: 'cm', v: 'ml' }; renderOb(); });
   bind('#obW', el => p.weight = +el.value);
-  bind('#obB', el => { p.birth = el.value; pg.querySelector('#obNext').disabled = !p.birth; });
+  // Birthday: day, month and year as three clear pickers; the age is shown right away
+  if (pg.querySelector('#obBd')) {
+    const upd = () => {
+      const d = +pg.querySelector('#obBd').value, m = +pg.querySelector('#obBm').value, y = +pg.querySelector('#obBy').value;
+      if (d && m && y) { const last = new Date(y, m, 0).getDate(); if (d > last) pg.querySelector('#obBd').value = String(last); p.birth = `${y}-${String(m).padStart(2, '0')}-${String(Math.min(d, last)).padStart(2, '0')}`; }
+      else p.birth = '';
+      pg.querySelector('#obNext').disabled = !p.birth;
+      const a = pg.querySelector('#obAge'); if (a) a.textContent = p.birth ? T('You are {n} years old.', { n: age({ birth: p.birth }) }) : '';
+    };
+    ['#obBd', '#obBm', '#obBy'].forEach(id => pg.querySelector(id).onchange = upd);
+  }
   bind('#obT', el => { p.targetWeight = +el.value; renderOb(); });
   const tip = () => {
     const t = pg.querySelector('#obTip'); if (!t) return;
