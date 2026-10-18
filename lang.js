@@ -1325,7 +1325,9 @@ window.I18N = {
 "Updated {t} · refreshes by itself every minute":"Aktualisiert {t} · aktualisiert sich jede Minute selbst",
 "Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"Konten ohne E-Mail erscheinen, sobald ihr Besitzer die App öffnet und den kurzen Datenschutzhinweis bestätigt.",
 "Email not shared yet":"E-Mail noch nicht geteilt",
-"{n} with email":"{n} mit E-Mail"
+"{n} with email":"{n} mit E-Mail",
+"Calculating…":"Wird berechnet…",
+"Enter the name and amount: the numbers are filled in for you.":"Gib Name und Menge ein: Die Zahlen werden für dich ausgefüllt."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2652,7 +2654,9 @@ window.I18N = {
 "Updated {t} · refreshes by itself every minute":"Actualizado {t} · se actualiza solo cada minuto",
 "Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"Las cuentas sin correo aparecen en cuanto su dueño abre la app y confirma el breve aviso de privacidad.",
 "Email not shared yet":"Correo aún no compartido",
-"{n} with email":"{n} con correo"
+"{n} with email":"{n} con correo",
+"Calculating…":"Calculando…",
+"Enter the name and amount: the numbers are filled in for you.":"Introduce el nombre y la cantidad: los números se rellenan solos."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3979,7 +3983,9 @@ window.I18N = {
 "Updated {t} · refreshes by itself every minute":"Mis à jour {t} · se met à jour seul chaque minute",
 "Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"Les comptes sans e-mail apparaissent dès que leur propriétaire ouvre l’app et confirme la courte note de confidentialité.",
 "Email not shared yet":"E-mail pas encore partagé",
-"{n} with email":"{n} avec e-mail"
+"{n} with email":"{n} avec e-mail",
+"Calculating…":"Calcul…",
+"Enter the name and amount: the numbers are filled in for you.":"Saisis le nom et la quantité : les chiffres sont remplis pour toi."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5306,7 +5312,9 @@ window.I18N = {
 "Updated {t} · refreshes by itself every minute":"Aggiornato {t} · si aggiorna da solo ogni minuto",
 "Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"Gli account senza email compaiono appena il proprietario apre l’app e conferma la breve nota sulla privacy.",
 "Email not shared yet":"Email non ancora condivisa",
-"{n} with email":"{n} con email"
+"{n} with email":"{n} con email",
+"Calculating…":"Calcolo…",
+"Enter the name and amount: the numbers are filled in for you.":"Inserisci nome e quantità: i numeri vengono compilati per te."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6633,7 +6641,9 @@ window.I18N = {
 "Updated {t} · refreshes by itself every minute":"{t} に更新・1分ごとに自動更新",
 "Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"メールのないアカウントは、持ち主がアプリを開いて短いプライバシーのお知らせを確認するとすぐ表示されます。",
 "Email not shared yet":"メール未共有",
-"{n} with email":"メールあり {n} 件"
+"{n} with email":"メールあり {n} 件",
+"Calculating…":"計算中…",
+"Enter the name and amount: the numbers are filled in for you.":"名前と量を入力すると、数値が自動で入ります。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -7960,7 +7970,9 @@ window.I18N = {
 "Updated {t} · refreshes by itself every minute":"Bijgewerkt {t} · ververst zichzelf elke minuut",
 "Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"Accounts zonder e-mail verschijnen zodra de eigenaar de app opent en de korte privacymelding bevestigt.",
 "Email not shared yet":"E-mail nog niet gedeeld",
-"{n} with email":"{n} met e-mail"
+"{n} with email":"{n} met e-mail",
+"Calculating…":"Berekenen…",
+"Enter the name and amount: the numbers are filled in for you.":"Voer naam en hoeveelheid in: de getallen worden voor je ingevuld."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9287,7 +9299,9 @@ window.I18N = {
 "Updated {t} · refreshes by itself every minute":"Zaktualizowano {t} · odświeża się co minutę",
 "Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"Konta bez e-maila pojawią się, gdy właściciel otworzy aplikację i potwierdzi krótką informację o prywatności.",
 "Email not shared yet":"E-mail jeszcze nieudostępniony",
-"{n} with email":"Z e-mailem: {n}"
+"{n} with email":"Z e-mailem: {n}",
+"Calculating…":"Obliczam…",
+"Enter the name and amount: the numbers are filled in for you.":"Wpisz nazwę i ilość: liczby uzupełnią się same."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -10614,7 +10628,9 @@ window.I18N = {
 "Updated {t} · refreshes by itself every minute":"Atualizado {t} · atualiza-se sozinho a cada minuto",
 "Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"As contas sem e-mail aparecem assim que o dono abrir a app e confirmar a breve nota de privacidade.",
 "Email not shared yet":"E-mail ainda não partilhado",
-"{n} with email":"{n} com e-mail"
+"{n} with email":"{n} com e-mail",
+"Calculating…":"A calcular…",
+"Enter the name and amount: the numbers are filled in for you.":"Introduza o nome e a quantidade: os números são preenchidos por si."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -11941,7 +11957,9 @@ window.I18N = {
 "Updated {t} · refreshes by itself every minute":"Обновлено {t} · обновляется само каждую минуту",
 "Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"Аккаунты без e-mail появятся, как только владелец откроет приложение и подтвердит короткое уведомление о конфиденциальности.",
 "Email not shared yet":"E-mail ещё не передан",
-"{n} with email":"С e-mail: {n}"
+"{n} with email":"С e-mail: {n}",
+"Calculating…":"Считаю…",
+"Enter the name and amount: the numbers are filled in for you.":"Введите название и количество: цифры заполнятся сами."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -13268,7 +13286,9 @@ window.I18N = {
 "Updated {t} · refreshes by itself every minute":"Güncellendi {t} · her dakika kendini yeniler",
 "Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"E-postası olmayan hesaplar, sahibi uygulamayı açıp kısa gizlilik notunu onayladığında görünür.",
 "Email not shared yet":"E-posta henüz paylaşılmadı",
-"{n} with email":"E-postalı {n}"
+"{n} with email":"E-postalı {n}",
+"Calculating…":"Hesaplanıyor…",
+"Enter the name and amount: the numbers are filled in for you.":"Adı ve miktarı gir: sayılar senin için doldurulur."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -14595,6 +14615,8 @@ window.I18N = {
 "Updated {t} · refreshes by itself every minute":"更新于 {t} · 每分钟自动刷新",
 "Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"没有邮箱的账户会在其主人打开 App 并确认简短的隐私提示后显示。",
 "Email not shared yet":"尚未分享邮箱",
-"{n} with email":"{n} 个有邮箱"
+"{n} with email":"{n} 个有邮箱",
+"Calculating…":"计算中…",
+"Enter the name and amount: the numbers are filled in for you.":"输入名称和分量：数值会自动填好。"
 }
 };
