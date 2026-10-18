@@ -107,7 +107,8 @@
 :root[data-bg]{--card:rgba(255,255,255,.68);--chip:rgba(0,0,0,.045);--line:rgba(0,0,0,.07);--track:rgba(0,0,0,.07);--solid:#fff}
 :root[data-theme="dark"][data-bg]{--card:rgba(255,255,255,.075);--chip:rgba(255,255,255,.09);--line:rgba(255,255,255,.1);--track:rgba(255,255,255,.12);--solid:#1c1c1e}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"])[data-bg]{--card:rgba(255,255,255,.075);--chip:rgba(255,255,255,.09);--line:rgba(255,255,255,.1);--track:rgba(255,255,255,.12);--solid:#1c1c1e}}
-html[data-bg]{background:var(--bgimg) var(--bg)}
+html[data-bg]{background:var(--bgimg) var(--bgend,var(--bg));background-repeat:no-repeat;background-size:100% 100%}
+/* Under the page (behind the keyboard bar or when iOS shows more than the screen): the colour at the bottom of the background, never the black top again */
 :root[data-bg] body{background:transparent}
 :root[data-bg] #chatScreen{background:transparent}
 :root[data-bg] .chatbar,:root[data-bg] .dfoot{background:transparent}
@@ -936,7 +937,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v126';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v127';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1056,6 +1057,9 @@ function applyBg() {
   if (b.id !== 'classic') root.dataset.bg = b.id; else delete root.dataset.bg;
   const m = document.querySelector('meta[name=theme-color]');   // the status bar matches the top of the background
   if (m) m.content = isDark() ? b.top : '#f7f7f9';
+  // The last colour of the gradient fills whatever iOS shows below the page (e.g. behind the keyboard's ^ v ✓ bar)
+  const img = isDark() ? b.dImg : b.lImg, cols = String(img).match(/#[0-9a-f]{3,6}/gi);
+  if (b.id !== 'classic' && cols) root.style.setProperty('--bgend', cols[cols.length - 1]); else root.style.removeProperty('--bgend');
 }
 function openBgSheet() {
   const dk = isDark(), cur = curBg().id;
