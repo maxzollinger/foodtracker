@@ -1327,7 +1327,9 @@ window.I18N = {
 "Email not shared yet":"E-Mail noch nicht geteilt",
 "{n} with email":"{n} mit E-Mail",
 "Calculating…":"Wird berechnet…",
-"Enter the name and amount: the numbers are filled in for you.":"Gib Name und Menge ein: Die Zahlen werden für dich ausgefüllt."
+"Enter the name and amount: the numbers are filled in for you.":"Gib Name und Menge ein: Die Zahlen werden für dich ausgefüllt.",
+"I mostly sit and do no sport":"Ich sitze meistens und mache keinen Sport",
+"No workouts":"Kein Training"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2656,7 +2658,9 @@ window.I18N = {
 "Email not shared yet":"Correo aún no compartido",
 "{n} with email":"{n} con correo",
 "Calculating…":"Calculando…",
-"Enter the name and amount: the numbers are filled in for you.":"Introduce el nombre y la cantidad: los números se rellenan solos."
+"Enter the name and amount: the numbers are filled in for you.":"Introduce el nombre y la cantidad: los números se rellenan solos.",
+"I mostly sit and do no sport":"Paso mucho tiempo sentado y no hago deporte",
+"No workouts":"Sin entrenar"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3985,7 +3989,9 @@ window.I18N = {
 "Email not shared yet":"E-mail pas encore partagé",
 "{n} with email":"{n} avec e-mail",
 "Calculating…":"Calcul…",
-"Enter the name and amount: the numbers are filled in for you.":"Saisis le nom et la quantité : les chiffres sont remplis pour toi."
+"Enter the name and amount: the numbers are filled in for you.":"Saisis le nom et la quantité : les chiffres sont remplis pour toi.",
+"I mostly sit and do no sport":"Je suis surtout assis et ne fais pas de sport",
+"No workouts":"Pas de sport"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5314,7 +5320,9 @@ window.I18N = {
 "Email not shared yet":"Email non ancora condivisa",
 "{n} with email":"{n} con email",
 "Calculating…":"Calcolo…",
-"Enter the name and amount: the numbers are filled in for you.":"Inserisci nome e quantità: i numeri vengono compilati per te."
+"Enter the name and amount: the numbers are filled in for you.":"Inserisci nome e quantità: i numeri vengono compilati per te.",
+"I mostly sit and do no sport":"Sto per lo più seduto e non faccio sport",
+"No workouts":"Nessun allenamento"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6643,7 +6651,9 @@ window.I18N = {
 "Email not shared yet":"メール未共有",
 "{n} with email":"メールあり {n} 件",
 "Calculating…":"計算中…",
-"Enter the name and amount: the numbers are filled in for you.":"名前と量を入力すると、数値が自動で入ります。"
+"Enter the name and amount: the numbers are filled in for you.":"名前と量を入力すると、数値が自動で入ります。",
+"I mostly sit and do no sport":"ほとんど座っていて運動はしない",
+"No workouts":"運動なし"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -7972,7 +7982,9 @@ window.I18N = {
 "Email not shared yet":"E-mail nog niet gedeeld",
 "{n} with email":"{n} met e-mail",
 "Calculating…":"Berekenen…",
-"Enter the name and amount: the numbers are filled in for you.":"Voer naam en hoeveelheid in: de getallen worden voor je ingevuld."
+"Enter the name and amount: the numbers are filled in for you.":"Voer naam en hoeveelheid in: de getallen worden voor je ingevuld.",
+"I mostly sit and do no sport":"Ik zit vooral en sport niet",
+"No workouts":"Geen training"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9301,7 +9313,9 @@ window.I18N = {
 "Email not shared yet":"E-mail jeszcze nieudostępniony",
 "{n} with email":"Z e-mailem: {n}",
 "Calculating…":"Obliczam…",
-"Enter the name and amount: the numbers are filled in for you.":"Wpisz nazwę i ilość: liczby uzupełnią się same."
+"Enter the name and amount: the numbers are filled in for you.":"Wpisz nazwę i ilość: liczby uzupełnią się same.",
+"I mostly sit and do no sport":"Głównie siedzę i nie uprawiam sportu",
+"No workouts":"Bez treningów"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -10630,7 +10644,9 @@ window.I18N = {
 "Email not shared yet":"E-mail ainda não partilhado",
 "{n} with email":"{n} com e-mail",
 "Calculating…":"A calcular…",
-"Enter the name and amount: the numbers are filled in for you.":"Introduza o nome e a quantidade: os números são preenchidos por si."
+"Enter the name and amount: the numbers are filled in for you.":"Introduza o nome e a quantidade: os números são preenchidos por si.",
+"I mostly sit and do no sport":"Passo a maior parte do tempo sentado e não faço desporto",
+"No workouts":"Sem treino"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -11959,7 +11975,9 @@ window.I18N = {
 "Email not shared yet":"E-mail ещё не передан",
 "{n} with email":"С e-mail: {n}",
 "Calculating…":"Считаю…",
-"Enter the name and amount: the numbers are filled in for you.":"Введите название и количество: цифры заполнятся сами."
+"Enter the name and amount: the numbers are filled in for you.":"Введите название и количество: цифры заполнятся сами.",
+"I mostly sit and do no sport":"В основном сижу и не занимаюсь спортом",
+"No workouts":"Без тренировок"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -13288,7 +13306,9 @@ window.I18N = {
 "Email not shared yet":"E-posta henüz paylaşılmadı",
 "{n} with email":"E-postalı {n}",
 "Calculating…":"Hesaplanıyor…",
-"Enter the name and amount: the numbers are filled in for you.":"Adı ve miktarı gir: sayılar senin için doldurulur."
+"Enter the name and amount: the numbers are filled in for you.":"Adı ve miktarı gir: sayılar senin için doldurulur.",
+"I mostly sit and do no sport":"Çoğunlukla oturuyorum ve spor yapmıyorum",
+"No workouts":"Antrenman yok"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -14617,6 +14637,8 @@ window.I18N = {
 "Email not shared yet":"尚未分享邮箱",
 "{n} with email":"{n} 个有邮箱",
 "Calculating…":"计算中…",
-"Enter the name and amount: the numbers are filled in for you.":"输入名称和分量：数值会自动填好。"
+"Enter the name and amount: the numbers are filled in for you.":"输入名称和分量：数值会自动填好。",
+"I mostly sit and do no sport":"我大多坐着，不运动",
+"No workouts":"不运动"
 }
 };

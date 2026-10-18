@@ -382,6 +382,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .pd-av{width:48px;height:48px;border-radius:16px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:24px;flex:none}
 .pd-sec{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin:18px 0 8px}
 .pd-seg,.pd-wk{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pd-wk{grid-template-columns:repeat(4,1fr)}
 .pd-seg button,.pd-wk button{background:var(--chip);border-radius:16px;padding:12px 6px;font-weight:700;font-size:15px;display:flex;flex-direction:column;align-items:center;gap:3px;transition:background .15s,color .15s}
 .pd-seg button span{font-size:20px;line-height:1.1}
 .pd-seg button.on,.pd-wk button.on{background:var(--ink);color:var(--on-ink)}
@@ -921,8 +922,9 @@ function migrate(d) {
   d.meals.forEach(m => { if (!m.servings) m.servings = 1; });
   if (pr && !pr.birth) {
     pr.birth = `${new Date().getFullYear() - (pr.age || 30)}-06-15`;
-    pr.workouts = pr.activity >= 1.7 ? '6+' : pr.activity >= 1.5 ? '3-5' : '0-2';
+    pr.workouts = pr.activity >= 1.7 ? '6+' : pr.activity >= 1.5 ? '3-5' : '1-2';
   }
+  if (pr && pr.workouts === '0-2') pr.workouts = '1-2';   // "0–2" was split into "No workouts" and "1–2" (same numbers as before)
   return d;
 }
 function save() { if (!LS.set('ft_data', JSON.stringify(db))) toast(T('Could not save. Is your phone storage full?')); if (typeof saveReminderTexts === 'function') saveReminderTexts(); try { scheduleBadges(); } catch {} }
@@ -937,7 +939,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v129';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v130';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1161,7 +1163,7 @@ const MAC = [
 ];
 
 /* ================= Calculations ================= */
-const ACT = { '0-2': 1.375, '3-5': 1.55, '6+': 1.725 };
+const ACT = { '0': 1.2, '1-2': 1.375, '0-2': 1.375, '3-5': 1.55, '6+': 1.725 };   // mostly sitting / light / moderate / very active
 // "lean" = build lean muscle: a small surplus so most of the gain is muscle, not fat.
 const isGain = g => g === 'gain' || g === 'lean';
 const LEAN_MAX = 0.5;   // kg/week; faster than this mostly adds fat
@@ -3653,7 +3655,7 @@ function waterAuto(d = sel) {
   const w = currentWeight(), parts = [[T('Body weight {w} kg', { w }), Math.round(w * 33)]];
   // Training: the usual weekly allowance, or, on days with logged exercise, that exercise instead
   // (not both, so the same training isn't counted twice). About 0.6 ml per burned kcal, at most +1 L.
-  const train = { '0-2': 0, '3-5': 350, '6+': 600 }[p.workouts] || 0, burned = dayBurned(d);
+  const train = { '0': 0, '1-2': 150, '0-2': 0, '3-5': 350, '6+': 600 }[p.workouts] || 0, burned = dayBurned(d);
   // Whole-day numbers: only activity beyond a normal day counts as extra; workouts count fully
   const ex = Math.min(1000, Math.round(burnWholeDay() ? Math.max(0, burned - includedExercise()) * 0.8 : burned * 0.6));
   if (ex > train) parts.push([burnWholeDay() ? T('Extra activity that day ({n} kcal burned)', { n: r0(burned) }) : T('Exercise that day ({n} kcal)', { n: r0(burned) }), ex]);
@@ -5477,7 +5479,7 @@ function openPersonalSheet() {
   const p0 = db.profile, custom = Object.keys(db.overrides).length > 0;
   const st = { sex: p0.sex || 'm', birth: p0.birth, height: num(p0.height) || 175, weight: currentWeight(), workouts: p0.workouts || '3-5' };
   const SEX = [['m', '♂', N('Male')], ['f', '♀', N('Female')], ['o', '⚧', N('Other')]];
-  const WK = [['0-2', '🚶', '0–2', N('per week')], ['3-5', '🏃', '3–5', N('per week')], ['6+', '🏋️', '6+', N('per week')]];
+  const WK = [['0', '🛋️', '0', N('No workouts')], ['1-2', '🚶', '1–2', N('per week')], ['3-5', '🏃', '3–5', N('per week')], ['6+', '🏋️', '6+', N('per week')]];
   sheet(`<div class="pd-head"><div class="pd-av">👤</div><div><h3 style="margin:0">${T('Personal details')}</h3>
       <div class="small muted">${T('Your goals are calculated from these.')}</div></div></div>
     <div class="pd-sec">${T('Gender')}</div>
@@ -5753,7 +5755,7 @@ function renderOb() {
   }
   if (s === 'gender') { title = T('Choose your gender'); sub = calib; body = opts('sex', [['m', T('Male')], ['f', T('Female')], ['o', T('Other')]]); ok = !!p.sex; }
   if (s === 'workouts') { title = T('How many workouts do you do per week?'); sub = calib;
-    body = opts('workouts', [['0-2', '0–2', T('workouts per week')], ['3-5', '3–5', T('workouts per week')], ['6+', '6+', T('workouts per week')]]); ok = !!p.workouts; }
+    body = opts('workouts', [['0', T('No workouts'), T('I mostly sit and do no sport')], ['1-2', '1–2', T('workouts per week')], ['3-5', '3–5', T('workouts per week')], ['6+', '6+', T('workouts per week')]]); ok = !!p.workouts; }
   if (s === 'body') { title = T('Height & weight'); sub = calib;
     let h = '';
     if (isIn()) { const sel = Math.round(p.height / CM_IN); for (let i = 48; i <= 90; i++) h += `<option value="${r1(i * CM_IN)}" ${i === sel ? 'selected' : ''}>${Math.floor(i / 12)}′${i % 12}″</option>`; }
