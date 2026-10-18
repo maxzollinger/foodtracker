@@ -935,7 +935,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v124';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v125';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -4532,7 +4532,7 @@ const saveChat = () => { chat = chat.slice(-80); if (!LS.set('ft_chat', JSON.str
 const PLAN_CHIP = { lowcarb: N('Give me a low-carb meal idea for today'), '52': N('What should I eat on a fast day?'), adf: N('What should I eat on a fast day?'), once: N('How do I get through my fast?'), cut: N('What are filling low-calorie meals?'), bulk: N('How do I eat enough to gain weight?'), dirty: N('Give me easy high-calorie meals'),
   recomp: N('How do I lose fat and build muscle at the same time?'), sport: N('What should I eat before and after training?'), preg: N('What should I eat and avoid right now?'), healthy: N('How can I eat healthier today?'), protein: N('Give me high-protein meal ideas'),
   keto: N('Give me a keto meal idea for today'), if: N('What should I eat when my eating window opens?') };
-const chipsFor = () => { const p = db.profile; if (!p) return CHIPS; const c = [PLAN_CHIP[planOf(p).id], ...lifeOf(p).map(x => PLAN_CHIP[x.id]), PLAN_CHIP[fastType(p)]].filter(Boolean).slice(0, 2); return [...c, ...CHIPS]; };
+const chipsFor = () => { const p = db.profile; if (!p) return [timeChip(), ...CHIPS]; const c = [PLAN_CHIP[planOf(p).id], ...lifeOf(p).map(x => PLAN_CHIP[x.id]), PLAN_CHIP[fastType(p)]].filter(Boolean).slice(0, 2); return [timeChip(), ...c, ...CHIPS]; };
 const CHIPS = [N('What should I eat next to hit my goals today?'), N('How much protein do I still need today?'), N('Give me a high-protein snack that fits my day'),
   N('How was my week?'), N('Make me a meal plan for tomorrow'), N('Am I on track with my goal?')];
 
@@ -4589,6 +4589,29 @@ function liveNumbers() {
 }
 
 // Everything the app knows, rebuilt fresh for every message (kept in English for the AI)
+/* Meal times: which meal is due now, the user's usual meal times (learned from the log) and what is still to come today */
+const SLOTS = [['breakfast', 4 * 60, 11 * 60], ['lunch', 11 * 60, 15 * 60], ['snack', 15 * 60, 17 * 60 + 30], ['dinner', 17 * 60 + 30, 21 * 60 + 30], ['late', 21 * 60 + 30, 28 * 60]];
+const toMin = t => { const m = /^(\d{1,2}):(\d{2})/.exec(t || ''); return m ? +m[1] * 60 + +m[2] : null; };
+const slotAt = mins => { const x = mins < 4 * 60 ? mins + 1440 : mins; return (SLOTS.find(([, a, b]) => x >= a && x < b) || SLOTS[4])[0]; };
+function usualMealTimes() {
+  const by = {};
+  for (const m of db.meals) { if (m.date < addDays(iso(), -21)) continue; const t = toMin(m.time); if (t == null) continue; (by[slotAt(t)] ||= []).push(t); }
+  const hm = v => `${String(Math.floor(v / 60) % 24).padStart(2, '0')}:${String(Math.round(v % 60)).padStart(2, '0')}`;
+  return Object.entries(by).filter(([, v]) => v.length >= 3).map(([k, v]) => `${k} ~${hm(v.sort((a, b) => a - b)[Math.floor(v.length / 2)])}`);
+}
+function mealTimeText(g, tot) {
+  const now = new Date(), nowM = now.getHours() * 60 + now.getMinutes(), slot = slotAt(nowM), today = iso();
+  const per = {}; for (const m of db.meals.filter(x => x.date === today)) { const t = toMin(m.time); if (t == null) continue; const k = slotAt(t); per[k] = (per[k] || 0) + mealTotals(m).kcal; }
+  const order = ['breakfast', 'lunch', 'dinner'], idx = { breakfast: 0, lunch: 1, snack: 1.5, dinner: 2, late: 3 }[slot];
+  const toCome = order.filter((k, i) => i >= idx && !per[k]);
+  const leftK = Math.max(0, g.kcal - tot.kcal), leftP = Math.max(0, g.protein - tot.protein), usual = usualMealTimes();
+  return `Meal time now: ${slot === 'late' ? 'late evening (after dinner time)' : slot === 'snack' ? 'afternoon snack time' : slot + ' time'}.${usual.length ? ` This user's usual meal times (from their log): ${usual.join(', ')}.` : ''}
+Logged today by meal: ${['breakfast', 'lunch', 'snack', 'dinner', 'late'].map(k => `${k} ${per[k] ? r0(per[k]) + ' kcal' : 'nothing'}`).join(', ')}.
+Main meals still to come today: ${toCome.length ? `${toCome.join(', ')} → about ${r0(leftK / toCome.length)} kcal and ${r0(leftP / toCome.length)} g protein each to stay on goal` : slot === 'late' ? 'none (the day is nearly over)' : 'none left, only snacks'}.`;
+}
+// The first coach suggestion fits the time of day
+const timeChip = () => ({ breakfast: N('What should I have for breakfast?'), lunch: N('Give me a lunch idea that fits my day'), snack: N('A snack idea for the afternoon?'),
+  dinner: N('What should I eat for dinner with what is left?'), late: N('Is a late snack OK, and what would fit?') })[slotAt(new Date().getHours() * 60 + new Date().getMinutes())];
 function coachContext() {
   const p = db.profile, today = iso(), g = dayGoals(today), tot = dayTotals(today), base = targets();
   const fmtD = d => dt(d).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
@@ -4619,6 +4642,7 @@ function coachContext() {
   const now = new Date(), hh = now.getHours();
   return `=== RIGHT NOW ===
 Local time for the user: ${now.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}, ${now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })} (${hh < 5 ? 'night' : hh < 11 ? 'morning' : hh < 14 ? 'midday' : hh < 18 ? 'afternoon' : hh < 22 ? 'evening' : 'late evening'}). This data was read from the app at this exact moment, just now.
+${db.profile ? mealTimeText(g, tot) : ''}
 
 === HOME SCREEN: TODAY (${dt(today).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}) ===
 Calories: ${r0(tot.kcal)} eaten of ${g.kcal} kcal goal → ${left('kcal')}
@@ -4684,7 +4708,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
-- Coach: they can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
+- Coach: the first suggestion button follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
 - Settings: Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, training; goals update automatically), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy; Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
@@ -4694,7 +4718,7 @@ function coachSystem() {
 RULES
 - Always base answers on the live data below. NEVER say you can't see their data and NEVER ask for a screenshot: you already have everything the app shows, and more.
 - Earlier messages in this chat may mention older numbers or an older time. They are out of date: the user may have logged, edited or deleted things since. Always use ONLY the live data below for numbers, meals and the time of day.
-- Use the current time: e.g. suggest breakfast in the morning and a light dinner in the evening, and say what is still possible today.
+- Use the current time (see RIGHT NOW): when they ask what to eat without saying which meal, answer for the meal that is due now. Plan the rest of the day around the main meals still to come and split what is left over them. Breakfast foods in the morning, no big meal late at night: after dinner time suggest something light or nothing. If they usually eat at other times (their usual meal times), follow their rhythm.
 - When they ask how to do something in the app, explain it step by step using THE APP below.
 - Be practical, specific and encouraging. Keep answers short and easy to read on a phone: short paragraphs or bullet points, no tables.
 - When suggesting food, give concrete foods with grams plus calories and protein, and make them fit exactly what is left today. Vary suggestions; look at what they ate recently.

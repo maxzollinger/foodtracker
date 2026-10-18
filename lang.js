@@ -1312,7 +1312,12 @@ window.I18N = {
 "{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Bisher {r} kcal aktiv + etwa {e} kcal noch erwartet (dein 7-Tage-Schnitt: {a} kcal).",
 "Enter the calories, or let the AI work them out with Describe food.":"Gib die Kalorien ein oder lass die KI sie mit „Essen beschreiben“ berechnen.",
 "No calories entered: the AI is calculating them.":"Keine Kalorien eingegeben: Die KI berechnet sie.",
-"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Du weißt nur, was du gegessen hast? Schreib es als Namen und tippe auf Fertig: Die KI trägt die Zahlen ein."
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Du weißt nur, was du gegessen hast? Schreib es als Namen und tippe auf Fertig: Die KI trägt die Zahlen ein.",
+"What should I have for breakfast?":"Was soll ich frühstücken?",
+"Give me a lunch idea that fits my day":"Gib mir eine Mittagessen-Idee, die zu meinem Tag passt",
+"A snack idea for the afternoon?":"Eine Snack-Idee für den Nachmittag?",
+"What should I eat for dinner with what is left?":"Was soll ich zum Abendessen mit dem Rest essen?",
+"Is a late snack OK, and what would fit?":"Ist ein später Snack okay, und was würde passen?"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2626,7 +2631,12 @@ window.I18N = {
 "{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal activas hasta ahora + unas {e} kcal aún esperadas (tu media de 7 días: {a} kcal).",
 "Enter the calories, or let the AI work them out with Describe food.":"Introduce las calorías o deja que la IA las calcule con «Describir comida».",
 "No calories entered: the AI is calculating them.":"No se introdujeron calorías: la IA las está calculando.",
-"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"¿Solo sabes lo que comiste? Escríbelo como nombre y toca Listo: la IA rellena los números."
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"¿Solo sabes lo que comiste? Escríbelo como nombre y toca Listo: la IA rellena los números.",
+"What should I have for breakfast?":"¿Qué desayuno?",
+"Give me a lunch idea that fits my day":"Dame una idea de almuerzo que encaje con mi día",
+"A snack idea for the afternoon?":"¿Una idea de merienda para la tarde?",
+"What should I eat for dinner with what is left?":"¿Qué ceno con lo que me queda?",
+"Is a late snack OK, and what would fit?":"¿Está bien un tentempié tarde y qué encajaría?"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3940,7 +3950,12 @@ window.I18N = {
 "{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal actives jusqu’ici + environ {e} kcal encore attendues (ta moyenne sur 7 jours : {a} kcal).",
 "Enter the calories, or let the AI work them out with Describe food.":"Saisis les calories, ou laisse l’IA les calculer avec « Décrire un repas ».",
 "No calories entered: the AI is calculating them.":"Aucune calorie saisie : l’IA les calcule.",
-"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Tu sais seulement ce que tu as mangé ? Écris-le comme nom et touche Terminé : l’IA remplit les chiffres."
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Tu sais seulement ce que tu as mangé ? Écris-le comme nom et touche Terminé : l’IA remplit les chiffres.",
+"What should I have for breakfast?":"Que prendre au petit-déjeuner ?",
+"Give me a lunch idea that fits my day":"Donne-moi une idée de déjeuner adaptée à ma journée",
+"A snack idea for the afternoon?":"Une idée de goûter pour l’après-midi ?",
+"What should I eat for dinner with what is left?":"Que manger au dîner avec ce qu’il reste ?",
+"Is a late snack OK, and what would fit?":"Un en-cas tardif, c’est OK ? Et lequel ?"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5254,7 +5269,12 @@ window.I18N = {
 "{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal attive finora + circa {e} kcal ancora previste (la tua media di 7 giorni: {a} kcal).",
 "Enter the calories, or let the AI work them out with Describe food.":"Inserisci le calorie oppure lascia che l’IA le calcoli con «Descrivi il cibo».",
 "No calories entered: the AI is calculating them.":"Nessuna caloria inserita: l’IA le sta calcolando.",
-"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Sai solo cosa hai mangiato? Scrivilo come nome e tocca Fatto: l’IA inserisce i numeri."
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Sai solo cosa hai mangiato? Scrivilo come nome e tocca Fatto: l’IA inserisce i numeri.",
+"What should I have for breakfast?":"Cosa mangio a colazione?",
+"Give me a lunch idea that fits my day":"Dammi un’idea per il pranzo adatta alla mia giornata",
+"A snack idea for the afternoon?":"Un’idea di spuntino per il pomeriggio?",
+"What should I eat for dinner with what is left?":"Cosa mangio a cena con quello che resta?",
+"Is a late snack OK, and what would fit?":"Uno spuntino tardi va bene? E cosa?"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6568,7 +6588,12 @@ window.I18N = {
 "{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"ここまでアクティブ {r} kcal + 残り約 {e} kcal の見込み（7日間の平均：{a} kcal）。",
 "Enter the calories, or let the AI work them out with Describe food.":"カロリーを入力するか、「食べ物を説明」でAIに計算させてください。",
 "No calories entered: the AI is calculating them.":"カロリーが未入力のため、AIが計算しています。",
-"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"食べたものしかわからない？名前として入力して「完了」をタップすると、AIが数値を入れます。"
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"食べたものしかわからない？名前として入力して「完了」をタップすると、AIが数値を入れます。",
+"What should I have for breakfast?":"朝ごはんは何にする？",
+"Give me a lunch idea that fits my day":"今日に合うランチのアイデアをください",
+"A snack idea for the afternoon?":"午後のおやつのアイデアは？",
+"What should I eat for dinner with what is left?":"残りの分で夕食は何を食べればいい？",
+"Is a late snack OK, and what would fit?":"夜遅くの軽食は大丈夫？何が合う？"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -7882,7 +7907,12 @@ window.I18N = {
 "{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Tot nu toe {r} kcal actief + nog ongeveer {e} kcal verwacht (je 7-daags gemiddelde: {a} kcal).",
 "Enter the calories, or let the AI work them out with Describe food.":"Voer de calorieën in, of laat de AI ze berekenen met \"Eten beschrijven\".",
 "No calories entered: the AI is calculating them.":"Geen calorieën ingevoerd: de AI berekent ze.",
-"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Weet je alleen wat je at? Typ het als naam en tik op Klaar: de AI vult de getallen in."
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Weet je alleen wat je at? Typ het als naam en tik op Klaar: de AI vult de getallen in.",
+"What should I have for breakfast?":"Wat neem ik als ontbijt?",
+"Give me a lunch idea that fits my day":"Geef me een lunchidee dat bij mijn dag past",
+"A snack idea for the afternoon?":"Een snackidee voor de middag?",
+"What should I eat for dinner with what is left?":"Wat eet ik vanavond met wat er over is?",
+"Is a late snack OK, and what would fit?":"Is een late snack oké, en wat past?"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9196,7 +9226,12 @@ window.I18N = {
 "{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Dotąd {r} kcal aktywnych + jeszcze około {e} kcal oczekiwanych (twoja średnia z 7 dni: {a} kcal).",
 "Enter the calories, or let the AI work them out with Describe food.":"Wpisz kalorie albo pozwól AI je obliczyć przez „Opisz jedzenie”.",
 "No calories entered: the AI is calculating them.":"Nie wpisano kalorii: AI je oblicza.",
-"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Wiesz tylko, co zjadłeś? Wpisz to jako nazwę i stuknij Gotowe: AI uzupełni liczby."
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Wiesz tylko, co zjadłeś? Wpisz to jako nazwę i stuknij Gotowe: AI uzupełni liczby.",
+"What should I have for breakfast?":"Co zjeść na śniadanie?",
+"Give me a lunch idea that fits my day":"Daj mi pomysł na obiad pasujący do mojego dnia",
+"A snack idea for the afternoon?":"Pomysł na popołudniową przekąskę?",
+"What should I eat for dinner with what is left?":"Co zjeść na kolację z tego, co zostało?",
+"Is a late snack OK, and what would fit?":"Czy późna przekąska jest OK i co by pasowało?"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -10510,7 +10545,12 @@ window.I18N = {
 "{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal ativas até agora + cerca de {e} kcal ainda esperadas (a sua média de 7 dias: {a} kcal).",
 "Enter the calories, or let the AI work them out with Describe food.":"Introduza as calorias ou deixe a IA calculá-las com \"Descrever comida\".",
 "No calories entered: the AI is calculating them.":"Sem calorias introduzidas: a IA está a calculá-las.",
-"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Só sabe o que comeu? Escreva-o como nome e toque em Feito: a IA preenche os números."
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Só sabe o que comeu? Escreva-o como nome e toque em Feito: a IA preenche os números.",
+"What should I have for breakfast?":"O que como ao pequeno-almoço?",
+"Give me a lunch idea that fits my day":"Dê-me uma ideia de almoço que encaixe no meu dia",
+"A snack idea for the afternoon?":"Uma ideia de lanche para a tarde?",
+"What should I eat for dinner with what is left?":"O que janto com o que me resta?",
+"Is a late snack OK, and what would fit?":"Um lanche tardio está bem? E o que encaixa?"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -11824,7 +11864,12 @@ window.I18N = {
 "{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Пока {r} ккал активности + ещё около {e} ккал ожидается (ваше среднее за 7 дней: {a} ккал).",
 "Enter the calories, or let the AI work them out with Describe food.":"Введите калории или позвольте ИИ рассчитать их через «Описать еду».",
 "No calories entered: the AI is calculating them.":"Калории не введены: ИИ их рассчитывает.",
-"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Знаете только, что съели? Напишите это как название и нажмите «Готово»: ИИ заполнит цифры."
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Знаете только, что съели? Напишите это как название и нажмите «Готово»: ИИ заполнит цифры.",
+"What should I have for breakfast?":"Что съесть на завтрак?",
+"Give me a lunch idea that fits my day":"Дай идею обеда, которая подходит к моему дню",
+"A snack idea for the afternoon?":"Идея перекуса на вторую половину дня?",
+"What should I eat for dinner with what is left?":"Что съесть на ужин из того, что осталось?",
+"Is a late snack OK, and what would fit?":"Можно ли поздний перекус и что подойдёт?"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -13138,7 +13183,12 @@ window.I18N = {
 "{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Şu ana kadar {r} kcal aktif + yaklaşık {e} kcal daha bekleniyor (7 günlük ortalaman: {a} kcal).",
 "Enter the calories, or let the AI work them out with Describe food.":"Kalorileri gir ya da \"Yemeği anlat\" ile yapay zekâya hesaplat.",
 "No calories entered: the AI is calculating them.":"Kalori girilmedi: yapay zekâ hesaplıyor.",
-"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Sadece ne yediğini mi biliyorsun? Ad olarak yaz ve Bitti’ye dokun: yapay zekâ sayıları doldurur."
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Sadece ne yediğini mi biliyorsun? Ad olarak yaz ve Bitti’ye dokun: yapay zekâ sayıları doldurur.",
+"What should I have for breakfast?":"Kahvaltıda ne yiyeyim?",
+"Give me a lunch idea that fits my day":"Günüme uyan bir öğle yemeği fikri ver",
+"A snack idea for the afternoon?":"Öğleden sonra için bir atıştırmalık fikri?",
+"What should I eat for dinner with what is left?":"Kalanla akşam yemeğinde ne yiyeyim?",
+"Is a late snack OK, and what would fit?":"Geç bir atıştırmalık olur mu, ne uyar?"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -14452,6 +14502,11 @@ window.I18N = {
 "{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"目前已活动 {r} kcal + 预计还有约 {e} kcal（你的 7 天平均：{a} kcal）。",
 "Enter the calories, or let the AI work them out with Describe food.":"请输入卡路里，或用\"描述食物\"让 AI 计算。",
 "No calories entered: the AI is calculating them.":"未输入卡路里：AI 正在计算。",
-"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"只知道吃了什么？把它写成名称并点\"完成\"：AI 会填入数字。"
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"只知道吃了什么？把它写成名称并点\"完成\"：AI 会填入数字。",
+"What should I have for breakfast?":"早餐吃什么？",
+"Give me a lunch idea that fits my day":"给我一个适合今天的午餐主意",
+"A snack idea for the afternoon?":"下午加餐吃什么？",
+"What should I eat for dinner with what is left?":"用剩下的额度晚餐吃什么？",
+"Is a late snack OK, and what would fit?":"晚上吃点夜宵可以吗？吃什么合适？"
 }
 };
