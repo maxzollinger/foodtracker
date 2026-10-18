@@ -937,7 +937,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v127';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v128';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3308,24 +3308,33 @@ async function loadUsers() {
 // Admin: who has an account (email, first day, last active, last backup). Their data stays encrypted.
 async function openAccountsList() {
   sheet(`<h3>📧 ${T('Accounts')}</h3><div id="alBody" style="margin-top:12px;text-align:center"><span class="spin"></span></div>`);
-  const box = $('#alBody');
-  try {
-    const r = await fetch(SERVER_URL + '/accounts', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + LS.get('ft_admin_token', '') } });
-    if (!r.ok) throw new Error(r.status === 403 ? T('Wrong admin password.') : 'HTTP ' + r.status);
-    const list = (await r.json()).accounts || [], withE = list.filter(x => x.e), none = list.length - withE.length;
-    const day = d => d ? fmtDate(d, { day: 'numeric', month: 'short', year: '2-digit' }) : '–';
-    if (!box) return;
-    box.style.textAlign = 'left';
-    box.innerHTML = `<p class="small muted" style="margin:0 0 10px">${T('{n} accounts', { n: list.length })}${none ? ' · ' + T('{n} show their email after their next backup (once they open the app).', { n: none }) : ''}</p>
-      ${withE.length ? `<input id="alQ" type="search" placeholder="${T('Search')}" autocomplete="off" style="margin-bottom:10px">
-      <div class="list" id="alList" style="box-shadow:none;background:var(--chip)">${withE.map(x => `<div class="li" data-e="${esc(x.e)}" style="align-items:flex-start"><span class="grow" style="min-width:0"><b style="overflow-wrap:anywhere">${esc(x.e)}</b><br>
-        <span class="small muted">${T('Since {d}', { d: day(x.f) })} · ${T('Last active {d}', { d: day(x.l) })}</span></span></div>`).join('')}</div>
-      <button class="btn sm outline" id="alCopy" style="width:100%;margin-top:12px">${T('Copy all emails')}</button>` : ''}`;
-    const q = $('#alQ'); if (q) q.oninput = () => box.querySelectorAll('[data-e]').forEach(r => r.style.display = r.dataset.e.includes(q.value.trim().toLowerCase()) ? '' : 'none');
-    const c = $('#alCopy'); if (c) c.onclick = async () => { try { await navigator.clipboard.writeText(withE.map(x => x.e).join('\n')); toast(T('✓ Copied')); } catch { toast(T('Could not copy')); } };
-  } catch (e) { if (box) box.innerHTML = `<p class="small muted" style="margin:0">${esc(e.message === 'Failed to fetch' ? T('No connection') : e.message)}</p>`; }
+  let q = '';
+  const load = async () => {
+    const box = $('#alBody'); if (!box) return false;
+    try {
+      const r = await fetch(SERVER_URL + '/accounts', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + LS.get('ft_admin_token', '') } });
+      if (!r.ok) throw new Error(r.status === 403 ? T('Wrong admin password.') : 'HTTP ' + r.status);
+      const list = (await r.json()).accounts || [], withE = list.filter(x => x.e), none = list.length - withE.length;
+      const day = d => d ? fmtDate(d, { day: 'numeric', month: 'short', year: '2-digit' }) : '–';
+      if (!$('#alBody')) return false;
+      box.style.textAlign = 'left';
+      box.innerHTML = `<p class="small muted" style="margin:0 0 10px">${T('{n} accounts', { n: list.length })} · ${T('{n} with email', { n: withE.length })}</p>
+        ${withE.length ? `<input id="alQ" type="search" placeholder="${T('Search')}" autocomplete="off" style="margin-bottom:10px" value="${esc(q)}">` : ''}
+        <div class="list" style="box-shadow:none;background:var(--chip)">${list.map(x => `<div class="li" data-e="${esc(x.e)}" style="align-items:flex-start"><span class="grow" style="min-width:0">
+          ${x.e ? `<b style="overflow-wrap:anywhere">${esc(x.e)}</b>` : `<b class="muted">🔒 ${T('Email not shared yet')}</b>`}<br>
+          <span class="small muted">${x.f ? T('Since {d}', { d: day(x.f) }) + ' · ' : ''}${T('Last active {d}', { d: day(x.l || (x.t ? iso(new Date(x.t)) : '')) })}</span></span></div>`).join('')}</div>
+        ${none ? `<p class="small muted" style="margin:10px 0 0">${T('Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.')}</p>` : ''}
+        ${withE.length ? `<button class="btn sm outline" id="alCopy" style="width:100%;margin-top:12px">${T('Copy all emails')}</button>` : ''}
+        <p class="small muted" style="margin:12px 0 0;text-align:center">${T('Updated {t} · refreshes by itself every minute', { t: fmtClock(new Date()) })}</p>`;
+      const qi = $('#alQ'), filter = () => box.querySelectorAll('[data-e]').forEach(row => row.style.display = !q || row.dataset.e.includes(q.trim().toLowerCase()) ? '' : 'none');
+      if (qi) { qi.oninput = () => { q = qi.value; filter(); }; filter(); }
+      const c = $('#alCopy'); if (c) c.onclick = async () => { try { await navigator.clipboard.writeText(withE.map(x => x.e).join('\n')); toast(T('✓ Copied')); } catch { toast(T('Could not copy')); } };
+    } catch (e) { if ($('#alBody') && !box.querySelector('.list')) box.innerHTML = `<p class="small muted" style="margin:0">${esc(e.message === 'Failed to fetch' ? T('No connection') : e.message)}</p>`; }
+    return true;
+  };
+  await load();
+  const iv = setInterval(async () => { if (document.activeElement && document.activeElement.id === 'alQ') return; if (!(await load())) clearInterval(iv); }, 60e3);   // live while open
 }
-let usersAt = 0, usersTimer = null;
 function bindUsersCard() {
   clearInterval(usersTimer);   // live while the card is on screen
   usersTimer = setInterval(() => { if (!$('#usBody')) return clearInterval(usersTimer); if (document.visibilityState === 'visible' && !$('.backdrop')) loadUsers(); }, 60e3);
@@ -5217,7 +5226,7 @@ setInterval(() => {
 }, 5 * 60e3);
 setInterval(() => { if (updReady && document.visibilityState === 'visible' && Date.now() - lastTouch > 45e3 && safeToReload()) kvWait().then(() => location.reload()); }, 20e3);
 document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') { checkUpdate(); setTimeout(processQueue, 1000); setTimeout(() => linkSync(false), 1200); if ($('#setupPg')) setTimeout(openSetupPage, 600); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); setTimeout(askAccount, 5000); setTimeout(weeklyCheckin, 1500); setTimeout(syncDone, 2500); }
+  if (document.visibilityState === 'visible') { checkUpdate(); setTimeout(processQueue, 1000); setTimeout(() => linkSync(false), 1200); if ($('#setupPg')) setTimeout(openSetupPage, 600); syncPush(); setTimeout(checkPlanWeek, 800); setTimeout(autoBackup, 3000); setTimeout(askAccount, 5000); setTimeout(emailNote, 6500); setTimeout(weeklyCheckin, 1500); setTimeout(syncDone, 2500); }
   else { if (!rec) micOff(); cameraOff(); if (updReady) kvWait().then(() => location.reload()); }   // in the background: nobody sees the reload
 });
 
@@ -5884,6 +5893,7 @@ setTimeout(autoBackup, 9000);
 setInterval(autoBackup, 60 * 60e3);
 setTimeout(askAccount, 11000);
 setTimeout(emailNote, 7000);
+setInterval(() => { if (document.visibilityState === 'visible') emailNote(); }, 3 * 60e3);   // tried again until it has been seen (another window may have been open)
 setTimeout(weeklyCheckin, 6500);
 setInterval(weeklyCheckin, 30 * 60e3);
 idb.kvGet('ft_pending').then(q => {

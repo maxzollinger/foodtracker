@@ -1322,7 +1322,10 @@ window.I18N = {
 "Reading the numbers under the barcode…":"Lese die Zahlen unter dem Barcode…",
 "Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Glänzende Dose oder Flasche? Kipp sie etwas, damit das Licht nicht auf dem Code spiegelt.",
 "Today so far: {n} AI requests":"Heute bisher: {n} KI-Anfragen",
-"Updated {t} · refreshes by itself every minute":"Aktualisiert {t} · aktualisiert sich jede Minute selbst"
+"Updated {t} · refreshes by itself every minute":"Aktualisiert {t} · aktualisiert sich jede Minute selbst",
+"Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"Konten ohne E-Mail erscheinen, sobald ihr Besitzer die App öffnet und den kurzen Datenschutzhinweis bestätigt.",
+"Email not shared yet":"E-Mail noch nicht geteilt",
+"{n} with email":"{n} mit E-Mail"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2646,7 +2649,10 @@ window.I18N = {
 "Reading the numbers under the barcode…":"Leyendo los números bajo el código de barras…",
 "Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"¿Lata o botella brillante? Inclínala un poco para que la luz no se refleje en el código.",
 "Today so far: {n} AI requests":"Hoy hasta ahora: {n} solicitudes de IA",
-"Updated {t} · refreshes by itself every minute":"Actualizado {t} · se actualiza solo cada minuto"
+"Updated {t} · refreshes by itself every minute":"Actualizado {t} · se actualiza solo cada minuto",
+"Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"Las cuentas sin correo aparecen en cuanto su dueño abre la app y confirma el breve aviso de privacidad.",
+"Email not shared yet":"Correo aún no compartido",
+"{n} with email":"{n} con correo"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3970,7 +3976,10 @@ window.I18N = {
 "Reading the numbers under the barcode…":"Lecture des chiffres sous le code-barres…",
 "Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Canette ou bouteille brillante ? Incline-la un peu pour que la lumière ne se reflète pas sur le code.",
 "Today so far: {n} AI requests":"Aujourd’hui jusqu’ici : {n} requêtes IA",
-"Updated {t} · refreshes by itself every minute":"Mis à jour {t} · se met à jour seul chaque minute"
+"Updated {t} · refreshes by itself every minute":"Mis à jour {t} · se met à jour seul chaque minute",
+"Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"Les comptes sans e-mail apparaissent dès que leur propriétaire ouvre l’app et confirme la courte note de confidentialité.",
+"Email not shared yet":"E-mail pas encore partagé",
+"{n} with email":"{n} avec e-mail"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5294,7 +5303,10 @@ window.I18N = {
 "Reading the numbers under the barcode…":"Lettura dei numeri sotto il codice a barre…",
 "Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Lattina o bottiglia lucida? Inclinala un po’ così la luce non si riflette sul codice.",
 "Today so far: {n} AI requests":"Oggi finora: {n} richieste IA",
-"Updated {t} · refreshes by itself every minute":"Aggiornato {t} · si aggiorna da solo ogni minuto"
+"Updated {t} · refreshes by itself every minute":"Aggiornato {t} · si aggiorna da solo ogni minuto",
+"Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"Gli account senza email compaiono appena il proprietario apre l’app e conferma la breve nota sulla privacy.",
+"Email not shared yet":"Email non ancora condivisa",
+"{n} with email":"{n} con email"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6618,7 +6630,10 @@ window.I18N = {
 "Reading the numbers under the barcode…":"バーコードの下の数字を読み取り中…",
 "Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"光沢のある缶やボトル？光がコードに反射しないよう少し傾けてください。",
 "Today so far: {n} AI requests":"今日これまで：AIリクエスト {n} 件",
-"Updated {t} · refreshes by itself every minute":"{t} に更新・1分ごとに自動更新"
+"Updated {t} · refreshes by itself every minute":"{t} に更新・1分ごとに自動更新",
+"Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"メールのないアカウントは、持ち主がアプリを開いて短いプライバシーのお知らせを確認するとすぐ表示されます。",
+"Email not shared yet":"メール未共有",
+"{n} with email":"メールあり {n} 件"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -7942,7 +7957,10 @@ window.I18N = {
 "Reading the numbers under the barcode…":"De cijfers onder de barcode lezen…",
 "Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Glimmend blikje of fles? Kantel het iets zodat het licht niet op de code weerkaatst.",
 "Today so far: {n} AI requests":"Vandaag tot nu toe: {n} AI-verzoeken",
-"Updated {t} · refreshes by itself every minute":"Bijgewerkt {t} · ververst zichzelf elke minuut"
+"Updated {t} · refreshes by itself every minute":"Bijgewerkt {t} · ververst zichzelf elke minuut",
+"Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"Accounts zonder e-mail verschijnen zodra de eigenaar de app opent en de korte privacymelding bevestigt.",
+"Email not shared yet":"E-mail nog niet gedeeld",
+"{n} with email":"{n} met e-mail"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9266,7 +9284,10 @@ window.I18N = {
 "Reading the numbers under the barcode…":"Odczytuję cyfry pod kodem kreskowym…",
 "Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Błyszcząca puszka lub butelka? Przechyl ją lekko, żeby światło nie odbijało się od kodu.",
 "Today so far: {n} AI requests":"Dziś do tej pory: {n} zapytań AI",
-"Updated {t} · refreshes by itself every minute":"Zaktualizowano {t} · odświeża się co minutę"
+"Updated {t} · refreshes by itself every minute":"Zaktualizowano {t} · odświeża się co minutę",
+"Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"Konta bez e-maila pojawią się, gdy właściciel otworzy aplikację i potwierdzi krótką informację o prywatności.",
+"Email not shared yet":"E-mail jeszcze nieudostępniony",
+"{n} with email":"Z e-mailem: {n}"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -10590,7 +10611,10 @@ window.I18N = {
 "Reading the numbers under the barcode…":"A ler os números por baixo do código de barras…",
 "Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Lata ou garrafa brilhante? Incline-a um pouco para a luz não refletir no código.",
 "Today so far: {n} AI requests":"Hoje até agora: {n} pedidos de IA",
-"Updated {t} · refreshes by itself every minute":"Atualizado {t} · atualiza-se sozinho a cada minuto"
+"Updated {t} · refreshes by itself every minute":"Atualizado {t} · atualiza-se sozinho a cada minuto",
+"Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"As contas sem e-mail aparecem assim que o dono abrir a app e confirmar a breve nota de privacidade.",
+"Email not shared yet":"E-mail ainda não partilhado",
+"{n} with email":"{n} com e-mail"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -11914,7 +11938,10 @@ window.I18N = {
 "Reading the numbers under the barcode…":"Читаю цифры под штрихкодом…",
 "Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Блестящая банка или бутылка? Слегка наклоните её, чтобы свет не отражался от кода.",
 "Today so far: {n} AI requests":"Сегодня пока: {n} запросов к ИИ",
-"Updated {t} · refreshes by itself every minute":"Обновлено {t} · обновляется само каждую минуту"
+"Updated {t} · refreshes by itself every minute":"Обновлено {t} · обновляется само каждую минуту",
+"Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"Аккаунты без e-mail появятся, как только владелец откроет приложение и подтвердит короткое уведомление о конфиденциальности.",
+"Email not shared yet":"E-mail ещё не передан",
+"{n} with email":"С e-mail: {n}"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -13238,7 +13265,10 @@ window.I18N = {
 "Reading the numbers under the barcode…":"Barkodun altındaki sayılar okunuyor…",
 "Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Parlak kutu ya da şişe mi? Işık koda yansımasın diye biraz eğ.",
 "Today so far: {n} AI requests":"Bugün şimdiye kadar: {n} yapay zekâ isteği",
-"Updated {t} · refreshes by itself every minute":"Güncellendi {t} · her dakika kendini yeniler"
+"Updated {t} · refreshes by itself every minute":"Güncellendi {t} · her dakika kendini yeniler",
+"Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"E-postası olmayan hesaplar, sahibi uygulamayı açıp kısa gizlilik notunu onayladığında görünür.",
+"Email not shared yet":"E-posta henüz paylaşılmadı",
+"{n} with email":"E-postalı {n}"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -14562,6 +14592,9 @@ window.I18N = {
 "Reading the numbers under the barcode…":"正在读取条形码下方的数字…",
 "Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"罐子或瓶子反光？稍微倾斜一下，避免光线反射到条形码上。",
 "Today so far: {n} AI requests":"今天截至目前：{n} 次 AI 请求",
-"Updated {t} · refreshes by itself every minute":"更新于 {t} · 每分钟自动刷新"
+"Updated {t} · refreshes by itself every minute":"更新于 {t} · 每分钟自动刷新",
+"Accounts without an email appear as soon as their owner opens the app and confirms the short privacy note.":"没有邮箱的账户会在其主人打开 App 并确认简短的隐私提示后显示。",
+"Email not shared yet":"尚未分享邮箱",
+"{n} with email":"{n} 个有邮箱"
 }
 };
