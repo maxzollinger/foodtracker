@@ -1329,7 +1329,17 @@ window.I18N = {
 "Calculating…":"Wird berechnet…",
 "Enter the name and amount: the numbers are filled in for you.":"Gib Name und Menge ein: Die Zahlen werden für dich ausgefüllt.",
 "I mostly sit and do no sport":"Ich sitze meistens und mache keinen Sport",
-"No workouts":"Kein Training"
+"No workouts":"Kein Training",
+"Average":"Durchschnitt",
+"Body type":"Körpertyp",
+"Higher body fat":"Höherer Körperfettanteil",
+"Lean":"Schlank",
+"Optional. It makes your calorie goal more accurate if you are very muscular or carry more body fat.":"Optional. Dein Kalorienziel wird genauer, wenn du sehr muskulös bist oder mehr Körperfett hast.",
+"Pick the shape closest to you. It makes your goals more accurate if you are very muscular or carry more body fat. Tap it again to remove it.":"Wähl die Form, die dir am nächsten kommt. Deine Ziele werden genauer, wenn du sehr muskulös bist oder mehr Körperfett hast. Nochmal tippen zum Entfernen.",
+"Some extra fat":"Etwas mehr Fett",
+"Very lean / muscular":"Sehr schlank / muskulös",
+"Which body type is closest to you?":"Welcher Körpertyp passt am besten zu dir?",
+"Athletic":"Athletisch"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2660,7 +2670,17 @@ window.I18N = {
 "Calculating…":"Calculando…",
 "Enter the name and amount: the numbers are filled in for you.":"Introduce el nombre y la cantidad: los números se rellenan solos.",
 "I mostly sit and do no sport":"Paso mucho tiempo sentado y no hago deporte",
-"No workouts":"Sin entrenar"
+"No workouts":"Sin entrenar",
+"Average":"Promedio",
+"Body type":"Tipo de cuerpo",
+"Higher body fat":"Más grasa corporal",
+"Lean":"Delgado",
+"Optional. It makes your calorie goal more accurate if you are very muscular or carry more body fat.":"Opcional. Hace más preciso tu objetivo de calorías si eres muy musculoso o tienes más grasa corporal.",
+"Pick the shape closest to you. It makes your goals more accurate if you are very muscular or carry more body fat. Tap it again to remove it.":"Elige la forma más parecida a ti. Tus objetivos serán más precisos si eres muy musculoso o tienes más grasa corporal. Tócala otra vez para quitarla.",
+"Some extra fat":"Algo de grasa extra",
+"Very lean / muscular":"Muy delgado / musculoso",
+"Which body type is closest to you?":"¿Qué tipo de cuerpo se parece más al tuyo?",
+"Athletic":"Atlético"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3991,7 +4011,17 @@ window.I18N = {
 "Calculating…":"Calcul…",
 "Enter the name and amount: the numbers are filled in for you.":"Saisis le nom et la quantité : les chiffres sont remplis pour toi.",
 "I mostly sit and do no sport":"Je suis surtout assis et ne fais pas de sport",
-"No workouts":"Pas de sport"
+"No workouts":"Pas de sport",
+"Average":"Moyen",
+"Body type":"Morphologie",
+"Higher body fat":"Plus de masse grasse",
+"Lean":"Mince",
+"Optional. It makes your calorie goal more accurate if you are very muscular or carry more body fat.":"Facultatif. Ton objectif calorique devient plus précis si tu es très musclé ou as plus de masse grasse.",
+"Pick the shape closest to you. It makes your goals more accurate if you are very muscular or carry more body fat. Tap it again to remove it.":"Choisis la silhouette la plus proche de toi. Tes objectifs seront plus précis si tu es très musclé ou as plus de masse grasse. Touche-la à nouveau pour la retirer.",
+"Some extra fat":"Un peu de gras en plus",
+"Very lean / muscular":"Très sec / musclé",
+"Which body type is closest to you?":"Quelle morphologie te ressemble le plus ?",
+"Athletic":"Athlétique"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5322,7 +5352,17 @@ window.I18N = {
 "Calculating…":"Calcolo…",
 "Enter the name and amount: the numbers are filled in for you.":"Inserisci nome e quantità: i numeri vengono compilati per te.",
 "I mostly sit and do no sport":"Sto per lo più seduto e non faccio sport",
-"No workouts":"Nessun allenamento"
+"No workouts":"Nessun allenamento",
+"Average":"Nella media",
+"Body type":"Tipo di corpo",
+"Higher body fat":"Più grasso corporeo",
+"Lean":"Magro",
+"Optional. It makes your calorie goal more accurate if you are very muscular or carry more body fat.":"Facoltativo. Rende più preciso il tuo obiettivo calorico se sei molto muscoloso o hai più grasso corporeo.",
+"Pick the shape closest to you. It makes your goals more accurate if you are very muscular or carry more body fat. Tap it again to remove it.":"Scegli la forma più vicina a te. I tuoi obiettivi saranno più precisi se sei molto muscoloso o hai più grasso corporeo. Toccala di nuovo per toglierla.",
+"Some extra fat":"Un po’ di grasso in più",
+"Very lean / muscular":"Molto magro / muscoloso",
+"Which body type is closest to you?":"Quale tipo di corpo ti somiglia di più?",
+"Athletic":"Atletico"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6653,7 +6693,17 @@ window.I18N = {
 "Calculating…":"計算中…",
 "Enter the name and amount: the numbers are filled in for you.":"名前と量を入力すると、数値が自動で入ります。",
 "I mostly sit and do no sport":"ほとんど座っていて運動はしない",
-"No workouts":"運動なし"
+"No workouts":"運動なし",
+"Average":"標準",
+"Body type":"体型",
+"Higher body fat":"体脂肪多め",
+"Lean":"やせ型",
+"Optional. It makes your calorie goal more accurate if you are very muscular or carry more body fat.":"任意です。筋肉がとても多い方や体脂肪が多めの方は、カロリー目標がより正確になります。",
+"Pick the shape closest to you. It makes your goals more accurate if you are very muscular or carry more body fat. Tap it again to remove it.":"いちばん近い体型を選んでください。筋肉がとても多い方や体脂肪が多めの方は目標がより正確になります。もう一度タップで解除できます。",
+"Some extra fat":"少し脂肪あり",
+"Very lean / muscular":"とても引き締まった / 筋肉質",
+"Which body type is closest to you?":"いちばん近い体型はどれですか？",
+"Athletic":"アスリート体型"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -7984,7 +8034,17 @@ window.I18N = {
 "Calculating…":"Berekenen…",
 "Enter the name and amount: the numbers are filled in for you.":"Voer naam en hoeveelheid in: de getallen worden voor je ingevuld.",
 "I mostly sit and do no sport":"Ik zit vooral en sport niet",
-"No workouts":"Geen training"
+"No workouts":"Geen training",
+"Average":"Gemiddeld",
+"Body type":"Lichaamstype",
+"Higher body fat":"Hoger vetpercentage",
+"Lean":"Slank",
+"Optional. It makes your calorie goal more accurate if you are very muscular or carry more body fat.":"Optioneel. Je caloriedoel wordt nauwkeuriger als je erg gespierd bent of meer lichaamsvet hebt.",
+"Pick the shape closest to you. It makes your goals more accurate if you are very muscular or carry more body fat. Tap it again to remove it.":"Kies de vorm die het meest op jou lijkt. Je doelen worden nauwkeuriger als je erg gespierd bent of meer lichaamsvet hebt. Tik nog eens om te verwijderen.",
+"Some extra fat":"Wat extra vet",
+"Very lean / muscular":"Heel slank / gespierd",
+"Which body type is closest to you?":"Welk lichaamstype lijkt het meest op jou?",
+"Athletic":"Atletisch"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9315,7 +9375,17 @@ window.I18N = {
 "Calculating…":"Obliczam…",
 "Enter the name and amount: the numbers are filled in for you.":"Wpisz nazwę i ilość: liczby uzupełnią się same.",
 "I mostly sit and do no sport":"Głównie siedzę i nie uprawiam sportu",
-"No workouts":"Bez treningów"
+"No workouts":"Bez treningów",
+"Average":"Przeciętna",
+"Body type":"Typ sylwetki",
+"Higher body fat":"Więcej tkanki tłuszczowej",
+"Lean":"Szczupła",
+"Optional. It makes your calorie goal more accurate if you are very muscular or carry more body fat.":"Opcjonalnie. Cel kalorii będzie dokładniejszy, jeśli jesteś bardzo umięśniony lub masz więcej tkanki tłuszczowej.",
+"Pick the shape closest to you. It makes your goals more accurate if you are very muscular or carry more body fat. Tap it again to remove it.":"Wybierz sylwetkę najbardziej podobną do twojej. Cele będą dokładniejsze, jeśli jesteś bardzo umięśniony lub masz więcej tkanki tłuszczowej. Stuknij ponownie, aby usunąć.",
+"Some extra fat":"Trochę więcej tłuszczu",
+"Very lean / muscular":"Bardzo szczupła / umięśniona",
+"Which body type is closest to you?":"Która sylwetka jest najbliższa twojej?",
+"Athletic":"Atletyczna"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -10646,7 +10716,17 @@ window.I18N = {
 "Calculating…":"A calcular…",
 "Enter the name and amount: the numbers are filled in for you.":"Introduza o nome e a quantidade: os números são preenchidos por si.",
 "I mostly sit and do no sport":"Passo a maior parte do tempo sentado e não faço desporto",
-"No workouts":"Sem treino"
+"No workouts":"Sem treino",
+"Average":"Média",
+"Body type":"Tipo de corpo",
+"Higher body fat":"Mais gordura corporal",
+"Lean":"Magro",
+"Optional. It makes your calorie goal more accurate if you are very muscular or carry more body fat.":"Opcional. Torna a sua meta de calorias mais precisa se for muito musculado ou tiver mais gordura corporal.",
+"Pick the shape closest to you. It makes your goals more accurate if you are very muscular or carry more body fat. Tap it again to remove it.":"Escolha a forma mais parecida consigo. As suas metas ficam mais precisas se for muito musculado ou tiver mais gordura corporal. Toque de novo para remover.",
+"Some extra fat":"Alguma gordura extra",
+"Very lean / muscular":"Muito magro / musculado",
+"Which body type is closest to you?":"Que tipo de corpo é mais parecido com o seu?",
+"Athletic":"Atlético"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -11977,7 +12057,17 @@ window.I18N = {
 "Calculating…":"Считаю…",
 "Enter the name and amount: the numbers are filled in for you.":"Введите название и количество: цифры заполнятся сами.",
 "I mostly sit and do no sport":"В основном сижу и не занимаюсь спортом",
-"No workouts":"Без тренировок"
+"No workouts":"Без тренировок",
+"Average":"Среднее",
+"Body type":"Тип телосложения",
+"Higher body fat":"Больше жира",
+"Lean":"Стройное",
+"Optional. It makes your calorie goal more accurate if you are very muscular or carry more body fat.":"По желанию. Цель по калориям станет точнее, если вы очень мускулисты или у вас больше жира.",
+"Pick the shape closest to you. It makes your goals more accurate if you are very muscular or carry more body fat. Tap it again to remove it.":"Выберите фигуру, ближе всего к вашей. Цели станут точнее, если вы очень мускулисты или у вас больше жира. Нажмите ещё раз, чтобы убрать.",
+"Some extra fat":"Немного лишнего жира",
+"Very lean / muscular":"Очень сухое / мускулистое",
+"Which body type is closest to you?":"Какой тип телосложения ближе всего к вашему?",
+"Athletic":"Атлетическое"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -13308,7 +13398,17 @@ window.I18N = {
 "Calculating…":"Hesaplanıyor…",
 "Enter the name and amount: the numbers are filled in for you.":"Adı ve miktarı gir: sayılar senin için doldurulur.",
 "I mostly sit and do no sport":"Çoğunlukla oturuyorum ve spor yapmıyorum",
-"No workouts":"Antrenman yok"
+"No workouts":"Antrenman yok",
+"Average":"Ortalama",
+"Body type":"Vücut tipi",
+"Higher body fat":"Daha yüksek yağ oranı",
+"Lean":"İnce",
+"Optional. It makes your calorie goal more accurate if you are very muscular or carry more body fat.":"İsteğe bağlı. Çok kaslıysan veya daha fazla vücut yağın varsa kalori hedefin daha doğru olur.",
+"Pick the shape closest to you. It makes your goals more accurate if you are very muscular or carry more body fat. Tap it again to remove it.":"Sana en yakın şekli seç. Çok kaslıysan veya daha fazla vücut yağın varsa hedeflerin daha doğru olur. Kaldırmak için tekrar dokun.",
+"Some extra fat":"Biraz fazla yağ",
+"Very lean / muscular":"Çok ince / kaslı",
+"Which body type is closest to you?":"Hangi vücut tipi sana en yakın?",
+"Athletic":"Atletik"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -14639,6 +14739,16 @@ window.I18N = {
 "Calculating…":"计算中…",
 "Enter the name and amount: the numbers are filled in for you.":"输入名称和分量：数值会自动填好。",
 "I mostly sit and do no sport":"我大多坐着，不运动",
-"No workouts":"不运动"
+"No workouts":"不运动",
+"Average":"中等",
+"Body type":"体型",
+"Higher body fat":"体脂较高",
+"Lean":"偏瘦",
+"Optional. It makes your calorie goal more accurate if you are very muscular or carry more body fat.":"可选。如果你肌肉很多或体脂较多，热量目标会更准确。",
+"Pick the shape closest to you. It makes your goals more accurate if you are very muscular or carry more body fat. Tap it again to remove it.":"选择最接近你的体型。如果你肌肉很多或体脂较多，目标会更准确。再次点按可取消。",
+"Some extra fat":"稍有多余脂肪",
+"Very lean / muscular":"非常精瘦 / 肌肉型",
+"Which body type is closest to you?":"哪种体型最接近你？",
+"Athletic":"健美型"
 }
 };
