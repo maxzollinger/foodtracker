@@ -544,6 +544,7 @@ body.typing .chatbar{bottom:0;padding-bottom:6px}
 .msg.new{animation:msgIn .35s ease}
 @keyframes msgIn{from{opacity:0;transform:translateY(8px)}}
 .memnote{font-size:12px;color:var(--muted);margin-top:8px;font-weight:600}
+.msgtime{align-self:flex-end;font-size:11px;color:var(--muted);margin:-8px 6px 0;font-variant-numeric:tabular-nums}
 .msg.user{align-self:flex-end;background:var(--chip);color:var(--text);border-radius:18px;padding:10px 16px}
 .msg.ai{align-self:stretch;max-width:100%;background:none;padding:2px 2px 6px;border-radius:0}
 .msg.err{background:transparent;box-shadow:inset 0 0 0 1.5px var(--bad);color:var(--bad);padding:10px 14px;border-radius:14px}
@@ -935,7 +936,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v125';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v126';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1825,10 +1826,11 @@ function aiCount(i) {
   for (const k of Object.keys(c)) if (k < addDays(d, -8)) delete c[k];
   LS.set('ft_aic', JSON.stringify(c));
 }
-const aiReport = () => { try { const c = JSON.parse(LS.get('ft_aic', '{}')) || {}, d = iso(); return Object.fromEntries(Object.entries(c).filter(([k]) => k < d)); } catch { return {}; } };
+// AI use per day as running totals, today included (the server keeps the highest number per day, so sending again is safe)
+const aiReport = () => { try { return JSON.parse(LS.get('ft_aic', '{}')) || {}; } catch { return {}; } };
 function aiReported(rep) {
   let c = {}; try { c = JSON.parse(LS.get('ft_aic', '{}')) || {}; } catch {}
-  for (const k of Object.keys(rep)) delete c[k];
+  const d = iso(); for (const k of Object.keys(rep)) if (k < d) delete c[k];   // finished days are done; today keeps counting
   LS.set('ft_aic', JSON.stringify(c));
 }
 const devId = () => { let d = LS.get('ft_dev', ''); if (!/^[a-f0-9]{32}$/.test(d)) { d = hexOf(crypto.getRandomValues(new Uint8Array(16))); LS.set('ft_dev', d); } return d; };
@@ -2030,7 +2032,8 @@ function openDescribeSheet() {
 function openBarcodeSheet() {
   sheet(`<h3>${T('Scan barcode')}</h3><p class="muted" style="margin-top:4px">${T('Hold the barcode inside the frame. It scans by itself.')}</p>
     <div id="bLive" class="barlive"><div class="small" style="padding:46px 10px;text-align:center;color:#bbb"><span class="spin"></span> ${T('Starting camera…')}</div></div>
-    <p class="small" id="bMsg" style="min-height:20px;margin:10px 0 0;text-align:center"></p>
+    <p class="small muted" style="margin:10px 0 0;text-align:center">💡 ${T('Shiny can or bottle? Tilt it a little so the light does not reflect on the code.')}</p>
+    <p class="small" id="bMsg" style="min-height:20px;margin:6px 0 0;text-align:center"></p>
     <button class="btn outline" id="bShot" style="margin-top:6px">📷 ${T('Take photo of barcode')}</button>
     <div class="lbl" style="text-align:center;margin:14px 0 8px">${T('or type the number')}</div>
     <div class="row"><input id="bCode" inputmode="numeric" placeholder="4008400402222"><button class="btn sm" id="bLook">${T('Find')}</button></div>`, s => {
@@ -2044,9 +2047,9 @@ $('#fileBar').onchange = async e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f) return;
   bMsg(`<span class="spin"></span> ${T('Reading barcode…')}`);
   try {
-    const img = new Image(); img.src = await scaleImage(f, 1800); await img.decode();
-    const found = await (await getDetector()).detect(img);
-    const code = found && found[0] ? String(found[0].rawValue).replace(/\D/g, '') : '';
+    const url = await scaleImage(f, 1800), img = new Image(); img.src = url; await img.decode();
+    let code = await readCode(img, 'hard');
+    if (!code) { bMsg(`<span class="spin"></span> ${T('Reading the numbers under the barcode…')}`); code = await aiReadCode(url); }
     if (!code) throw new Error('none');
     if ($('#bCode')) $('#bCode').value = code;
     lookupBarcode(code);
@@ -3247,12 +3250,14 @@ function startTrackerLink(p) {
 /* ================= Users count =================
    Each phone says "hello" once a day with a random number, so the owner can see how many people use the
    app. Nothing else is sent: no name, email or food data. The owner sees the totals in Settings (admin). */
+// Once a day, and when the phone used AI since the last report (at most every 30 minutes, so the owner's numbers stay
+// live without many server saves)
 function sayHello() {
-  if (!SERVER_URL || !db.profile || OLD_HOME || !window.crypto || acct()) return;   // with an account the daily backup says it
-  const today = iso(); if (LS.get('ft_hello', '') === today) return;
-  const rep = aiReport();
+  if (!SERVER_URL || !db.profile || OLD_HOME || !window.crypto) return;
+  const today = iso(), rep = aiReport(), sig = JSON.stringify(rep);
+  if (LS.get('ft_hello', '') === today && (sig === LS.get('ft_hello_sig', '') || Date.now() - +LS.get('ft_hello_t', 0) < 30 * 60e3)) return;
   fetch(SERVER_URL + '/hello', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ d: devId(), ai: rep }) })
-    .then(r => { if (r.ok) { LS.set('ft_hello', today); aiReported(rep); } }).catch(() => {});
+    .then(r => { if (r.ok) { LS.set('ft_hello', today); LS.set('ft_hello_t', String(Date.now())); LS.set('ft_hello_sig', sig); aiReported(rep); } }).catch(() => {});
 }
 function usersCard() {
   if (!isAdmin() || !SERVER_URL) return '';
@@ -3265,7 +3270,7 @@ function usersCard() {
 }
 async function loadUsers() {
   const box = $('#usBody'); if (!box) return;
-  box.innerHTML = '<span class="spin"></span>';
+  if (!usersAt || !box.children.length) box.innerHTML = '<span class="spin"></span>';
   try {
     const r = await fetch(SERVER_URL + '/stats', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + LS.get('ft_admin_token', '') } });
     if (r.status === 403) {
@@ -3275,6 +3280,7 @@ async function loadUsers() {
     }
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const st = await r.json(), max = Math.max(1, ...st.days.map(x => x.n));
+    usersAt = Date.now();
     const tile = (n, l) => `<div style="background:var(--chip);border-radius:14px;padding:10px 6px"><div style="font-size:22px;font-weight:800">${n}</div><div class="small muted" style="font-weight:600;line-height:1.2">${l}</div></div>`;
     box.innerHTML = `<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
         ${tile(st.total, T('Total users'))}${tile(st.today, T('Active today'))}${tile(st.week, T('This week'))}
@@ -3287,9 +3293,11 @@ async function loadUsers() {
       ${(() => { const ai = st.ai || [], y = ai[ai.length - 1] || { n: 0, refused: 0, busy: 0 }, wk = ai.reduce((a, x) => a + x.n, 0), hit = ai.reduce((a, x) => a + x.busy, 0);
         return `<div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--line);text-align:left">
           <div class="spread"><b style="font-size:15px">✨ ${T('AI use')}</b><span class="small muted" style="font-weight:600">${T('Last 7 days: {n}', { n: wk.toLocaleString(LOC) })}</span></div>
+          ${st.aiToday ? `<div class="small" style="margin-top:6px"><b>${T('Today so far: {n} AI requests', { n: st.aiToday.n.toLocaleString(LOC) })}</b></div>` : ''}
           <div class="small" style="margin-top:6px">${T('Yesterday: {n} AI requests', { n: y.n.toLocaleString(LOC) })}${y.refused ? ` · ${T('{n} refused by Google', { n: y.refused })}` : ''}</div>
           <div class="small" style="margin-top:6px;font-weight:600;color:${hit ? 'var(--bad)' : 'var(--good)'}">${hit ? '⚠️ ' + T('People saw "AI busy" {n} times this week. You are close to the free limit.', { n: hit }) : '✓ ' + T('Within the free limit: nobody had to wait.')}</div>
-          <div class="small muted" style="margin-top:6px">${T('Phones report a day once they open the app the next day.')}</div></div>`; })()}`;
+          <div class="small muted" style="margin-top:6px">${T('Phones report their AI use at most every 30 minutes while the app is open.')}</div></div>`; })()}
+      <p class="small muted" style="margin:12px 0 0;text-align:center">${T('Updated {t} · refreshes by itself every minute', { t: fmtClock(new Date()) })}</p>`;
     if ($('#usAcc')) $('#usAcc').onclick = openAccountsList;
   } catch { box.innerHTML = `<p class="small muted" style="margin:0">${T('No connection')}</p>`; }
 }
@@ -3313,7 +3321,10 @@ async function openAccountsList() {
     const c = $('#alCopy'); if (c) c.onclick = async () => { try { await navigator.clipboard.writeText(withE.map(x => x.e).join('\n')); toast(T('✓ Copied')); } catch { toast(T('Could not copy')); } };
   } catch (e) { if (box) box.innerHTML = `<p class="small muted" style="margin:0">${esc(e.message === 'Failed to fetch' ? T('No connection') : e.message)}</p>`; }
 }
+let usersAt = 0, usersTimer = null;
 function bindUsersCard() {
+  clearInterval(usersTimer);   // live while the card is on screen
+  usersTimer = setInterval(() => { if (!$('#usBody')) return clearInterval(usersTimer); if (document.visibilityState === 'visible' && !$('.backdrop')) loadUsers(); }, 60e3);
   if ($('#usSave')) $('#usSave').onclick = () => { const v = $('#usTok').value.trim(); if (v.length < 10) return; LS.set('ft_admin_token', v); renderSettings(); };
   if ($('#usRef')) $('#usRef').onclick = loadUsers;
   if ($('#usBody')) loadUsers();
@@ -3539,6 +3550,42 @@ function getDetector() {
     return new m.BarcodeDetector({ formats });
   })().catch(e => { bdPromise = null; throw e; }));
 }
+// Shiny cans (silver codes), glare and codes that run up and down: when a normal read fails, the picture is
+// evened out (glare and metal shine divided away), given more contrast, turned 90° and zoomed into the middle.
+const eanOk = c => { if (!/^(\d{8}|\d{12,13})$/.test(c)) return false; const d = [...c].map(Number), chk = d.pop(); const s = d.reverse().reduce((a, v, i) => a + v * (i % 2 ? 1 : 3), 0); return (10 - s % 10) % 10 === chk; };
+function barVariants(src, quick) {
+  const W = src.videoWidth || src.naturalWidth || src.width, H = src.videoHeight || src.naturalHeight || src.height; if (!W || !H) return [];
+  const k = Math.min(1, (quick ? 900 : 1200) / Math.max(W, H)), w = Math.round(W * k), h = Math.round(H * k);
+  const mk = (cw, ch) => { const c = document.createElement('canvas'); c.width = cw; c.height = ch; return c; };
+  const base = mk(w, h), bx = base.getContext('2d', { willReadFrequently: true }); bx.drawImage(src, 0, 0, w, h);
+  const small = mk(Math.max(8, Math.round(w / 20)), Math.max(8, Math.round(h / 20))); small.getContext('2d').drawImage(base, 0, 0, small.width, small.height);
+  const bg = mk(w, h), gx = bg.getContext('2d', { willReadFrequently: true }); gx.imageSmoothingEnabled = true; gx.drawImage(small, 0, 0, w, h);
+  const a = bx.getImageData(0, 0, w, h), b = gx.getImageData(0, 0, w, h).data, n = w * h, flat = new Float32Array(n), gray = new Float32Array(n);
+  for (let i = 0; i < n; i++) { const j = i * 4, g = a.data[j] * .299 + a.data[j + 1] * .587 + a.data[j + 2] * .114, bgv = b[j] * .299 + b[j + 1] * .587 + b[j + 2] * .114; gray[i] = g; flat[i] = g / Math.max(bgv, 8); }
+  const stretch = arr => { const sorted = Float32Array.from(arr).sort(), lo = sorted[Math.floor(n * .02)], hi = sorted[Math.floor(n * .98)] || lo + 1;
+    const out = mk(w, h), ox = out.getContext('2d'), im = ox.createImageData(w, h);
+    for (let i = 0; i < n; i++) { const v = clamp((arr[i] - lo) / (hi - lo || 1) * 255, 0, 255); im.data[i * 4] = im.data[i * 4 + 1] = im.data[i * 4 + 2] = v; im.data[i * 4 + 3] = 255; }
+    ox.putImageData(im, 0, 0); return out; };
+  const turn = c => { const o = mk(c.height, c.width), x = o.getContext('2d'); x.translate(o.width, 0); x.rotate(Math.PI / 2); x.drawImage(c, 0, 0); return o; };
+  const zoom = c => { const o = mk(c.width, c.height); o.getContext('2d').drawImage(c, c.width * .2, c.height * .2, c.width * .6, c.height * .6, 0, 0, c.width, c.height); return o; };
+  const even = stretch(flat), strong = stretch(gray);
+  return quick ? [even, turn(even), turn(base)] : [even, strong, turn(base), turn(even), turn(strong), zoom(even), zoom(base), turn(zoom(even))];
+}
+async function readCode(src, mode) {   // mode: '' = quick read, 'live' = a few extra tries, 'hard' = everything
+  const det = await getDetector();
+  const one = async x => { try { const f = await det.detect(x); for (const r of f || []) { const c = String(r.rawValue).replace(/\D/g, ''); if (c.length >= 6) return c; } } catch {} return ''; };
+  let c = await one(src); if (c || !mode) return c;
+  for (const v of barVariants(src, mode === 'live')) { c = await one(v); if (c) return c; }
+  return '';
+}
+// Last try for a photo: the AI reads the digits printed under the barcode (only accepted if the check digit is right)
+async function aiReadCode(dataUrl) {
+  if (!hasAI()) return '';
+  try {
+    const r = await askAI([{ text: 'Read the barcode number (EAN-13, EAN-8 or UPC-A) in this photo. Use the digits printed under the bars, or read the bars. Return ONLY JSON {"code": "digits only, or empty if you cannot read it"}' }, { image: dataUrl.split(',')[1] }]);
+    const c = String(r.code || '').replace(/\D/g, ''); return eanOk(c) ? c : '';
+  } catch { return ''; }
+}
 let camStream = null, camOffT = null, scanLoop = null;
 async function getCamera() {
   clearTimeout(camOffT);
@@ -3556,13 +3603,13 @@ async function startBarScan() {
     box.innerHTML = '<video playsinline muted autoplay></video><div class="barframe"></div>';
     const v = box.querySelector('video'); v.srcObject = stream;
     try { await v.play(); } catch {}
-    let busy = false;
+    let busy = false, n = 0;
     const tick = async () => {
       if (!$('#bLive') || !v.isConnected) return stopBarScan();
       if (!busy && v.readyState >= 2) {
         busy = true;
         try {
-          const found = await det.detect(v), code = found && found[0] ? String(found[0].rawValue).replace(/\D/g, '') : '';
+          const code = await readCode(v, ++n % 8 === 0 ? 'live' : '');   // about once a second: the extra tries for shiny or turned codes
           if (code.length >= 6) {
             stopBarScan(); if (navigator.vibrate) navigator.vibrate(40);
             if ($('#bCode')) $('#bCode').value = code;
@@ -4748,7 +4795,7 @@ ${coachContext()}`;
 function chatBubble(m, anim) {
   const a = anim ? ' new' : '';
   return m.role === 'user'
-    ? `<div class="msg user${a}">${m.imgs && m.imgs.length > 1 ? `<div class="imgs">${m.imgs.map(u => `<img src="${u}" alt="">`).join('')}</div>` : m.imgs ? `<img src="${m.imgs[0]}" alt="">` : m.img ? `<img src="${m.img}" alt="">` : ''}${(m.files || (m.file ? [m.file] : [])).map(f => `<div class="filetag">📄 ${esc(f)}</div>`).join('')}${esc(m.text).replace(/\n/g, '<br>')}</div>`
+    ? `<div class="msg user${a}">${m.imgs && m.imgs.length > 1 ? `<div class="imgs">${m.imgs.map(u => `<img src="${u}" alt="">`).join('')}</div>` : m.imgs ? `<img src="${m.imgs[0]}" alt="">` : m.img ? `<img src="${m.img}" alt="">` : ''}${(m.files || (m.file ? [m.file] : [])).map(f => `<div class="filetag">📄 ${esc(f)}</div>`).join('')}${esc(m.text).replace(/\n/g, '<br>')}</div>${m.t ? `<div class="msgtime">${m.t < Date.parse(iso() + 'T00:00') ? fmtDate(iso(new Date(m.t)), { day: 'numeric', month: 'short' }) + ' ' : ''}${fmtClock(new Date(m.t))}</div>` : ''}`
     : `<div class="msg ai${a} ${m.err ? 'err' : ''}">${m.err ? esc(m.text) : md(m.text)}${m.mem ? `<div class="memnote">🧠 ${T('Remembered')}</div>` : ''}</div>`;
 }
 const CICON = {
@@ -4964,7 +5011,7 @@ async function sendChat(text) {
   const recent = chat.filter(m => !m.err).slice(-30), keptIdx = kept ? recent.findIndex(m => m.t === kept.t) : -1;
   const history = recent.map((m, i) => {
     const n = m.imgs ? m.imgs.length : m.img ? 1 : 0, fs = m.files || (m.file ? [m.file] : []);
-    const textPart = { text: m.text + (n ? `\n[${n} photo(s) attached]` : '') + (fs.length ? `\n[file(s) attached: ${fs.join(', ')}]` : '') };
+    const textPart = { text: m.text + (n ? `\n[${n} photo(s) attached]` : '') + (fs.length ? `\n[file(s) attached: ${fs.join(', ')}]` : '') + (m.role === 'user' && m.t ? `\n[sent earlier: ${new Date(m.t).toLocaleString('en-GB', { weekday: 'short', hour: '2-digit', minute: '2-digit' })}; this is NOT the current time]` : '') };
     return { role: m.role, parts: i === keptIdx && i >= recent.length - 12 ? [...kept.parts, textPart] : [textPart] };
   });
   const usesKept = keptIdx >= 0 && keptIdx >= recent.length - 12;
@@ -5846,7 +5893,7 @@ setInterval(() => { if (document.visibilityState === 'visible') linkSync(false);
 if (LS.get('ft_link_pick', '')) watchPickup();
 setTimeout(() => photoSync(false), 12000);
 setTimeout(sayHello, 7000);
-setInterval(sayHello, 60 * 60e3);
+setInterval(() => { if (document.visibilityState === 'visible') sayHello(); }, 5 * 60e3);
 setInterval(() => photoSync(false), 3 * 3600e3);
 if (sessionStorage.getItem('ft_restored')) { setTimeout(() => photoSync(true), 3000); sessionStorage.removeItem('ft_restored'); setTimeout(() => toast('✓ ' + T('Signed in. Your data is back.')), 4500); }
 </script>

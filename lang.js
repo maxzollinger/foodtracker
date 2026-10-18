@@ -1317,7 +1317,12 @@ window.I18N = {
 "Give me a lunch idea that fits my day":"Gib mir eine Mittagessen-Idee, die zu meinem Tag passt",
 "A snack idea for the afternoon?":"Eine Snack-Idee für den Nachmittag?",
 "What should I eat for dinner with what is left?":"Was soll ich zum Abendessen mit dem Rest essen?",
-"Is a late snack OK, and what would fit?":"Ist ein später Snack okay, und was würde passen?"
+"Is a late snack OK, and what would fit?":"Ist ein später Snack okay, und was würde passen?",
+"Phones report their AI use at most every 30 minutes while the app is open.":"Handys melden ihre KI-Nutzung höchstens alle 30 Minuten, solange die App offen ist.",
+"Reading the numbers under the barcode…":"Lese die Zahlen unter dem Barcode…",
+"Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Glänzende Dose oder Flasche? Kipp sie etwas, damit das Licht nicht auf dem Code spiegelt.",
+"Today so far: {n} AI requests":"Heute bisher: {n} KI-Anfragen",
+"Updated {t} · refreshes by itself every minute":"Aktualisiert {t} · aktualisiert sich jede Minute selbst"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2636,7 +2641,12 @@ window.I18N = {
 "Give me a lunch idea that fits my day":"Dame una idea de almuerzo que encaje con mi día",
 "A snack idea for the afternoon?":"¿Una idea de merienda para la tarde?",
 "What should I eat for dinner with what is left?":"¿Qué ceno con lo que me queda?",
-"Is a late snack OK, and what would fit?":"¿Está bien un tentempié tarde y qué encajaría?"
+"Is a late snack OK, and what would fit?":"¿Está bien un tentempié tarde y qué encajaría?",
+"Phones report their AI use at most every 30 minutes while the app is open.":"Los teléfonos informan de su uso de IA como máximo cada 30 minutos mientras la app está abierta.",
+"Reading the numbers under the barcode…":"Leyendo los números bajo el código de barras…",
+"Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"¿Lata o botella brillante? Inclínala un poco para que la luz no se refleje en el código.",
+"Today so far: {n} AI requests":"Hoy hasta ahora: {n} solicitudes de IA",
+"Updated {t} · refreshes by itself every minute":"Actualizado {t} · se actualiza solo cada minuto"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3955,7 +3965,12 @@ window.I18N = {
 "Give me a lunch idea that fits my day":"Donne-moi une idée de déjeuner adaptée à ma journée",
 "A snack idea for the afternoon?":"Une idée de goûter pour l’après-midi ?",
 "What should I eat for dinner with what is left?":"Que manger au dîner avec ce qu’il reste ?",
-"Is a late snack OK, and what would fit?":"Un en-cas tardif, c’est OK ? Et lequel ?"
+"Is a late snack OK, and what would fit?":"Un en-cas tardif, c’est OK ? Et lequel ?",
+"Phones report their AI use at most every 30 minutes while the app is open.":"Les téléphones signalent leur usage de l’IA au plus toutes les 30 minutes quand l’app est ouverte.",
+"Reading the numbers under the barcode…":"Lecture des chiffres sous le code-barres…",
+"Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Canette ou bouteille brillante ? Incline-la un peu pour que la lumière ne se reflète pas sur le code.",
+"Today so far: {n} AI requests":"Aujourd’hui jusqu’ici : {n} requêtes IA",
+"Updated {t} · refreshes by itself every minute":"Mis à jour {t} · se met à jour seul chaque minute"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5274,7 +5289,12 @@ window.I18N = {
 "Give me a lunch idea that fits my day":"Dammi un’idea per il pranzo adatta alla mia giornata",
 "A snack idea for the afternoon?":"Un’idea di spuntino per il pomeriggio?",
 "What should I eat for dinner with what is left?":"Cosa mangio a cena con quello che resta?",
-"Is a late snack OK, and what would fit?":"Uno spuntino tardi va bene? E cosa?"
+"Is a late snack OK, and what would fit?":"Uno spuntino tardi va bene? E cosa?",
+"Phones report their AI use at most every 30 minutes while the app is open.":"I telefoni segnalano l’uso dell’IA al massimo ogni 30 minuti mentre l’app è aperta.",
+"Reading the numbers under the barcode…":"Lettura dei numeri sotto il codice a barre…",
+"Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Lattina o bottiglia lucida? Inclinala un po’ così la luce non si riflette sul codice.",
+"Today so far: {n} AI requests":"Oggi finora: {n} richieste IA",
+"Updated {t} · refreshes by itself every minute":"Aggiornato {t} · si aggiorna da solo ogni minuto"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6593,7 +6613,12 @@ window.I18N = {
 "Give me a lunch idea that fits my day":"今日に合うランチのアイデアをください",
 "A snack idea for the afternoon?":"午後のおやつのアイデアは？",
 "What should I eat for dinner with what is left?":"残りの分で夕食は何を食べればいい？",
-"Is a late snack OK, and what would fit?":"夜遅くの軽食は大丈夫？何が合う？"
+"Is a late snack OK, and what would fit?":"夜遅くの軽食は大丈夫？何が合う？",
+"Phones report their AI use at most every 30 minutes while the app is open.":"アプリが開いている間、各スマホはAIの利用を最大30分ごとに報告します。",
+"Reading the numbers under the barcode…":"バーコードの下の数字を読み取り中…",
+"Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"光沢のある缶やボトル？光がコードに反射しないよう少し傾けてください。",
+"Today so far: {n} AI requests":"今日これまで：AIリクエスト {n} 件",
+"Updated {t} · refreshes by itself every minute":"{t} に更新・1分ごとに自動更新"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -7912,7 +7937,12 @@ window.I18N = {
 "Give me a lunch idea that fits my day":"Geef me een lunchidee dat bij mijn dag past",
 "A snack idea for the afternoon?":"Een snackidee voor de middag?",
 "What should I eat for dinner with what is left?":"Wat eet ik vanavond met wat er over is?",
-"Is a late snack OK, and what would fit?":"Is een late snack oké, en wat past?"
+"Is a late snack OK, and what would fit?":"Is een late snack oké, en wat past?",
+"Phones report their AI use at most every 30 minutes while the app is open.":"Telefoons melden hun AI-gebruik hoogstens elke 30 minuten zolang de app open is.",
+"Reading the numbers under the barcode…":"De cijfers onder de barcode lezen…",
+"Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Glimmend blikje of fles? Kantel het iets zodat het licht niet op de code weerkaatst.",
+"Today so far: {n} AI requests":"Vandaag tot nu toe: {n} AI-verzoeken",
+"Updated {t} · refreshes by itself every minute":"Bijgewerkt {t} · ververst zichzelf elke minuut"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9231,7 +9261,12 @@ window.I18N = {
 "Give me a lunch idea that fits my day":"Daj mi pomysł na obiad pasujący do mojego dnia",
 "A snack idea for the afternoon?":"Pomysł na popołudniową przekąskę?",
 "What should I eat for dinner with what is left?":"Co zjeść na kolację z tego, co zostało?",
-"Is a late snack OK, and what would fit?":"Czy późna przekąska jest OK i co by pasowało?"
+"Is a late snack OK, and what would fit?":"Czy późna przekąska jest OK i co by pasowało?",
+"Phones report their AI use at most every 30 minutes while the app is open.":"Telefony zgłaszają użycie AI najwyżej co 30 minut, gdy aplikacja jest otwarta.",
+"Reading the numbers under the barcode…":"Odczytuję cyfry pod kodem kreskowym…",
+"Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Błyszcząca puszka lub butelka? Przechyl ją lekko, żeby światło nie odbijało się od kodu.",
+"Today so far: {n} AI requests":"Dziś do tej pory: {n} zapytań AI",
+"Updated {t} · refreshes by itself every minute":"Zaktualizowano {t} · odświeża się co minutę"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -10550,7 +10585,12 @@ window.I18N = {
 "Give me a lunch idea that fits my day":"Dê-me uma ideia de almoço que encaixe no meu dia",
 "A snack idea for the afternoon?":"Uma ideia de lanche para a tarde?",
 "What should I eat for dinner with what is left?":"O que janto com o que me resta?",
-"Is a late snack OK, and what would fit?":"Um lanche tardio está bem? E o que encaixa?"
+"Is a late snack OK, and what would fit?":"Um lanche tardio está bem? E o que encaixa?",
+"Phones report their AI use at most every 30 minutes while the app is open.":"Os telemóveis reportam o uso de IA no máximo a cada 30 minutos com a app aberta.",
+"Reading the numbers under the barcode…":"A ler os números por baixo do código de barras…",
+"Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Lata ou garrafa brilhante? Incline-a um pouco para a luz não refletir no código.",
+"Today so far: {n} AI requests":"Hoje até agora: {n} pedidos de IA",
+"Updated {t} · refreshes by itself every minute":"Atualizado {t} · atualiza-se sozinho a cada minuto"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -11869,7 +11909,12 @@ window.I18N = {
 "Give me a lunch idea that fits my day":"Дай идею обеда, которая подходит к моему дню",
 "A snack idea for the afternoon?":"Идея перекуса на вторую половину дня?",
 "What should I eat for dinner with what is left?":"Что съесть на ужин из того, что осталось?",
-"Is a late snack OK, and what would fit?":"Можно ли поздний перекус и что подойдёт?"
+"Is a late snack OK, and what would fit?":"Можно ли поздний перекус и что подойдёт?",
+"Phones report their AI use at most every 30 minutes while the app is open.":"Телефоны сообщают об использовании ИИ не чаще раза в 30 минут, пока приложение открыто.",
+"Reading the numbers under the barcode…":"Читаю цифры под штрихкодом…",
+"Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Блестящая банка или бутылка? Слегка наклоните её, чтобы свет не отражался от кода.",
+"Today so far: {n} AI requests":"Сегодня пока: {n} запросов к ИИ",
+"Updated {t} · refreshes by itself every minute":"Обновлено {t} · обновляется само каждую минуту"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -13188,7 +13233,12 @@ window.I18N = {
 "Give me a lunch idea that fits my day":"Günüme uyan bir öğle yemeği fikri ver",
 "A snack idea for the afternoon?":"Öğleden sonra için bir atıştırmalık fikri?",
 "What should I eat for dinner with what is left?":"Kalanla akşam yemeğinde ne yiyeyim?",
-"Is a late snack OK, and what would fit?":"Geç bir atıştırmalık olur mu, ne uyar?"
+"Is a late snack OK, and what would fit?":"Geç bir atıştırmalık olur mu, ne uyar?",
+"Phones report their AI use at most every 30 minutes while the app is open.":"Telefonlar, uygulama açıkken yapay zekâ kullanımını en fazla 30 dakikada bir bildirir.",
+"Reading the numbers under the barcode…":"Barkodun altındaki sayılar okunuyor…",
+"Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"Parlak kutu ya da şişe mi? Işık koda yansımasın diye biraz eğ.",
+"Today so far: {n} AI requests":"Bugün şimdiye kadar: {n} yapay zekâ isteği",
+"Updated {t} · refreshes by itself every minute":"Güncellendi {t} · her dakika kendini yeniler"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -14507,6 +14557,11 @@ window.I18N = {
 "Give me a lunch idea that fits my day":"给我一个适合今天的午餐主意",
 "A snack idea for the afternoon?":"下午加餐吃什么？",
 "What should I eat for dinner with what is left?":"用剩下的额度晚餐吃什么？",
-"Is a late snack OK, and what would fit?":"晚上吃点夜宵可以吗？吃什么合适？"
+"Is a late snack OK, and what would fit?":"晚上吃点夜宵可以吗？吃什么合适？",
+"Phones report their AI use at most every 30 minutes while the app is open.":"App 打开时，各手机最多每 30 分钟报告一次 AI 使用情况。",
+"Reading the numbers under the barcode…":"正在读取条形码下方的数字…",
+"Shiny can or bottle? Tilt it a little so the light does not reflect on the code.":"罐子或瓶子反光？稍微倾斜一下，避免光线反射到条形码上。",
+"Today so far: {n} AI requests":"今天截至目前：{n} 次 AI 请求",
+"Updated {t} · refreshes by itself every minute":"更新于 {t} · 每分钟自动刷新"
 }
 };
