@@ -935,7 +935,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v121';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v122';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1698,9 +1698,16 @@ function openWeightSheet() {
 /* ================= AI analysis ================= */
 // Food names come back in the app language
 const foodPrompt = () => `You are an expert nutritionist powering a calorie tracking app.
-Identify every food and drink in the meal. Estimate each portion in grams using visual cues (plate size, cutlery, hands, packaging). Include cooking oils, sauces and dressings.
+Identify every food and drink in the meal. Getting the AMOUNT right matters most, so work it out step by step:
+1. Packaged food and drinks: read the label first and use the printed size and brand (e.g. "330 ml", "0,5 l", "250 g"). If it can't be read, use the standard size of that package: can 330 ml (slim can 250 ml, tall can 500 ml), small glass bottle 200-330 ml, plastic bottle 500 ml (small 330 ml), big bottle 1-1.5 l, juice box 200 ml, yogurt cup 125-150 g, chocolate bar 40-100 g. Judge the size of the package against things around it, never assume the biggest size.
+2. Count only what is there: for an open bottle, glass or cup, estimate how full it is and count only that part.
+3. Glasses and cups: small glass about 200 ml, normal glass 250-300 ml, mug 250-350 ml, takeaway cup 250 / 350 / 450 ml (small / medium / large), then adjust for how full it is.
+4. Food on plates and in bowls: measure against known sizes in the photo (dinner plate about 26 cm, side plate 20 cm, fork 19 cm, spoon 15 cm, smartphone 15 cm, adult hand about 18 cm long, can 12 cm high). Estimate the area and thickness of each food from that.
+5. Drinks and other liquids: "unit" is "ml" and "grams" is the volume in ml. Use the nutrition of exactly that drink: regular lemonade or soda about 35-45 kcal per 100 ml, diet / zero about 0-1, juice about 45, milk (3.5 %) 64, beer 43, wine 83.
+6. When unsure, choose the most typical portion of that item, not a large one. Never inflate portions.
+Include cooking oils, sauces and dressings. In "notes", say briefly which size you used and why (e.g. "330 ml can, label readable").
 Return ONLY JSON in this exact shape:
-{"name": "short appetising meal name", "items": [{"name": "ingredient", "grams": 0, "kcal": 0, "protein": 0, "carbs": 0, "fat": 0, "sugar": 0, "fiber": 0, "sodium": 0}], "health_score": 7, "notes": "short"}
+{"name": "short appetising meal name", "items": [{"name": "ingredient", "grams": 0, "unit": "g", "kcal": 0, "protein": 0, "carbs": 0, "fat": 0, "sugar": 0, "fiber": 0, "sodium": 0}], "health_score": 7, "notes": "short"}
 Numbers are for the whole portion (not per 100 g); macros, sugar and fiber in grams, sodium in milligrams. health_score is an integer 1-10 (10 = very healthy: whole foods, high protein and fibre, low sugar). If there is no food, return "items": [] and explain in notes.
 Write "name", every ingredient name and "notes" in ${langInfo().ai}.`;
 
@@ -1898,7 +1905,7 @@ async function claudeCall(key, msgs, system, json, onText) {
   lastAI = 'Claude'; return text;
 }
 const normItems = items => (items || []).map(it => ({
-  name: String(it.name || T('Food')), grams: r0(num(it.grams)), kcal: r0(num(it.kcal)),
+  name: String(it.name || T('Food')), grams: r0(num(it.grams)), ...(it.unit === 'ml' ? { unit: 'ml' } : {}), kcal: r0(num(it.kcal)),
   protein: r1(num(it.protein)), carbs: r1(num(it.carbs)), fat: r1(num(it.fat)),
   sugar: it.sugar == null ? null : r1(num(it.sugar)), fiber: it.fiber == null ? null : r1(num(it.fiber)), sodium: it.sodium == null ? null : r0(num(it.sodium))
 }));
@@ -1967,7 +1974,7 @@ setInterval(processQueue, 30e3);
 async function onFoodPhoto(file) {
   if (!file) return;
   try {
-    const full = await scaleImage(file, 960), thumb = await scaleImage(full, 480);
+    const full = await scaleImage(file, 1600, 0.85), thumb = await scaleImage(full, 480);   // sharp enough to read "330 ml" on a label
     addPending(thumb, [{ text: foodPrompt() }, { image: full.split(',')[1] }]);
   } catch (e) { toast(e.message); }
 }
@@ -4212,10 +4219,10 @@ function renderIngredients() {
   const box = $('#dIng'), m = det.m;
   const flabel = { kcal: N('Calories'), protein: N('Protein'), carbs: N('Carbs'), fat: N('Fats') };
   box.innerHTML = m.items.map((it, i) => `<div class="ing" data-i="${i}">
-    <button class="ing-head"><span><b data-h="name">${esc(it.name || T('New ingredient'))}</b><br><span class="small muted" data-h="grams">${num(it.grams) ? it.grams + ' g' : ''}</span></span>
+    <button class="ing-head"><span><b data-h="name">${esc(it.name || T('New ingredient'))}</b><br><span class="small muted" data-h="grams">${num(it.grams) ? it.grams + ' ' + (it.unit || 'g') : ''}</span></span>
       <span style="font-weight:600"><span data-h="kcal">${r0(it.kcal)}</span> kcal <span class="muted">${det.open === i ? '⌃' : '›'}</span></span></button>
     ${det.open === i ? `<div class="ing-edit">
-      <div class="row"><input data-f="name" value="${esc(it.name)}" placeholder="${T('Ingredient')}" class="grow"><input data-f="grams" inputmode="decimal" value="${it.grams}" style="width:90px;text-align:right"><span class="muted">g</span></div>
+      <div class="row"><input data-f="name" value="${esc(it.name)}" placeholder="${T('Ingredient')}" class="grow"><input data-f="grams" inputmode="decimal" value="${it.grams}" style="width:90px;text-align:right"><span class="muted">${it.unit || 'g'}</span></div>
       <div class="g4">${['kcal', 'protein', 'carbs', 'fat'].map(f => `<div><label class="lbl">${T(flabel[f])}</label><input data-f="${f}" inputmode="decimal" value="${it[f]}"></div>`).join('')}</div>
       <button class="chipbtn" data-rm style="margin-top:12px;color:var(--bad)">${T('Remove ingredient')}</button></div>` : ''}</div>`).join('')
     || `<p class="muted">${T('No ingredients yet.')}</p>`;
@@ -4229,7 +4236,7 @@ function renderIngredients() {
       const k = it.grams / it.base.grams;   // scale nutrition with portion size
       for (const x of ['kcal', 'protein', 'carbs', 'fat']) { it[x] = x === 'kcal' ? r0(it.base[x] * k) : r1(it.base[x] * k); card.querySelector(`[data-f="${x}"]`).value = it[x]; }
     } else setBase(it);
-    card.querySelector('[data-h=grams]').textContent = num(it.grams) ? it.grams + ' g' : '';
+    card.querySelector('[data-h=grams]').textContent = num(it.grams) ? it.grams + ' ' + (it.unit || 'g') : '';
     card.querySelector('[data-h=kcal]').textContent = r0(it.kcal);
     renderDetTotals();
   });
