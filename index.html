@@ -935,7 +935,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v123';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v124';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -4162,7 +4162,7 @@ function renderDetail() {
       <div class="herobar"><button class="circ" id="dBack">‹</button><span class="row" style="gap:10px"><button class="circ" id="dFav" aria-label="${T('Save to favorites')}">${isFav(m) ? '★' : '☆'}</button>${det.isNew ? '' : '<button class="circ" id="dDel">🗑</button>'}</span></div></div>
     <div class="dbody">
       <div class="spread"><span class="etime">${esc(fmtDate(m.date, { weekday: 'short', day: 'numeric', month: 'short' }))} · ${esc(fmtHM(m.time || ''))}</span></div>
-      <div class="spread" style="margin:8px 0 10px"><textarea class="tinput grow" id="dName" rows="1" placeholder="${T('Meal name')}">${esc(m.name)}</textarea></div>
+      <div class="spread" style="margin:8px 0 10px"><textarea class="tinput grow" id="dName" rows="1" enterkeyhint="done" placeholder="${T('Meal name')}">${esc(m.name)}</textarea></div>
       <div class="spread" style="margin-bottom:8px"><span class="small muted" style="font-weight:600">${T('Portion eaten')}</span>
         <div class="stepper sm"><button id="sMinus" aria-label="−">−</button><b id="sVal"></b><button id="sPlus" aria-label="+">+</button></div></div>
       <div class="portion"><div class="pchips" id="pChips">${PORTIONS.map(v => `<button data-por="${v}">${fmtPortion(v)}</button>`).join('')}</div></div>
@@ -4180,6 +4180,8 @@ function renderDetail() {
   // The name box grows so long names are shown in full
   const nameBox = pg.querySelector('#dName'), fit = () => { nameBox.style.height = 'auto'; nameBox.style.height = nameBox.scrollHeight + 'px'; };
   nameBox.oninput = e => { m.name = e.target.value.replace(/\n/g, ' '); fit(); };
+  // Enter on the keyboard works like Done (e.g. type "two pancakes", press Enter: the AI fills in the numbers)
+  nameBox.onkeydown = e => { if (e.key === 'Enter' && !e.shiftKey && !e.isComposing) { e.preventDefault(); m.name = nameBox.value.replace(/\n/g, ' '); nameBox.blur(); closeDetail(true); } };
   requestAnimationFrame(fit);
   // Portion eaten: the whole meal counts × this (½ = ate half), the ingredients stay as they are
   const setPor = v => {
