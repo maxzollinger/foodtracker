@@ -1012,7 +1012,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v141';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v142';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1208,7 +1208,7 @@ const use12h = () => { const v = LS.get('ft_time', ''); if (v) return v === '12'
 const fmtHM = t => { const m = /^(\d{1,2}):(\d{2})/.exec(t || ''); if (!m || !use12h()) return t || ''; const h = +m[1] % 24; return `${h % 12 || 12}:${m[2]} ${h < 12 ? 'AM' : 'PM'}`; };
 const fmtHour = h => fmtHM(String(h).padStart(2, '0') + ':00');
 const fmtClock = d => fmtHM(`${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`);
-const unitsName = () => { const u = units(), base = u.w === 'kg' && u.h === 'cm' && u.v === 'ml' ? T('Metric') : u.w === 'lb' && u.h === 'in' && u.v === 'oz' ? T('US') : `${u.w} · ${u.h === 'in' ? 'ft' : 'cm'} · ${u.v === 'oz' ? 'fl oz' : 'L'}`; return `${base} · ${use12h() ? '12h' : '24h'}`; };
+const unitsName = () => { const u = units(), base = u.w === 'kg' && u.h === 'cm' && u.v === 'ml' ? T('Metric') : u.w === 'lb' && u.h === 'in' && u.v === 'oz' ? T('US') : `${u.h === 'in' ? 'ft' : 'cm'} · ${u.w} · ${u.v === 'oz' ? 'fl oz' : 'L'}`; return `${base} · ${use12h() ? '12h' : '24h'}`; };
 function setUnits(u) { db.settings.units = { ...units(), ...u }; if (db.profile) save(); render(); }
 function openUnitsSheet() {
   const u = units(), row = (key, label, opts) => `<label class="lbl">${label}</label><div class="seg">${opts.map(([v, l]) => `<button data-u="${key}:${v}" class="${u[key] === v ? 'on' : ''}">${l}</button>`).join('')}</div>`;
@@ -6007,7 +6007,7 @@ function renderOb() {
     let h = '';
     if (isIn()) { const sel = Math.round(p.height / CM_IN); for (let i = 48; i <= 90; i++) h += `<option value="${r1(i * CM_IN)}" ${i === sel ? 'selected' : ''}>${Math.floor(i / 12)}′${i % 12}″</option>`; }
     else for (let c = 120; c <= 230; c++) h += `<option value="${c}" ${c === r0(p.height) ? 'selected' : ''}>${c} cm</option>`;
-    body = `<div class="seg" style="margin-bottom:14px"><button data-obu="metric" class="${isLb() ? '' : 'on'}">kg · cm</button><button data-obu="us" class="${isLb() ? 'on' : ''}">lb · ft</button></div><div class="row"><div class="grow"><label class="lbl">${T('Height')}</label><select id="obH">${h}</select></div><div class="grow"><label class="lbl">${T('Weight')}</label><select id="obW">${kgOpts(isLb() ? p.weight : Math.round(p.weight * 2) / 2, 35, 250)}</select></div></div>`; }
+    body = `<div class="seg" style="margin-bottom:14px"><button data-obu="metric" class="${isLb() ? '' : 'on'}">cm · kg</button><button data-obu="us" class="${isLb() ? 'on' : ''}">ft · lb</button></div><div class="row"><div class="grow"><label class="lbl">${T('Height')}</label><select id="obH">${h}</select></div><div class="grow"><label class="lbl">${T('Weight')}</label><select id="obW">${kgOpts(isLb() ? p.weight : Math.round(p.weight * 2) / 2, 35, 250)}</select></div></div>`; }
   if (s === 'btype') { title = T('Which body type is closest to you?'); sub = T('Optional. It makes your calorie goal more accurate if you are very muscular or carry more body fat.');
     body = bodyTypeTiles(p.bodyType || 0, p.sex); cta = p.bodyType ? T('Continue') : T('Skip'); }
   if (s === 'birth') { title = T('When were you born?'); sub = calib;
