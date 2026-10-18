@@ -783,6 +783,15 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .bt.on b{color:var(--on-ink)}
 .onb .bt:not(.on){background-color:var(--card);background-image:var(--sheen);box-shadow:var(--shadow)}
 .onb .bt-grid{gap:8px}
+/* Setup: the main button stays on screen; the plan page fits one screen */
+.onb #obNext{position:sticky;bottom:calc(12px + env(safe-area-inset-bottom));z-index:2}
+.onb.ready h1{font-size:26px;margin:14px 0 6px}
+.onb.ready .sub{margin:0 0 16px;font-size:14px}
+.onb.ready .plan4{grid-template-columns:repeat(4,1fr);gap:7px}
+.onb.ready .plan4 .card{padding:10px 2px 12px;gap:8px;border-radius:18px}
+.onb.ready .plan4 .card>span{font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.onb.ready .tip{font-size:13px;line-height:1.5;padding:12px 14px;margin-top:12px}
+.onb.ready #obNext{margin-top:14px!important}
 .onb .bt svg{height:110px}
 /* Loading: the app logo turning in the middle of the screen */
 #busy{position:fixed;inset:0;z-index:2600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;
@@ -1012,7 +1021,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v143';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v144';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -6057,12 +6066,12 @@ function renderOb() {
     sub = [`${planOf(p).ic} ${T(planOf(p).name)}`, ...goalExtras(p)].join(' · ');
     body = `${reach}<b>${T('Daily recommendation')}</b><p class="small muted" style="margin:2px 0 12px">${T('You can edit this any time in Settings.')}</p>
       <div class="plan4">${[['🔥', T('Calories'), t.kcal, '', 'var(--ink)'], ['🌾', T('Carbs'), t.carbs, 'g', 'var(--carbs)'], ['🍗', T('Protein'), t.protein, 'g', 'var(--protein)'], ['🥑', T('Fats'), t.fat, 'g', 'var(--fat)']]
-        .map(([ic, l, v, u, c]) => `<div class="card"><span class="small" style="font-weight:600">${ic} ${l}</span>${ring(80, 7, 0.75, c, `<b style="font-size:17px">${v}${u}</b>`)}</div>`).join('')}</div>
+        .map(([ic, l, v, u, c]) => `<div class="card"><span class="small" style="font-weight:600">${ic} ${l}</span>${ring(62, 6, 0.75, c, `<b style="font-size:14px">${v}${u}</b>`)}</div>`).join('')}</div>
       <div class="tip"><b>${T('How to reach your goals')}</b><br>${planTips(p).join('<br>')}</div>`;
     cta = T("Let's get started!");
   }
   const pct = ob.step / (OB.length - 1) * 100;
-  pg.innerHTML = `<div class="onb"><div class="onb-top"><button class="onb-back" id="obBack">←</button><div class="prog"><i style="width:${pct}%"></i></div></div>
+  pg.innerHTML = `<div class="onb ${s === 'ready' ? 'ready' : ''}"><div class="onb-top"><button class="onb-back" id="obBack">←</button><div class="prog"><i style="width:${pct}%"></i></div></div>
     <h1>${title}</h1>${sub ? `<p class="sub">${sub}</p>` : '<div style="height:20px"></div>'}
     <div class="onb-body">${body}</div>
     <button class="btn" id="obNext" ${ok ? '' : 'disabled'} style="margin-top:20px">${cta}</button></div>`;
