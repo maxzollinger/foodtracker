@@ -770,9 +770,13 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 /* Body type pictures */
 .bt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
 .bt{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 2px 8px;border-radius:14px;background:var(--chip);color:var(--muted);min-width:0;text-align:center}
-.bt svg{width:100%;max-width:44px;height:64px;fill:currentColor;margin-bottom:4px}
+.bt{color:color-mix(in srgb,var(--water) 55%,var(--muted))}
+.bt svg{width:100%;max-width:44px;height:66px;fill:currentColor;margin-bottom:4px;overflow:visible}
+.bt .bt-hair{opacity:.55}
+.bt.on svg{color:color-mix(in srgb,var(--water) 75%,var(--on-ink))}
 .bt b{font-size:10.5px;line-height:1.15;color:var(--text);font-weight:700;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto}
-.bt small{font-size:10px;font-weight:600;font-variant-numeric:tabular-nums}
+.bt small{font-size:10px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--muted)}
+.bt.on small{color:var(--on-ink);opacity:.7}
 .bt.on{background:var(--ink);color:var(--on-ink);background-image:var(--btnimg);box-shadow:var(--btnshadow)}
 .bt.on b{color:var(--on-ink)}
 .onb .bt:not(.on){background-color:var(--card);background-image:var(--sheen);box-shadow:var(--shadow)}
@@ -950,7 +954,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v132';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v133';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1274,15 +1278,20 @@ const BODY_TYPES = [N('Athletic'), N('Lean'), N('Average'), N('Some extra fat'),
 const BT_FAT = { m: [10, 15, 21, 28, 35], f: [18, 22, 28, 35, 42], o: [14, 18, 24, 31, 38] };
 const BT_RANGE = { m: ['8–12 %', '13–17 %', '18–24 %', '25–31 %', '32 %+'], f: ['16–19 %', '20–24 %', '25–31 %', '32–38 %', '39 %+'], o: ['12–16 %', '17–21 %', '22–27 %', '28–34 %', '35 %+'] };
 const bodyFat = p => p && p.bodyType >= 1 && p.bodyType <= 5 ? BT_FAT[p.sex === 'f' ? 'f' : p.sex === 'm' ? 'm' : 'o'][p.bodyType - 1] : null;
-function bodySVG(type, sex) {   // a simple, neutral front shape
-  const T5 = sex === 'f' ? [[12.5, 8.5, 13.5, 3.2], [12.8, 10, 14.3, 3.4], [13.3, 12, 15.5, 3.8], [14, 14.5, 17, 4.3], [15, 17.5, 19, 4.9]]
-    : sex === 'm' ? [[17, 9.5, 11.5, 4.6], [15.5, 10.5, 12, 4], [15, 12.5, 13, 4], [15.5, 15, 14.5, 4.5], [16.5, 18.5, 16.5, 5]]
-    : [[15, 9, 12.5, 3.9], [14.2, 10.3, 13, 3.7], [14.2, 12.3, 14.2, 3.9], [14.8, 14.8, 15.8, 4.4], [15.8, 18, 17.8, 5]];
-  const [S, W, H, A] = T5[type - 1], c = 30;
-  return `<svg viewBox="0 0 60 100" aria-hidden="true"><circle cx="30" cy="11" r="7"/><rect x="27" y="16" width="6" height="7" rx="2"/>
-    <path d="M${c - S} 26 Q${c} 21 ${c + S} 26 Q${c + S + 1} 38 ${c + W} 46 Q${c + H + 1.5} 53 ${c + H} 62 L${c - H} 62 Q${c - H - 1.5} 53 ${c - W} 46 Q${c - S - 1} 38 ${c - S} 26Z"/>
-    <path d="M${c - S + 1} 28 L${c - S - 3 - W * .12} 58 M${c + S - 1} 28 L${c + S + 3 + W * .12} 58" stroke="currentColor" stroke-width="${A}" stroke-linecap="round" fill="none"/>
-    <path d="M${c - H} 61 L${c - 1.2} 61 L${c - 2.6} 96 L${c - H + 3.4} 96Z M${c + 1.2} 61 L${c + H} 61 L${c + H - 3.4} 96 L${c + 2.6} 96Z"/></svg>`;
+function bodySVG(type, sex) {   // soft, neutral front shapes; women and men drawn differently
+  const M = [[16.2, 15, 9.6, 10.8, 4.3], [15, 14, 10.6, 11.2, 3.9], [14.6, 14, 12.6, 12.6, 4], [15, 15.6, 15.2, 14.2, 4.4], [16, 17.2, 18.2, 16.4, 4.9]];
+  const F = [[12.4, 12.2, 8.6, 13.2, 3.2], [12.6, 12.8, 9.9, 14, 3.3], [13, 13.6, 11.9, 15.4, 3.6], [13.6, 15, 14.3, 17, 4.1], [14.6, 16.8, 17.1, 19, 4.7]];
+  const f = sex === 'f', m = sex === 'm', P = f ? F[type - 1] : m ? M[type - 1] : M[type - 1].map((v, i) => (v + F[type - 1][i]) / 2);
+  const [S, C, W, H, A] = P, c = 30, n = v => +v.toFixed(2), L = x => n(c - x), R = x => n(c + x), gap = n(Math.max(0.5, 1.6 - (H - 11) * 0.12));
+  const torso = `M${L(3.4)} 21 C${L(3.4)} 24 ${L(S - 2)} 24 ${L(S)} 27.6 C${L(S + 0.8)} 31 ${L(C)} 32.5 ${L(C)} 36.5 C${L(C)} 42 ${L(W)} 43.5 ${L(W)} 48.5 C${L(W)} 54 ${L(H)} 55 ${L(H)} 61`
+    + ` C${L(H + 0.3)} 74 ${L(H - 1.6)} 86 ${L(5.6)} 99 Q${L(6)} 103.2 ${L(3.4)} 103.4 L${L(1.8)} 103.4 Q${L(gap)} 103 ${L(gap + 0.2)} 99.5 C${L(gap + 0.4)} 88 ${L(gap)} 76 ${L(gap)} ${n(66 + (H - 11) * 0.3)}`
+    + ` Q${c} ${n(63 + (H - 11) * 0.3)} ${R(gap)} ${n(66 + (H - 11) * 0.3)} C${R(gap)} 76 ${R(gap + 0.4)} 88 ${R(gap + 0.2)} 99.5 Q${R(gap)} 103 ${R(1.8)} 103.4 L${R(3.4)} 103.4 Q${R(6)} 103.2 ${R(5.6)} 99`
+    + ` C${R(H - 1.6)} 86 ${R(H + 0.3)} 74 ${R(H)} 61 C${R(H)} 55 ${R(W)} 54 ${R(W)} 48.5 C${R(W)} 43.5 ${R(C)} 42 ${R(C)} 36.5 C${R(C)} 32.5 ${R(S + 0.8)} 31 ${R(S)} 27.6 C${R(S - 2)} 24 ${R(3.4)} 24 ${R(3.4)} 21Z`;
+  const arm = d => `M${n(c + d * (S - 1.2))} 29 Q${n(c + d * (S + 2.2 + W * 0.05))} 45 ${n(c + d * (S + 1.4 + W * 0.13))} 62`;
+  const hair = f ? `<path class="bt-hair" d="M22.6 13.5 C21.8 3.2 38.2 3.2 37.4 13.5 C37.6 17.5 38.8 21.5 38.2 25 Q30 27.6 21.8 25 C21.2 21.5 22.4 17.5 22.6 13.5Z"/>`
+    : `<path class="bt-hair" d="M23.4 11.4 C23.4 4.4 36.6 4.4 36.6 11.4 C35 8.2 25 8.2 23.4 11.4Z"/>`;
+  return `<svg viewBox="0 -1 60 106" aria-hidden="true">${hair}<rect x="27.2" y="15" width="5.6" height="8" rx="2.6"/><ellipse cx="30" cy="11.6" rx="6.4" ry="7.1"/>
+    <path d="${torso}"/><path d="${arm(-1)} ${arm(1)}" fill="none" stroke="currentColor" stroke-width="${A}" stroke-linecap="round"/></svg>`;
 }
 const bodyTypeTiles = (sel, sex) => `<div class="bt-grid">${BODY_TYPES.map((l, i) => `<button class="bt ${sel === i + 1 ? 'on' : ''}" data-bt="${i + 1}">${bodySVG(i + 1, sex)}<b>${T(l)}</b><small>${BT_RANGE[sex === 'f' ? 'f' : sex === 'm' ? 'm' : 'o'][i]}</small></button>`).join('')}</div>`;
 function calcTargets(p, w, fac) {   // fac: activity factor of one day (from the tracker); default from the setup
