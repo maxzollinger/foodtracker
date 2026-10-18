@@ -792,6 +792,41 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .busy-logo svg{width:100%;height:100%;animation:rot 1s linear infinite}
 #busy p{margin:0;font-size:15px;font-weight:600;color:var(--muted)}
 @media (prefers-reduced-motion:reduce){.busy-logo svg{animation-duration:2.4s}}
+/* Coach memory page */
+.memchip{display:inline-flex;align-items:center;gap:7px;padding:8px 12px 8px 14px;border-radius:999px;background:var(--card);background-image:var(--sheen);box-shadow:var(--shadow);font-weight:650;font-size:15px}
+.memchip svg{width:21px;height:21px}
+.mm-page{background:radial-gradient(120% 50% at 20% 0%,color-mix(in srgb,var(--fat) 16%,transparent),transparent 70%),var(--bg)}
+.mm-head{justify-content:space-between}
+.mm-title{font-size:13px;font-weight:800;letter-spacing:.14em}
+.mm-hero{display:flex;align-items:center;gap:16px;margin:18px 0 22px}
+.mm-hero h2{font-size:28px;line-height:1.15;letter-spacing:-.03em;margin:0 0 8px}
+.mm-hero p{margin:0}
+.mm-av{width:72px;height:72px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:color-mix(in srgb,var(--text) 55%,transparent);
+  background:var(--card);box-shadow:var(--shadow),inset 0 0 0 3px color-mix(in srgb,var(--fat) 70%,transparent)}
+.mm-av svg{width:42px;height:42px}
+.mm-card{background:var(--card);background-image:var(--sheen);box-shadow:var(--shadow);border-radius:22px;padding:16px;margin-bottom:12px}
+.mm-facts b{display:inline-flex;align-items:center;gap:8px}
+.mm-facts b svg{width:20px;height:20px}
+.mm-list{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.mm-fact{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;background:var(--chip);font-size:14.5px;line-height:1.35}
+.mm-fact button{color:var(--muted);padding:2px 4px;flex:none}
+.mm-row,.mm-conv{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:18px 18px;margin-bottom:12px;border-radius:22px;font-size:17px;font-weight:600;
+  background:linear-gradient(100deg,color-mix(in srgb,var(--fat) 16%,var(--card)),var(--card) 70%);box-shadow:var(--shadow);transition:transform .18s var(--spring)}
+.mm-row:active,.mm-conv:active{transform:scale(.98)}
+.mm-ic{display:flex;color:var(--text)}.mm-ic svg{width:26px;height:26px}
+.mm-arrow{display:flex;color:var(--fat);flex:none}.mm-arrow svg{width:22px;height:22px}
+.mm-conv{font-size:15px;padding:14px 16px}
+.mm-conv b{display:block;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mm-conv .grow{min-width:0}
+.mm-snap{margin-top:8px}
+.mm-snap p{font-size:17px;line-height:1.6;margin:0 0 16px}
+.mm-snap .mm-q{font-weight:700}
+.mm-badge{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:16px;background:var(--card);box-shadow:var(--shadow),inset 0 0 0 2px color-mix(in srgb,var(--fat) 70%,transparent)}
+.mm-badge svg{width:24px;height:24px}
+.mm-opts{display:flex;flex-wrap:wrap;gap:10px}
+.mm-opt{padding:12px 18px;border-radius:999px;background:var(--ink);color:var(--on-ink);background-image:var(--btnimg);box-shadow:var(--btnshadow);font-weight:600;font-size:15px;transition:transform .18s var(--spring)}
+.mm-opt:active{transform:scale(.96)}
+.mm-loading{display:flex;flex-direction:column;align-items:center;gap:16px;padding:60px 0}
 </style>
 <script src="lang.js"></script>
 </head>
@@ -977,7 +1012,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v139';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v140';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -4896,7 +4931,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
-- Coach: the first suggestion button follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
+- Coach: the Memory button (top right) opens My memory: what you remember about them (they can add or delete facts), My memory snapshot (a short summary you write about them with one question and 3 quick answers) and Chat history (earlier conversations are kept when they start a new one; they can open, continue or delete them). The first suggestion button follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
 - Settings: Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, training 0 / 1-2 / 3-5 / 6+ per week, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy; Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
@@ -4937,7 +4972,7 @@ function chatBubble(m, anim) {
   const a = anim ? ' new' : '';
   return m.role === 'user'
     ? `<div class="msg user${a}">${m.imgs && m.imgs.length > 1 ? `<div class="imgs">${m.imgs.map(u => `<img src="${u}" alt="">`).join('')}</div>` : m.imgs ? `<img src="${m.imgs[0]}" alt="">` : m.img ? `<img src="${m.img}" alt="">` : ''}${(m.files || (m.file ? [m.file] : [])).map(f => `<div class="filetag">📄 ${esc(f)}</div>`).join('')}${esc(m.text).replace(/\n/g, '<br>')}</div>${m.t ? `<div class="msgtime">${m.t < Date.parse(iso() + 'T00:00') ? fmtDate(iso(new Date(m.t)), { day: 'numeric', month: 'short' }) + ' ' : ''}${fmtClock(new Date(m.t))}</div>` : ''}`
-    : `<div class="msg ai${a} ${m.err ? 'err' : ''}">${m.err ? esc(m.text) : md(m.text)}${m.mem ? `<div class="memnote">🧠 ${T('Remembered')}</div>` : ''}</div>`;
+    : `<div class="msg ai${a} ${m.err ? 'err' : ''}">${m.err ? esc(m.text) : md(m.text)}${m.mem ? `<div class="memnote">💡 ${T('Remembered')}</div>` : ''}</div>`;
 }
 const CICON = {
   newchat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M4 4h16v12H9l-5 4z"/><path d="M12 7v6M9 10h6"/></svg>',
@@ -4957,19 +4992,19 @@ function renderChat(animLast) {
   let scr = $('#chatScreen');
   if (!scr) {
     scr = document.createElement('div'); scr.id = 'chatScreen';
-    scr.innerHTML = `<div class="wrap chathead"><div class="top"><div class="brand">${T('AI Coach')}</div><button class="chipbtn" id="cMem" aria-label="${T('Memory')}"></button></div></div>
+    scr.innerHTML = `<div class="wrap chathead"><div class="top"><div class="brand">${T('AI Coach')}</div><button class="memchip" id="cMem" aria-label="${T('Memory')}"></button></div></div>
       <div class="msgscroll" id="msgScroll"><div class="wrap" id="chatBody"></div></div>`;
     document.body.appendChild(scr);
     chatEl().addEventListener('scroll', updateDown, { passive: true });
     buildChatbar(scr);
   }
-  $('#cMem').textContent = '🧠' + (n ? ' ' + n : '');
+  $('#cMem').innerHTML = `${T('Memory')} ${MEM_ICON}`;
   $('#chatBody').innerHTML = `
     ${!chat.length ? `<div class="empty" style="margin-top:14px"><div style="font-size:40px">🥗</div><b>${T('Ask me anything')}</b>
       <span class="muted">${T('I always see your latest numbers, meals, goals and progress, and I remember what you tell me.')}</span></div>` : ''}
     <div class="msgs" id="msgs">${chat.map((m, i) => chatBubble(m, animLast && i === chat.length - 1)).join('')}${chatBusy ? '<div class="msg ai new" id="live"><span class="dots"><span></span><span></span><span></span></span></div>' : ''}</div>`;
   renderAttach();
-  $('#cMem').onclick = openMemorySheet;
+  $('#cMem').onclick = openMemoryPage;
   fitChat(); chatToBottom(); requestAnimationFrame(() => { chatToBottom(); updateDown(); });
 }
 function buildChatbar(scr) {
@@ -5010,7 +5045,7 @@ function buildChatbar(scr) {
   bar.querySelectorAll('[data-act]').forEach(b => b.onclick = () => {
     closeChatMenu();
     const a = b.dataset.act;
-    if (a === 'new') { chat = []; saveChat(); chatAtt = []; idb.del('chatatt'); renderChat(); toast('✓ ' + T('New conversation')); }
+    if (a === 'new') { archiveChat(chat); chat = []; saveChat(); chatAtt = []; idb.del('chatatt'); renderChat(); toast('✓ ' + T('New conversation')); }
     if (a === 'image') openPicker('#fileChat', bar.querySelector('.chips'));
     if (a === 'photo') $('#fileChatCam').click();
     if (a === 'file') openPicker('#fileChatDoc', bar.querySelector('.chips'));
@@ -5129,7 +5164,8 @@ function renderAttach() {
   const strip = box.querySelector('.attstrip'); if (strip) strip.scrollLeft = strip.scrollWidth;
   updateSendState(); chatPad();
 }
-function openMemorySheet() {
+function openMemorySheet() { return openMemoryPage(); }
+function openMemorySheetOld() {
   const list = memList(), refresh = () => { openMemorySheet(); if (tab === 'chat') renderChat(); };
   sheet(`<h3>🧠 ${T('Coach memory')}</h3><p class="muted" style="margin-top:4px">${T('Things your coach remembers about you. It adds them on its own when you tell it something lasting. You can also add or delete them here.')}</p>
     <div class="list" style="box-shadow:none;background:var(--chip)">${list.map(m => `<div class="li"><span class="grow">${esc(m.text)}</span><button class="muted" data-del="${m.id}" style="padding:0 4px">✕</button></div>`).join('') || `<div class="li muted">${T('Nothing yet')}</div>`}</div>
@@ -5138,6 +5174,98 @@ function openMemorySheet() {
     s.querySelectorAll('[data-del]').forEach(b => b.onclick = () => { db.coachMemory = memList().filter(m => m.id !== b.dataset.del); save(); refresh(); });
     s.querySelector('#memAdd').onclick = () => { const v = s.querySelector('#memNew').value.trim(); if (!v) return; memList().push({ id: uid(), text: v, date: iso() }); save(); refresh(); };
     if (s.querySelector('#memClear')) s.querySelector('#memClear').onclick = () => { if (confirm(T('Forget everything your coach remembers?'))) { db.coachMemory = []; save(); refresh(); } };
+  });
+}
+/* ================= Coach memory: a page like a profile =================
+   What the coach remembers, a short snapshot it writes about you (with one question to get to know you better),
+   and the history of earlier conversations ("New conversation" keeps the old one here). */
+const MEM_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.2 17.5h5.6M10 20.6h4"/><path d="M12 3.4a6 6 0 0 0-3.6 10.8c.7.5 1 1.3 1 2.1v1.2h5.2v-1.2c0-.8.4-1.6 1-2.1A6 6 0 0 0 12 3.4z"/><path d="M19.6 1.8l.55 1.35 1.35.55-1.35.55-.55 1.35-.55-1.35-1.35-.55 1.35-.55z" fill="currentColor" stroke="none"/></svg>';
+const CLOCK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12a8.5 8.5 0 1 0 2.5-6"/><path d="M3.5 4.5V8H7"/><path d="M12 7.5V12l3 2"/></svg>';
+const ARROW_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+const PERSON_ICON = '<svg viewBox="0 0 48 48"><circle cx="24" cy="18" r="7.5" fill="currentColor"/><path d="M10 39c1.5-7.5 7-11.5 14-11.5S36.5 31.5 38 39z" fill="currentColor"/></svg>';
+// Earlier conversations (kept on the phone, newest first, at most 30)
+let chatArch = null;
+async function chatArchive() { if (!chatArch) { try { chatArch = (await idb.kvGet('ft_chat_arch')) || []; } catch { chatArch = []; } } return chatArch; }
+async function archiveChat(msgs) {
+  const real = (msgs || []).filter(m => !m.err && m.text); if (!real.some(m => m.role === 'user')) return;
+  const arch = await chatArchive(), first = real.find(m => m.role === 'user');
+  arch.unshift({ id: uid(), t: real[0].t || Date.now(), title: String(first.text).slice(0, 90), msgs: real.slice(-80) });
+  chatArch = arch.slice(0, 30); idb.kvSet('ft_chat_arch', chatArch).catch(() => {});
+}
+function memPage(id, title, body) {
+  document.querySelectorAll('#' + id).forEach(x => x.remove());
+  const pg = document.createElement('div'); pg.id = id; pg.className = 'page mm-page'; pg.style.zIndex = 40;
+  pg.innerHTML = `<div class="mp-head mm-head"><button class="mp-back" data-back aria-label="${T('Back')}">‹</button><div class="mm-title">${title}</div><span style="width:40px"></span></div><div class="wrap mp-body">${body}</div>`;
+  document.body.appendChild(pg); pg.querySelector('[data-back]').onclick = () => pg.remove();
+  return pg;
+}
+function openMemoryPage() {
+  const list = memList();
+  const pg = memPage('memPg', T('My memory').toUpperCase(), `
+    <div class="mm-hero"><div class="grow"><h2>${T('Shape your coach.')}</h2><p class="muted">${T('Help your coach understand you better.')}</p></div><div class="mm-av">${PERSON_ICON}</div></div>
+    <div class="mm-card mm-facts"><div class="spread"><b>${MEM_ICON} ${T('What I remember')}</b><span class="small muted">${list.length}</span></div>
+      ${list.length ? `<div class="mm-list">${list.map(m => `<div class="mm-fact"><span class="grow">${esc(m.text)}</span><button data-del="${m.id}" aria-label="${T('Delete')}">✕</button></div>`).join('')}</div>`
+        : `<p class="small muted" style="margin:8px 0 0">${T('Nothing yet. Tell your coach about your training, food you love or dislike, allergies or your routine: it remembers it.')}</p>`}
+      <div class="row" style="margin-top:12px"><input id="memNew" placeholder="${T('e.g. I train Mon, Wed, Fri at 6 pm')}"><button class="btn sm" id="memAdd">${T('Add')}</button></div>
+      ${list.length ? `<button class="small" id="memClear" style="display:block;margin:12px auto 0;padding:4px;color:var(--bad)">${T('Forget everything')}</button>` : ''}</div>
+    <button class="mm-row" id="mmHist"><span class="mm-ic">${CLOCK_ICON}</span><span class="grow">${T('Chat history')}</span><span class="mm-arrow">${ARROW_ICON}</span></button>
+    <button class="mm-row" id="mmSnap"><span class="mm-ic">${MEM_ICON}</span><span class="grow">${T('My memory snapshot')}</span><span class="mm-arrow">${ARROW_ICON}</span></button>`);
+  const again = () => { openMemoryPage(); if (tab === 'chat') renderChat(); };
+  pg.querySelectorAll('[data-del]').forEach(b => b.onclick = () => { db.coachMemory = memList().filter(m => m.id !== b.dataset.del); save(); again(); });
+  pg.querySelector('#memAdd').onclick = () => { const v = pg.querySelector('#memNew').value.trim(); if (!v) return; memList().push({ id: uid(), text: v, date: iso() }); save(); again(); };
+  pg.querySelector('#memNew').onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); pg.querySelector('#memAdd').click(); } };
+  if (pg.querySelector('#memClear')) pg.querySelector('#memClear').onclick = () => { if (confirm(T('Forget everything your coach remembers?'))) { db.coachMemory = []; save(); again(); } };
+  pg.querySelector('#mmHist').onclick = openChatHistory;
+  pg.querySelector('#mmSnap').onclick = () => openMemorySnapshot(false);
+}
+// A short snapshot the coach writes about you, with one question and three quick answers (kept until something changes)
+async function openMemorySnapshot(force) {
+  const p = db.profile, key = JSON.stringify([memList().map(m => m.text), p && [p.plan, p.goal, p.life, fastType(p), p.workouts], db.habit && db.habit.type, LANG]);
+  let snap = null; try { snap = JSON.parse(LS.get('ft_memsnap', 'null')); } catch {}
+  const fresh = snap && snap.key === key && Date.now() - snap.at < 7 * 864e5;
+  const pg = memPage('snapPg', T('My memory snapshot').toUpperCase(), `<div id="snapBody"></div>`), box = pg.querySelector('#snapBody');
+  const draw = d => {
+    box.innerHTML = `<div class="mm-snap"><div class="mm-badge">${MEM_ICON}</div>${String(d.text || '').split(/\n+/).map(x => `<p>${esc(x)}</p>`).join('')}
+      ${d.question ? `<p class="mm-q">${esc(d.question)}</p>` : ''}</div>
+      ${(d.options || []).length ? `<div class="mm-opts">${d.options.slice(0, 3).map((o, i) => `<button class="mm-opt" data-o="${i}">${esc(o)}</button>`).join('')}</div>` : ''}
+      <button class="small muted" id="snapNew" style="display:block;margin:18px auto 0;padding:6px">↻ ${T('Write a new snapshot')}</button>`;
+    box.querySelectorAll('[data-o]').forEach(b => b.onclick = () => {   // the answer goes to the coach as a normal message
+      document.querySelectorAll('#snapPg,#memPg').forEach(x => x.remove());
+      chat.push({ role: 'assistant', text: d.question, t: Date.now() }); saveChat();
+      go('chat'); setTimeout(() => sendChat(d.options[+b.dataset.o]), 350);
+    });
+    box.querySelector('#snapNew').onclick = () => openMemorySnapshot(true);
+  };
+  if (fresh && !force) return draw(snap.data);
+  if (!hasAI()) { box.innerHTML = `<p class="muted">${T('Add your free AI key in Settings first.')}</p>`; return; }
+  box.innerHTML = `<div class="mm-loading"><div class="busy-logo">${LOGO_SVG}</div><p class="muted">${T('Putting your snapshot together…')}</p></div>`;
+  try {
+    const d = await askAI([{ text: `Write the user a short "memory snapshot": what you know about them from what they told you (WHAT YOU REMEMBER) and from their app (goals, lifestyle, fasting, habits, routines, training, preferences). Two short, warm paragraphs in the second person, no lists and no long number dumps. Then ONE short follow-up question that would help you coach them better (about something you don't know yet), and exactly 3 very short answer options in the user's own words (max 6 words each). Write everything in ${langInfo().ai}. Return ONLY JSON {"text": "paragraph 1\\nparagraph 2", "question": "...", "options": ["...", "...", "..."]}` }], { system: coachSystem(), strong: true });
+    if (!d || !d.text) throw new Error(T('The AI gave an unreadable answer. Please try again.'));
+    LS.set('ft_memsnap', JSON.stringify({ key, at: Date.now(), data: d }));
+    if (pg.isConnected) draw(d);
+  } catch (e) { if (pg.isConnected) box.innerHTML = `<p class="muted">${esc(aiMsg(e))}</p><button class="btn sm" id="snapRetry" style="margin-top:10px">${T('Try again')}</button>`; const r = box.querySelector('#snapRetry'); if (r) r.onclick = () => openMemorySnapshot(true); }
+}
+async function openChatHistory() {
+  const arch = await chatArchive();
+  const day = t => fmtDate(iso(new Date(t)), { weekday: 'short', day: 'numeric', month: 'short' });
+  const pg = memPage('histPg', T('Chat history').toUpperCase(), arch.length
+    ? `<div class="mm-hlist">${arch.map(c => `<button class="mm-conv" data-c="${c.id}"><span class="grow"><b>${esc(c.title)}</b><span class="small muted">${day(c.t)} · ${T('{n} messages', { n: c.msgs.length })}</span></span><span class="mm-arrow">${ARROW_ICON}</span></button>`).join('')}</div>`
+    : `<div class="mm-card" style="text-align:center"><div style="font-size:34px">💬</div><p class="muted" style="margin:6px 0 0">${T('Earlier conversations appear here when you start a new one.')}</p></div>`);
+  pg.querySelectorAll('[data-c]').forEach(b => b.onclick = () => {
+    const c = arch.find(x => x.id === b.dataset.c); if (!c) return;
+    const v = memPage('convPg', day(c.t).toUpperCase(), `<div class="msgs">${c.msgs.map(m => chatBubble(m, false)).join('')}</div>
+      <button class="btn" id="cvGo" style="margin-top:18px">${T('Continue this conversation')}</button>
+      <button class="small" id="cvDel" style="display:block;margin:12px auto 0;padding:6px;color:var(--bad)">${T('Delete this conversation')}</button>`);
+    v.querySelector('#cvGo').onclick = async () => {
+      await archiveChat(chat); chatArch = (await chatArchive()).filter(x => x.id !== c.id); idb.kvSet('ft_chat_arch', chatArch).catch(() => {});
+      chat = c.msgs; saveChat(); document.querySelectorAll('#convPg,#histPg,#memPg').forEach(x => x.remove()); go('chat');
+    };
+    v.querySelector('#cvDel').onclick = async () => {
+      if (!confirm(T('Delete this conversation?'))) return;
+      chatArch = (await chatArchive()).filter(x => x.id !== c.id); idb.kvSet('ft_chat_arch', chatArch).catch(() => {});
+      v.remove(); openChatHistory();
+    };
   });
 }
 async function sendChat(text) {
