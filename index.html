@@ -935,7 +935,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v122';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v123';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1931,8 +1931,8 @@ async function processQueue() {
     for (const p of pending.filter(x => x.status === 'waiting')) { await runAnalysis(p); if (p.status === 'waiting') break; }   // still offline: try later
   } finally { qBusy = false; }
 }
-function addPending(preview, parts) {
-  const p = { id: uid(), date: sel, time: nowTime(), preview, parts, pct: 2, status: 'analyzing' };
+function addPending(preview, parts, at = {}) {
+  const p = { id: at.id || uid(), date: at.date || sel, time: at.time || nowTime(), preview, parts, pct: 2, status: 'analyzing' };
   pending.unshift(p); savePendingQ();
   if (tab !== 'home') go('home'); else renderHome();
   if (!navigator.onLine) { p.status = 'waiting'; toast(T('No internet. Saved, it will be analysed automatically.')); renderHome(); return; }
@@ -4169,6 +4169,7 @@ function renderDetail() {
       <div id="dTot"></div>
       <div class="spread"><div class="h2">${T('Ingredients')}</div><button class="chipbtn" id="iAdd">＋ ${T('Add')}</button></div>
       <div id="dIng"></div>
+      ${det.isNew && m.source === 'manual' && hasAI() ? `<p class="small muted" style="margin:12px 2px 0">✨ ${T('Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.')}</p>` : ''}
     </div>
     <div class="dfoot"><div class="in">
       <button class="btn outline" id="dFix">✨ ${T('Fix results')}</button><button class="btn" id="dDone">${T('Done')}</button></div></div>`;
@@ -4264,8 +4265,22 @@ function closeDetail(commit) {
   if (commit) {
     const m = det.m;
     m.items = m.items.filter(it => it.name.trim() || num(it.kcal) > 0).map(({ base, ...it }) => ({ ...it, name: it.name.trim() || T('Food') }));
-    if (!m.items.length) { if (det.isNew) return toast(T('Add at least one ingredient')); }
+    if (!m.items.length && !m.name.trim()) { if (det.isNew) return toast(T('Add at least one ingredient')); }
+    // Text but no calories (e.g. "2 slices of bread with butter" typed in a manual entry): the AI works out the numbers
+    const kcal = m.items.reduce((a, it) => a + num(it.kcal), 0);
+    if (!(kcal > 0)) {
+      const text = [...new Set([m.name.trim(), ...m.items.map(it => `${num(it.grams) && it.grams !== 100 ? it.grams + ' ' + (it.unit || 'g') + ' ' : ''}${it.name.trim()}`)].filter(x => x && x !== T('Food')))].join('; ');
+      if (!text) return toast(T('Add at least one ingredient'));
+      if (!hasAI()) return toast(T('Enter the calories, or let the AI work them out with Describe food.'));
+      db.meals = db.meals.filter(x => x.id !== m.id); save();   // replaced by the analysed meal (same id, day and time)
+      $('#detail')?.remove(); document.body.style.overflow = ''; det = null;
+      addPending(null, [{ text: foodPrompt() + `
+There is no photo. The user describes the meal: ${text}` }], { id: m.id, date: m.date, time: m.time });
+      toast('✨ ' + T('No calories entered: the AI is calculating them.'));
+      return;
+    }
     if (!m.name.trim()) m.name = m.items.map(i => i.name).join(', ') || T('Meal');
+    if (!m.items.length) return toast(T('Add at least one ingredient'));
     const i = db.meals.findIndex(x => x.id === m.id);
     if (i >= 0) db.meals[i] = m; else db.meals.push(m);
     save(); if (det.isNew) toast(T('✓ {name} logged', { name: m.name }));

@@ -1309,7 +1309,10 @@ window.I18N = {
 "Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Dein Kalorienziel folgt deiner echten Aktivität: an ruhigen Tagen ist es niedriger, an aktiven höher.",
 "Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Dein tägliches Kalorienziel folgt dann deiner echten Aktivität statt dem Trainingslevel aus der Einrichtung.",
 "{r} kcal active on this day.":"{r} kcal aktiv an diesem Tag.",
-"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Bisher {r} kcal aktiv + etwa {e} kcal noch erwartet (dein 7-Tage-Schnitt: {a} kcal)."
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Bisher {r} kcal aktiv + etwa {e} kcal noch erwartet (dein 7-Tage-Schnitt: {a} kcal).",
+"Enter the calories, or let the AI work them out with Describe food.":"Gib die Kalorien ein oder lass die KI sie mit „Essen beschreiben“ berechnen.",
+"No calories entered: the AI is calculating them.":"Keine Kalorien eingegeben: Die KI berechnet sie.",
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Du weißt nur, was du gegessen hast? Schreib es als Namen und tippe auf Fertig: Die KI trägt die Zahlen ein."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2620,7 +2623,10 @@ window.I18N = {
 "Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Tu objetivo de calorías sigue tu actividad real: en días tranquilos es menor y en días activos, mayor.",
 "Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Tu objetivo diario de calorías sigue entonces tu actividad real en lugar del nivel de entrenamiento de la configuración.",
 "{r} kcal active on this day.":"{r} kcal activas este día.",
-"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal activas hasta ahora + unas {e} kcal aún esperadas (tu media de 7 días: {a} kcal)."
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal activas hasta ahora + unas {e} kcal aún esperadas (tu media de 7 días: {a} kcal).",
+"Enter the calories, or let the AI work them out with Describe food.":"Introduce las calorías o deja que la IA las calcule con «Describir comida».",
+"No calories entered: the AI is calculating them.":"No se introdujeron calorías: la IA las está calculando.",
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"¿Solo sabes lo que comiste? Escríbelo como nombre y toca Listo: la IA rellena los números."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -3931,7 +3937,10 @@ window.I18N = {
 "Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Ton objectif calorique suit ton activité réelle : plus bas les jours calmes, plus haut les jours actifs.",
 "Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Ton objectif calorique quotidien suit alors ton activité réelle au lieu du niveau d’entraînement de la configuration.",
 "{r} kcal active on this day.":"{r} kcal actives ce jour-là.",
-"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal actives jusqu’ici + environ {e} kcal encore attendues (ta moyenne sur 7 jours : {a} kcal)."
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal actives jusqu’ici + environ {e} kcal encore attendues (ta moyenne sur 7 jours : {a} kcal).",
+"Enter the calories, or let the AI work them out with Describe food.":"Saisis les calories, ou laisse l’IA les calculer avec « Décrire un repas ».",
+"No calories entered: the AI is calculating them.":"Aucune calorie saisie : l’IA les calcule.",
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Tu sais seulement ce que tu as mangé ? Écris-le comme nom et touche Terminé : l’IA remplit les chiffres."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5242,7 +5251,10 @@ window.I18N = {
 "Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Il tuo obiettivo calorico segue la tua attività reale: nei giorni tranquilli è più basso, in quelli attivi più alto.",
 "Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Il tuo obiettivo calorico giornaliero segue così la tua attività reale invece del livello di allenamento della configurazione.",
 "{r} kcal active on this day.":"{r} kcal attive in questo giorno.",
-"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal attive finora + circa {e} kcal ancora previste (la tua media di 7 giorni: {a} kcal)."
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal attive finora + circa {e} kcal ancora previste (la tua media di 7 giorni: {a} kcal).",
+"Enter the calories, or let the AI work them out with Describe food.":"Inserisci le calorie oppure lascia che l’IA le calcoli con «Descrivi il cibo».",
+"No calories entered: the AI is calculating them.":"Nessuna caloria inserita: l’IA le sta calcolando.",
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Sai solo cosa hai mangiato? Scrivilo come nome e tocca Fatto: l’IA inserisce i numeri."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6553,7 +6565,10 @@ window.I18N = {
 "Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"カロリー目標は実際の活動量に合わせて変わります。静かな日は低く、活発な日は高くなります。",
 "Your daily calorie goal then follows your real activity instead of the training level from the setup.":"1日のカロリー目標は、初期設定のトレーニング量ではなく実際の活動量に合わせて変わります。",
 "{r} kcal active on this day.":"この日のアクティブ {r} kcal。",
-"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"ここまでアクティブ {r} kcal + 残り約 {e} kcal の見込み（7日間の平均：{a} kcal）。"
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"ここまでアクティブ {r} kcal + 残り約 {e} kcal の見込み（7日間の平均：{a} kcal）。",
+"Enter the calories, or let the AI work them out with Describe food.":"カロリーを入力するか、「食べ物を説明」でAIに計算させてください。",
+"No calories entered: the AI is calculating them.":"カロリーが未入力のため、AIが計算しています。",
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"食べたものしかわからない？名前として入力して「完了」をタップすると、AIが数値を入れます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -7864,7 +7879,10 @@ window.I18N = {
 "Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Je caloriedoel volgt je echte activiteit: op rustige dagen lager, op actieve dagen hoger.",
 "Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Je dagelijkse caloriedoel volgt dan je echte activiteit in plaats van het trainingsniveau uit de instellingen.",
 "{r} kcal active on this day.":"{r} kcal actief op deze dag.",
-"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Tot nu toe {r} kcal actief + nog ongeveer {e} kcal verwacht (je 7-daags gemiddelde: {a} kcal)."
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Tot nu toe {r} kcal actief + nog ongeveer {e} kcal verwacht (je 7-daags gemiddelde: {a} kcal).",
+"Enter the calories, or let the AI work them out with Describe food.":"Voer de calorieën in, of laat de AI ze berekenen met \"Eten beschrijven\".",
+"No calories entered: the AI is calculating them.":"Geen calorieën ingevoerd: de AI berekent ze.",
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Weet je alleen wat je at? Typ het als naam en tik op Klaar: de AI vult de getallen in."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9175,7 +9193,10 @@ window.I18N = {
 "Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Twój cel kalorii podąża za prawdziwą aktywnością: w spokojne dni jest niższy, w aktywne wyższy.",
 "Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Twój dzienny cel kalorii podąża wtedy za prawdziwą aktywnością zamiast poziomem treningu z konfiguracji.",
 "{r} kcal active on this day.":"{r} kcal aktywnych tego dnia.",
-"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Dotąd {r} kcal aktywnych + jeszcze około {e} kcal oczekiwanych (twoja średnia z 7 dni: {a} kcal)."
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Dotąd {r} kcal aktywnych + jeszcze około {e} kcal oczekiwanych (twoja średnia z 7 dni: {a} kcal).",
+"Enter the calories, or let the AI work them out with Describe food.":"Wpisz kalorie albo pozwól AI je obliczyć przez „Opisz jedzenie”.",
+"No calories entered: the AI is calculating them.":"Nie wpisano kalorii: AI je oblicza.",
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Wiesz tylko, co zjadłeś? Wpisz to jako nazwę i stuknij Gotowe: AI uzupełni liczby."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -10486,7 +10507,10 @@ window.I18N = {
 "Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"A sua meta de calorias segue a sua atividade real: em dias calmos é mais baixa, em dias ativos mais alta.",
 "Your daily calorie goal then follows your real activity instead of the training level from the setup.":"A sua meta diária de calorias segue então a sua atividade real em vez do nível de treino da configuração.",
 "{r} kcal active on this day.":"{r} kcal ativas neste dia.",
-"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal ativas até agora + cerca de {e} kcal ainda esperadas (a sua média de 7 dias: {a} kcal)."
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"{r} kcal ativas até agora + cerca de {e} kcal ainda esperadas (a sua média de 7 dias: {a} kcal).",
+"Enter the calories, or let the AI work them out with Describe food.":"Introduza as calorias ou deixe a IA calculá-las com \"Descrever comida\".",
+"No calories entered: the AI is calculating them.":"Sem calorias introduzidas: a IA está a calculá-las.",
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Só sabe o que comeu? Escreva-o como nome e toque em Feito: a IA preenche os números."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -11797,7 +11821,10 @@ window.I18N = {
 "Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Цель по калориям следует за вашей реальной активностью: в спокойные дни она ниже, в активные — выше.",
 "Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Дневная цель по калориям тогда следует за реальной активностью, а не за уровнем тренировок из настройки.",
 "{r} kcal active on this day.":"{r} ккал активности в этот день.",
-"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Пока {r} ккал активности + ещё около {e} ккал ожидается (ваше среднее за 7 дней: {a} ккал)."
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Пока {r} ккал активности + ещё около {e} ккал ожидается (ваше среднее за 7 дней: {a} ккал).",
+"Enter the calories, or let the AI work them out with Describe food.":"Введите калории или позвольте ИИ рассчитать их через «Описать еду».",
+"No calories entered: the AI is calculating them.":"Калории не введены: ИИ их рассчитывает.",
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Знаете только, что съели? Напишите это как название и нажмите «Готово»: ИИ заполнит цифры."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -13108,7 +13135,10 @@ window.I18N = {
 "Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"Kalori hedefin gerçek hareketine göre değişir: sakin günlerde daha düşük, hareketli günlerde daha yüksek.",
 "Your daily calorie goal then follows your real activity instead of the training level from the setup.":"Günlük kalori hedefin artık kurulumdaki antrenman seviyesi yerine gerçek hareketine göre belirlenir.",
 "{r} kcal active on this day.":"Bu gün {r} kcal aktif.",
-"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Şu ana kadar {r} kcal aktif + yaklaşık {e} kcal daha bekleniyor (7 günlük ortalaman: {a} kcal)."
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"Şu ana kadar {r} kcal aktif + yaklaşık {e} kcal daha bekleniyor (7 günlük ortalaman: {a} kcal).",
+"Enter the calories, or let the AI work them out with Describe food.":"Kalorileri gir ya da \"Yemeği anlat\" ile yapay zekâya hesaplat.",
+"No calories entered: the AI is calculating them.":"Kalori girilmedi: yapay zekâ hesaplıyor.",
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"Sadece ne yediğini mi biliyorsun? Ad olarak yaz ve Bitti’ye dokun: yapay zekâ sayıları doldurur."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -14419,6 +14449,9 @@ window.I18N = {
 "Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.":"你的热量目标会跟随真实活动量：安静的日子更低，活跃的日子更高。",
 "Your daily calorie goal then follows your real activity instead of the training level from the setup.":"这样你的每日热量目标会跟随真实活动量，而不是设置中的训练水平。",
 "{r} kcal active on this day.":"这一天活动 {r} kcal。",
-"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"目前已活动 {r} kcal + 预计还有约 {e} kcal（你的 7 天平均：{a} kcal）。"
+"{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).":"目前已活动 {r} kcal + 预计还有约 {e} kcal（你的 7 天平均：{a} kcal）。",
+"Enter the calories, or let the AI work them out with Describe food.":"请输入卡路里，或用\"描述食物\"让 AI 计算。",
+"No calories entered: the AI is calculating them.":"未输入卡路里：AI 正在计算。",
+"Only know what you ate? Type it as the name and tap Done: the AI fills in the numbers.":"只知道吃了什么？把它写成名称并点\"完成\"：AI 会填入数字。"
 }
 };
