@@ -1012,7 +1012,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v142';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v143';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1330,7 +1330,7 @@ function fixTarget(p, w) {
   const [mn, df, mx] = paceRange(p);
   if (!(p.pace >= mn && p.pace <= mx)) p.pace = df;
 }
-function age(p) { const b = new Date(p.birth), n = new Date(); let a = n.getFullYear() - b.getFullYear(); if (n < new Date(n.getFullYear(), b.getMonth(), b.getDate())) a--; return a || 30; }
+function age(p) { const b = new Date(p.birth), n = new Date(); let a = n.getFullYear() - b.getFullYear(); if (n < new Date(n.getFullYear(), b.getMonth(), b.getDate())) a--; return !p.birth || isNaN(b) ? 30 : Math.max(0, a); }
 function currentWeight() {
   if (db.weights.length) return [...db.weights].sort((a, b) => a.date.localeCompare(b.date)).at(-1).kg;
   return db.profile ? db.profile.weight : 0;
@@ -5963,7 +5963,7 @@ function birthPicker(birth) {
       <select id="${id}" style="font-size:18px;font-weight:700;text-align:center;text-align-last:center;padding:16px 8px"><option value="">–</option>${opts.map(([val, txt]) => `<option value="${val}" ${val === v ? 'selected' : ''}>${txt}</option>`).join('')}</select></div>`;
   const parts = { d: sel('obBd', T('Day'), [...Array(31)].map((_, i) => [i + 1, i + 1]), bd),
     m: sel('obBm', T('Month'), [...Array(12)].map((_, i) => [i + 1, mName(i + 1)]), bm),
-    y: sel('obBy', T('Year'), [...Array(thisYear - 12 - 1920 + 1)].map((_, i) => [thisYear - 12 - i, thisYear - 12 - i]), by) };
+    y: sel('obBy', T('Year'), [...Array(thisYear - 1920 + 1)].map((_, i) => [thisYear - i, thisYear - i]), by) };
   let order = ['d', 'm', 'y'];
   try { order = new Intl.DateTimeFormat(LOC).formatToParts(new Date(2000, 10, 22)).map(x => ({ day: 'd', month: 'm', year: 'y' })[x.type]).filter(Boolean); } catch {}
   return `<div class="row" style="gap:10px;align-items:flex-end">${order.map(k => parts[k]).join('')}</div>
@@ -6082,7 +6082,8 @@ function renderOb() {
   if (pg.querySelector('#obBd')) {
     const upd = () => {
       const d = +pg.querySelector('#obBd').value, m = +pg.querySelector('#obBm').value, y = +pg.querySelector('#obBy').value;
-      if (d && m && y) { const last = new Date(y, m, 0).getDate(); if (d > last) pg.querySelector('#obBd').value = String(last); p.birth = `${y}-${String(m).padStart(2, '0')}-${String(Math.min(d, last)).padStart(2, '0')}`; }
+      if (d && m && y) { const last = new Date(y, m, 0).getDate(); if (d > last) pg.querySelector('#obBd').value = String(last); p.birth = `${y}-${String(m).padStart(2, '0')}-${String(Math.min(d, last)).padStart(2, '0')}`;
+        if (p.birth > iso()) { p.birth = iso(); const [ty, tm, td] = p.birth.split('-').map(Number); pg.querySelector('#obBy').value = String(ty); pg.querySelector('#obBm').value = String(tm); pg.querySelector('#obBd').value = String(td); } }   // never after today
       else p.birth = '';
       pg.querySelector('#obNext').disabled = !p.birth;
       const a = pg.querySelector('#obAge'); if (a) a.textContent = p.birth ? T('You are {n} years old.', { n: age({ birth: p.birth }) }) : '';
