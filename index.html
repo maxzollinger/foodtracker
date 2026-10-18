@@ -107,7 +107,7 @@
 :root[data-bg]{--card:rgba(255,255,255,.68);--chip:rgba(0,0,0,.045);--line:rgba(0,0,0,.07);--track:rgba(0,0,0,.07);--solid:#fff}
 :root[data-theme="dark"][data-bg]{--card:rgba(255,255,255,.075);--chip:rgba(255,255,255,.09);--line:rgba(255,255,255,.1);--track:rgba(255,255,255,.12);--solid:#1c1c1e}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"])[data-bg]{--card:rgba(255,255,255,.075);--chip:rgba(255,255,255,.09);--line:rgba(255,255,255,.1);--track:rgba(255,255,255,.12);--solid:#1c1c1e}}
-html[data-bg]{background:var(--bgimg) var(--bg);background-repeat:no-repeat;background-size:100% 100%}
+html[data-bg]{background:var(--bgimg) var(--bgtop,var(--bg));background-repeat:no-repeat;background-size:100% 100%}
 /* The status bar shows the page's own colour (the dark / light top). Below the page (behind the keyboard's ^ v ✓ bar) a
    separate layer continues with the colour at the bottom of the background. */
 html[data-bg] body::after{content:'';position:fixed;left:0;right:0;top:100%;height:100vh;background:var(--bgend,var(--bg));pointer-events:none}
@@ -977,7 +977,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v138';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v139';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1096,7 +1096,13 @@ function applyBg() {
   const root = document.documentElement, b = curBg();
   if (b.id !== 'classic') root.dataset.bg = b.id; else delete root.dataset.bg;
   const m = document.querySelector('meta[name=theme-color]');   // the status bar matches the top of the background
-  if (m) m.content = isDark() ? b.top : '#f7f7f9';
+  // The status bar shows the page's own colour: exactly the colour at the very top of the background
+  // (in dark mode the top is shaded 60 % darker by the first gradient layer)
+  const first = (String(isDark() ? b.dImg : b.lImg).match(/linear-gradient\([^#]*(#[0-9a-f]{6})/i) || [])[1];
+  const hex2 = (h, k) => '#' + [1, 3, 5].map(i => Math.round(parseInt(h.slice(i, i + 2), 16) * k).toString(16).padStart(2, '0')).join('');
+  const top = b.id === 'classic' || !first ? (isDark() ? '#000000' : '#f7f7f9') : isDark() ? hex2(first, 0.4) : first;
+  if (b.id !== 'classic' && first) root.style.setProperty('--bgtop', top); else root.style.removeProperty('--bgtop');
+  if (m) m.content = top;
   // The last colour of the gradient fills whatever iOS shows below the page (e.g. behind the keyboard's ^ v ✓ bar)
   const img = isDark() ? b.dImg : b.lImg, cols = String(img).match(/#[0-9a-f]{3,6}/gi);
   if (b.id !== 'classic' && cols) root.style.setProperty('--bgend', cols[cols.length - 1]); else root.style.removeProperty('--bgend');
