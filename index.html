@@ -1012,7 +1012,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v140';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v141';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1789,14 +1789,12 @@ function openAddMenu() {
     <button class="addtile" id="aBar"><span>🏷️</span>${T('Barcode')}</button>
     <button class="addtile" id="aLib"><span>🖼️</span>${T('Upload photo')}</button>
     <button class="addtile" id="aText"><span>💬</span>${T('Describe food')}</button>
-    <button class="addtile" id="aEx"><span>🏋️</span>${T('Log exercise')}</button>
-    <button class="addtile" id="aMan"><span>✏️</span>${T('Manual entry')}</button></div>`, s => {
+    <button class="addtile wide" id="aMan"><span>✏️</span>${T('Manual entry')}</button></div>`, s => {
     s.querySelector('#aScan').onclick = () => { closeSheet(); $('#fileCam').click(); };
     s.querySelector('#aLib').onclick = () => { closeSheet(); openPicker('#fileLib', $('#fab')); };
     s.querySelector('#aBar').onclick = openBarcodeSheet;
     s.querySelector('#aFav').onclick = openFavorites;
     s.querySelector('#aText').onclick = openDescribeSheet;
-    s.querySelector('#aEx').onclick = () => openExercise(null);
     s.querySelector('#aMan').onclick = () => {
       closeSheet();
       openNewMeal({ id: uid(), date: sel, time: nowTime(), name: '', items: [{ name: '', grams: 100, kcal: 0, protein: 0, carbs: 0, fat: 0 }], servings: 1, health: null, source: 'manual', photo: false }, 0);
@@ -3534,7 +3532,7 @@ const TOUR_STEPS = [
   { tab: 'home', sel: '.minirow', title: N('Water and calories burned'), text: N('Tap + to add a glass of water or your burned calories. Tap a tile for more options.') },
   { tab: 'home', sel: '#mpCard', title: N('Meal plan & groceries'), text: N('Your weekly meal plan and shopping list, made for your goal. A new one comes every Saturday.') },
   { tab: 'home', sel: '#fab', title: N('Log your food'), text: N('The most important button. Let us look at what it opens.') },
-  { tab: 'home', open: 'add', sel: '.backdrop .addgrid', title: N('Everything you can add'), text: N('Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus exercise and manual entries.') },
+  { tab: 'home', open: 'add', sel: '.backdrop .addgrid', title: N('Everything you can add'), text: N('Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.') },
   { tab: 'home', sel: '.tab[data-tab="progress"]', title: N('Progress'), text: N('Next stop: your progress.') },
   { tab: 'progress', sel: '.two', title: N('Weight and streak'), text: N('Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.') },
   { tab: 'progress', sel: '#badgeCard', title: N('Badges'), text: N('Earn badges for streaks, protein, water and milestones. Tap one to see what it is for.') },
@@ -3946,6 +3944,7 @@ function openBurnSheet() {
   sheet(`<h3>${T('Calories burned')}</h3>
     <div class="seg" style="margin-top:10px">${[['day', N('Whole day')], ['workout', N('Workouts only')]].map(([v, l]) => `<button data-bt="${v}" class="${(db.settings.burnType || 'day') === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>
     ${linkInfo() ? `<p class="small" style="margin:10px 0 0;font-weight:600">⌚ ${T('Filled in automatically from {name}.', { name: esc(linkName(linkInfo().p)) })} <button class="chipbtn" id="bTrk" style="margin-left:4px">${T('Settings')}</button></p>`
+      + `<p class="small" style="margin:8px 0 0;color:var(--carbs);font-weight:600">⚠️ ${T('{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.', { name: esc(linkName(linkInfo().p)) })}</p>`
       + (trackerMode() ? (() => { const a = activeFor(sel); return `<div class="tip" style="margin-top:10px">${T('Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.')}<br><b>${a.est ? T('{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).', { r: a.real, e: a.est, a: a.avg }) : T('{r} kcal active on this day.', { r: a.real })}</b></div>`; })() : '')
       + (() => { const a = db.exercises.find(e => e.id === 'auto-' + sel && e.total != null); return a ? `<p class="small muted" style="margin:6px 0 0;line-height:1.45">${T('{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.', { name: esc(a.name), t: r0(a.total).toLocaleString(LOC), r: r0(a.rest).toLocaleString(LOC), a: r0(a.kcal).toLocaleString(LOC) })}</p>` : ''; })()
       : `<button class="bgrow" id="bTrk" style="margin-top:12px"><span style="font-size:26px">⌚</span><span class="grow"><b>${T('Wear a watch or ring?')}</b><br><span class="small muted">${T('Connect it once and this is filled in automatically.')}</span></span><span class="chev">›</span></button>`}
@@ -3978,6 +3977,7 @@ function openExercise(id) {
   const ex = id ? db.exercises.find(e => e.id === id) : null;
   const whole = burnWholeDay();
   sheet(`<h3>${ex ? T('Exercise') : whole ? T('Activity of your day') : T('Log exercise')}</h3>
+    ${linkInfo() && !ex ? `<p class="small" style="margin:6px 0 0;color:var(--carbs);font-weight:600">⚠️ ${T('{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.', { name: esc(linkName(linkInfo().p)) })}</p>` : ''}
     <label class="lbl">${whole ? T('Describe your whole day (AI estimates the active calories)') : T('Describe it (AI estimates calories)')}</label>
     <div class="row"><input id="eTxt" placeholder="${whole ? T('e.g. 9000 steps, 1 h gym, cycled to work') : T('e.g. 45 min weight training, intense')}"><button class="btn sm" id="eAi">✨</button></div>
     <div class="row"><div class="grow"><label class="lbl">${T('Name')}</label><input id="eName" value="${esc(ex?.name || '')}" placeholder="${T('Running')}"></div>
