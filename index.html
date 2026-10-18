@@ -939,7 +939,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v130';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v131';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -5479,7 +5479,7 @@ function openPersonalSheet() {
   const p0 = db.profile, custom = Object.keys(db.overrides).length > 0;
   const st = { sex: p0.sex || 'm', birth: p0.birth, height: num(p0.height) || 175, weight: currentWeight(), workouts: p0.workouts || '3-5' };
   const SEX = [['m', '♂', N('Male')], ['f', '♀', N('Female')], ['o', '⚧', N('Other')]];
-  const WK = [['0', '🛋️', '0', N('No workouts')], ['1-2', '🚶', '1–2', N('per week')], ['3-5', '🏃', '3–5', N('per week')], ['6+', '🏋️', '6+', N('per week')]];
+  const WK = [['0', '🌱', '0', N('per week')], ['1-2', '🚶', '1–2', N('per week')], ['3-5', '🏃', '3–5', N('per week')], ['6+', '🏋️', '6+', N('per week')]];
   sheet(`<div class="pd-head"><div class="pd-av">👤</div><div><h3 style="margin:0">${T('Personal details')}</h3>
       <div class="small muted">${T('Your goals are calculated from these.')}</div></div></div>
     <div class="pd-sec">${T('Gender')}</div>
@@ -5755,7 +5755,7 @@ function renderOb() {
   }
   if (s === 'gender') { title = T('Choose your gender'); sub = calib; body = opts('sex', [['m', T('Male')], ['f', T('Female')], ['o', T('Other')]]); ok = !!p.sex; }
   if (s === 'workouts') { title = T('How many workouts do you do per week?'); sub = calib;
-    body = opts('workouts', [['0', T('No workouts'), T('I mostly sit and do no sport')], ['1-2', '1–2', T('workouts per week')], ['3-5', '3–5', T('workouts per week')], ['6+', '6+', T('workouts per week')]]); ok = !!p.workouts; }
+    body = opts('workouts', [['0', '0', T('workouts per week')], ['1-2', '1–2', T('workouts per week')], ['3-5', '3–5', T('workouts per week')], ['6+', '6+', T('workouts per week')]]); ok = !!p.workouts; }
   if (s === 'body') { title = T('Height & weight'); sub = calib;
     let h = '';
     if (isIn()) { const sel = Math.round(p.height / CM_IN); for (let i = 48; i <= 90; i++) h += `<option value="${r1(i * CM_IN)}" ${i === sel ? 'selected' : ''}>${Math.floor(i / 12)}′${i % 12}″</option>`; }
