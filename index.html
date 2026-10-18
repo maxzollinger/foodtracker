@@ -201,6 +201,13 @@ a{color:inherit}
 .frow .spread{font-size:14px}
 .opt.cmp{padding:14px 16px;font-size:16px;margin-bottom:8px}
 .hcard{padding:13px 16px}
+.nmini{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:9px;opacity:.72}
+.nm{min-width:0}
+.nm-l{display:block;font-size:10.5px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nm-v{display:block;margin-top:1px;font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.nm-v b{font-weight:600;color:var(--text);opacity:.8}
+.nm-bar{height:2.5px;border-radius:2px;background:var(--track);overflow:hidden;margin-top:4px}
+.nm-bar i{display:block;height:100%;border-radius:2px;opacity:.6;transition:width .5s ease}
 .hcard .hscale{height:7px;border-radius:4px;background:linear-gradient(90deg,#ff5a4f 0%,#f5b83d 45%,#34c759 75%,#1fa64a 100%);position:relative;margin:11px 0 5px}
 .hcard .hscale b{position:absolute;top:-5px;width:17px;height:17px;border-radius:50%;background:var(--card);border:3px solid var(--text);transform:translateX(-50%);transition:left .6s ease}
 
@@ -1024,7 +1031,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v145';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v146';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1515,12 +1522,25 @@ function healthCard(date) {
   return `<div class="card hcard"><div class="spread"><span style="font-weight:700">💚 ${T('Health score')}</span>
       <span>${avg === null ? `<span class="muted" style="font-weight:600">${T('No meals yet')}</span>`
         : `<span style="color:${healthColor(avg)};font-weight:700;margin-right:8px">${healthLabel(avg)}</span><b style="font-size:22px">${avg}</b><span class="muted" style="font-weight:600">/10</span>`}</span></div>
-    <div class="hscale" style="margin-bottom:4px">${avg === null ? '' : `<b style="left:${(avg - 1) / 9 * 100}%"></b>`}</div></div>`;
+    <div class="hscale" style="margin-bottom:4px">${avg === null ? '' : `<b style="left:${(avg - 1) / 9 * 100}%"></b>`}</div>${nutriMini(date)}</div>`;
+}
+// Personal daily fiber goal and sugar / sodium limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium 2000 mg (WHO), a bit more for very active people
+function nutriLimits(kcal, p = db.profile) {
+  kcal = Math.max(kcal || 2000, 1200);
+  return { fiber: clamp(r0(kcal * 14 / 1000), 20, 40), sugar: r0(kcal * 0.1 / 4), sodium: p && p.workouts === '6+' ? 2300 : 2000 };
+}
+// Fiber, sugar and sodium for the day as a quiet row under the health score (only once a meal carries them)
+function nutriMini(date, meal) {
+  const x = meal ? dayExtras(date, [meal]) : dayExtras(date); if (!x.known) return '';
+  const L = nutriLimits(dayGoals(date).kcal);
+  const cell = (ic, label, v, lim, unit, isMax) => { const pct = clamp(v / lim * 100, 0, 100), col = isMax ? (v > lim ? 'var(--bad)' : 'var(--muted)') : (v >= lim ? 'var(--good)' : 'var(--muted)');
+    return `<div class="nm"><span class="nm-l">${ic} ${label}</span><span class="nm-v"><b>${unit === 'mg' ? r1(v / 1000) : r0(v)}</b>/${unit === 'mg' ? r1(lim / 1000) : lim}g</span><div class="nm-bar"><i style="width:${pct}%;background:${col}"></i></div></div>`; };
+  return `<div class="nmini">${cell('🌾', T('Fiber'), x.fiber, L.fiber, 'g', false)}${cell('🍬', T('Sugar'), x.sugar, L.sugar, 'g', true)}${cell('🧂', T('Sodium'), x.sodium, L.sodium, 'mg', true)}</div>`;
 }
 // Sugar, fibre and sodium for a day (only meals analysed since these were added carry them)
-function dayExtras(date) {
+function dayExtras(date, meals = db.meals) {
   const x = { sugar: 0, fiber: 0, sodium: 0, known: 0, meals: 0 };
-  for (const m of db.meals) if (m.date === date) {
+  for (const m of meals) if (m.date === date) {
     x.meals++;
     let has = false;
     for (const it of m.items) for (const k of ['sugar', 'fiber', 'sodium']) if (it[k] != null && it[k] !== '') { x[k] += num(it[k]) * (m.servings || 1); has = true; }
@@ -1580,14 +1600,6 @@ function focusCard(date, t, tot) {
   if (ft === 'if' && date === iso()) out.push(fastingHTML());
   if (ft === '52' || ft === 'adf') out.push(fastDayHTML(date));
   if (ft === 'once' && date === iso()) out.push(onceFastHTML());
-  if (hasLife(p, 'healthy')) {
-    const x = dayExtras(date), sugarMax = r0(t.kcal * 0.1 / 4);
-    const row = (ic, label, v, lim, unit, isMax) => `<div class="frow"><div class="spread"><span>${ic} ${label}</span><span><b>${r0(v)}</b> <span class="muted">/ ${isMax ? T('max') + ' ' : ''}${lim} ${unit}</span></span></div>
-      ${bar(v, lim, isMax ? (v > lim ? 'var(--bad)' : 'var(--good)') : (v >= lim ? 'var(--good)' : 'var(--carbs)'))}</div>`;
-    out.push(`<div class="card"><b>🥗 ${T('Healthy eating')}</b>
-      ${row('🍬', T('Sugar'), x.sugar, sugarMax, 'g', true)}${row('🌾', T('Fiber'), x.fiber, 30, 'g', false)}${row('🧂', T('Sodium'), x.sodium, 2000, 'mg', true)}
-      ${x.meals > x.known ? `<p class="small muted" style="margin:10px 0 0">${T('Meals logged before this goal have no sugar, fiber or sodium data.')}</p>` : ''}</div>`);
-  }
   if (carbCap(p)) {
     const v = tot.carbs, lim = t.carbs, over = v > lim;
     out.push(`<div class="card"><div class="spread"><b>🥑 ${T('Carb limit')}</b><span><b style="${over ? 'color:var(--bad)' : ''}">${r0(v)}</b> <span class="muted">/ ${lim} g</span></span></div>${bar(v, lim, over ? 'var(--bad)' : 'var(--good)')}
@@ -4076,7 +4088,8 @@ function planBrief(plan, withList) {
   return s;
 }
 const cleanMeal = m => ({ type: String(m.type || ''), name: String(m.name || ''), desc: String(m.desc || ''), min: r0(num(m.min)), g: r0(num(m.g)),
-  kcal: r0(num(m.kcal)), protein: r0(num(m.protein)), carbs: r0(num(m.carbs)), fat: r0(num(m.fat)) });
+  kcal: r0(num(m.kcal)), protein: r0(num(m.protein)), carbs: r0(num(m.carbs)), fat: r0(num(m.fat)),
+  ...(m.sugar != null ? { sugar: r1(num(m.sugar)) } : {}), ...(m.fiber != null ? { fiber: r1(num(m.fiber)) } : {}), ...(m.sodium != null ? { sodium: r0(num(m.sodium)) } : {}) });
 const cleanGroceries = gs => gs.map(g => ({ cat: String(g.cat || ''), items: (g.items || []).filter(i => i && i.name)
   .map(i => ({ name: String(i.name), qty: String(i.qty || ''), have: false })) })).filter(g => g.items.length);
 function trimPlans() { const ks = Object.keys(mealPlans()).sort(); ks.slice(0, Math.max(0, ks.length - 8)).forEach(k => delete db.mealPlans[k]); }
@@ -4103,10 +4116,10 @@ ${recent.length ? `- Do NOT repeat these meals from the previous weeks: ${[...ne
 ${change && old ? `- The user wants to CHANGE the current plan: "${change}". Keep what doesn't need to change.\nCurrent plan:\n${planBrief(old)}` : change ? `- Extra wish from the user: "${change}".` : ''}
 - The grocery list covers ALL meals for ${pr.people} person(s) for the whole week, merged (each ingredient once with the total amount, metric units or pieces), grouped into supermarket sections in a sensible shopping order. Leave out water; basic spices and oil go once into a pantry section.
 - "prep": 3 to 6 short, practical meal-prep tips for exactly this plan (what to cook ahead, on which day, how to store it).
-- Write all names, descriptions, section names and tips in ${langInfo().ai}. Nutrition numbers are per person, per serving.${isLb() ? ' Grocery quantities in US units (lb, oz, fl oz, pieces).' : ''}
+- Write all names, descriptions, section names and tips in ${langInfo().ai}. Nutrition numbers are per person, per serving (sugar and fiber in grams, sodium in milligrams).${isLb() ? ' Grocery quantities in US units (lb, oz, fl oz, pieces).' : ''}
 
 Return JSON only:
-{"days":[{"meals":[{"type":"Breakfast","name":"","desc":"one short sentence: main ingredients and how it is made","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0}]}],"groceries":[{"cat":"","items":[{"name":"","qty":""}]}],"prep":[""]}`;
+{"days":[{"meals":[{"type":"Breakfast","name":"","desc":"one short sentence: main ingredients and how it is made","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0,"sugar":0,"fiber":0,"sodium":0}]}],"groceries":[{"cat":"","items":[{"name":"","qty":""}]}],"prep":[""]}`;
   try {
     const r = await askAI([{ text: prompt }], { timeout: 120000 });
     if (!r || !Array.isArray(r.days) || r.days.length < 7 || !Array.isArray(r.groceries)) throw new Error(T('The AI answer was incomplete. Please try again.'));
@@ -4132,7 +4145,7 @@ ${planGoalText()}
 Preferences: ${prefsText(mealPrefs())}
 
 Replace ONLY this meal: ${engDay(plan.start, di)}, ${m.type} "${m.name}" (${m.kcal} kcal, ${m.protein} g protein). Give a different, tasty meal of the same type with about the same calories and protein that is not already in the plan. Then return the complete updated grocery list (remove what is no longer needed, add what the new meal needs, keep the same sections). Write in ${langInfo().ai}.
-Return JSON only: {"meal":{"type":"","name":"","desc":"","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0},"groceries":[{"cat":"","items":[{"name":"","qty":""}]}]}`;
+Return JSON only: {"meal":{"type":"","name":"","desc":"","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0,"sugar":0,"fiber":0,"sodium":0},"groceries":[{"cat":"","items":[{"name":"","qty":""}]}]}`;
   try {
     const r = await askAI([{ text: prompt }], { timeout: 90000 });
     if (!r || !r.meal || !r.meal.name) throw new Error(T('The AI answer was incomplete. Please try again.'));
@@ -4153,7 +4166,7 @@ function logPlanMeal(di, mi) {
   const m = plan.days[di].meals[mi], day = addDays(cycleStart(plan), di), date = day > iso() ? iso() : day;
   if (m.ate === day && !confirm(T('Already logged. Log it again?'))) return;
   db.meals.push({ id: uid(), date, time: nowTime(), name: m.name, servings: 1, health: null, source: 'plan', photo: false,
-    items: [{ name: m.name, grams: m.g || 0, kcal: m.kcal, protein: m.protein, carbs: m.carbs, fat: m.fat }] });
+    items: [{ name: m.name, grams: m.g || 0, kcal: m.kcal, protein: m.protein, carbs: m.carbs, fat: m.fat, sugar: m.sugar ?? null, fiber: m.fiber ?? null, sodium: m.sodium ?? null }] });
   m.ate = day; save(); toast(T('✓ {name} logged', { name: m.name })); renderMealPlan();
 }
 
@@ -4351,7 +4364,7 @@ Meal prep tips in the app: ${plan.prep.join(' / ') || 'none'}`;
 
 /* ================= Food detail ================= */
 let det = null;
-function setBase(it) { it.base = { grams: num(it.grams), kcal: num(it.kcal), protein: num(it.protein), carbs: num(it.carbs), fat: num(it.fat) }; return it; }
+function setBase(it) { it.base = { grams: num(it.grams), kcal: num(it.kcal), protein: num(it.protein), carbs: num(it.carbs), fat: num(it.fat) }; for (const x of ['sugar', 'fiber', 'sodium']) if (it[x] != null && it[x] !== '') it.base[x] = num(it[x]); return it; }
 function openMeal(id) { const m = db.meals.find(x => x.id === id); if (m) { det = { m: clone(m), isNew: false, open: -1 }; det.m.items.forEach(setBase); renderDetail(); } }
 function openNewMeal(m, openIdx = -1) { det = { m, isNew: true, open: openIdx }; m.items.forEach(setBase); renderDetail(); }
 function renderDetail() {
@@ -4406,7 +4419,7 @@ function renderDetTotals() {
     <button class="card bigcal" data-edit="kcal"><div class="ic">🔥</div><div><div class="small muted">${T('Calories')}</div><div style="font-size:30px;font-weight:800;letter-spacing:-.03em">${r0(t.kcal)}</div></div></button>
     <div class="dmac">${MAC.map(x => `<button class="dm" data-edit="${x.k}"><div class="t">${x.ic} ${T(x.label)}</div><b>${r0(t[x.k])}g</b></button>`).join('')}</div>
     ${mealHealth(m) ? `<div class="card" style="margin-top:14px"><div class="spread"><span style="font-weight:600">💚 ${T('Health score')}${m.health ? '' : ` <span class="small muted">(${T('estimated')})</span>`}</span><b>${mealHealth(m)}/10</b></div>
-      <div class="hbar"><i style="width:${mealHealth(m) * 10}%;background:${healthColor(mealHealth(m))}"></i></div></div>` : ''}`;
+      <div class="hbar"><i style="width:${mealHealth(m) * 10}%;background:${healthColor(mealHealth(m))}"></i></div>${nutriMini(m.date, m)}</div>` : ''}`;
   $('#dTot').querySelectorAll('[data-edit]').forEach(b => b.onclick = () => {
     const f = b.dataset.edit, label = f === 'kcal' ? T('Calories') : T(MAC.find(x => x.k === f).label) + ' (g)';
     numberSheet(label, r0(mealTotals(det.m)[f]), f === 'kcal' ? 'kcal' : 'g', v => setTotal(f, v), f === 'kcal' ? 10 : 1);
@@ -4421,6 +4434,25 @@ function setTotal(f, v) {
 }
 // An ingredient with a name and amount but no numbers (e.g. "Avocado, 55 g" added by hand): the AI fills them in
 const needsCalc = it => hasAI() && it.name && it.name.trim() && num(it.grams) > 0 && !num(it.kcal) && !num(it.protein) && !num(it.carbs) && !num(it.fat) && !it.calcDone;
+// Foods with typed-in numbers: the AI adds only fiber, sugar and sodium in the background; the typed numbers stay exactly as they are
+async function fillExtras(id) {
+  const m = db.meals.find(x => x.id === id); if (!m || !hasAI()) return;
+  const need = m.items.filter(it => it.name && it.name.trim() && it.name !== T('Food') && num(it.kcal) > 0 && ['sugar', 'fiber', 'sodium'].every(k => it[k] == null || it[k] === ''));
+  if (!need.length) return;
+  const list = need.map((it, i) => `${i + 1}. ${num(it.grams) ? `${num(it.grams)} ${it.unit || 'g'} of ` : ''}"${it.name.trim()}" (${r0(it.kcal)} kcal, ${r0(it.carbs)} g carbs)`).join('\n');
+  try {
+    const r = await askAI([{ text: `Estimate sugar (g), fiber (g) and sodium (mg) for each food below, for exactly the amount given (one portion if no amount). Use typical values, matching the calories and carbs.
+${list}
+Return JSON only, same order: {"items":[{"sugar":0,"fiber":0,"sodium":0}]}` }]);
+    const out = Array.isArray(r && r.items) ? r.items : [];
+    const cur = db.meals.find(x => x.id === id); if (!cur || !out.length) return;
+    need.forEach((it, i) => {
+      const x = out[i], tgt = cur.items.find(c => c.name === it.name && num(c.kcal) === num(it.kcal)); if (!x || !tgt) return;
+      tgt.sugar = r1(clamp(num(x.sugar), 0, num(it.carbs) || 999)); tgt.fiber = r1(clamp(num(x.fiber), 0, 999)); tgt.sodium = r0(clamp(num(x.sodium), 0, 20000));
+    });
+    save(); if (tab === 'home' && !det) renderHome();
+  } catch {}
+}
 async function fillIngredient(it) {
   if (!needsCalc(it) || it.calcBusy) return it.calcBusy;
   it.calcBusy = (async () => {
@@ -4454,7 +4486,9 @@ function renderIngredients() {
     || `<p class="muted">${T('No ingredients yet.')}</p>`;
   box.querySelectorAll('.ing-head').forEach(h => h.onclick = () => { const i = +h.parentNode.dataset.i, was = det.open; det.open = det.open === i ? -1 : i; renderIngredients(); if (was >= 0 && m.items[was]) fillIngredient(m.items[was]); });
   // Leaving the name or amount field: calculate the numbers if none were typed
-  box.querySelectorAll('[data-f="name"],[data-f="grams"]').forEach(inp => inp.addEventListener('change', () => { const it = m.items[+inp.closest('.ing').dataset.i]; if (it) { it.calcDone = false; fillIngredient(it); } }));
+  box.querySelectorAll('[data-f="name"],[data-f="grams"]').forEach(inp => inp.addEventListener('change', () => { const it = m.items[+inp.closest('.ing').dataset.i]; if (it) {
+    if (inp.dataset.f === 'name') for (const k of ['sugar', 'fiber', 'sodium']) { delete it[k]; if (it.base) delete it.base[k]; }   // another food: its fiber, sugar and sodium are worked out again
+    it.calcDone = false; fillIngredient(it); } }));
   box.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { m.items.splice(+b.closest('.ing').dataset.i, 1); det.open = -1; renderIngredients(); renderDetTotals(); });
   box.querySelectorAll('[data-f]').forEach(inp => inp.oninput = e => {
     const card = e.target.closest('.ing'), it = m.items[+card.dataset.i], f = e.target.dataset.f;
@@ -4464,6 +4498,7 @@ function renderIngredients() {
     if (f === 'grams' && it.base.grams > 0) {
       const k = it.grams / it.base.grams;   // scale nutrition with portion size
       for (const x of ['kcal', 'protein', 'carbs', 'fat']) { it[x] = x === 'kcal' ? r0(it.base[x] * k) : r1(it.base[x] * k); card.querySelector(`[data-f="${x}"]`).value = it[x]; }
+      for (const x of ['sugar', 'fiber', 'sodium']) if (it.base[x] != null) it[x] = x === 'sodium' ? r0(it.base[x] * k) : r1(it.base[x] * k);   // fiber, sugar and sodium follow the amount too
     } else setBase(it);
     card.querySelector('[data-h=grams]').textContent = num(it.grams) ? it.grams + ' ' + (it.unit || 'g') : '';
     card.querySelector('[data-h=kcal]').textContent = r0(it.kcal);
@@ -4521,6 +4556,7 @@ There is no photo. The user describes the meal: ${text}` }], { id: m.id, date: m
     const i = db.meals.findIndex(x => x.id === m.id);
     if (i >= 0) db.meals[i] = m; else db.meals.push(m);
     save(); if (det.isNew) toast(T('✓ {name} logged', { name: m.name }));
+    fillExtras(m.id);
   }
   $('#detail')?.remove(); document.body.style.overflow = ''; det = null;
   if (tab === 'home') renderHome(); else go('home');
@@ -4887,7 +4923,7 @@ Fats: ${r0(tot.fat)} of ${g.fat} g → ${left('fat')}
 Calories burned today: ${g.burned} kcal${linkInfo() ? ` (filled in automatically from ${linkName(linkInfo().p)})` : ''} (${burnWholeDay() ? 'active calories of the WHOLE day from their watch: all movement incl. workouts' : 'workouts only'}) ${g.track ? `→ the goal FOLLOWS THE TRACKER: body at rest x1.1 plus 75% of today's active calories (${g.track.real} measured so far${g.track.est ? ` + ${g.track.est} still expected for the rest of the day from the 7-day average of ${g.track.avg}` : ''}). Today's goal ${g.kcal} kcal; an average day at their setup training level would be ${base.kcal} kcal. Quiet days (sick, travel) give lower goals, active days higher ones.` : `→ ${g.extra} kcal added to today's goal (mode "${db.settings.burnMode}"; ~${g.included} kcal/day of normal ${burnWholeDay() ? 'daily activity and training' : 'training'} is already part of the base goal)`}
 Health score today: ${healthAvg(todayMeals) ?? 'no meals yet'}/10
 Water today: ${waterOn(today)} of ${waterGoal(today)} ml (${db.settings.waterGoal ? 'goal set by the user' : 'personal goal from body weight, training, goal and the exercise of today'})
-Sugar ${r0(dayExtras(today).sugar)} g, fiber ${r0(dayExtras(today).fiber)} g, sodium ${r0(dayExtras(today).sodium)} mg today (known for ${dayExtras(today).known} of ${dayExtras(today).meals} meals)${pend ? `\nStill analysing: ${pend} food photo(s), not counted yet` : ''}
+Sugar ${r0(dayExtras(today).sugar)} g (personal max ${nutriLimits(dayGoals(today).kcal).sugar} g), fiber ${r0(dayExtras(today).fiber)} g (personal goal ${nutriLimits(dayGoals(today).kcal).fiber} g), sodium ${r0(dayExtras(today).sodium)} mg (max ${nutriLimits(dayGoals(today).kcal).sodium} mg) today (known for ${dayExtras(today).known} of ${dayExtras(today).meals} meals)${pend ? `\nStill analysing: ${pend} food photo(s), not counted yet` : ''}
 
 === TODAY'S MEALS ===
 ${todayMeals.map(meal).join('\n') || '- nothing logged yet'}
@@ -4924,7 +4960,7 @@ const PLAN_COACH = {
 };
 const LIFE_COACH = {
   sport: 'Lifestyle: sport / endurance: enough carbs to fuel training (more on hard or long days, carbs before and after training), protein after training, fluids and electrolytes on long sessions. Never let them under-fuel hard training.',
-  healthy: 'Lifestyle: eat healthier: favour whole foods, vegetables and fibre (about 30 g/day); limit added sugar, salt (under 2000 mg sodium/day) and ultra-processed food. Use their sugar, fiber and sodium numbers.',
+  healthy: 'Lifestyle: eat healthier: favour whole foods, vegetables and fibre (their personal fibre goal below); limit added sugar, salt (their sodium limit below) and ultra-processed food. Use their sugar, fiber and sodium numbers.',
   protein: 'Lifestyle: high protein: make sure they hit the protein target every day; suggest protein-dense foods and spreading protein over the day.',
   keto: 'Lifestyle: keto: keep total carbs under 30 g a day; suggest low-carb foods (meat, fish, eggs, dairy, nuts, low-starch vegetables) and avoid bread, pasta, rice, potatoes and sugar.',
   lowcarb: 'Lifestyle: low carb: keep total carbs under 100 g a day; favour protein, vegetables and healthy fats, small portions of whole-grain carbs.'
@@ -4939,7 +4975,7 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
-- Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
+- Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
@@ -5959,7 +5995,7 @@ function planTips(p) {
   if (ft === '52' || ft === 'adf') t.push('📅 ' + T('On fast days eat about {n} kcal, mostly protein and vegetables', { n: FAST_KCAL(p) }));
   if (ft === 'once') t.push('⏳ ' + T('Drink plenty of water during your fast and stop if you feel unwell'));
   if (hasLife(p, 'sport')) t.push('🍝 ' + T('Eat enough carbs around long or hard training'));
-  if (hasLife(p, 'healthy')) t.push('🥗 ' + T('Aim for 30 g fiber a day and less sugar and salt'));
+  if (hasLife(p, 'healthy')) t.push('🥗 ' + T('Aim for {n} g fiber a day and less sugar and salt', { n: nutriLimits(calcTargets(p, p.weight || currentWeight()).kcal, p).fiber }));
   t.push('🍗 ' + T('Hit your protein goal every day'));
   if (['lean', 'bulk', 'dirty', 'recomp'].includes(id) || p.goal === 'lean') t.push('🏋️ ' + T('Train with weights 3–5× a week and get stronger over time'));
   if (id === 'recomp' && p.goal === 'maintain') t.push('🔄 ' + T('Your weight may stay similar while your body changes'));

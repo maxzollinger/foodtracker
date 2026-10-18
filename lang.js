@@ -1355,7 +1355,8 @@ window.I18N = {
 "Write a new snapshot":"Neuen Überblick schreiben",
 "{n} messages":"{n} Nachrichten",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Favoriten: eine übliche Mahlzeit mit einem Tipp erneut eintragen. Essen scannen oder Foto hochladen: Die KI zählt Kalorien und Makros aus dem Bild. Barcode: genaue Werte vom Etikett. Essen beschreiben: schreib oder sag, was du gegessen hast. Dazu manuelle Einträge.",
-"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} zählt dein Training und deine Schritte schon. Füg nur hinzu, was fehlt, sonst wird es doppelt gezählt."
+"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} zählt dein Training und deine Schritte schon. Füg nur hinzu, was fehlt, sonst wird es doppelt gezählt.",
+"Aim for {n} g fiber a day and less sugar and salt":"Ziel: {n} g Ballaststoffe am Tag und weniger Zucker und Salz"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2712,7 +2713,8 @@ window.I18N = {
 "Write a new snapshot":"Escribir un nuevo resumen",
 "{n} messages":"{n} mensajes",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Favoritos: vuelve a registrar una comida habitual con un toque. Escanear comida o Subir foto: la IA cuenta calorías y macros desde una imagen. Código de barras: valores exactos de la etiqueta. Describir comida: escribe o di lo que comiste. Además, entradas manuales.",
-"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} ya cuenta tus entrenamientos y pasos. Añade solo lo que se le haya escapado, o se contará dos veces."
+"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} ya cuenta tus entrenamientos y pasos. Añade solo lo que se le haya escapado, o se contará dos veces.",
+"Aim for {n} g fiber a day and less sugar and salt":"Apunta a {n} g de fibra al día y menos azúcar y sal"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4069,7 +4071,8 @@ window.I18N = {
 "Write a new snapshot":"Écrire un nouvel aperçu",
 "{n} messages":"{n} messages",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Favoris : note à nouveau un repas habituel en un geste. Scanner ou Importer une photo : l'IA compte calories et macros à partir d'une image. Code-barres : valeurs exactes de l'étiquette. Décrire : écris ou dis ce que tu as mangé. Plus la saisie manuelle.",
-"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} compte déjà tes entraînements et tes pas. Ajoute seulement ce qu’il a manqué, sinon c’est compté deux fois."
+"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} compte déjà tes entraînements et tes pas. Ajoute seulement ce qu’il a manqué, sinon c’est compté deux fois.",
+"Aim for {n} g fiber a day and less sugar and salt":"Vise {n} g de fibres par jour et moins de sucre et de sel"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5426,7 +5429,8 @@ window.I18N = {
 "Write a new snapshot":"Scrivi un nuovo riepilogo",
 "{n} messages":"{n} messaggi",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Preferiti: registra di nuovo un pasto abituale con un tocco. Scansiona cibo o Carica foto: l'IA conta calorie e macro da un'immagine. Codice a barre: valori esatti dell'etichetta. Descrivi il cibo: scrivi o di' cosa hai mangiato. In più inserimento manuale.",
-"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} conta già i tuoi allenamenti e passi. Aggiungi solo ciò che ha perso, altrimenti viene contato due volte."
+"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} conta già i tuoi allenamenti e passi. Aggiungi solo ciò che ha perso, altrimenti viene contato due volte.",
+"Aim for {n} g fiber a day and less sugar and salt":"Punta a {n} g di fibre al giorno e meno zucchero e sale"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6783,7 +6787,8 @@ window.I18N = {
 "Write a new snapshot":"新しいまとめを作成",
 "{n} messages":"{n} 件のメッセージ",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"お気に入り：いつもの食事をワンタップで再記録。食べ物をスキャン・写真をアップロード：AI が画像からカロリーと PFC を計算。バーコード：表示どおりの正確な値。食べ物を説明：食べたものを入力するか話すだけ。手入力もあります。",
-"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} はすでにトレーニングと歩数を記録しています。記録漏れだけを追加してください。そうでないと二重に計算されます。"
+"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} はすでにトレーニングと歩数を記録しています。記録漏れだけを追加してください。そうでないと二重に計算されます。",
+"Aim for {n} g fiber a day and less sugar and salt":"食物繊維は 1 日 {n} g を目標に、砂糖と塩は控えめに"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8140,7 +8145,8 @@ window.I18N = {
 "Write a new snapshot":"Nieuw overzicht schrijven",
 "{n} messages":"{n} berichten",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Favorieten: log een vaste maaltijd opnieuw met één tik. Eten scannen of Foto uploaden: de AI telt calorieën en macro’s uit een foto. Barcode: exacte waarden van het etiket. Eten beschrijven: typ of zeg wat je at. Plus handmatige invoer.",
-"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} telt je trainingen en stappen al. Voeg alleen toe wat hij miste, anders telt het dubbel."
+"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} telt je trainingen en stappen al. Voeg alleen toe wat hij miste, anders telt het dubbel.",
+"Aim for {n} g fiber a day and less sugar and salt":"Mik op {n} g vezels per dag en minder suiker en zout"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9497,7 +9503,8 @@ window.I18N = {
 "Write a new snapshot":"Napisz nowe podsumowanie",
 "{n} messages":"Wiadomości: {n}",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Ulubione: jednym stuknięciem zapisz ponownie zwykły posiłek. Skanuj jedzenie lub Prześlij zdjęcie: AI liczy kalorie i makro ze zdjęcia. Kod kreskowy: dokładne wartości z etykiety. Opisz jedzenie: wpisz lub powiedz, co zjadłeś. Do tego wpisy ręczne.",
-"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} już liczy twoje treningi i kroki. Dodaj tylko to, co pominął, inaczej policzy się podwójnie."
+"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} już liczy twoje treningi i kroki. Dodaj tylko to, co pominął, inaczej policzy się podwójnie.",
+"Aim for {n} g fiber a day and less sugar and salt":"Celuj w {n} g błonnika dziennie oraz mniej cukru i soli"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -10854,7 +10861,8 @@ window.I18N = {
 "Write a new snapshot":"Escrever um novo resumo",
 "{n} messages":"{n} mensagens",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Favoritos: registe de novo uma refeição habitual com um toque. Digitalizar comida ou Carregar foto: a IA conta calorias e macros a partir de uma imagem. Código de barras: valores exatos do rótulo. Descrever comida: escreva ou diga o que comeu. Mais entradas manuais.",
-"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} já conta os seus treinos e passos. Adicione só o que lhe escapou, senão conta a dobrar."
+"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} já conta os seus treinos e passos. Adicione só o que lhe escapou, senão conta a dobrar.",
+"Aim for {n} g fiber a day and less sugar and salt":"Aponta para {n} g de fibra por dia e menos açúcar e sal"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -12211,7 +12219,8 @@ window.I18N = {
 "Write a new snapshot":"Написать новый обзор",
 "{n} messages":"Сообщений: {n}",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Избранное: повторно запишите привычный приём пищи одним касанием. Сканировать еду или Загрузить фото: ИИ считает калории и БЖУ по снимку. Штрихкод: точные значения с этикетки. Описать еду: напишите или скажите, что съели. А также ручной ввод.",
-"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} уже учитывает ваши тренировки и шаги. Добавляйте только то, что он пропустил, иначе посчитается дважды."
+"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} уже учитывает ваши тренировки и шаги. Добавляйте только то, что он пропустил, иначе посчитается дважды.",
+"Aim for {n} g fiber a day and less sugar and salt":"Стремись к {n} г клетчатки в день и меньше сахара и соли"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -13568,7 +13577,8 @@ window.I18N = {
 "Write a new snapshot":"Yeni özet yaz",
 "{n} messages":"{n} mesaj",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Favoriler: alışık olduğun bir öğünü tek dokunuşla yeniden kaydet. Yemek tara veya Fotoğraf yükle: yapay zekâ fotoğraftan kalori ve makroları hesaplar. Barkod: etiketteki kesin değerler. Yemeği anlat: ne yediğini yaz ya da söyle. Ayrıca manuel giriş.",
-"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} antrenmanlarını ve adımlarını zaten sayıyor. Sadece kaçırdığını ekle, yoksa iki kez sayılır."
+"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} antrenmanlarını ve adımlarını zaten sayıyor. Sadece kaçırdığını ekle, yoksa iki kez sayılır.",
+"Aim for {n} g fiber a day and less sugar and salt":"Günde {n} g lif hedefle, şekeri ve tuzu azalt"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -14925,6 +14935,7 @@ window.I18N = {
 "Write a new snapshot":"写一份新的概览",
 "{n} messages":"{n} 条消息",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"收藏：一键再次记录常吃的一餐。扫描食物或上传照片：AI 根据图片计算卡路里和营养素。条形码：标签上的准确数值。描述食物：输入或说出你吃了什么。另外还有手动记录。",
-"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} 已经在统计你的训练和步数。只添加它漏掉的，否则会重复计算。"
+"{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} 已经在统计你的训练和步数。只添加它漏掉的，否则会重复计算。",
+"Aim for {n} g fiber a day and less sugar and salt":"每天争取 {n} g 膳食纤维，少糖少盐"
 }
 };
