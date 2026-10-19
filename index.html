@@ -1031,7 +1031,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v147';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v148';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3552,15 +3552,15 @@ const TOUR_STEPS = [
   { tab: 'home', sel: '#planChip', title: N('Your goals'), text: N('Your goals and how far along you are: weight & muscle first, then lifestyle and fasting. Tap it to change your goals.') },
   { tab: 'home', sel: '.calcard', title: N('Calories for today'), text: N('How many calories you have left today. Tap the card to switch between left and eaten.') },
   { tab: 'home', sel: '.macros', title: N('Protein, carbs and fat'), text: N('What is left of each today. Protein matters most for your body goals.') },
-  { tab: 'home', sel: '.hcard', title: N('Health score'), text: N('How healthy your food is today, from 1 to 10. Bigger meals count more than a small snack.') },
-  // Cards for the goals someone chose: only shown in the tour when that goal is picked
-  { tab: 'home', when: p => hasLife(p, 'healthy'), sel: '.hcard', title: N('Eat healthier'), text: N('Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.') },
+  // In the order of the Home page; the goal cards only appear when that goal is chosen
   { tab: 'home', when: p => fastType(p) === 'if', sel: '#fastCard', title: N('Intermittent fasting'), text: N('Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.') },
   { tab: 'home', when: p => fastType(p) === '52' || fastType(p) === 'adf', sel: '#fastDayCard', title: N('Fast days'), text: N('Shows if today is a fast day or a normal day, and when the next fast day is. On fast days your calorie goal is lowered automatically.') },
   { tab: 'home', when: p => fastType(p) === 'once', sel: '#fastCard', title: N('One-time fast'), text: N('Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.') },
   { tab: 'home', when: p => !!carbCap(p), sel: '#carbCard', title: N('Carb limit'), text: N('Your carbs today against your limit. It turns red if you go over.') },
-  { tab: 'home', when: () => !!db.habit, sel: '#habitHome', title: N('Your habit'), text: N('The habit you are working on and how many days you have done it. Tap it for your plan and progress.') },
+  { tab: 'home', sel: '.hcard', title: N('Health score'), text: N('How healthy your food is today, from 1 to 10. Bigger meals count more than a small snack.') },
+  { tab: 'home', when: p => hasLife(p, 'healthy'), sel: '.hcard', title: N('Eat healthier'), text: N('Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.') },
   { tab: 'home', sel: '.minirow', title: N('Water and calories burned'), text: N('Tap + to add a glass of water or your burned calories. Tap a tile for more options.') },
+  { tab: 'home', when: () => !!db.habit, sel: '#habitHome', title: N('Your habit'), text: N('The habit you are working on and how many days you have done it. Tap it for your plan and progress.') },
   { tab: 'home', sel: '#mpCard', title: N('Meal plan & groceries'), text: N('Your weekly meal plan and shopping list, made for your goal. A new one comes every Saturday.') },
   { tab: 'home', sel: '#fab', title: N('Log your food'), text: N('The most important button. Let us look at what it opens.') },
   { tab: 'home', open: 'add', sel: '.backdrop .addgrid', title: N('Everything you can add'), text: N('Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.') },
