@@ -1031,7 +1031,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v146';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v147';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1573,7 +1573,7 @@ function fastDayHTML(date) {
   const p = db.profile, f = fastOf(p), on = isFastDay(p, date);
   let next = '';
   if (!on) for (let i = 1; i <= 7; i++) { const d = addDays(date, i); if (isFastDay(p, d)) { next = i === 1 ? T('tomorrow') : fmtDate(d, { weekday: 'long' }); break; } }
-  return `<div class="card"><div class="spread"><b>${f.type === '52' ? '📅 ' + T('5:2 fasting') : '🔁 ' + T('Alternate-day fasting')}</b><span class="etime">${on ? T('Fast day') : T('Normal day')}</span></div>
+  return `<div class="card" id="fastDayCard"><div class="spread"><b>${f.type === '52' ? '📅 ' + T('5:2 fasting') : '🔁 ' + T('Alternate-day fasting')}</b><span class="etime">${on ? T('Fast day') : T('Normal day')}</span></div>
     <div style="font-size:20px;font-weight:800;margin-top:8px">${on ? T('About {n} kcal on this fast day', { n: FAST_KCAL(p) }) : T('Eat normally')}</div>
     <div class="small muted" style="margin-top:2px">${on ? T('Mostly protein and vegetables keep you full.') : T('Next fast day: {d}', { d: next })}</div></div>`;
 }
@@ -1602,7 +1602,7 @@ function focusCard(date, t, tot) {
   if (ft === 'once' && date === iso()) out.push(onceFastHTML());
   if (carbCap(p)) {
     const v = tot.carbs, lim = t.carbs, over = v > lim;
-    out.push(`<div class="card"><div class="spread"><b>🥑 ${T('Carb limit')}</b><span><b style="${over ? 'color:var(--bad)' : ''}">${r0(v)}</b> <span class="muted">/ ${lim} g</span></span></div>${bar(v, lim, over ? 'var(--bad)' : 'var(--good)')}
+    out.push(`<div class="card" id="carbCard"><div class="spread"><b>🥑 ${T('Carb limit')}</b><span><b style="${over ? 'color:var(--bad)' : ''}">${r0(v)}</b> <span class="muted">/ ${lim} g</span></span></div>${bar(v, lim, over ? 'var(--bad)' : 'var(--good)')}
       <p class="small muted" style="margin:8px 0 0">${over ? T('You are over your carb limit today.') : hasLife(p, 'lowcarb') ? T('Stay under {n} g of carbs today.', { n: lim }) : T('Stay under {n} g of carbs to keep ketosis.', { n: lim })}</p></div>`);
   }
   if (hasLife(p, 'protein') || id === 'recomp') {
@@ -3553,6 +3553,13 @@ const TOUR_STEPS = [
   { tab: 'home', sel: '.calcard', title: N('Calories for today'), text: N('How many calories you have left today. Tap the card to switch between left and eaten.') },
   { tab: 'home', sel: '.macros', title: N('Protein, carbs and fat'), text: N('What is left of each today. Protein matters most for your body goals.') },
   { tab: 'home', sel: '.hcard', title: N('Health score'), text: N('How healthy your food is today, from 1 to 10. Bigger meals count more than a small snack.') },
+  // Cards for the goals someone chose: only shown in the tour when that goal is picked
+  { tab: 'home', when: p => hasLife(p, 'healthy'), sel: '.hcard', title: N('Eat healthier'), text: N('Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.') },
+  { tab: 'home', when: p => fastType(p) === 'if', sel: '#fastCard', title: N('Intermittent fasting'), text: N('Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.') },
+  { tab: 'home', when: p => fastType(p) === '52' || fastType(p) === 'adf', sel: '#fastDayCard', title: N('Fast days'), text: N('Shows if today is a fast day or a normal day, and when the next fast day is. On fast days your calorie goal is lowered automatically.') },
+  { tab: 'home', when: p => fastType(p) === 'once', sel: '#fastCard', title: N('One-time fast'), text: N('Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.') },
+  { tab: 'home', when: p => !!carbCap(p), sel: '#carbCard', title: N('Carb limit'), text: N('Your carbs today against your limit. It turns red if you go over.') },
+  { tab: 'home', when: () => !!db.habit, sel: '#habitHome', title: N('Your habit'), text: N('The habit you are working on and how many days you have done it. Tap it for your plan and progress.') },
   { tab: 'home', sel: '.minirow', title: N('Water and calories burned'), text: N('Tap + to add a glass of water or your burned calories. Tap a tile for more options.') },
   { tab: 'home', sel: '#mpCard', title: N('Meal plan & groceries'), text: N('Your weekly meal plan and shopping list, made for your goal. A new one comes every Saturday.') },
   { tab: 'home', sel: '#fab', title: N('Log your food'), text: N('The most important button. Let us look at what it opens.') },
@@ -3581,6 +3588,7 @@ const TOUR_STEPS = [
   { tab: 'home', title: N("You're all set"), text: N('Start by logging your next meal with the + button. Enjoy!') }
 ];
 function openTour(onDone) {
+  const STEPS = TOUR_STEPS.filter(s => !s.when || s.when(db.profile || {}));
   closeSheet(); $('#tourLayer')?.remove(); $('#tour')?.remove();
   const layer = document.createElement('div'); layer.id = 'tourLayer';
   layer.innerHTML = `<div class="tspot"></div><div class="ttip">
@@ -3631,9 +3639,9 @@ function openTour(onDone) {
   };
   async function show(n) {
     if (n < 0 || busy) return;
-    if (n >= TOUR_STEPS.length) return finish();
+    if (n >= STEPS.length) return finish();
     busy = true; i = n; landing = null;
-    const s = TOUR_STEPS[i], t0 = performance.now();
+    const s = STEPS[i], t0 = performance.now();
     body.classList.add('swap');   // the old text fades out while things move
     // Menus the step talks about: opened for it, closed again when the tour moves on
     if (openMenu !== (s.open || '')) {
@@ -3662,11 +3670,11 @@ function openTour(onDone) {
       sc.scrollTo({ top: want, behavior: still ? 'auto' : 'smooth' });
     }
     await wait(Math.max(0, 150 - (performance.now() - t0)));
-    tip.querySelector('.ttip-n').textContent = `${i + 1} / ${TOUR_STEPS.length}`;
+    tip.querySelector('.ttip-n').textContent = `${i + 1} / ${STEPS.length}`;
     tip.querySelector('.ttip-t').textContent = T(s.title);
     tip.querySelector('.ttip-x').textContent = T(s.text);
     tip.querySelector('.ttip-back').style.visibility = i ? '' : 'hidden';
-    tip.querySelector('.ttip-next').textContent = i === TOUR_STEPS.length - 1 ? T("Let's go") : T('Next');
+    tip.querySelector('.ttip-next').textContent = i === STEPS.length - 1 ? T("Let's go") : T('Next');
     tipGoal = placeTip(final);
     tip.style.opacity = '';
     body.classList.remove('swap');

@@ -1356,7 +1356,14 @@ window.I18N = {
 "{n} messages":"{n} Nachrichten",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Favoriten: eine übliche Mahlzeit mit einem Tipp erneut eintragen. Essen scannen oder Foto hochladen: Die KI zählt Kalorien und Makros aus dem Bild. Barcode: genaue Werte vom Etikett. Essen beschreiben: schreib oder sag, was du gegessen hast. Dazu manuelle Einträge.",
 "{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} zählt dein Training und deine Schritte schon. Füg nur hinzu, was fehlt, sonst wird es doppelt gezählt.",
-"Aim for {n} g fiber a day and less sugar and salt":"Ziel: {n} g Ballaststoffe am Tag und weniger Zucker und Salz"
+"Aim for {n} g fiber a day and less sugar and salt":"Ziel: {n} g Ballaststoffe am Tag und weniger Zucker und Salz",
+"Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.":"Weil du gesünder essen willst: Unter dem Health Score siehst du Ballaststoffe, Zucker und Salz für den Tag, sobald du Mahlzeiten einträgst, mit Grenzen, die zu dir passen.",
+"Fast days":"Fastentage",
+"Shows if today is a fast day or a normal day, and when the next fast day is. On fast days your calorie goal is lowered automatically.":"Zeigt, ob heute ein Fastentag oder ein normaler Tag ist und wann der nächste Fastentag kommt. An Fastentagen wird dein Kalorienziel automatisch gesenkt.",
+"The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"Die Gewohnheit, an der du arbeitest, und an wie vielen Tagen du sie geschafft hast. Tippe darauf für deinen Plan und Fortschritt.",
+"Your carbs today against your limit. It turns red if you go over.":"Deine Kohlenhydrate heute im Vergleich zu deinem Limit. Wird rot, wenn du darüber bist.",
+"Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"Dein Essensfenster für heute: wann es öffnet und schliesst und wie lange du schon fastest. Mahlzeiten ausserhalb des Fensters werden hier markiert.",
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Dein Fasten-Timer: wie lange du schon fastest und wie viel noch fehlt. Tippe auf «Fasten beenden», wenn du fertig bist."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2714,7 +2721,14 @@ window.I18N = {
 "{n} messages":"{n} mensajes",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Favoritos: vuelve a registrar una comida habitual con un toque. Escanear comida o Subir foto: la IA cuenta calorías y macros desde una imagen. Código de barras: valores exactos de la etiqueta. Describir comida: escribe o di lo que comiste. Además, entradas manuales.",
 "{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} ya cuenta tus entrenamientos y pasos. Añade solo lo que se le haya escapado, o se contará dos veces.",
-"Aim for {n} g fiber a day and less sugar and salt":"Apunta a {n} g de fibra al día y menos azúcar y sal"
+"Aim for {n} g fiber a day and less sugar and salt":"Apunta a {n} g de fibra al día y menos azúcar y sal",
+"Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.":"Como quieres comer más sano: debajo de la puntuación de salud ves la fibra, el azúcar y la sal del día en cuanto registras comidas, con límites hechos para ti.",
+"Fast days":"Días de ayuno",
+"Shows if today is a fast day or a normal day, and when the next fast day is. On fast days your calorie goal is lowered automatically.":"Muestra si hoy es día de ayuno o día normal, y cuándo es el próximo día de ayuno. En los días de ayuno tu objetivo de calorías baja automáticamente.",
+"The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"El hábito en el que trabajas y cuántos días lo has cumplido. Tócalo para ver tu plan y tu progreso.",
+"Your carbs today against your limit. It turns red if you go over.":"Tus carbohidratos de hoy frente a tu límite. Se pone rojo si te pasas.",
+"Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"Tu ventana de comidas de hoy: cuándo se abre y se cierra, y cuánto llevas en ayunas. Las comidas fuera de la ventana se marcan aquí.",
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Tu temporizador de ayuno: cuánto llevas y cuánto falta. Toca «Terminar ayuno» cuando acabes."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4072,7 +4086,14 @@ window.I18N = {
 "{n} messages":"{n} messages",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Favoris : note à nouveau un repas habituel en un geste. Scanner ou Importer une photo : l'IA compte calories et macros à partir d'une image. Code-barres : valeurs exactes de l'étiquette. Décrire : écris ou dis ce que tu as mangé. Plus la saisie manuelle.",
 "{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} compte déjà tes entraînements et tes pas. Ajoute seulement ce qu’il a manqué, sinon c’est compté deux fois.",
-"Aim for {n} g fiber a day and less sugar and salt":"Vise {n} g de fibres par jour et moins de sucre et de sel"
+"Aim for {n} g fiber a day and less sugar and salt":"Vise {n} g de fibres par jour et moins de sucre et de sel",
+"Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.":"Comme tu veux manger plus sain : sous le score santé, tu vois les fibres, le sucre et le sel de la journée dès que tu enregistres des repas, avec des limites faites pour toi.",
+"Fast days":"Jours de jeûne",
+"Shows if today is a fast day or a normal day, and when the next fast day is. On fast days your calorie goal is lowered automatically.":"Indique si aujourd’hui est un jour de jeûne ou un jour normal, et quand vient le prochain jour de jeûne. Les jours de jeûne, ton objectif de calories baisse automatiquement.",
+"The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"L’habitude sur laquelle tu travailles et combien de jours tu l’as tenue. Touche-la pour ton plan et tes progrès.",
+"Your carbs today against your limit. It turns red if you go over.":"Tes glucides du jour par rapport à ta limite. Devient rouge si tu dépasses.",
+"Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"Ta fenêtre alimentaire du jour : quand elle s’ouvre et se ferme, et depuis combien de temps tu jeûnes. Les repas hors de la fenêtre sont signalés ici.",
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Ton minuteur de jeûne : depuis combien de temps tu jeûnes et combien il reste. Touche « Arrêter le jeûne » quand tu as fini."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5430,7 +5451,14 @@ window.I18N = {
 "{n} messages":"{n} messaggi",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Preferiti: registra di nuovo un pasto abituale con un tocco. Scansiona cibo o Carica foto: l'IA conta calorie e macro da un'immagine. Codice a barre: valori esatti dell'etichetta. Descrivi il cibo: scrivi o di' cosa hai mangiato. In più inserimento manuale.",
 "{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} conta già i tuoi allenamenti e passi. Aggiungi solo ciò che ha perso, altrimenti viene contato due volte.",
-"Aim for {n} g fiber a day and less sugar and salt":"Punta a {n} g di fibre al giorno e meno zucchero e sale"
+"Aim for {n} g fiber a day and less sugar and salt":"Punta a {n} g di fibre al giorno e meno zucchero e sale",
+"Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.":"Visto che vuoi mangiare più sano: sotto il punteggio salute vedi fibre, zuccheri e sale della giornata appena registri i pasti, con limiti fatti per te.",
+"Fast days":"Giorni di digiuno",
+"Shows if today is a fast day or a normal day, and when the next fast day is. On fast days your calorie goal is lowered automatically.":"Mostra se oggi è un giorno di digiuno o normale, e quando arriva il prossimo. Nei giorni di digiuno il tuo obiettivo calorico si abbassa automaticamente.",
+"The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"L’abitudine su cui stai lavorando e per quanti giorni l’hai rispettata. Toccala per il tuo piano e i progressi.",
+"Your carbs today against your limit. It turns red if you go over.":"I tuoi carboidrati di oggi rispetto al limite. Diventa rosso se lo superi.",
+"Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"La tua finestra alimentare di oggi: quando si apre e si chiude e da quanto digiuni. I pasti fuori dalla finestra sono segnalati qui.",
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Il timer del digiuno: da quanto digiuni e quanto manca. Tocca «Termina digiuno» quando hai finito."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6788,7 +6816,14 @@ window.I18N = {
 "{n} messages":"{n} 件のメッセージ",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"お気に入り：いつもの食事をワンタップで再記録。食べ物をスキャン・写真をアップロード：AI が画像からカロリーと PFC を計算。バーコード：表示どおりの正確な値。食べ物を説明：食べたものを入力するか話すだけ。手入力もあります。",
 "{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} はすでにトレーニングと歩数を記録しています。記録漏れだけを追加してください。そうでないと二重に計算されます。",
-"Aim for {n} g fiber a day and less sugar and salt":"食物繊維は 1 日 {n} g を目標に、砂糖と塩は控えめに"
+"Aim for {n} g fiber a day and less sugar and salt":"食物繊維は 1 日 {n} g を目標に、砂糖と塩は控えめに",
+"Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.":"より健康的に食べたいあなたへ：食事を記録すると、ヘルススコアの下にその日の食物繊維・糖分・塩分が、あなた専用の上限と一緒に表示されます。",
+"Fast days":"断食日",
+"Shows if today is a fast day or a normal day, and when the next fast day is. On fast days your calorie goal is lowered automatically.":"今日が断食日か通常日か、次の断食日がいつかを表示します。断食日はカロリー目標が自動で下がります。",
+"The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"取り組んでいる習慣と、達成した日数です。タップするとプランと進捗が見られます。",
+"Your carbs today against your limit. It turns red if you go over.":"今日の炭水化物と上限の比較です。超えると赤くなります。",
+"Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"今日の食事時間帯：開始と終了の時刻、そして断食した時間です。時間外の食事はここに表示されます。",
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"断食タイマー：断食した時間と残り時間です。終わったら「断食を終える」をタップしてください。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8146,7 +8181,14 @@ window.I18N = {
 "{n} messages":"{n} berichten",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Favorieten: log een vaste maaltijd opnieuw met één tik. Eten scannen of Foto uploaden: de AI telt calorieën en macro’s uit een foto. Barcode: exacte waarden van het etiket. Eten beschrijven: typ of zeg wat je at. Plus handmatige invoer.",
 "{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} telt je trainingen en stappen al. Voeg alleen toe wat hij miste, anders telt het dubbel.",
-"Aim for {n} g fiber a day and less sugar and salt":"Mik op {n} g vezels per dag en minder suiker en zout"
+"Aim for {n} g fiber a day and less sugar and salt":"Mik op {n} g vezels per dag en minder suiker en zout",
+"Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.":"Omdat je gezonder wilt eten: onder de gezondheidsscore zie je vezels, suiker en zout van de dag zodra je maaltijden logt, met grenzen die bij jou passen.",
+"Fast days":"Vastendagen",
+"Shows if today is a fast day or a normal day, and when the next fast day is. On fast days your calorie goal is lowered automatically.":"Toont of vandaag een vastendag of een gewone dag is, en wanneer de volgende vastendag is. Op vastendagen gaat je caloriedoel automatisch omlaag.",
+"The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"De gewoonte waar je aan werkt en hoeveel dagen het je lukte. Tik erop voor je plan en voortgang.",
+"Your carbs today against your limit. It turns red if you go over.":"Je koolhydraten vandaag tegenover je limiet. Wordt rood als je erover gaat.",
+"Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"Je eetvenster van vandaag: wanneer het opent en sluit en hoe lang je al vast. Maaltijden buiten het venster worden hier gemarkeerd.",
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Je vastentimer: hoe lang je al vast en hoeveel er nog over is. Tik op ‘Vasten stoppen’ als je klaar bent."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9504,7 +9546,14 @@ window.I18N = {
 "{n} messages":"Wiadomości: {n}",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Ulubione: jednym stuknięciem zapisz ponownie zwykły posiłek. Skanuj jedzenie lub Prześlij zdjęcie: AI liczy kalorie i makro ze zdjęcia. Kod kreskowy: dokładne wartości z etykiety. Opisz jedzenie: wpisz lub powiedz, co zjadłeś. Do tego wpisy ręczne.",
 "{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} już liczy twoje treningi i kroki. Dodaj tylko to, co pominął, inaczej policzy się podwójnie.",
-"Aim for {n} g fiber a day and less sugar and salt":"Celuj w {n} g błonnika dziennie oraz mniej cukru i soli"
+"Aim for {n} g fiber a day and less sugar and salt":"Celuj w {n} g błonnika dziennie oraz mniej cukru i soli",
+"Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.":"Skoro chcesz jeść zdrowiej: pod wynikiem zdrowia widzisz błonnik, cukier i sól z całego dnia, gdy tylko zapiszesz posiłki, z limitami dopasowanymi do ciebie.",
+"Fast days":"Dni postu",
+"Shows if today is a fast day or a normal day, and when the next fast day is. On fast days your calorie goal is lowered automatically.":"Pokazuje, czy dziś jest dzień postu czy zwykły dzień, i kiedy będzie następny dzień postu. W dni postu twój cel kaloryczny obniża się automatycznie.",
+"The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"Nawyk, nad którym pracujesz, i ile dni ci się udało. Dotknij, aby zobaczyć plan i postępy.",
+"Your carbs today against your limit. It turns red if you go over.":"Twoje dzisiejsze węglowodany w porównaniu z limitem. Robi się czerwone, gdy go przekroczysz.",
+"Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"Twoje dzisiejsze okno jedzenia: kiedy się otwiera i zamyka oraz jak długo już pościsz. Posiłki poza oknem są tu oznaczone.",
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Twój licznik postu: jak długo już pościsz i ile zostało. Dotknij „Zakończ post”, gdy skończysz."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -10862,7 +10911,14 @@ window.I18N = {
 "{n} messages":"{n} mensagens",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Favoritos: registe de novo uma refeição habitual com um toque. Digitalizar comida ou Carregar foto: a IA conta calorias e macros a partir de uma imagem. Código de barras: valores exatos do rótulo. Descrever comida: escreva ou diga o que comeu. Mais entradas manuais.",
 "{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} já conta os seus treinos e passos. Adicione só o que lhe escapou, senão conta a dobrar.",
-"Aim for {n} g fiber a day and less sugar and salt":"Aponta para {n} g de fibra por dia e menos açúcar e sal"
+"Aim for {n} g fiber a day and less sugar and salt":"Aponta para {n} g de fibra por dia e menos açúcar e sal",
+"Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.":"Como quer comer de forma mais saudável: por baixo da pontuação de saúde vê a fibra, o açúcar e o sal do dia assim que regista refeições, com limites feitos para si.",
+"Fast days":"Dias de jejum",
+"Shows if today is a fast day or a normal day, and when the next fast day is. On fast days your calorie goal is lowered automatically.":"Mostra se hoje é dia de jejum ou um dia normal, e quando é o próximo dia de jejum. Nos dias de jejum o seu objetivo de calorias baixa automaticamente.",
+"The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"O hábito em que está a trabalhar e em quantos dias o cumpriu. Toque nele para ver o plano e o progresso.",
+"Your carbs today against your limit. It turns red if you go over.":"Os seus hidratos de carbono de hoje em relação ao limite. Fica vermelho se passar.",
+"Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"A sua janela alimentar de hoje: quando abre e fecha, e há quanto tempo está em jejum. As refeições fora da janela são marcadas aqui.",
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"O seu temporizador de jejum: há quanto tempo jejua e quanto falta. Toque em «Terminar jejum» quando acabar."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -12220,7 +12276,14 @@ window.I18N = {
 "{n} messages":"Сообщений: {n}",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Избранное: повторно запишите привычный приём пищи одним касанием. Сканировать еду или Загрузить фото: ИИ считает калории и БЖУ по снимку. Штрихкод: точные значения с этикетки. Описать еду: напишите или скажите, что съели. А также ручной ввод.",
 "{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} уже учитывает ваши тренировки и шаги. Добавляйте только то, что он пропустил, иначе посчитается дважды.",
-"Aim for {n} g fiber a day and less sugar and salt":"Стремись к {n} г клетчатки в день и меньше сахара и соли"
+"Aim for {n} g fiber a day and less sugar and salt":"Стремись к {n} г клетчатки в день и меньше сахара и соли",
+"Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.":"Раз вы хотите питаться здоровее: под оценкой здоровья вы видите клетчатку, сахар и соль за день, как только записываете еду, с лимитами, подобранными для вас.",
+"Fast days":"Дни голодания",
+"Shows if today is a fast day or a normal day, and when the next fast day is. On fast days your calorie goal is lowered automatically.":"Показывает, день голодания сегодня или обычный день, и когда следующий день голодания. В дни голодания ваша цель по калориям автоматически снижается.",
+"The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"Привычка, над которой вы работаете, и сколько дней вам это удалось. Нажмите, чтобы увидеть план и прогресс.",
+"Your carbs today against your limit. It turns red if you go over.":"Ваши углеводы сегодня в сравнении с лимитом. Становится красным, если вы его превысили.",
+"Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"Ваше окно питания на сегодня: когда оно открывается и закрывается и сколько вы уже голодаете. Приёмы пищи вне окна отмечаются здесь.",
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Ваш таймер голодания: сколько вы уже голодаете и сколько осталось. Нажмите «Закончить голодание», когда закончите."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -13578,7 +13641,14 @@ window.I18N = {
 "{n} messages":"{n} mesaj",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"Favoriler: alışık olduğun bir öğünü tek dokunuşla yeniden kaydet. Yemek tara veya Fotoğraf yükle: yapay zekâ fotoğraftan kalori ve makroları hesaplar. Barkod: etiketteki kesin değerler. Yemeği anlat: ne yediğini yaz ya da söyle. Ayrıca manuel giriş.",
 "{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} antrenmanlarını ve adımlarını zaten sayıyor. Sadece kaçırdığını ekle, yoksa iki kez sayılır.",
-"Aim for {n} g fiber a day and less sugar and salt":"Günde {n} g lif hedefle, şekeri ve tuzu azalt"
+"Aim for {n} g fiber a day and less sugar and salt":"Günde {n} g lif hedefle, şekeri ve tuzu azalt",
+"Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.":"Daha sağlıklı beslenmek istediğin için: öğün kaydettiğin anda sağlık puanının altında günün lif, şeker ve tuz miktarını, sana göre ayarlanmış sınırlarla görürsün.",
+"Fast days":"Oruç günleri",
+"Shows if today is a fast day or a normal day, and when the next fast day is. On fast days your calorie goal is lowered automatically.":"Bugünün oruç günü mü yoksa normal gün mü olduğunu ve bir sonraki oruç gününü gösterir. Oruç günlerinde kalori hedefin otomatik olarak düşer.",
+"The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"Üzerinde çalıştığın alışkanlık ve kaç gün başardığın. Planın ve ilerlemen için dokun.",
+"Your carbs today against your limit. It turns red if you go over.":"Bugünkü karbonhidratın ve sınırın. Aşarsan kırmızı olur.",
+"Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"Bugünkü yeme pencereni gösterir: ne zaman açılıp kapandığını ve ne kadar süredir oruç tuttuğunu. Pencere dışındaki öğünler burada işaretlenir.",
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Oruç zamanlayıcın: ne kadar süredir oruç tuttuğun ve ne kadar kaldığı. Bitirdiğinde “Orucu bitir”e dokun."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -14936,6 +15006,13 @@ window.I18N = {
 "{n} messages":"{n} 条消息",
 "Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.":"收藏：一键再次记录常吃的一餐。扫描食物或上传照片：AI 根据图片计算卡路里和营养素。条形码：标签上的准确数值。描述食物：输入或说出你吃了什么。另外还有手动记录。",
 "{name} already counts your workouts and steps. Only add something it missed, or it is counted twice.":"{name} 已经在统计你的训练和步数。只添加它漏掉的，否则会重复计算。",
-"Aim for {n} g fiber a day and less sugar and salt":"每天争取 {n} g 膳食纤维，少糖少盐"
+"Aim for {n} g fiber a day and less sugar and salt":"每天争取 {n} g 膳食纤维，少糖少盐",
+"Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.":"因为你想吃得更健康：记录饮食后，健康评分下方会显示当天的膳食纤维、糖和盐，以及为你定制的上限。",
+"Fast days":"断食日",
+"Shows if today is a fast day or a normal day, and when the next fast day is. On fast days your calorie goal is lowered automatically.":"显示今天是断食日还是普通日，以及下一个断食日是哪天。断食日的卡路里目标会自动降低。",
+"The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"你正在培养的习惯以及已坚持的天数。点按查看计划和进度。",
+"Your carbs today against your limit. It turns red if you go over.":"今天摄入的碳水与上限的对比。超出时会变红。",
+"Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"今天的进食窗口：何时开始、何时结束，以及你已断食多久。窗口外的进餐会在这里标出。",
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"断食计时器：已断食多久、还剩多久。完成后点按“结束断食”。"
 }
 };
