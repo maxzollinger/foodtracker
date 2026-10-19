@@ -1031,7 +1031,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v149';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v150';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1744,7 +1744,7 @@ function renderHome() {
     <div class="minirow">${waterCard(sel)}
       <div class="card mini burncard"><div class="spread"><div class="mini-ic">🏃</div><button class="mini-plus" id="burnAdd" aria-label="${T('Add')}">＋</button></div>
         ${burnTileHTML(sel, burned)}</div></div>
-    ${habitHomeCard()}${setupBanner()}${mealPlanCard()}
+    ${habitHomeCard()}${setupBanner()}${shortcutWarnCard()}${mealPlanCard()}
     <div class="h2">${sel === today ? T('Recently uploaded') : fmtDate(sel, { weekday: 'long', day: 'numeric', month: 'long' })}</div>
     ${list}`;
   document.querySelectorAll('.day').forEach(b => b.onclick = () => { sel = b.dataset.d; renderHome(); });
@@ -3046,6 +3046,7 @@ async function linkSync(force) {
       for (const x of list) { const d = x.d || iso(new Date(x.t)); if (!best[d] || x.t >= best[d].t) best[d] = x; }
       for (const [d, x] of Object.entries(best)) changed = applyAutoBurn(d, x.k, 'apple') || changed;
       if (list.length) { L.ok = Date.now(); L.last = Math.max(...list.map(x => x.t || 0)); L.err = ''; }
+      L.warn = shortcutCheck(list);
     } else {
       const refresh = async () => {
         if (!L.refresh) throw new Error('reconnect');
@@ -3314,7 +3315,8 @@ async function openSetupPage() {
    The template keeps the code in its own first box ("Text"), so friends either answer the setup question
    or simply paste their code into that box. The link is saved on the server; everyone then gets "Add". */
 function openSharePage() {
-  let st; try { st = JSON.parse(LS.get('ft_share', 'null')) || { done: {} }; } catch { st = { done: {} }; }
+  let st; try { st = JSON.parse(LS.get('ft_share', 'null')); } catch {}
+  if (!st) st = { done: shortcutURL() ? { build: true } : {} };   // a link is already saved: start at sharing the (changed) Shortcut again
   const save = () => LS.set('ft_share', JSON.stringify(st));
   let pg = $('#sharePg');
   if (!pg) { pg = document.createElement('div'); pg.id = 'sharePg'; pg.className = 'page'; document.body.appendChild(pg); document.body.style.overflow = 'hidden'; }
@@ -3387,6 +3389,29 @@ async function saveShortcutLink() {
     trackersAvail = null; await loadTrackers(); toast('✓ ' + T('Saved. Everyone now gets the Add button.'));
   } catch (e) { toast(e.message); }
 }
+// Signs that the Shortcut is set up wrong (e.g. a fixed date instead of "is today", or "in the last 7 days")
+function shortcutCheck(list) {
+  const days = {};
+  for (const x of list) { const t = x.t || Date.parse((x.d || '') + 'T20:00:00'); if (!t) continue; const d = x.d || iso(new Date(t)); if (!days[d] || t >= days[d].t) days[d] = { k: num(x.k), t }; }
+  const v = Object.entries(days).sort((a, b) => a[0] < b[0] ? -1 : 1).map(([d, x]) => ({ d, ...x })).slice(-5);
+  const big = v.find(x => x.k > 4000); if (big) return { why: 'many', n: r0(big.k) };
+  for (let i = 1; i < v.length; i++) if (v[i].k > 0 && v[i].k === v[i - 1].k) return { why: 'stuck', n: r0(v[i].k) };
+  const zeroEve = v.filter(x => x.k === 0 && new Date(x.t).getHours() >= 17);
+  if (zeroEve.length >= 2) return { why: 'zero', n: 0 };
+  return null;
+}
+function shortcutWarnCard() {
+  const L = linkInfo(); if (!L || L.p !== 'apple' || !L.warn) return '';
+  const key = L.warn.why + ':' + L.warn.n; if (L.warnOk === key) return '';
+  const why = L.warn.why === 'stuck' ? T('It sent the same number ({n} kcal) on several days.', { n: L.warn.n })
+    : L.warn.why === 'many' ? T('It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.', { n: L.warn.n })
+    : T('It sent 0 kcal in the evening on several days.');
+  return `<div class="card" id="scWarn" style="margin:0 0 14px;box-shadow:var(--shadow),inset 0 0 0 1.5px var(--carbs)"><b>⚠️ ${T('Your Shortcut may send the wrong number')}</b>
+    <p class="small" style="margin:6px 0 0;line-height:1.5">${why}</p>
+    <p class="small" style="margin:6px 0 0;line-height:1.5">${withName(T('Fix: open Shortcuts → <b>Food Tracker calories</b>. In <b>Find Health Samples</b> keep only one date filter: <b>Start Date</b> · <b>is today</b>. Delete other date filters, e.g. a fixed date or <b>in the last 7 days</b>.'))}</p>
+    <div class="row" style="gap:8px;margin-top:10px"><a class="btn sm grow" href="shortcuts://" style="text-decoration:none">${T('Open Shortcuts')}</a><button class="btn sm outline grow" onclick="shortcutWarnOk()">${T("It's correct")}</button></div></div>`;
+}
+function shortcutWarnOk() { const L = linkInfo(); if (!L || !L.warn) return; L.warnOk = L.warn.why + ':' + L.warn.n; LS.set('ft_link', JSON.stringify(L)); renderHome(); }
 function setupBanner() {
   const left = setupLeft(); if (!left) return '';
   const b = setupBrand(left.st);
@@ -4987,7 +5012,7 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
 - Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
-- Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
+- Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros; if the Shortcut sends the same number on several days, 0 every evening or over 4000 kcal a day, Home shows a warning: in Find Health Samples only one date filter may stay, Start Date · is today) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
 - Coach: the Memory button (top right) opens My memory: what you remember about them (they can add or delete facts), My memory snapshot (a short summary you write about them with one question and 3 quick answers) and Chat history (earlier conversations are kept when they start a new one; they can open, continue or delete them). The first suggestion button follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.

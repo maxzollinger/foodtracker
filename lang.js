@@ -1367,7 +1367,13 @@ window.I18N = {
 "<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>«Datei existiert nicht» / Kurzbefehl nicht gefunden:</b> Der Kurzbefehl ist doppelt in deiner Liste oder wurde umbenannt. Behalte nur einen, mit genau diesem Namen: {name}.",
 "<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Kein Zugriff auf Aktivitätsenergie</b> (Fehler in Kurzbefehle): Öffne die <b>Health</b>-App → dein Bild (oben rechts) → <b>Apps</b> → <b>Kurzbefehle</b> → <b>Aktivitätsenergie</b> einschalten. Oder tippe im Fehler auf <b>Anzeigen</b>. Danach nochmals auf «Jetzt ausführen» tippen.",
 "Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Zuerst prüfen: Der Kurzbefehl darf nur einmal in deiner Kurzbefehle-Liste sein. Siehst du ihn doppelt, lösche einen (gedrückt halten → Löschen). Sonst findet das iPhone ihn nicht.",
-"Tap it only once, otherwise the Shortcut is added twice.":"Nur einmal tippen, sonst wird der Kurzbefehl doppelt hinzugefügt."
+"Tap it only once, otherwise the Shortcut is added twice.":"Nur einmal tippen, sonst wird der Kurzbefehl doppelt hinzugefügt.",
+"Fix: open Shortcuts → <b>Food Tracker calories</b>. In <b>Find Health Samples</b> keep only one date filter: <b>Start Date</b> · <b>is today</b>. Delete other date filters, e.g. a fixed date or <b>in the last 7 days</b>.":"So behebst du es: Kurzbefehle öffnen → <b>Food Tracker calories</b>. In <b>Find Health Samples</b> nur einen Datumsfilter lassen: <b>Start Date</b> · <b>is today</b>. Andere Datumsfilter löschen, z.B. ein festes Datum oder <b>in the last 7 days</b>.",
+"It sent 0 kcal in the evening on several days.":"Er hat an mehreren Tagen am Abend 0 kcal geschickt.",
+"It sent the same number ({n} kcal) on several days.":"Er hat an mehreren Tagen dieselbe Zahl ({n} kcal) geschickt.",
+"It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Er hat {n} kcal für einen Tag geschickt. Das ist mehr als ein ganzer Tag Bewegung, er zählt also wohl mehrere Tage zusammen.",
+"It's correct":"Stimmt so",
+"Your Shortcut may send the wrong number":"Dein Kurzbefehl schickt vielleicht eine falsche Zahl"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2736,7 +2742,13 @@ window.I18N = {
 "<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>«El archivo no existe» / atajo no encontrado:</b> el atajo está dos veces en tu lista o se le cambió el nombre. Deja solo uno, con este nombre exacto: {name}.",
 "<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Sin acceso a Energía de actividad</b> (error en Atajos): abre la app <b>Salud</b> → tu foto (arriba a la derecha) → <b>Apps</b> → <b>Atajos</b> → activa <b>Energía de actividad</b>. O toca <b>Mostrar</b> en el error. Luego toca otra vez «Ejecutar ahora».",
 "Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Comprueba primero: el atajo debe estar solo una vez en tu lista de Atajos. Si lo ves dos veces, borra uno (mantén pulsado → Eliminar). Si no, el iPhone no lo encuentra.",
-"Tap it only once, otherwise the Shortcut is added twice.":"Tócalo solo una vez; si no, el atajo se añade dos veces."
+"Tap it only once, otherwise the Shortcut is added twice.":"Tócalo solo una vez; si no, el atajo se añade dos veces.",
+"Fix: open Shortcuts → <b>Food Tracker calories</b>. In <b>Find Health Samples</b> keep only one date filter: <b>Start Date</b> · <b>is today</b>. Delete other date filters, e.g. a fixed date or <b>in the last 7 days</b>.":"Solución: abre Atajos → <b>Food Tracker calories</b>. En <b>Find Health Samples</b> deja un solo filtro de fecha: <b>Start Date</b> · <b>is today</b>. Borra los demás filtros de fecha, p. ej. una fecha fija o <b>in the last 7 days</b>.",
+"It sent 0 kcal in the evening on several days.":"Envió 0 kcal por la noche varios días.",
+"It sent the same number ({n} kcal) on several days.":"Envió el mismo número ({n} kcal) varios días.",
+"It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Envió {n} kcal en un día. Es más que un día entero de actividad, así que probablemente suma varios días.",
+"It's correct":"Está bien",
+"Your Shortcut may send the wrong number":"Puede que tu atajo envíe un número incorrecto"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4105,7 +4117,13 @@ window.I18N = {
 "<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>« Le fichier n’existe pas » / raccourci introuvable :</b> le raccourci est deux fois dans ta liste ou a été renommé. Garde-en un seul, avec exactement ce nom : {name}.",
 "<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Pas d’accès à l’énergie active</b> (erreur dans Raccourcis) : ouvre l’app <b>Santé</b> → ta photo (en haut à droite) → <b>Apps</b> → <b>Raccourcis</b> → active <b>Énergie active</b>. Ou touche <b>Afficher</b> dans l’erreur. Puis touche à nouveau « Lancer maintenant ».",
 "Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Vérifie d’abord : le raccourci ne doit apparaître qu’une fois dans ta liste de Raccourcis. Si tu le vois deux fois, supprimes-en un (appui long → Supprimer). Sinon l’iPhone ne le trouve pas.",
-"Tap it only once, otherwise the Shortcut is added twice.":"Touche une seule fois, sinon le raccourci est ajouté deux fois."
+"Tap it only once, otherwise the Shortcut is added twice.":"Touche une seule fois, sinon le raccourci est ajouté deux fois.",
+"Fix: open Shortcuts → <b>Food Tracker calories</b>. In <b>Find Health Samples</b> keep only one date filter: <b>Start Date</b> · <b>is today</b>. Delete other date filters, e.g. a fixed date or <b>in the last 7 days</b>.":"Correction : ouvre Raccourcis → <b>Food Tracker calories</b>. Dans <b>Find Health Samples</b>, garde un seul filtre de date : <b>Start Date</b> · <b>is today</b>. Supprime les autres filtres de date, p. ex. une date fixe ou <b>in the last 7 days</b>.",
+"It sent 0 kcal in the evening on several days.":"Il a envoyé 0 kcal le soir plusieurs jours.",
+"It sent the same number ({n} kcal) on several days.":"Il a envoyé le même nombre ({n} kcal) plusieurs jours.",
+"It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Il a envoyé {n} kcal pour une journée. C’est plus qu’une journée entière d’activité, il additionne donc sans doute plusieurs jours.",
+"It's correct":"C’est correct",
+"Your Shortcut may send the wrong number":"Ton raccourci envoie peut-être un mauvais nombre"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5474,7 +5492,13 @@ window.I18N = {
 "<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>«Il file non esiste» / comando non trovato:</b> il comando rapido è due volte nella tua lista o è stato rinominato. Tienine solo uno, con esattamente questo nome: {name}.",
 "<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Nessun accesso all’energia attiva</b> (errore in Comandi Rapidi): apri l’app <b>Salute</b> → la tua foto (in alto a destra) → <b>App</b> → <b>Comandi Rapidi</b> → attiva <b>Energia attiva</b>. Oppure tocca <b>Mostra</b> nell’errore. Poi tocca di nuovo «Esegui ora».",
 "Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Controlla prima: il comando rapido deve essere nella tua lista una sola volta. Se lo vedi due volte, eliminane uno (tieni premuto → Elimina). Altrimenti l’iPhone non lo trova.",
-"Tap it only once, otherwise the Shortcut is added twice.":"Tocca una sola volta, altrimenti il comando rapido viene aggiunto due volte."
+"Tap it only once, otherwise the Shortcut is added twice.":"Tocca una sola volta, altrimenti il comando rapido viene aggiunto due volte.",
+"Fix: open Shortcuts → <b>Food Tracker calories</b>. In <b>Find Health Samples</b> keep only one date filter: <b>Start Date</b> · <b>is today</b>. Delete other date filters, e.g. a fixed date or <b>in the last 7 days</b>.":"Soluzione: apri Comandi Rapidi → <b>Food Tracker calories</b>. In <b>Find Health Samples</b> lascia un solo filtro data: <b>Start Date</b> · <b>is today</b>. Elimina gli altri filtri data, ad es. una data fissa o <b>in the last 7 days</b>.",
+"It sent 0 kcal in the evening on several days.":"Ha inviato 0 kcal la sera per più giorni.",
+"It sent the same number ({n} kcal) on several days.":"Ha inviato lo stesso numero ({n} kcal) per più giorni.",
+"It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Ha inviato {n} kcal per un giorno. È più di un’intera giornata di attività, quindi probabilmente somma più giorni.",
+"It's correct":"È giusto",
+"Your Shortcut may send the wrong number":"Il tuo comando rapido potrebbe inviare un numero sbagliato"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6843,7 +6867,13 @@ window.I18N = {
 "<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>「ファイルが存在しません」/ショートカットが見つからない：</b>ショートカットがリストに2つあるか、名前が変わっています。1つだけ残し、名前を正確に {name} にしてください。",
 "<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>アクティブエネルギーへのアクセスがありません</b>（ショートカットのエラー）：<b>ヘルスケア</b>アプリ → 右上のプロフィール写真 → <b>アプリ</b> → <b>ショートカット</b> → <b>アクティブエネルギー</b>をオン。またはエラーの<b>表示</b>をタップ。その後もう一度「今すぐ実行」をタップしてください。",
 "Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"まず確認：ショートカットはリストに1つだけにしてください。2つある場合は1つ削除（長押し → 削除）。そうしないとiPhoneが見つけられません。",
-"Tap it only once, otherwise the Shortcut is added twice.":"1回だけタップしてください。2回タップするとショートカットが2つ追加されます。"
+"Tap it only once, otherwise the Shortcut is added twice.":"1回だけタップしてください。2回タップするとショートカットが2つ追加されます。",
+"Fix: open Shortcuts → <b>Food Tracker calories</b>. In <b>Find Health Samples</b> keep only one date filter: <b>Start Date</b> · <b>is today</b>. Delete other date filters, e.g. a fixed date or <b>in the last 7 days</b>.":"直し方：ショートカット → <b>Food Tracker calories</b> を開きます。<b>Find Health Samples</b> の日付フィルタは <b>Start Date</b> · <b>is today</b> の1つだけにしてください。固定の日付や <b>in the last 7 days</b> など、ほかの日付フィルタは削除します。",
+"It sent 0 kcal in the evening on several days.":"数日にわたり、夜に 0 kcal が送られました。",
+"It sent the same number ({n} kcal) on several days.":"数日にわたり、同じ数値（{n} kcal）が送られました。",
+"It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"1日に {n} kcal が送られました。1日の活動量を超えているため、複数日を合計している可能性があります。",
+"It's correct":"正しいです",
+"Your Shortcut may send the wrong number":"ショートカットが誤った数値を送っているかもしれません"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8212,7 +8242,13 @@ window.I18N = {
 "<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>‘Bestand bestaat niet’ / opdracht niet gevonden:</b> de opdracht staat twee keer in je lijst of is hernoemd. Houd er maar één, met precies deze naam: {name}.",
 "<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Geen toegang tot actieve energie</b> (fout in Opdrachten): open de app <b>Gezondheid</b> → je foto (rechtsboven) → <b>Apps</b> → <b>Opdrachten</b> → zet <b>Actieve energie</b> aan. Of tik op <b>Toon</b> in de foutmelding. Tik daarna opnieuw op ‘Nu uitvoeren’.",
 "Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Controleer eerst: de opdracht mag maar één keer in je Opdrachten-lijst staan. Zie je hem twee keer, verwijder er dan één (ingedrukt houden → Verwijder). Anders vindt de iPhone hem niet.",
-"Tap it only once, otherwise the Shortcut is added twice.":"Tik maar één keer, anders wordt de opdracht twee keer toegevoegd."
+"Tap it only once, otherwise the Shortcut is added twice.":"Tik maar één keer, anders wordt de opdracht twee keer toegevoegd.",
+"Fix: open Shortcuts → <b>Food Tracker calories</b>. In <b>Find Health Samples</b> keep only one date filter: <b>Start Date</b> · <b>is today</b>. Delete other date filters, e.g. a fixed date or <b>in the last 7 days</b>.":"Oplossing: open Opdrachten → <b>Food Tracker calories</b>. Laat in <b>Find Health Samples</b> maar één datumfilter staan: <b>Start Date</b> · <b>is today</b>. Verwijder andere datumfilters, bv. een vaste datum of <b>in the last 7 days</b>.",
+"It sent 0 kcal in the evening on several days.":"Hij stuurde op meerdere dagen ’s avonds 0 kcal.",
+"It sent the same number ({n} kcal) on several days.":"Hij stuurde op meerdere dagen hetzelfde getal ({n} kcal).",
+"It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Hij stuurde {n} kcal voor één dag. Dat is meer dan een hele dag beweging, dus telt hij waarschijnlijk meerdere dagen op.",
+"It's correct":"Klopt zo",
+"Your Shortcut may send the wrong number":"Je opdracht stuurt misschien een verkeerd getal"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9581,7 +9617,13 @@ window.I18N = {
 "<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>„Plik nie istnieje” / nie znaleziono skrótu:</b> skrót jest na liście dwa razy albo zmieniono jego nazwę. Zostaw tylko jeden, o dokładnie tej nazwie: {name}.",
 "<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Brak dostępu do aktywnej energii</b> (błąd w Skrótach): otwórz aplikację <b>Zdrowie</b> → swoje zdjęcie (w prawym górnym rogu) → <b>Aplikacje</b> → <b>Skróty</b> → włącz <b>Aktywna energia</b>. Albo dotknij <b>Pokaż</b> w komunikacie błędu. Potem dotknij ponownie „Uruchom teraz”.",
 "Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Najpierw sprawdź: skrót może być na liście Skrótów tylko raz. Jeśli widzisz go dwa razy, usuń jeden (przytrzymaj → Usuń). Inaczej iPhone go nie znajdzie.",
-"Tap it only once, otherwise the Shortcut is added twice.":"Dotknij tylko raz, inaczej skrót zostanie dodany dwa razy."
+"Tap it only once, otherwise the Shortcut is added twice.":"Dotknij tylko raz, inaczej skrót zostanie dodany dwa razy.",
+"Fix: open Shortcuts → <b>Food Tracker calories</b>. In <b>Find Health Samples</b> keep only one date filter: <b>Start Date</b> · <b>is today</b>. Delete other date filters, e.g. a fixed date or <b>in the last 7 days</b>.":"Jak naprawić: otwórz Skróty → <b>Food Tracker calories</b>. W <b>Find Health Samples</b> zostaw tylko jeden filtr daty: <b>Start Date</b> · <b>is today</b>. Usuń inne filtry daty, np. stałą datę albo <b>in the last 7 days</b>.",
+"It sent 0 kcal in the evening on several days.":"Przez kilka dni wieczorem wysłał 0 kcal.",
+"It sent the same number ({n} kcal) on several days.":"Przez kilka dni wysłał tę samą liczbę ({n} kcal).",
+"It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Wysłał {n} kcal za jeden dzień. To więcej niż cały dzień aktywności, więc pewnie sumuje kilka dni.",
+"It's correct":"Jest dobrze",
+"Your Shortcut may send the wrong number":"Twój skrót może wysyłać złą liczbę"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -10950,7 +10992,13 @@ window.I18N = {
 "<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>«O ficheiro não existe» / atalho não encontrado:</b> o atalho está duas vezes na sua lista ou mudou de nome. Mantenha só um, com exatamente este nome: {name}.",
 "<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Sem acesso à energia ativa</b> (erro em Atalhos): abra a app <b>Saúde</b> → a sua foto (canto superior direito) → <b>Apps</b> → <b>Atalhos</b> → ative <b>Energia ativa</b>. Ou toque em <b>Mostrar</b> no erro. Depois toque de novo em «Executar agora».",
 "Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Verifique primeiro: o atalho só pode estar uma vez na sua lista de Atalhos. Se o vir duas vezes, apague um (mantenha premido → Apagar). Caso contrário, o iPhone não o encontra.",
-"Tap it only once, otherwise the Shortcut is added twice.":"Toque só uma vez, senão o atalho é adicionado duas vezes."
+"Tap it only once, otherwise the Shortcut is added twice.":"Toque só uma vez, senão o atalho é adicionado duas vezes.",
+"Fix: open Shortcuts → <b>Food Tracker calories</b>. In <b>Find Health Samples</b> keep only one date filter: <b>Start Date</b> · <b>is today</b>. Delete other date filters, e.g. a fixed date or <b>in the last 7 days</b>.":"Como corrigir: abra Atalhos → <b>Food Tracker calories</b>. Em <b>Find Health Samples</b> deixe só um filtro de data: <b>Start Date</b> · <b>is today</b>. Apague os outros filtros de data, p. ex. uma data fixa ou <b>in the last 7 days</b>.",
+"It sent 0 kcal in the evening on several days.":"Enviou 0 kcal à noite em vários dias.",
+"It sent the same number ({n} kcal) on several days.":"Enviou o mesmo número ({n} kcal) em vários dias.",
+"It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Enviou {n} kcal num dia. É mais do que um dia inteiro de atividade, por isso provavelmente soma vários dias.",
+"It's correct":"Está certo",
+"Your Shortcut may send the wrong number":"O seu atalho pode estar a enviar um número errado"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -12319,7 +12367,13 @@ window.I18N = {
 "<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>«Файл не существует» / команда не найдена:</b> быстрая команда есть в списке дважды или была переименована. Оставьте только одну, с точным названием: {name}.",
 "<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Нет доступа к активной энергии</b> (ошибка в «Быстрых командах»): откройте приложение <b>Здоровье</b> → ваше фото (вверху справа) → <b>Приложения</b> → <b>Быстрые команды</b> → включите <b>Активная энергия</b>. Или нажмите <b>Показать</b> в ошибке. Затем снова нажмите «Запустить сейчас».",
 "Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Сначала проверьте: команда должна быть в списке «Быстрых команд» только один раз. Если видите её дважды, удалите одну (нажмите и удерживайте → Удалить). Иначе iPhone её не найдёт.",
-"Tap it only once, otherwise the Shortcut is added twice.":"Нажмите только один раз, иначе команда добавится дважды."
+"Tap it only once, otherwise the Shortcut is added twice.":"Нажмите только один раз, иначе команда добавится дважды.",
+"Fix: open Shortcuts → <b>Food Tracker calories</b>. In <b>Find Health Samples</b> keep only one date filter: <b>Start Date</b> · <b>is today</b>. Delete other date filters, e.g. a fixed date or <b>in the last 7 days</b>.":"Как исправить: откройте «Быстрые команды» → <b>Food Tracker calories</b>. В <b>Find Health Samples</b> оставьте только один фильтр даты: <b>Start Date</b> · <b>is today</b>. Удалите другие фильтры даты, например фиксированную дату или <b>in the last 7 days</b>.",
+"It sent 0 kcal in the evening on several days.":"Несколько дней подряд вечером она отправляла 0 ккал.",
+"It sent the same number ({n} kcal) on several days.":"Несколько дней она отправляла одно и то же число ({n} ккал).",
+"It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Она отправила {n} ккал за один день. Это больше, чем целый день активности, значит, она, вероятно, суммирует несколько дней.",
+"It's correct":"Всё верно",
+"Your Shortcut may send the wrong number":"Ваша быстрая команда, возможно, отправляет неверное число"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -13688,7 +13742,13 @@ window.I18N = {
 "<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>“Dosya yok” / kestirme bulunamadı:</b> kestirme listende iki kez var ya da adı değişti. Yalnızca birini bırak, adı tam olarak şu olsun: {name}.",
 "<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Aktif Enerji’ye erişim yok</b> (Kestirmeler’de hata): <b>Sağlık</b> uygulamasını aç → resmin (sağ üstte) → <b>Uygulamalar</b> → <b>Kestirmeler</b> → <b>Aktif Enerji</b>’yi aç. Ya da hatadaki <b>Göster</b>’e dokun. Sonra yine “Şimdi çalıştır”a dokun.",
 "Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Önce kontrol et: kestirme Kestirmeler listende yalnızca bir kez olmalı. İki tane görüyorsan birini sil (basılı tut → Sil). Yoksa iPhone onu bulamaz.",
-"Tap it only once, otherwise the Shortcut is added twice.":"Yalnızca bir kez dokun, yoksa kestirme iki kez eklenir."
+"Tap it only once, otherwise the Shortcut is added twice.":"Yalnızca bir kez dokun, yoksa kestirme iki kez eklenir.",
+"Fix: open Shortcuts → <b>Food Tracker calories</b>. In <b>Find Health Samples</b> keep only one date filter: <b>Start Date</b> · <b>is today</b>. Delete other date filters, e.g. a fixed date or <b>in the last 7 days</b>.":"Çözüm: Kestirmeler → <b>Food Tracker calories</b> aç. <b>Find Health Samples</b> içinde yalnızca bir tarih filtresi bırak: <b>Start Date</b> · <b>is today</b>. Diğer tarih filtrelerini sil, ör. sabit bir tarih ya da <b>in the last 7 days</b>.",
+"It sent 0 kcal in the evening on several days.":"Birkaç gün akşam 0 kcal gönderdi.",
+"It sent the same number ({n} kcal) on several days.":"Birkaç gün aynı sayıyı ({n} kcal) gönderdi.",
+"It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Bir gün için {n} kcal gönderdi. Bu, tam bir günlük aktiviteden fazla; muhtemelen birkaç günü topluyor.",
+"It's correct":"Doğru",
+"Your Shortcut may send the wrong number":"Kestirmen yanlış bir sayı gönderiyor olabilir"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -15057,6 +15117,12 @@ window.I18N = {
 "<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>“文件不存在”/找不到快捷指令：</b>快捷指令在列表中出现了两次或被改了名字。只保留一个，名称必须完全是：{name}。",
 "<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>无法访问活动能量</b>（快捷指令中的错误）：打开<b>健康</b> App → 右上角你的头像 → <b>App</b> → <b>快捷指令</b> → 打开<b>活动能量</b>。或在错误提示中点按<b>显示</b>。然后再点按“立即运行”。",
 "Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"请先检查：快捷指令在列表中只能有一个。如果看到两个，请删除一个（长按 → 删除）。否则 iPhone 找不到它。",
-"Tap it only once, otherwise the Shortcut is added twice.":"只点一次，否则快捷指令会被添加两次。"
+"Tap it only once, otherwise the Shortcut is added twice.":"只点一次，否则快捷指令会被添加两次。",
+"Fix: open Shortcuts → <b>Food Tracker calories</b>. In <b>Find Health Samples</b> keep only one date filter: <b>Start Date</b> · <b>is today</b>. Delete other date filters, e.g. a fixed date or <b>in the last 7 days</b>.":"修复方法：打开快捷指令 → <b>Food Tracker calories</b>。在 <b>Find Health Samples</b> 中只保留一个日期筛选条件：<b>Start Date</b> · <b>is today</b>。删除其他日期筛选，例如固定日期或 <b>in the last 7 days</b>。",
+"It sent 0 kcal in the evening on several days.":"有几天晚上发送的是 0 千卡。",
+"It sent the same number ({n} kcal) on several days.":"有几天发送了相同的数字（{n} 千卡）。",
+"It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"它一天发送了 {n} 千卡，超过了一整天的活动量，可能把好几天加在了一起。",
+"It's correct":"没问题",
+"Your Shortcut may send the wrong number":"你的快捷指令可能发送了错误的数字"
 }
 };
