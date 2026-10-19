@@ -1363,7 +1363,11 @@ window.I18N = {
 "The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"Die Gewohnheit, an der du arbeitest, und an wie vielen Tagen du sie geschafft hast. Tippe darauf für deinen Plan und Fortschritt.",
 "Your carbs today against your limit. It turns red if you go over.":"Deine Kohlenhydrate heute im Vergleich zu deinem Limit. Wird rot, wenn du darüber bist.",
 "Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"Dein Essensfenster für heute: wann es öffnet und schliesst und wie lange du schon fastest. Mahlzeiten ausserhalb des Fensters werden hier markiert.",
-"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Dein Fasten-Timer: wie lange du schon fastest und wie viel noch fehlt. Tippe auf «Fasten beenden», wenn du fertig bist."
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Dein Fasten-Timer: wie lange du schon fastest und wie viel noch fehlt. Tippe auf «Fasten beenden», wenn du fertig bist.",
+"<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>«Datei existiert nicht» / Kurzbefehl nicht gefunden:</b> Der Kurzbefehl ist doppelt in deiner Liste oder wurde umbenannt. Behalte nur einen, mit genau diesem Namen: {name}.",
+"<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Kein Zugriff auf Aktivitätsenergie</b> (Fehler in Kurzbefehle): Öffne die <b>Health</b>-App → dein Bild (oben rechts) → <b>Apps</b> → <b>Kurzbefehle</b> → <b>Aktivitätsenergie</b> einschalten. Oder tippe im Fehler auf <b>Anzeigen</b>. Danach nochmals auf «Jetzt ausführen» tippen.",
+"Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Zuerst prüfen: Der Kurzbefehl darf nur einmal in deiner Kurzbefehle-Liste sein. Siehst du ihn doppelt, lösche einen (gedrückt halten → Löschen). Sonst findet das iPhone ihn nicht.",
+"Tap it only once, otherwise the Shortcut is added twice.":"Nur einmal tippen, sonst wird der Kurzbefehl doppelt hinzugefügt."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2728,7 +2732,11 @@ window.I18N = {
 "The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"El hábito en el que trabajas y cuántos días lo has cumplido. Tócalo para ver tu plan y tu progreso.",
 "Your carbs today against your limit. It turns red if you go over.":"Tus carbohidratos de hoy frente a tu límite. Se pone rojo si te pasas.",
 "Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"Tu ventana de comidas de hoy: cuándo se abre y se cierra, y cuánto llevas en ayunas. Las comidas fuera de la ventana se marcan aquí.",
-"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Tu temporizador de ayuno: cuánto llevas y cuánto falta. Toca «Terminar ayuno» cuando acabes."
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Tu temporizador de ayuno: cuánto llevas y cuánto falta. Toca «Terminar ayuno» cuando acabes.",
+"<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>«El archivo no existe» / atajo no encontrado:</b> el atajo está dos veces en tu lista o se le cambió el nombre. Deja solo uno, con este nombre exacto: {name}.",
+"<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Sin acceso a Energía de actividad</b> (error en Atajos): abre la app <b>Salud</b> → tu foto (arriba a la derecha) → <b>Apps</b> → <b>Atajos</b> → activa <b>Energía de actividad</b>. O toca <b>Mostrar</b> en el error. Luego toca otra vez «Ejecutar ahora».",
+"Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Comprueba primero: el atajo debe estar solo una vez en tu lista de Atajos. Si lo ves dos veces, borra uno (mantén pulsado → Eliminar). Si no, el iPhone no lo encuentra.",
+"Tap it only once, otherwise the Shortcut is added twice.":"Tócalo solo una vez; si no, el atajo se añade dos veces."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4093,7 +4101,11 @@ window.I18N = {
 "The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"L’habitude sur laquelle tu travailles et combien de jours tu l’as tenue. Touche-la pour ton plan et tes progrès.",
 "Your carbs today against your limit. It turns red if you go over.":"Tes glucides du jour par rapport à ta limite. Devient rouge si tu dépasses.",
 "Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"Ta fenêtre alimentaire du jour : quand elle s’ouvre et se ferme, et depuis combien de temps tu jeûnes. Les repas hors de la fenêtre sont signalés ici.",
-"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Ton minuteur de jeûne : depuis combien de temps tu jeûnes et combien il reste. Touche « Arrêter le jeûne » quand tu as fini."
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Ton minuteur de jeûne : depuis combien de temps tu jeûnes et combien il reste. Touche « Arrêter le jeûne » quand tu as fini.",
+"<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>« Le fichier n’existe pas » / raccourci introuvable :</b> le raccourci est deux fois dans ta liste ou a été renommé. Garde-en un seul, avec exactement ce nom : {name}.",
+"<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Pas d’accès à l’énergie active</b> (erreur dans Raccourcis) : ouvre l’app <b>Santé</b> → ta photo (en haut à droite) → <b>Apps</b> → <b>Raccourcis</b> → active <b>Énergie active</b>. Ou touche <b>Afficher</b> dans l’erreur. Puis touche à nouveau « Lancer maintenant ».",
+"Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Vérifie d’abord : le raccourci ne doit apparaître qu’une fois dans ta liste de Raccourcis. Si tu le vois deux fois, supprimes-en un (appui long → Supprimer). Sinon l’iPhone ne le trouve pas.",
+"Tap it only once, otherwise the Shortcut is added twice.":"Touche une seule fois, sinon le raccourci est ajouté deux fois."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5458,7 +5470,11 @@ window.I18N = {
 "The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"L’abitudine su cui stai lavorando e per quanti giorni l’hai rispettata. Toccala per il tuo piano e i progressi.",
 "Your carbs today against your limit. It turns red if you go over.":"I tuoi carboidrati di oggi rispetto al limite. Diventa rosso se lo superi.",
 "Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"La tua finestra alimentare di oggi: quando si apre e si chiude e da quanto digiuni. I pasti fuori dalla finestra sono segnalati qui.",
-"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Il timer del digiuno: da quanto digiuni e quanto manca. Tocca «Termina digiuno» quando hai finito."
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Il timer del digiuno: da quanto digiuni e quanto manca. Tocca «Termina digiuno» quando hai finito.",
+"<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>«Il file non esiste» / comando non trovato:</b> il comando rapido è due volte nella tua lista o è stato rinominato. Tienine solo uno, con esattamente questo nome: {name}.",
+"<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Nessun accesso all’energia attiva</b> (errore in Comandi Rapidi): apri l’app <b>Salute</b> → la tua foto (in alto a destra) → <b>App</b> → <b>Comandi Rapidi</b> → attiva <b>Energia attiva</b>. Oppure tocca <b>Mostra</b> nell’errore. Poi tocca di nuovo «Esegui ora».",
+"Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Controlla prima: il comando rapido deve essere nella tua lista una sola volta. Se lo vedi due volte, eliminane uno (tieni premuto → Elimina). Altrimenti l’iPhone non lo trova.",
+"Tap it only once, otherwise the Shortcut is added twice.":"Tocca una sola volta, altrimenti il comando rapido viene aggiunto due volte."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6823,7 +6839,11 @@ window.I18N = {
 "The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"取り組んでいる習慣と、達成した日数です。タップするとプランと進捗が見られます。",
 "Your carbs today against your limit. It turns red if you go over.":"今日の炭水化物と上限の比較です。超えると赤くなります。",
 "Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"今日の食事時間帯：開始と終了の時刻、そして断食した時間です。時間外の食事はここに表示されます。",
-"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"断食タイマー：断食した時間と残り時間です。終わったら「断食を終える」をタップしてください。"
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"断食タイマー：断食した時間と残り時間です。終わったら「断食を終える」をタップしてください。",
+"<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>「ファイルが存在しません」/ショートカットが見つからない：</b>ショートカットがリストに2つあるか、名前が変わっています。1つだけ残し、名前を正確に {name} にしてください。",
+"<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>アクティブエネルギーへのアクセスがありません</b>（ショートカットのエラー）：<b>ヘルスケア</b>アプリ → 右上のプロフィール写真 → <b>アプリ</b> → <b>ショートカット</b> → <b>アクティブエネルギー</b>をオン。またはエラーの<b>表示</b>をタップ。その後もう一度「今すぐ実行」をタップしてください。",
+"Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"まず確認：ショートカットはリストに1つだけにしてください。2つある場合は1つ削除（長押し → 削除）。そうしないとiPhoneが見つけられません。",
+"Tap it only once, otherwise the Shortcut is added twice.":"1回だけタップしてください。2回タップするとショートカットが2つ追加されます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8188,7 +8208,11 @@ window.I18N = {
 "The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"De gewoonte waar je aan werkt en hoeveel dagen het je lukte. Tik erop voor je plan en voortgang.",
 "Your carbs today against your limit. It turns red if you go over.":"Je koolhydraten vandaag tegenover je limiet. Wordt rood als je erover gaat.",
 "Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"Je eetvenster van vandaag: wanneer het opent en sluit en hoe lang je al vast. Maaltijden buiten het venster worden hier gemarkeerd.",
-"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Je vastentimer: hoe lang je al vast en hoeveel er nog over is. Tik op ‘Vasten stoppen’ als je klaar bent."
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Je vastentimer: hoe lang je al vast en hoeveel er nog over is. Tik op ‘Vasten stoppen’ als je klaar bent.",
+"<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>‘Bestand bestaat niet’ / opdracht niet gevonden:</b> de opdracht staat twee keer in je lijst of is hernoemd. Houd er maar één, met precies deze naam: {name}.",
+"<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Geen toegang tot actieve energie</b> (fout in Opdrachten): open de app <b>Gezondheid</b> → je foto (rechtsboven) → <b>Apps</b> → <b>Opdrachten</b> → zet <b>Actieve energie</b> aan. Of tik op <b>Toon</b> in de foutmelding. Tik daarna opnieuw op ‘Nu uitvoeren’.",
+"Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Controleer eerst: de opdracht mag maar één keer in je Opdrachten-lijst staan. Zie je hem twee keer, verwijder er dan één (ingedrukt houden → Verwijder). Anders vindt de iPhone hem niet.",
+"Tap it only once, otherwise the Shortcut is added twice.":"Tik maar één keer, anders wordt de opdracht twee keer toegevoegd."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9553,7 +9577,11 @@ window.I18N = {
 "The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"Nawyk, nad którym pracujesz, i ile dni ci się udało. Dotknij, aby zobaczyć plan i postępy.",
 "Your carbs today against your limit. It turns red if you go over.":"Twoje dzisiejsze węglowodany w porównaniu z limitem. Robi się czerwone, gdy go przekroczysz.",
 "Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"Twoje dzisiejsze okno jedzenia: kiedy się otwiera i zamyka oraz jak długo już pościsz. Posiłki poza oknem są tu oznaczone.",
-"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Twój licznik postu: jak długo już pościsz i ile zostało. Dotknij „Zakończ post”, gdy skończysz."
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Twój licznik postu: jak długo już pościsz i ile zostało. Dotknij „Zakończ post”, gdy skończysz.",
+"<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>„Plik nie istnieje” / nie znaleziono skrótu:</b> skrót jest na liście dwa razy albo zmieniono jego nazwę. Zostaw tylko jeden, o dokładnie tej nazwie: {name}.",
+"<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Brak dostępu do aktywnej energii</b> (błąd w Skrótach): otwórz aplikację <b>Zdrowie</b> → swoje zdjęcie (w prawym górnym rogu) → <b>Aplikacje</b> → <b>Skróty</b> → włącz <b>Aktywna energia</b>. Albo dotknij <b>Pokaż</b> w komunikacie błędu. Potem dotknij ponownie „Uruchom teraz”.",
+"Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Najpierw sprawdź: skrót może być na liście Skrótów tylko raz. Jeśli widzisz go dwa razy, usuń jeden (przytrzymaj → Usuń). Inaczej iPhone go nie znajdzie.",
+"Tap it only once, otherwise the Shortcut is added twice.":"Dotknij tylko raz, inaczej skrót zostanie dodany dwa razy."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -10918,7 +10946,11 @@ window.I18N = {
 "The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"O hábito em que está a trabalhar e em quantos dias o cumpriu. Toque nele para ver o plano e o progresso.",
 "Your carbs today against your limit. It turns red if you go over.":"Os seus hidratos de carbono de hoje em relação ao limite. Fica vermelho se passar.",
 "Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"A sua janela alimentar de hoje: quando abre e fecha, e há quanto tempo está em jejum. As refeições fora da janela são marcadas aqui.",
-"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"O seu temporizador de jejum: há quanto tempo jejua e quanto falta. Toque em «Terminar jejum» quando acabar."
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"O seu temporizador de jejum: há quanto tempo jejua e quanto falta. Toque em «Terminar jejum» quando acabar.",
+"<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>«O ficheiro não existe» / atalho não encontrado:</b> o atalho está duas vezes na sua lista ou mudou de nome. Mantenha só um, com exatamente este nome: {name}.",
+"<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Sem acesso à energia ativa</b> (erro em Atalhos): abra a app <b>Saúde</b> → a sua foto (canto superior direito) → <b>Apps</b> → <b>Atalhos</b> → ative <b>Energia ativa</b>. Ou toque em <b>Mostrar</b> no erro. Depois toque de novo em «Executar agora».",
+"Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Verifique primeiro: o atalho só pode estar uma vez na sua lista de Atalhos. Se o vir duas vezes, apague um (mantenha premido → Apagar). Caso contrário, o iPhone não o encontra.",
+"Tap it only once, otherwise the Shortcut is added twice.":"Toque só uma vez, senão o atalho é adicionado duas vezes."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -12283,7 +12315,11 @@ window.I18N = {
 "The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"Привычка, над которой вы работаете, и сколько дней вам это удалось. Нажмите, чтобы увидеть план и прогресс.",
 "Your carbs today against your limit. It turns red if you go over.":"Ваши углеводы сегодня в сравнении с лимитом. Становится красным, если вы его превысили.",
 "Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"Ваше окно питания на сегодня: когда оно открывается и закрывается и сколько вы уже голодаете. Приёмы пищи вне окна отмечаются здесь.",
-"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Ваш таймер голодания: сколько вы уже голодаете и сколько осталось. Нажмите «Закончить голодание», когда закончите."
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Ваш таймер голодания: сколько вы уже голодаете и сколько осталось. Нажмите «Закончить голодание», когда закончите.",
+"<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>«Файл не существует» / команда не найдена:</b> быстрая команда есть в списке дважды или была переименована. Оставьте только одну, с точным названием: {name}.",
+"<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Нет доступа к активной энергии</b> (ошибка в «Быстрых командах»): откройте приложение <b>Здоровье</b> → ваше фото (вверху справа) → <b>Приложения</b> → <b>Быстрые команды</b> → включите <b>Активная энергия</b>. Или нажмите <b>Показать</b> в ошибке. Затем снова нажмите «Запустить сейчас».",
+"Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Сначала проверьте: команда должна быть в списке «Быстрых команд» только один раз. Если видите её дважды, удалите одну (нажмите и удерживайте → Удалить). Иначе iPhone её не найдёт.",
+"Tap it only once, otherwise the Shortcut is added twice.":"Нажмите только один раз, иначе команда добавится дважды."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -13648,7 +13684,11 @@ window.I18N = {
 "The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"Üzerinde çalıştığın alışkanlık ve kaç gün başardığın. Planın ve ilerlemen için dokun.",
 "Your carbs today against your limit. It turns red if you go over.":"Bugünkü karbonhidratın ve sınırın. Aşarsan kırmızı olur.",
 "Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"Bugünkü yeme pencereni gösterir: ne zaman açılıp kapandığını ve ne kadar süredir oruç tuttuğunu. Pencere dışındaki öğünler burada işaretlenir.",
-"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Oruç zamanlayıcın: ne kadar süredir oruç tuttuğun ve ne kadar kaldığı. Bitirdiğinde “Orucu bitir”e dokun."
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"Oruç zamanlayıcın: ne kadar süredir oruç tuttuğun ve ne kadar kaldığı. Bitirdiğinde “Orucu bitir”e dokun.",
+"<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>“Dosya yok” / kestirme bulunamadı:</b> kestirme listende iki kez var ya da adı değişti. Yalnızca birini bırak, adı tam olarak şu olsun: {name}.",
+"<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>Aktif Enerji’ye erişim yok</b> (Kestirmeler’de hata): <b>Sağlık</b> uygulamasını aç → resmin (sağ üstte) → <b>Uygulamalar</b> → <b>Kestirmeler</b> → <b>Aktif Enerji</b>’yi aç. Ya da hatadaki <b>Göster</b>’e dokun. Sonra yine “Şimdi çalıştır”a dokun.",
+"Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"Önce kontrol et: kestirme Kestirmeler listende yalnızca bir kez olmalı. İki tane görüyorsan birini sil (basılı tut → Sil). Yoksa iPhone onu bulamaz.",
+"Tap it only once, otherwise the Shortcut is added twice.":"Yalnızca bir kez dokun, yoksa kestirme iki kez eklenir."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -15013,6 +15053,10 @@ window.I18N = {
 "The habit you are working on and how many days you have done it. Tap it for your plan and progress.":"你正在培养的习惯以及已坚持的天数。点按查看计划和进度。",
 "Your carbs today against your limit. It turns red if you go over.":"今天摄入的碳水与上限的对比。超出时会变红。",
 "Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.":"今天的进食窗口：何时开始、何时结束，以及你已断食多久。窗口外的进餐会在这里标出。",
-"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"断食计时器：已断食多久、还剩多久。完成后点按“结束断食”。"
+"Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.":"断食计时器：已断食多久、还剩多久。完成后点按“结束断食”。",
+"<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.":"<b>“文件不存在”/找不到快捷指令：</b>快捷指令在列表中出现了两次或被改了名字。只保留一个，名称必须完全是：{name}。",
+"<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.":"<b>无法访问活动能量</b>（快捷指令中的错误）：打开<b>健康</b> App → 右上角你的头像 → <b>App</b> → <b>快捷指令</b> → 打开<b>活动能量</b>。或在错误提示中点按<b>显示</b>。然后再点按“立即运行”。",
+"Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.":"请先检查：快捷指令在列表中只能有一个。如果看到两个，请删除一个（长按 → 删除）。否则 iPhone 找不到它。",
+"Tap it only once, otherwise the Shortcut is added twice.":"只点一次，否则快捷指令会被添加两次。"
 }
 };

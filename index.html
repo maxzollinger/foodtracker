@@ -1031,7 +1031,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v148';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v149';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3228,6 +3228,7 @@ async function openSetupPage() {
     shortcut: link
       ? `<p class="small" style="line-height:1.5;margin:0">${T('Tap the button, then <b>Add Shortcut</b> (or <b>Set Up Shortcut</b>). When it asks for your code, tap the field and choose <b>Paste</b>: your code is already copied. If it does not ask: open the new Shortcut and paste your code into the first box (where it says PASTE YOUR CODE).')}</p>
         <a class="btn" id="spAdd" href="${link}" target="_blank" rel="noopener" style="margin-top:14px;text-decoration:none">${T('Add the Shortcut')}</a>
+        <p class="small muted" style="margin:8px 0 0">${T('Tap it only once, otherwise the Shortcut is added twice.')}</p>
         <p class="small muted" style="margin:10px 0 0">${T('Your code')}: <b style="font-family:ui-monospace,monospace">${code}</b> ${copyBtn('spCode', T('Copy code'))}</p>
         <button class="btn outline" data-done="shortcut" style="margin-top:12px">${T('I added it, next step')}</button>`
       : `${LANG !== 'en' ? `<p class="small muted" style="margin:0 0 6px">${T('The action names below are in English. On an iPhone in your language they are translated: search for the matching words.')}</p>` : ''}
@@ -3249,10 +3250,11 @@ async function openSetupPage() {
           <a class="btn sm" href="shortcuts://run-shortcut?name=${encodeURIComponent(shortcutName())}" style="text-decoration:none;margin-top:10px">▶︎ ${T('Run it again')}</a></div>` : ''}
         <div class="row" style="margin-top:12px"><button class="btn sm grow" data-done="run">${T('Yes, next step')}</button><button class="btn sm outline grow" id="spDiff">${T("No, it's different")}</button></div>`
       : `<p class="small" style="line-height:1.5;margin:0">${T('Tap the button. iPhone asks once if the Shortcut may read Health: tap <b>Allow</b> (Active Energy). Then come back here, it checks by itself.')}</p>
+        <p class="small" style="line-height:1.5;margin:8px 0 0">${T('Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.')}</p>
         <a class="btn" id="spRun" href="shortcuts://run-shortcut?name=${encodeURIComponent(shortcutName())}" style="margin-top:14px;text-decoration:none">▶︎ ${T('Run it now')}</a>
         <p class="small muted" style="margin:12px 0 0;text-align:center">${T('Waiting for the first number…')} <span class="spin" style="vertical-align:-3px"></span></p>
-        ${st.ranAt && Date.now() - st.ranAt > 45e3 ? `<div class="card" style="background:var(--chip);box-shadow:none;margin-top:12px"><b class="small">${T('Nothing arrived yet? Check:')}</b>
-          ${sub(1, T('Did the Shortcut show an error? Open it and tap ▶︎ to see.'))}${sub(2, T('Is the code in the Shortcut exactly your code? {code}', { code: `<b style="font-family:ui-monospace,monospace">${code}</b>` }) + (link ? ' ' + T('It is in the first box of the Shortcut; paste it there if it still says PASTE YOUR CODE.') : ''))}${sub(3, T('Is Health allowed? iPhone <b>Settings</b> → <b>Health</b> → <b>Data Access & Devices</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>.'))}</div>` : ''}`,
+        ${st.ranAt && Date.now() - st.ranAt > 10e3 ? `<div class="card" style="background:var(--chip);box-shadow:none;margin-top:12px"><b class="small">${T('Nothing arrived yet? Check:')}</b>
+          ${sub(1, T('<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.'))}${sub(2, T('<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.', { name: `<b>${esc(shortcutName())}</b>` }))}${sub(3, T('Is the code in the Shortcut exactly your code? {code}', { code: `<b style="font-family:ui-monospace,monospace">${code}</b>` }) + (link ? ' ' + T('It is in the first box of the Shortcut; paste it there if it still says PASTE YOUR CODE.') : ''))}${sub(4, T('Did the Shortcut show an error? Open it and tap ▶︎ to see.'))}</div>` : ''}`,
     auto: `${[
           [T('In the Shortcuts app, tap <b>Automation</b> (bottom), then <b>+</b> (top right) or <b>New Automation</b>.'), open],
           [T('Choose <b>Time of Day</b>. Set <b>21:00</b>, repeat <b>Daily</b>, and choose <b>Run Immediately</b>. Tap <b>Next</b>.')],
@@ -3273,11 +3275,12 @@ async function openSetupPage() {
           <p class="muted" style="margin:0">${T('Your active calories now come in automatically.')}${today ? '<br>' + T('Today: <b>{n} kcal</b> active', { n: r0(today.kcal) }) : ''}</p>
           <button class="btn" id="spClose" style="margin-top:16px">${T('Close')}</button></div>` : ''}
       ${steps.map((k, i) => {
-        const done = !!st.done[k], now = i === cur;
+        // A green tick only once it really works: tapping "next" alone is not proof (Apple Health way: the first number arrived)
+        const done = !!st.done[k] && (st.via === 'direct' || !!(today && L && L.ok) || k === 'run'), now = i === cur;
         return `<div class="card" style="${now ? 'box-shadow:var(--shadow),inset 0 0 0 2px var(--ink)' : done ? '' : 'opacity:.55'}">
-          <div class="row" style="gap:12px;align-items:center" ${done ? `data-redo="${k}"` : ''}>
+          <div class="row" style="gap:12px;align-items:center" ${st.done[k] ? `data-redo="${k}"` : ''}>
             <span style="flex:none;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;background:${done ? 'var(--good)' : now ? 'var(--ink)' : 'var(--chip)'};color:${done || now ? (done ? '#fff' : 'var(--on-ink)') : 'var(--muted)'}">${done ? '✓' : i + 1}</span>
-            <b class="grow" style="font-size:16px">${title[k]}</b>${done ? `<span class="small muted">${T('Show')}</span>` : ''}</div>
+            <b class="grow" style="font-size:16px">${title[k]}</b>${st.done[k] && !now ? `<span class="small muted">${T('Show')}</span>` : ''}</div>
           ${now || st.show === k ? `<div style="margin-top:12px">${body[k]}</div>` : ''}</div>`;
       }).join('')}
       ${finished ? '' : `<button class="small muted" id="spOther" style="display:block;margin:18px auto 0;padding:8px;text-decoration:underline">${T('Choose another watch or way')}</button>`}
@@ -3303,7 +3306,7 @@ async function openSetupPage() {
     if (!linkInfo() || linkInfo().p !== 'apple') LS.set('ft_link', JSON.stringify({ p: 'apple' }));
     await linkSync(true);
     const t2 = db.exercises.find(e => e.id === 'auto-' + iso());
-    if ((t2 && linkInfo().ok) || (st.ranAt && Date.now() - st.ranAt > 45e3 && !$('#setupPg .card b.small'))) { clearInterval(setupPoll); if ((db.settings.burnType || 'day') !== 'day') { db.settings.burnType = 'day'; save(); } openSetupPage(); }
+    if ((t2 && linkInfo().ok) || (st.ranAt && Date.now() - st.ranAt > 10e3 && !$('#setupPg .card b.small'))) { clearInterval(setupPoll); if ((db.settings.burnType || 'day') !== 'day') { db.settings.burnType = 'day'; save(); } openSetupPage(); }
   }, 3000);
   if (steps[cur] === 'signin') watchPickup();
 }
