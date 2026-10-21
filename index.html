@@ -1031,7 +1031,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v152';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v153';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3471,13 +3471,14 @@ function startTrackerLink(p) {
    app. Nothing else is sent: no name, email or food data. The owner sees the totals in Settings (admin). */
 // Once a day, and when the phone used AI since the last report (at most every 30 minutes, so the owner's numbers stay
 // live without many server saves)
-function sayHello() {
-  if (!SERVER_URL || !db.profile || OLD_HOME || !window.crypto) return;
+function sayHello(now) {
+  if (!SERVER_URL || !db.profile || OLD_HOME || !window.crypto) return Promise.resolve();
   const today = iso(), rep = aiReport(), sig = JSON.stringify(rep);
-  if (LS.get('ft_hello', '') === today && (sig === LS.get('ft_hello_sig', '') || Date.now() - +LS.get('ft_hello_t', 0) < 30 * 60e3)) return;
-  fetch(SERVER_URL + '/hello', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ d: devId(), ai: rep }) })
+  if (LS.get('ft_hello', '') === today && (sig === LS.get('ft_hello_sig', '') || (!now && Date.now() - +LS.get('ft_hello_t', 0) < 10 * 60e3))) return Promise.resolve();
+  return fetch(SERVER_URL + '/hello', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ d: devId(), ai: rep }) })
     .then(r => { if (r.ok) { LS.set('ft_hello', today); LS.set('ft_hello_t', String(Date.now())); LS.set('ft_hello_sig', sig); aiReported(rep); } }).catch(() => {});
 }
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') sayHello(true); });   // app closed or put away: report the AI use right away
 function usersCard() {
   if (!isAdmin() || !SERVER_URL) return '';
   if (!LS.get('ft_admin_token', '')) return `<div class="card" id="usersCard"><b>👥 ${T('Users')}</b>
@@ -3487,11 +3488,14 @@ function usersCard() {
   return `<div class="card" id="usersCard"><div class="spread"><b>👥 ${T('Users')}</b><button class="chipbtn" id="usRef" aria-label="${T('Refresh')}">↻</button></div>
     <div id="usBody" style="margin-top:10px;text-align:center"><span class="spin"></span></div></div>`;
 }
-async function loadUsers() {
+let usersP = null;
+function loadUsers() { return usersP || (usersP = loadUsersNow().finally(() => { usersP = null; })); }   // one load at a time
+async function loadUsersNow() {
   const box = $('#usBody'); if (!box) return;
   if (!usersAt || !box.children.length) box.innerHTML = '<span class="spin"></span>';
   try {
-    const r = await fetch(SERVER_URL + '/stats', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + LS.get('ft_admin_token', '') } });
+    await sayHello(true);   // this phone's own numbers first
+    const r = await fetch(SERVER_URL + '/stats', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + LS.get('ft_admin_token', '') }, body: JSON.stringify({ today: iso() }) });
     if (r.status === 403) {
       box.innerHTML = `<p class="small" style="margin:0 0 10px">${T('Wrong admin password.')}</p><button class="btn sm outline" id="usChange">${T('Change password')}</button>`;
       $('#usChange').onclick = () => { LS.del('ft_admin_token'); renderSettings(); };
@@ -3515,8 +3519,10 @@ async function loadUsers() {
           ${st.aiToday ? `<div class="small" style="margin-top:6px"><b>${T('Today so far: {n} AI requests', { n: st.aiToday.n.toLocaleString(LOC) })}</b></div>` : ''}
           <div class="small" style="margin-top:6px">${T('Yesterday: {n} AI requests', { n: y.n.toLocaleString(LOC) })}${y.refused ? ` · ${T('{n} refused by Google', { n: y.refused })}` : ''}</div>
           <div class="small" style="margin-top:6px;font-weight:600;color:${hit ? 'var(--bad)' : 'var(--good)'}">${hit ? '⚠️ ' + T('People saw "AI busy" {n} times this week. You are close to the free limit.', { n: hit }) : '✓ ' + T('Within the free limit: nobody had to wait.')}</div>
-          <div class="small muted" style="margin-top:6px">${T('Phones report their AI use at most every 30 minutes while the app is open.')}</div></div>`; })()}
-      <p class="small muted" style="margin:12px 0 0;text-align:center">${T('Updated {t} · refreshes by itself every minute', { t: fmtClock(new Date()) })}</p>`;
+          <div class="small muted" style="margin-top:6px">${T('Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.')}</div></div>`; })()}
+      <p class="small muted" style="margin:10px 0 0;text-align:left">${T('Total users counts every phone that opened the app and every account; a phone that later made an account counts once.')}</p>
+      <p class="small muted" id="usWhen" style="margin:12px 0 0;text-align:center">${T('Updated {t} · refreshes by itself every minute', { t: new Date().toLocaleTimeString(LOC, { hour: '2-digit', minute: '2-digit', second: '2-digit' }) })}</p>`;
+    box.animate([{ opacity: .35 }, { opacity: 1 }], { duration: 350, easing: 'ease-out' });   // you can see that it refreshed
     if ($('#usAcc')) $('#usAcc').onclick = openAccountsList;
   } catch { box.innerHTML = `<p class="small muted" style="margin:0">${T('No connection')}</p>`; }
 }
@@ -3555,7 +3561,12 @@ function bindUsersCard() {
   clearInterval(usersTimer);   // live while the card is on screen
   usersTimer = setInterval(() => { if (!$('#usBody')) return clearInterval(usersTimer); if (document.visibilityState === 'visible' && !$('.backdrop')) loadUsers(); }, 60e3);
   if ($('#usSave')) $('#usSave').onclick = () => { const v = $('#usTok').value.trim(); if (v.length < 10) return; LS.set('ft_admin_token', v); renderSettings(); };
-  if ($('#usRef')) $('#usRef').onclick = loadUsers;
+  if ($('#usRef')) $('#usRef').onclick = async () => {
+    const b = $('#usRef'); b.disabled = true; b.innerHTML = '<span class="spin" style="width:14px;height:14px"></span>';
+    await loadUsers();
+    if ($('#usRef')) { $('#usRef').disabled = false; $('#usRef').textContent = '↻'; }
+    toast('✓ ' + T('Users updated'));
+  };
   if ($('#usBody')) loadUsers();
 }
 
@@ -5635,6 +5646,7 @@ async function pullRefresh() {
   await Promise.allSettled([linkSync(true), checkUpdate(), processQueue(), syncDone(), syncPush()]);
   setTimeout(checkPlanWeek, 300); setTimeout(checkRewards, 600);
   if (!$('.page') && !$('.backdrop')) render();
+  if ($('#usBody')) await loadUsers();
 }
 (() => {
   const sc = $('#scroller'), view = $('#view'), ind = document.createElement('div');
