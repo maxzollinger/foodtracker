@@ -1414,7 +1414,15 @@ window.I18N = {
 "Tap it to log what you eat.":"Tippe darauf, um einzutragen, was du isst.",
 "Your weekly meal plan and shopping list.":"Dein Essensplan und deine Einkaufsliste für die Woche.",
 "No food logged yet":"Noch nichts eingetragen",
-"{d} fasted · opens {t}":"{d} gefastet · öffnet {t}"
+"{d} fasted · opens {t}":"{d} gefastet · öffnet {t}",
+"Back up your data and get it back on any phone.":"Sichere deine Daten und hol sie auf jedes Handy zurück.",
+"Backed up every day, encrypted. Sign in on a new phone to get it back.":"Täglich gesichert, verschlüsselt. Auf einem neuen Handy anmelden, und alles ist zurück.",
+"Included. Photos and messages are processed by Google Gemini.":"Inklusive. Fotos und Nachrichten werden von Google Gemini verarbeitet.",
+"Makes your goals more accurate. Tap again to remove it.":"Macht deine Ziele genauer. Nochmals tippen zum Entfernen.",
+"Past days stay as they are.":"Vergangene Tage bleiben, wie sie sind.",
+"Tell us what you like.":"Sag uns, was du magst.",
+"The <b>active</b> calories of your whole day from your watch (not \"total\").":"Die <b>aktiven</b> Kalorien deines ganzen Tages von deiner Uhr (nicht «gesamt»).",
+"Your active calories are filled in automatically.":"Deine aktiven Kalorien werden automatisch eingetragen."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2830,7 +2838,15 @@ window.I18N = {
 "Tap it to log what you eat.":"Tócalo para registrar lo que comes.",
 "Your weekly meal plan and shopping list.":"Tu plan de comidas semanal y tu lista de la compra.",
 "No food logged yet":"Aún no has registrado comida",
-"{d} fasted · opens {t}":"{d} de ayuno · abre a las {t}"
+"{d} fasted · opens {t}":"{d} de ayuno · abre a las {t}",
+"Back up your data and get it back on any phone.":"Haz copia de tus datos y recupéralos en cualquier móvil.",
+"Backed up every day, encrypted. Sign in on a new phone to get it back.":"Copia diaria, cifrada. Inicia sesión en un móvil nuevo para recuperarla.",
+"Included. Photos and messages are processed by Google Gemini.":"Incluida. Las fotos y los mensajes los procesa Google Gemini.",
+"Makes your goals more accurate. Tap again to remove it.":"Hace tus objetivos más precisos. Toca otra vez para quitarlo.",
+"Past days stay as they are.":"Los días pasados se quedan como están.",
+"Tell us what you like.":"Cuéntanos qué te gusta.",
+"The <b>active</b> calories of your whole day from your watch (not \"total\").":"Las calorías <b>activas</b> de todo tu día según tu reloj (no las «totales»).",
+"Your active calories are filled in automatically.":"Tus calorías activas se rellenan solas."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4246,7 +4262,15 @@ window.I18N = {
 "Tap it to log what you eat.":"Touche-le pour enregistrer ce que tu manges.",
 "Your weekly meal plan and shopping list.":"Ton plan de repas de la semaine et ta liste de courses.",
 "No food logged yet":"Rien d’enregistré pour l’instant",
-"{d} fasted · opens {t}":"{d} de jeûne · ouvre à {t}"
+"{d} fasted · opens {t}":"{d} de jeûne · ouvre à {t}",
+"Back up your data and get it back on any phone.":"Sauvegarde tes données et récupère-les sur n’importe quel téléphone.",
+"Backed up every day, encrypted. Sign in on a new phone to get it back.":"Sauvegarde quotidienne, chiffrée. Connecte-toi sur un nouveau téléphone pour tout récupérer.",
+"Included. Photos and messages are processed by Google Gemini.":"Inclus. Les photos et messages sont traités par Google Gemini.",
+"Makes your goals more accurate. Tap again to remove it.":"Rend tes objectifs plus précis. Touche à nouveau pour l’enlever.",
+"Past days stay as they are.":"Les jours passés restent tels quels.",
+"Tell us what you like.":"Dis-nous ce que tu aimes.",
+"The <b>active</b> calories of your whole day from your watch (not \"total\").":"Les calories <b>actives</b> de toute ta journée selon ta montre (pas « total »).",
+"Your active calories are filled in automatically.":"Tes calories actives sont remplies automatiquement."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5662,7 +5686,15 @@ window.I18N = {
 "Tap it to log what you eat.":"Toccalo per registrare cosa mangi.",
 "Your weekly meal plan and shopping list.":"Il tuo piano pasti settimanale e la lista della spesa.",
 "No food logged yet":"Ancora nessun pasto registrato",
-"{d} fasted · opens {t}":"{d} di digiuno · apre alle {t}"
+"{d} fasted · opens {t}":"{d} di digiuno · apre alle {t}",
+"Back up your data and get it back on any phone.":"Salva i tuoi dati e recuperali su qualsiasi telefono.",
+"Backed up every day, encrypted. Sign in on a new phone to get it back.":"Backup ogni giorno, cifrato. Accedi su un nuovo telefono per recuperarlo.",
+"Included. Photos and messages are processed by Google Gemini.":"Incluso. Foto e messaggi sono elaborati da Google Gemini.",
+"Makes your goals more accurate. Tap again to remove it.":"Rende i tuoi obiettivi più precisi. Tocca di nuovo per rimuoverlo.",
+"Past days stay as they are.":"I giorni passati restano come sono.",
+"Tell us what you like.":"Dicci cosa ti piace.",
+"The <b>active</b> calories of your whole day from your watch (not \"total\").":"Le calorie <b>attive</b> di tutta la giornata dal tuo orologio (non «totali»).",
+"Your active calories are filled in automatically.":"Le tue calorie attive vengono inserite in automatico."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7078,7 +7110,15 @@ window.I18N = {
 "Tap it to log what you eat.":"タップして食べたものを記録。",
 "Your weekly meal plan and shopping list.":"1週間の献立と買い物リスト。",
 "No food logged yet":"まだ記録がありません",
-"{d} fasted · opens {t}":"断食 {d} · {t} に開始"
+"{d} fasted · opens {t}":"断食 {d} · {t} に開始",
+"Back up your data and get it back on any phone.":"データをバックアップして、どのスマホでも復元できます。",
+"Backed up every day, encrypted. Sign in on a new phone to get it back.":"毎日暗号化してバックアップ。新しいスマホでログインすると戻ります。",
+"Included. Photos and messages are processed by Google Gemini.":"利用可能。写真とメッセージは Google Gemini で処理されます。",
+"Makes your goals more accurate. Tap again to remove it.":"目標がより正確になります。もう一度タップで解除。",
+"Past days stay as they are.":"過去の日はそのままです。",
+"Tell us what you like.":"好みを教えてください。",
+"The <b>active</b> calories of your whole day from your watch (not \"total\").":"ウォッチの1日の<b>アクティブ</b>カロリー（「合計」ではありません）。",
+"Your active calories are filled in automatically.":"アクティブカロリーは自動で入力されます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8494,7 +8534,15 @@ window.I18N = {
 "Tap it to log what you eat.":"Tik erop om te loggen wat je eet.",
 "Your weekly meal plan and shopping list.":"Je weekmenu en boodschappenlijst.",
 "No food logged yet":"Nog niets gelogd",
-"{d} fasted · opens {t}":"{d} gevast · opent om {t}"
+"{d} fasted · opens {t}":"{d} gevast · opent om {t}",
+"Back up your data and get it back on any phone.":"Maak een back-up en krijg je gegevens terug op elke telefoon.",
+"Backed up every day, encrypted. Sign in on a new phone to get it back.":"Elke dag versleuteld opgeslagen. Log in op een nieuwe telefoon om alles terug te krijgen.",
+"Included. Photos and messages are processed by Google Gemini.":"Inbegrepen. Foto’s en berichten worden verwerkt door Google Gemini.",
+"Makes your goals more accurate. Tap again to remove it.":"Maakt je doelen nauwkeuriger. Tik opnieuw om te verwijderen.",
+"Past days stay as they are.":"Eerdere dagen blijven zoals ze zijn.",
+"Tell us what you like.":"Vertel ons wat je lekker vindt.",
+"The <b>active</b> calories of your whole day from your watch (not \"total\").":"De <b>actieve</b> calorieën van je hele dag van je horloge (niet ‘totaal’).",
+"Your active calories are filled in automatically.":"Je actieve calorieën worden automatisch ingevuld."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9910,7 +9958,15 @@ window.I18N = {
 "Tap it to log what you eat.":"Dotknij, aby zapisać, co jesz.",
 "Your weekly meal plan and shopping list.":"Twój tygodniowy plan posiłków i lista zakupów.",
 "No food logged yet":"Nic jeszcze nie zapisano",
-"{d} fasted · opens {t}":"{d} postu · otwiera się o {t}"
+"{d} fasted · opens {t}":"{d} postu · otwiera się o {t}",
+"Back up your data and get it back on any phone.":"Zrób kopię danych i odzyskaj je na każdym telefonie.",
+"Backed up every day, encrypted. Sign in on a new phone to get it back.":"Kopia codziennie, zaszyfrowana. Zaloguj się na nowym telefonie, by ją odzyskać.",
+"Included. Photos and messages are processed by Google Gemini.":"W zestawie. Zdjęcia i wiadomości przetwarza Google Gemini.",
+"Makes your goals more accurate. Tap again to remove it.":"Twoje cele będą dokładniejsze. Dotknij ponownie, aby usunąć.",
+"Past days stay as they are.":"Poprzednie dni zostają bez zmian.",
+"Tell us what you like.":"Powiedz nam, co lubisz.",
+"The <b>active</b> calories of your whole day from your watch (not \"total\").":"<b>Aktywne</b> kalorie z całego dnia z zegarka (nie „łącznie”).",
+"Your active calories are filled in automatically.":"Aktywne kalorie uzupełniają się automatycznie."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -11326,7 +11382,15 @@ window.I18N = {
 "Tap it to log what you eat.":"Toque para registar o que come.",
 "Your weekly meal plan and shopping list.":"O seu plano de refeições semanal e a lista de compras.",
 "No food logged yet":"Ainda sem refeições registadas",
-"{d} fasted · opens {t}":"{d} em jejum · abre às {t}"
+"{d} fasted · opens {t}":"{d} em jejum · abre às {t}",
+"Back up your data and get it back on any phone.":"Faça cópia dos seus dados e recupere-os em qualquer telemóvel.",
+"Backed up every day, encrypted. Sign in on a new phone to get it back.":"Cópia diária, encriptada. Inicie sessão num telemóvel novo para recuperar tudo.",
+"Included. Photos and messages are processed by Google Gemini.":"Incluída. Fotos e mensagens são processadas pelo Google Gemini.",
+"Makes your goals more accurate. Tap again to remove it.":"Torna os seus objetivos mais precisos. Toque de novo para remover.",
+"Past days stay as they are.":"Os dias anteriores ficam como estão.",
+"Tell us what you like.":"Diga-nos do que gosta.",
+"The <b>active</b> calories of your whole day from your watch (not \"total\").":"As calorias <b>ativas</b> do seu dia inteiro, do relógio (não «total»).",
+"Your active calories are filled in automatically.":"As suas calorias ativas são preenchidas automaticamente."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -12742,7 +12806,15 @@ window.I18N = {
 "Tap it to log what you eat.":"Нажмите, чтобы записать, что вы едите.",
 "Your weekly meal plan and shopping list.":"Ваш план питания на неделю и список покупок.",
 "No food logged yet":"Пока ничего не записано",
-"{d} fasted · opens {t}":"{d} голодания · откроется в {t}"
+"{d} fasted · opens {t}":"{d} голодания · откроется в {t}",
+"Back up your data and get it back on any phone.":"Сохраняйте данные и восстанавливайте их на любом телефоне.",
+"Backed up every day, encrypted. Sign in on a new phone to get it back.":"Копия каждый день, зашифрована. Войдите на новом телефоне, чтобы всё вернуть.",
+"Included. Photos and messages are processed by Google Gemini.":"Включено. Фото и сообщения обрабатывает Google Gemini.",
+"Makes your goals more accurate. Tap again to remove it.":"Делает цели точнее. Нажмите ещё раз, чтобы убрать.",
+"Past days stay as they are.":"Прошлые дни остаются без изменений.",
+"Tell us what you like.":"Расскажите, что вам нравится.",
+"The <b>active</b> calories of your whole day from your watch (not \"total\").":"<b>Активные</b> калории за весь день с ваших часов (не «всего»).",
+"Your active calories are filled in automatically.":"Активные калории заполняются автоматически."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -14158,7 +14230,15 @@ window.I18N = {
 "Tap it to log what you eat.":"Ne yediğini kaydetmek için dokun.",
 "Your weekly meal plan and shopping list.":"Haftalık yemek planın ve alışveriş listen.",
 "No food logged yet":"Henüz bir şey kaydedilmedi",
-"{d} fasted · opens {t}":"{d} oruç · {t}’de açılır"
+"{d} fasted · opens {t}":"{d} oruç · {t}’de açılır",
+"Back up your data and get it back on any phone.":"Verilerini yedekle ve her telefonda geri al.",
+"Backed up every day, encrypted. Sign in on a new phone to get it back.":"Her gün şifreli yedeklenir. Yeni telefonda giriş yap, her şey geri gelir.",
+"Included. Photos and messages are processed by Google Gemini.":"Dahil. Fotoğraflar ve mesajlar Google Gemini tarafından işlenir.",
+"Makes your goals more accurate. Tap again to remove it.":"Hedeflerini daha doğru yapar. Kaldırmak için tekrar dokun.",
+"Past days stay as they are.":"Geçmiş günler olduğu gibi kalır.",
+"Tell us what you like.":"Neleri sevdiğini söyle.",
+"The <b>active</b> calories of your whole day from your watch (not \"total\").":"Saatinden tüm günün <b>aktif</b> kalorisi (“toplam” değil).",
+"Your active calories are filled in automatically.":"Aktif kalorilerin otomatik doldurulur."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -15574,6 +15654,14 @@ window.I18N = {
 "Tap it to log what you eat.":"点按记录你吃了什么。",
 "Your weekly meal plan and shopping list.":"你的每周饮食计划和购物清单。",
 "No food logged yet":"还没有记录饮食",
-"{d} fasted · opens {t}":"已断食 {d} · {t} 开始进食"
+"{d} fasted · opens {t}":"已断食 {d} · {t} 开始进食",
+"Back up your data and get it back on any phone.":"备份你的数据，在任何手机上都能恢复。",
+"Backed up every day, encrypted. Sign in on a new phone to get it back.":"每天加密备份。在新手机上登录即可恢复。",
+"Included. Photos and messages are processed by Google Gemini.":"已包含。照片和消息由 Google Gemini 处理。",
+"Makes your goals more accurate. Tap again to remove it.":"让你的目标更准确。再点一次可取消。",
+"Past days stay as they are.":"过去的日子保持不变。",
+"Tell us what you like.":"告诉我们你喜欢什么。",
+"The <b>active</b> calories of your whole day from your watch (not \"total\").":"手表记录的全天<b>活动</b>卡路里（不是“总计”）。",
+"Your active calories are filled in automatically.":"你的活动卡路里会自动填入。"
 }
 };

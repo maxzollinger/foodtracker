@@ -1031,7 +1031,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v156';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v157';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1232,7 +1232,7 @@ function setUnits(u) { db.settings.units = { ...units(), ...u }; if (db.profile)
 function openUnitsSheet() {
   const u = units(), row = (key, label, opts) => `<label class="lbl">${label}</label><div class="seg">${opts.map(([v, l]) => `<button data-u="${key}:${v}" class="${u[key] === v ? 'on' : ''}">${l}</button>`).join('')}</div>`;
   const metric = u.w === 'kg' && u.h === 'cm' && u.v === 'ml', us = u.w === 'lb' && u.h === 'in' && u.v === 'oz';
-  sheet(`<h3>📏 ${T('Units')}</h3><p class="muted" style="margin-top:4px">${T('Choose how weights, heights and drinks are shown. Your data stays exactly the same.')}</p>
+  sheet(`<h3>📏 ${T('Units')}</h3>
     <div class="seg" style="margin-top:12px"><button data-preset="metric" class="${metric ? 'on' : ''}">${T('Metric')} · kg, cm, L</button><button data-preset="us" class="${us ? 'on' : ''}">${T('US')} · lb, ft, fl oz</button></div>
     ${row('w', T('Body weight'), [['kg', 'kg'], ['lb', 'lb']])}
     ${row('h', T('Height'), [['cm', 'cm'], ['in', 'ft / in']])}
@@ -2493,7 +2493,7 @@ function togglePw(id, btn) {
 function openAccountSheet(mode = 'signup') {
   const up = mode === 'signup';
   sheet(`<h3>${up ? '☁️ ' + T('Create your account') : '👋 ' + T('Sign in')}</h3>
-    <p class="muted" style="margin-top:4px">${up ? T('Your data is then backed up automatically every day, encrypted. On a new phone, just sign in and everything is back.') : T('Sign in with the email and password of your Food Tracker account. Your meals, weights, goals, meal plans and coach chat come back.')}</p>
+    <p class="muted" style="margin-top:4px">${up ? T('Backed up every day, encrypted. Sign in on a new phone to get it back.') : T('Sign in with the email and password of your Food Tracker account. Your meals, weights, goals, meal plans and coach chat come back.')}</p>
     <form id="acForm" autocomplete="on" style="margin-top:10px">
       <label class="lbl" for="acEmail">${T('Email')}</label>
       <input id="acEmail" name="email" type="email" autocomplete="${up ? 'email' : 'username'}" inputmode="email" autocapitalize="off" spellcheck="false" required placeholder="name@example.com">
@@ -2549,7 +2549,7 @@ function askAccount(first, then) {
   LS.set('ft_acct_ask', laterDue ? '1' : 'asked');
   sheet(`<div style="text-align:center;padding:6px 4px 0"><div class="askbell">☁️</div>
       <h3 style="margin:14px 0 6px">${T('Keep your data safe')}</h3>
-      <p class="muted" style="margin:0 0 8px">${T('Create a free account with your email and a password. Your data is then backed up every day, and you can get it back on any new phone.')}</p>
+      <p class="muted" style="margin:0 0 8px">${T('Back up your data and get it back on any phone.')}</p>
       <p class="small muted" style="margin:0 0 18px">🔒 ${T('Encrypted with your password: nobody else can read it.')}</p>
       <button class="btn" id="aaYes">${T('Create account')}</button>
       <button class="btn outline" id="aaNo" style="margin-top:10px">${T('Later')}</button>
@@ -2574,7 +2574,7 @@ function backupCard() {
   const a = acct(), last = +LS.get('ft_bk_last', 0);
   const when = last ? `${fmtDate(iso(new Date(last)))} ${fmtClock(new Date(last))}` : '';
   if (!a) return `<div class="card" id="bkCard"><b>☁️ ${T('Account & backup')}</b>
-    <p class="small muted" style="margin:4px 0 12px">${T('Create a free account with your email and a password. Your data is then backed up every day, and you can get it back on any new phone.')}</p>
+    <p class="small muted" style="margin:4px 0 12px">${T('Back up your data and get it back on any phone.')}</p>
     <div class="row"><button class="btn sm grow" id="acUp">${T('Create account')}</button><button class="btn sm outline grow" id="acIn">${T('Sign in')}</button></div></div>`;
   return `<div class="card" id="bkCard"><b>☁️ ${T('Account & backup')}</b>
     <p class="small" style="margin:6px 0 2px">👤 <b>${esc(a.email)}</b></p>
@@ -3169,7 +3169,7 @@ async function openTrackerSheet() {
   const ios = isIOS(), direct = id => !!(trackersAvail || {})[id];
   const brandWay = b => b.via !== 'apple' && b.via !== 'none' && direct(b.via) ? 'direct' : b.via === 'none' ? 'none' : ios ? 'apple' : 'none';
   const html = `<div id="trkSheet"><h3>⌚ ${T('Watch & tracker')}</h3>
-    <p class="muted" style="margin-top:4px">${T('Your active calories of the whole day are filled in automatically, every time you open the app.')} ${T('Your daily calorie goal then follows your real activity instead of the training level from the setup.')}</p>
+    <p class="muted" style="margin-top:4px">${T('Your active calories are filled in automatically.')}</p>
     ${L ? `<div class="card" style="background:var(--chip);box-shadow:none;margin-top:12px">
         <div class="spread"><b>${L.err === 'reconnect' ? '⚠️' : '✓'} ${esc(linkName(L.p))}</b><span class="small muted">${when ? T('Updated {t}', { t: when }) : T('Waiting for the first numbers…')}</span></div>
         <p class="small" style="margin:6px 0 0">${today ? T('Today: <b>{n} kcal</b> active', { n: r0(today.kcal) }) : L.p === 'apple' ? T('No numbers yet. Run the Shortcut once (see below).') : T('No numbers for today yet.')}</p>
@@ -4057,7 +4057,7 @@ function openBurnSheet() {
       + (trackerMode() ? (() => { const a = activeFor(sel); return `<div class="tip" style="margin-top:10px">${T('Your calorie goal follows your real activity: on quiet days it is lower, on active days higher.')}<br><b>${a.est ? T('{r} kcal active so far + about {e} kcal still expected (your 7-day average: {a} kcal).', { r: a.real, e: a.est, a: a.avg }) : T('{r} kcal active on this day.', { r: a.real })}</b></div>`; })() : '')
       + (() => { const a = db.exercises.find(e => e.id === 'auto-' + sel && e.total != null); return a ? `<p class="small muted" style="margin:6px 0 0;line-height:1.45">${T('{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.', { name: esc(a.name), t: r0(a.total).toLocaleString(LOC), r: r0(a.rest).toLocaleString(LOC), a: r0(a.kcal).toLocaleString(LOC) })}</p>` : ''; })()
       : `<button class="bgrow" id="bTrk" style="margin-top:12px"><span style="font-size:26px">⌚</span><span class="grow"><b>${T('Wear a watch or ring?')}</b><br><span class="small muted">${T('Connect it once and this is filled in automatically.')}</span></span><span class="chev">›</span></button>`}
-    <p class="muted small" style="margin-top:8px">${burnWholeDay() ? T('Enter the <b>active</b> calories of your whole day from your watch or WHOOP: all movement, workouts included (not "total").') : T('Enter the <b>active</b> calories of each workout (not "total").')} ${T('Your normal day and training are already in your goal, so only extra activity raises it.')}</p>
+    <p class="muted small" style="margin-top:8px">${burnWholeDay() ? T('The <b>active</b> calories of your whole day from your watch (not "total").') : T('Enter the <b>active</b> calories of each workout (not "total").')}</p>
     ${already ? `<p class="small" style="margin:0">${T('Already logged: <b>{n} kcal</b>. This adds on top.', { n: already })}</p>
       <div class="list" style="box-shadow:none;background:var(--chip);margin:10px 0 0">${db.exercises.filter(e => e.date === sel).map(e =>
         `<div class="li"><span class="ic">🏋️</span><span class="grow">${esc(e.name)}</span><b>${r0(e.kcal)} kcal</b><button class="muted" data-delex="${e.id}" aria-label="${T('Delete')}" style="padding:0 4px">✕</button></div>`).join('')}</div>` : ''}
@@ -4325,7 +4325,7 @@ function openMealPrefs(thenGenerate) {
   const pr = clone(mealPrefs());
   const pick = (id, list, v) => `<select id="${id}">${list.map(([k, l]) => `<option value="${k}" ${k === v ? 'selected' : ''}>${T(l)}</option>`).join('')}</select>`;
   sheet(`<h3>🥗 ${T('Meal plan preferences')}</h3>
-    <p class="muted" style="margin-top:4px">${T('Your plan is made for your goal and daily targets. Tell us what you like.')}</p>
+    <p class="muted" style="margin-top:4px">${T('Tell us what you like.')}</p>
     <label class="lbl">${T('Diet')}</label>${pick('mpDiet', MP_DIET, pr.diet)}
     <label class="lbl">${T("Allergies or foods you don't eat")}</label><input id="mpAvoid" value="${esc(pr.avoid)}" placeholder="${T('e.g. nuts, mushrooms, lactose')}">
     <label class="lbl">${T('Foods and cuisines you love')}</label><input id="mpLikes" value="${esc(pr.likes)}" placeholder="${T('e.g. chicken, rice, Italian, spicy')}">
@@ -5512,7 +5512,7 @@ function remindersCard() {
       <div class="row" style="margin-top:10px">${SERVER_URL ? '' : `<button class="btn sm grow" id="rCopy">📋 ${T('Copy code')}</button>`}<button class="btn sm outline grow" id="rTest">${T('Test')}</button></div>`;
   }
   return `<div class="card" id="remCard"><b>🔔 ${T('Notifications')}</b>
-    <p class="small muted" style="margin:4px 0 0">${SERVER_URL ? T('Turn on only the reminders you want, and choose when they come.') : T('Every evening at about 20:00: log your calories burned. Every Sunday morning: log your weight.')}</p>${body}</div>`;
+    ${SERVER_URL ? '' : `<p class="small muted" style="margin:4px 0 0">${T('Every evening at about 20:00: log your calories burned. Every Sunday morning: log your weight.')}</p>`}${body}</div>`;
 }
 function bindReminders() {
   bindReminderTimes();
@@ -5749,7 +5749,7 @@ function renderSettings() {
     ${remindersCard()}
     ${usersCard()}
     ${isAdmin() && SERVER_URL ? `<button class="card li" id="sShare" style="border-radius:22px"><span class="ic">📤</span><span class="grow"><b>${T('Share Food Tracker')}</b><br><span class="small muted">${T('Send the app to friends and family')}</span></span><span class="chev">›</span></button>` : ''}
-    ${!isAdmin() && SERVER_URL ? `<div class="card"><b>✨ AI</b><p class="small muted" style="margin:4px 0 0">${T('AI is included. No setup needed.')} ${T('Photos and messages you send to the AI are processed by Google Gemini.')}</p></div>` : ''}
+    ${!isAdmin() && SERVER_URL ? `<div class="card"><b>✨ AI</b><p class="small muted" style="margin:4px 0 0">${T('Included. Photos and messages are processed by Google Gemini.')}</p></div>` : ''}
     ${isAdmin() || !SERVER_URL ? `<div class="h2">AI</div>
     <div class="card">
       <b>Google Gemini · ${T('free')}</b>
@@ -5874,7 +5874,7 @@ function openPersonalSheet() {
     <div class="pd-wk">${WK.map(([v, ic, n, l]) => `<button data-wk="${v}" class="${st.workouts === v ? 'on' : ''}"><span class="pd-wic">${ic}</span><b>${n}</b><small>${T(l)}</small></button>`).join('')}</div>
     <div class="pd-sec">${T('Body type')} <span style="text-transform:none;letter-spacing:0;font-weight:600;opacity:.8">· ${T('optional')}</span></div>
     <div id="pdBt">${bodyTypeTiles(st.bodyType, st.sex)}</div>
-    <p class="small muted" style="margin:8px 2px 0">${T('Pick the shape closest to you. It makes your goals more accurate if you are very muscular or carry more body fat. Tap it again to remove it.')}</p>
+    <p class="small muted" style="margin:8px 2px 0">${T('Makes your goals more accurate. Tap again to remove it.')}</p>
     <div class="pd-prev" id="pPrev"></div>
     <button class="btn" id="pSave" style="margin-top:16px">${T('Save & update goals')}</button>`, s => {
     const $s = q => s.querySelector(q);
@@ -5968,7 +5968,7 @@ function openMainGoalSheet() {
   const w = currentWeight(), d = clone(db.profile), custom = Object.keys(db.overrides).length > 0;
   d.fast = d.fast || { h: 16, start: '12:00' }; d.preg = d.preg || 't2'; d.life = d.life || []; d.fasting = d.fasting || { type: '' };
   let dir = uiDir(d);
-  sheet(`<h3>🎯 ${T('Your goals')}</h3><p class="muted" style="margin-top:4px">${T('Everything in the app adapts to them. Your past days stay as they are.')}</p><div id="gBody"></div>`, s => {
+  sheet(`<h3>🎯 ${T('Your goals')}</h3><p class="muted" style="margin-top:4px">${T('Past days stay as they are.')}</p><div id="gBody"></div>`, s => {
     const fill = () => {
       const pl = planOf(d), [mn, , mx] = paceRange(d), paces = [], y = s.scrollTop;
       for (let v = mn; v <= mx + 1e-9; v += 0.05) paces.push(Math.round(v * 100) / 100);
