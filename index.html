@@ -1031,7 +1031,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v151';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v152';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1879,10 +1879,9 @@ const GEMINI = [
   { id: 'gemini-3.1-flash-lite' },
   { id: 'gemini-3.6-flash', think: { thinkingLevel: 'minimal' } },
   { id: 'gemini-3.8-flash', think: { thinkingLevel: 'low' } },
-  { id: 'gemini-flash-latest' },
-  { id: 'gemini-2.5-flash-lite' },
-  { id: 'gemini-2.5-flash', think: { thinkingBudget: 0 } }
+  { id: 'gemini-flash-latest' }
 ];
+const SLOW_CHAT = 'gemini-3.8-flash';   // thinks first: can take over a minute to start, so only a last resort for chat
 const aiErr = (msg, fatal) => Object.assign(new Error(msg), { fatal });
 function parseJSON(text) {
   const t = String(text || '').replace(/```(json)?/g, '').trim();
@@ -1932,7 +1931,7 @@ async function readSSE(res, onEvent) {
     }
   }
 }
-async function geminiOnce(key, model, msgs, system, json, onText, ms) {
+async function geminiOnce(key, model, msgs, system, json, onText, ms, stop) {
   const def = GEMINI.find(m => m.id === model) || {};
   const noThink = JSON.parse(LS.get('ft_nothink', '[]'));
   const think = def.think && !noThink.includes(model) ? def.think : null;
@@ -1943,6 +1942,7 @@ async function geminiOnce(key, model, msgs, system, json, onText, ms) {
   };
   if (system) body.systemInstruction = { parts: [{ text: system }] };
   const ctl = new AbortController(), timer = setTimeout(() => ctl.abort(), ms || 30000);
+  if (stop) { if (stop.aborted) ctl.abort(); else stop.addEventListener('abort', () => ctl.abort()); }
   let res;
   try {
     const viaServer = key === SHARED, method = onText ? 'streamGenerateContent' : 'generateContent';
@@ -1950,12 +1950,12 @@ async function geminiOnce(key, model, msgs, system, json, onText, ms) {
       : `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:${method}${onText ? '?alt=sse' : ''}`;
     res = await fetch(url, { method: 'POST', signal: ctl.signal,
       headers: { 'Content-Type': 'application/json', ...(viaServer ? {} : { 'x-goog-api-key': key }) }, body: JSON.stringify(body) });
-  } catch (e) { return { ok: false, status: e.name === 'AbortError' ? 504 : 0, msg: e.name === 'AbortError' ? 'took too long' : 'no connection' }; }
+  } catch (e) { if (stop && stop.aborted) return { ok: false, status: -1, msg: 'stopped' }; return { ok: false, status: e.name === 'AbortError' ? 504 : 0, msg: e.name === 'AbortError' ? 'took too long' : 'no connection' }; }
   finally { clearTimeout(timer); }
   if (!res.ok) {
     const data = await res.json().catch(() => ({}));
     const msg = (Array.isArray(data) ? data[0] : data)?.error?.message || 'HTTP ' + res.status;
-    if (think && res.status === 400 && /think/i.test(msg)) { noThink.push(model); LS.set('ft_nothink', JSON.stringify(noThink)); return geminiOnce(key, model, msgs, system, json, onText, ms); }
+    if (think && res.status === 400 && /think/i.test(msg)) { noThink.push(model); LS.set('ft_nothink', JSON.stringify(noThink)); return geminiOnce(key, model, msgs, system, json, onText, ms, stop); }
     return { ok: false, status: res.status, msg };
   }
   if (onText) {
@@ -1967,7 +1967,7 @@ async function geminiOnce(key, model, msgs, system, json, onText, ms) {
         if (piece) { full += piece; onText(full); }
         if (c?.finishReason) why = c.finishReason;
       });
-    } catch { if (!full) return { ok: false, status: 0, msg: 'connection lost' }; }
+    } catch { if (stop && stop.aborted) return { ok: false, status: -1, msg: 'stopped' }; if (!full) return { ok: false, status: 0, msg: 'connection lost' }; }
     return full ? { ok: true, text: full } : { ok: false, status: 500, msg: 'empty answer (' + (why || 'unknown') + ')' };
   }
   const data = await res.json().catch(() => ({}));
@@ -1998,23 +1998,56 @@ async function geminiChain(key, msgs, system, json, onText, ms, strong) {
     const rank = x => /lite/.test(x) ? 9 : x === 'gemini-3.8-flash' ? 0 : x === 'gemini-3.6-flash' ? 1 : 2;
     list = [...list].sort((a, b) => rank(a) - rank(b));
   }
-  if (!strong && last && list.includes(last)) list = [last, ...list.filter(x => x !== last)];
+  if (!strong) list = [...list.filter(x => x !== SLOW_CHAT), SLOW_CHAT];   // chat: the slow thinker only as a last resort
+  if (!strong && last && last !== SLOW_CHAT && list.includes(last)) list = [last, ...list.filter(x => x !== last)];
   if (custom) list = [custom, ...list.filter(x => x !== custom)];
   const ready = list.filter(m => !(cool[m] > now));
   let err = aiErr(getClaudeKey() || !isAdmin() ? T('All free Google AI models are busy right now. Try again in a minute.') : T('All free Google AI models are busy right now. Try again in a minute, or add a Claude key in Settings.'));
   let offline = 0;
-  for (const model of (ready.length ? ready : list)) {
-    const r = await geminiOnce(key, model, msgs, system, json, onText, ms);
+  // What a failed try means: count it, rest that model for a while, or stop for good (no internet, wrong key)
+  const failed = (model, r) => {
+    if (r.status === -1) return;   // stopped because another model was faster
     if (key === SHARED && r.status !== 0) { aiCount(0); if (r.status === 429) aiCount(1); }
-    if (r.ok) { if (!strong) LS.set('ft_lastModel', model); lastAI = model; return r.text; }
     if (r.status === 0 && ++offline >= 2) throw aiErr(T('No connection to the AI. Check your internet.'));
     if (key !== SHARED && (/api[_ ]?key|API_KEY_INVALID|unauthenticated/i.test(r.msg) || r.status === 401)) throw aiErr(T('Your Google AI key was rejected. Check it in Settings.'), true);
     let wait = 0;
     if (r.status === 429) wait = /day|PerDay/i.test(r.msg) ? untilQuotaReset() : 60e3;
     else if (r.status === 404 || r.status === 403 || (r.status === 400 && /not (found|supported|available)|no longer|deprecat|access/i.test(r.msg))) wait = 7 * 864e5;
-    else if (r.status >= 500) wait = 20e3;
+    else if (r.status >= 500) wait = r.status === 504 ? 3 * 60e3 : 20e3;   // too slow: leave it out for a few minutes
     else err = aiErr('Google AI: ' + r.msg);
-    if (wait) { cool[model] = Date.now() + wait; LS.set('ft_cool', JSON.stringify(cool)); }
+    if (wait) { const c = JSON.parse(LS.get('ft_cool', '{}')); c[model] = Date.now() + wait; LS.set('ft_cool', JSON.stringify(c)); }
+  };
+  const won = model => { if (key === SHARED) aiCount(0); if (!strong && model !== SLOW_CHAT) LS.set('ft_lastModel', model); lastAI = model; };
+  const order = ready.length ? ready : list;
+  // Chat: start with the best model; if it has not started writing after 4 s, the next one starts too.
+  // Whichever writes first wins and the other is stopped, so a slow or busy model never keeps people waiting.
+  if (onText && !strong) return await new Promise((resolve, reject) => {
+    let next = 0, running = 0, winner = null, over = false;
+    const stops = [];
+    const end = (fn, v) => { if (over) return; over = true; stops.forEach(c => c.abort()); fn(v); };
+    const start = () => {
+      if (over || winner) return;
+      if (next >= order.length) { if (!running) { if (key === SHARED) aiCount(2); end(reject, err); } return; }
+      const model = order[next++], stop = new AbortController(); stops.push(stop); running++;
+      const hedge = setTimeout(start, 4000);
+      geminiOnce(key, model, msgs, system, json, t => {
+        if (!winner) { winner = model; clearTimeout(hedge); stops.forEach(c => { if (c !== stop) c.abort(); }); }
+        if (winner === model) onText(t);
+      }, ms, stop.signal).then(r => {
+        running--; clearTimeout(hedge);
+        if (over) return;
+        if (r.ok && (!winner || winner === model)) { won(model); return end(resolve, r.text); }
+        if (winner === model) return end(reject, aiErr('Google AI: ' + r.msg));   // it started writing, then broke off
+        try { failed(model, r); } catch (e) { return end(reject, e); }
+        if (!winner) start();
+      });
+    };
+    start();
+  });
+  for (const model of order) {
+    const r = await geminiOnce(key, model, msgs, system, json, onText, ms);
+    if (r.ok) { won(model); return r.text; }
+    failed(model, r);
   }
   if (key === SHARED) aiCount(2);
   throw err;
@@ -5385,11 +5418,12 @@ async function sendChat(text) {
     const live = $('#live'), clean = stripTags(target);
     if (!live || shown >= clean.length) return;
     const backlog = clean.slice(shown).split(/\s+/).length;
-    for (let i = 0, n = backlog > 120 ? 3 : backlog > 50 ? 2 : 1; i < n; i++) shown = nextWordEnd(clean, shown);
+    const n = done ? Math.max(3, Math.ceil(backlog / 20)) : backlog > 120 ? 6 : backlog > 50 ? 4 : 2;
+    for (let i = 0; i < n; i++) shown = nextWordEnd(clean, shown);
     const stick = near();
     live.innerHTML = md(tidyPartial(clean.slice(0, shown))).replace(/(<\/(p|li)>(<\/[uo]l>)?)$/, '<span class="caret"></span>$1');
     if (stick) chatToBottom();
-  }, 55);
+  }, 45);
 
   let entry;
   try {
@@ -5400,7 +5434,7 @@ async function sendChat(text) {
     }
     const parts = [...attach, { text: `${liveNumbers()}\n\n${q}` }];
     const answer = await askAI(parts, { json: false, system: coachSystem(), history, strong: att.length > 0 || usesKept, timeout: att.length || usesKept ? 90000 : undefined, onText: t => { target = t; } });
-    target = answer;
+    target = answer; done = true;
     const mem = applyMemoryTags(answer);
     entry = { role: 'assistant', text: stripTags(answer), mem: mem > 0, t: Date.now() };
   } catch (e) {
