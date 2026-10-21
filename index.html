@@ -1031,7 +1031,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v154';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v155';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3643,45 +3643,29 @@ function showMoved() {
    bubble explains it. Before changing pages it points at the tab first, then the page fades in.
    Shown once after the first setup; can be skipped and replayed from Settings. */
 const TOUR_STEPS = [
-  { tab: 'home', title: N('Welcome to Food Tracker'), text: N('Let me show you around. It takes about a minute, and you can skip any time.') },
-  { tab: 'home', sel: '.week', title: N('Your days'), text: N('Tap a day to see it or add something you forgot. The arrow goes back to earlier weeks.') },
-  { tab: 'home', sel: '#planChip', title: N('Your goals'), text: N('Your goals and how far along you are: weight & muscle first, then lifestyle and fasting. Tap it to change your goals.') },
-  { tab: 'home', sel: '.calcard', title: N('Calories for today'), text: N('How many calories you have left today. Tap the card to switch between left and eaten.') },
-  { tab: 'home', sel: '.macros', title: N('Protein, carbs and fat'), text: N('What is left of each today. Protein matters most for your body goals.') },
-  // In the order of the Home page; the goal cards only appear when that goal is chosen
-  { tab: 'home', when: p => fastType(p) === 'if', sel: '#fastCard', title: N('Intermittent fasting'), text: N('Your eating window for today: when it opens and closes, and how long you have fasted. Meals outside the window are marked here.') },
-  { tab: 'home', when: p => fastType(p) === '52' || fastType(p) === 'adf', sel: '#fastDayCard', title: N('Fast days'), text: N('Shows if today is a fast day or a normal day, and when the next fast day is. On fast days your calorie goal is lowered automatically.') },
-  { tab: 'home', when: p => fastType(p) === 'once', sel: '#fastCard', title: N('One-time fast'), text: N('Your fast timer: how long you have fasted and how much is left. Tap End fast when you are done.') },
-  { tab: 'home', when: p => !!carbCap(p), sel: '#carbCard', title: N('Carb limit'), text: N('Your carbs today against your limit. It turns red if you go over.') },
-  { tab: 'home', sel: '.hcard', title: N('Health score'), text: N('How healthy your food is today, from 1 to 10. Bigger meals count more than a small snack.') },
-  { tab: 'home', when: p => hasLife(p, 'healthy'), sel: '.hcard', title: N('Eat healthier'), text: N('Because you want to eat healthier: under the health score you see fiber, sugar and salt for the day as soon as you log meals, with limits made for you.') },
-  { tab: 'home', sel: '.minirow', title: N('Water and calories burned'), text: N('Tap + to add a glass of water or your burned calories. Tap a tile for more options.') },
-  { tab: 'home', when: () => !!db.habit, sel: '#habitHome', title: N('Your habit'), text: N('The habit you are working on and how many days you have done it. Tap it for your plan and progress.') },
-  { tab: 'home', sel: '#mpCard', title: N('Meal plan & groceries'), text: N('Your weekly meal plan and shopping list, made for your goal. A new one comes every Saturday.') },
-  { tab: 'home', sel: '#fab', title: N('Log your food'), text: N('The most important button. Let us look at what it opens.') },
-  { tab: 'home', open: 'add', sel: '.backdrop .addgrid', title: N('Everything you can add'), text: N('Favorites: log a regular meal again with one tap. Scan food or Upload photo: the AI counts calories and macros from a picture. Barcode: exact values from the label. Describe food: type or say what you ate. Plus manual entries.') },
-  { tab: 'home', sel: '.tab[data-tab="progress"]', title: N('Progress'), text: N('Next stop: your progress.') },
-  { tab: 'progress', sel: '.two', title: N('Weight and streak'), text: N('Log your weight here once a week, in the morning before breakfast. The streak counts the days you log food.') },
-  { tab: 'progress', sel: '#badgeCard', title: N('Badges'), text: N('Earn badges for streaks, protein, water and milestones. Tap one to see what it is for.') },
-  { tab: 'progress', sel: '#goalCard', title: N('Goal progress'), text: N('Your weight trend, how much is left, and when you will reach your goal.') },
-  { tab: 'progress', sel: '#bodyCard', title: N('Body'), text: N('Waist, hips, arms and private progress photos. When you build muscle, they show progress the scale can not.') },
-  { tab: 'progress', sel: '#habitProgCard', title: N('Habits (optional)'), text: N('Want to change a habit, like snacking late? Pick one, make a small plan, and the app checks it for you. If you don\'t want this, simply ignore it.') },
-  { tab: 'progress', sel: '.tab[data-tab="chat"]', title: N('Coach'), text: N('Now your personal AI coach.') },
-  { tab: 'chat', sel: '#chatScreen .chatbar .chips button', title: N('Suggestions'), text: N('Not sure what to ask? Tap a suggestion to start a conversation.') },
-  { tab: 'chat', sel: '#chatScreen .chatbar .plusbtn', title: N('Photos and files'), text: N('Tap + to send photos or files, like a restaurant menu or a food label. The coach reads them and helps you choose.') },
-  { tab: 'chat', open: 'chatmenu', sel: '#cMenu', title: N('What the + offers'), text: N('New conversation starts fresh. Upload image: a photo from your library, e.g. a menu. Take photo: use the camera right away. Upload file: a PDF or document, e.g. a meal plan.') },
-  { tab: 'chat', sel: '#chatScreen .chatbar .composer', title: N('Ask your coach anything'), text: N('Type your question, or tap the microphone to speak. Once a week your weekly check-in appears here.') },
-  { tab: 'chat', sel: '.tab[data-tab="settings"]', title: N('Settings'), text: N('Finally, your settings.') },
-  { tab: 'settings', sel: '#sGoal', title: N('Your goals'), text: N('Three groups: weight & muscle, lifestyle and fasting. Change them any time; your past days stay as they are.') },
-  { tab: 'settings', sel: '#sPers', title: N('Personal details'), text: N('Height, weight, age and training. Your goals update automatically when they change.') },
-  { tab: 'settings', sel: '#sTrk', title: N('Watch & tracker'), text: N('Connect your Apple Watch (through Apple Health), WHOOP or another tracker once. Your burned calories are then filled in automatically every time you open the app.') },
-  { tab: 'settings', sel: '#sGoals', title: N('Adjust macronutrients'), text: N('Set your own calorie and macro targets if you prefer.') },
-  { tab: 'settings', sel: '#prefList', title: N('Language, units and tour'), text: N('Choose your language, kg or lb, cm or ft, litres or fl oz. You can watch this tour again here.') },
-  { tab: 'settings', sel: '#appCard', title: N('Appearance'), text: N('Choose light or dark mode, or let it follow your phone. Under Background you can give the whole app a color gradient.') },
-  { tab: 'settings', sel: '#remCard', title: N('Reminders'), text: N('Turn on notifications and choose when you want your reminders.') },
-  { tab: 'settings', sel: '#sPriv', title: N('Privacy'), text: N('What happens with your data, explained simply.') },
-  { tab: 'settings', sel: '#bkCard', title: N('Account & backup'), text: N('Create an account so your data is backed up every day and comes back on a new phone.') },
-  { tab: 'home', title: N("You're all set"), text: N('Start by logging your next meal with the + button. Enjoy!') }
+  // Short on purpose: one line per step. The whole Home page from top to bottom, then each other page is opened once.
+  { tab: 'home', title: N('Welcome to Food Tracker'), text: N('A quick look around. It takes 30 seconds.') },
+  { tab: 'home', sel: '.week', title: N('Your days'), text: N('Tap a day to see it or add something.') },
+  { tab: 'home', sel: '#planChip', title: N('Your goals'), text: N('Your goal and how far along you are. Tap to change it.') },
+  { tab: 'home', sel: '.calcard', title: N('Calories for today'), text: N('What you can still eat today. Tap to see what you ate.') },
+  { tab: 'home', sel: '.macros', title: N('Protein, carbs and fat'), text: N('What is left of each today.') },
+  // The cards for goals someone chose, in the order of the Home page (only when that goal is picked)
+  { tab: 'home', when: p => fastType(p) === 'if', sel: '#fastCard', title: N('Intermittent fasting'), text: N('Your eating window for today.') },
+  { tab: 'home', when: p => fastType(p) === '52' || fastType(p) === 'adf', sel: '#fastDayCard', title: N('Fast days'), text: N('Shows if today is a fast day.') },
+  { tab: 'home', when: p => fastType(p) === 'once', sel: '#fastCard', title: N('One-time fast'), text: N('Your fasting timer.') },
+  { tab: 'home', when: p => !!carbCap(p), sel: '#carbCard', title: N('Carb limit'), text: N('Your carbs today against your limit.') },
+  { tab: 'home', sel: '.hcard', title: N('Health score'), text: N('How healthy you ate today, from 1 to 10.') },
+  { tab: 'home', when: p => hasLife(p, 'healthy'), sel: '.hcard', title: N('Eat healthier'), text: N('Fiber, sugar and salt today, under the health score.') },
+  { tab: 'home', sel: '.minirow', title: N('Water and calories burned'), text: N('Tap + to add water or calories burned.') },
+  { tab: 'home', when: () => !!db.habit, sel: '#habitHome', title: N('Your habit'), text: N('Your habit and how many days you made it.') },
+  { tab: 'home', sel: '#mpCard', title: N('Meal plan & groceries'), text: N('Your weekly meal plan and shopping list.') },
+  { tab: 'home', sel: '#fab', title: N('Log your food'), text: N('Tap it to log what you eat.') },
+  { tab: 'home', open: 'add', sel: '.backdrop .addgrid', title: N('Everything you can add'), text: N('Photo, barcode, typing, favorites or manual entry.') },
+  // The other pages: the tour goes there and points at their button
+  { tab: 'progress', sel: '.tab[data-tab="progress"]', title: N('Progress'), text: N('Your weight, streak, badges and body.') },
+  { tab: 'chat', sel: '.tab[data-tab="chat"]', title: N('Coach'), text: N('Your personal AI coach. Ask it anything.') },
+  { tab: 'settings', sel: '.tab[data-tab="settings"]', title: N('Settings'), text: N('Goals, watch, reminders and your account.') },
+  { tab: 'home', title: N("You're all set"), text: N('Log your first meal with the + button.') }
 ];
 function openTour(onDone) {
   const STEPS = TOUR_STEPS.filter(s => !s.when || s.when(db.profile || {}));
@@ -6137,7 +6121,6 @@ function renderOb() {
     else for (let k = from; k <= to; k += 0.5) o += `<option value="${k}" ${Math.abs(k - v) < 0.01 ? 'selected' : ''}>${k} kg</option>`;
     return o;
   };
-  const calib = T('This will be used to calibrate your custom plan.');
   let title = '', sub = '', body = '', ok = true, cta = T('Continue');
   if (s === 'intro') {
     pg.innerHTML = `<div class="onb" style="justify-content:center;text-align:center">
@@ -6157,31 +6140,31 @@ function renderOb() {
     if (pg.querySelector('#obCancel')) pg.querySelector('#obCancel').onclick = () => { ob = null; $('#onb')?.remove(); render(); };
     return;
   }
-  if (s === 'gender') { title = T('Choose your gender'); sub = calib; body = opts('sex', [['m', T('Male')], ['f', T('Female')], ['o', T('Other')]]); ok = !!p.sex; }
-  if (s === 'daily') { title = T('How active is your daily life?'); sub = T('Your job and how much you walk, without workouts. Those come next.');
+  if (s === 'gender') { title = T('Choose your gender'); body = opts('sex', [['m', T('Male')], ['f', T('Female')], ['o', T('Other')]]); ok = !!p.sex; }
+  if (s === 'daily') { title = T('How active is your daily life?'); sub = T('Your job and steps, without workouts.');
     body = opts('daily', DAILY.map(([v, ic, l, d]) => [v, ic + ' ' + T(l), T(d)])); ok = !!p.daily; }
-  if (s === 'workouts') { title = T('How many workouts do you do per week?'); sub = calib;
-    body = opts('workouts', [['0', '0', T('workouts per week')], ['1-2', '1–2', T('workouts per week')], ['3-5', '3–5', T('workouts per week')], ['6+', '6+', T('workouts per week')]]); ok = !!p.workouts; }
-  if (s === 'body') { title = T('Height & weight'); sub = calib;
+  if (s === 'workouts') { title = T('How many workouts do you do per week?');
+    body = opts('workouts', [['0', '0'], ['1-2', '1–2'], ['3-5', '3–5'], ['6+', '6+']]); ok = !!p.workouts; }
+  if (s === 'body') { title = T('Height & weight');
     let h = '';
     if (isIn()) { const sel = Math.round(p.height / CM_IN); for (let i = 48; i <= 90; i++) h += `<option value="${r1(i * CM_IN)}" ${i === sel ? 'selected' : ''}>${Math.floor(i / 12)}′${i % 12}″</option>`; }
     else for (let c = 120; c <= 230; c++) h += `<option value="${c}" ${c === r0(p.height) ? 'selected' : ''}>${c} cm</option>`;
     body = `<div class="seg" style="margin-bottom:14px"><button data-obu="metric" class="${isLb() ? '' : 'on'}">cm · kg</button><button data-obu="us" class="${isLb() ? 'on' : ''}">ft · lb</button></div><div class="row"><div class="grow"><label class="lbl">${T('Height')}</label><select id="obH">${h}</select></div><div class="grow"><label class="lbl">${T('Weight')}</label><select id="obW">${kgOpts(isLb() ? p.weight : Math.round(p.weight * 2) / 2, 35, 250)}</select></div></div>`; }
-  if (s === 'btype') { title = T('Which body type is closest to you?'); sub = T('Optional. It makes your calorie goal more accurate if you are very muscular or carry more body fat.');
+  if (s === 'btype') { title = T('Which body type is closest to you?'); sub = T('Optional. Makes your goal more accurate.');
     body = bodyTypeTiles(p.bodyType || 0, p.sex); cta = p.bodyType ? T('Continue') : T('Skip'); }
-  if (s === 'birth') { title = T('When were you born?'); sub = calib;
+  if (s === 'birth') { title = T('When were you born?');
     body = birthPicker(p.birth); ok = !!p.birth; }
   if (s === 'dir') { const dir = p.plan ? uiDir(p) : '';
-    title = T('What about your weight?'); sub = T('Your main goal first. Lifestyle and fasting come next and are optional.');
+    title = T('What about your weight?'); sub = T('Lifestyle and fasting come next.');
     body = [['lose', '🔥', T('Lose weight')], ['maintain', '⚖️', T('Keep my weight')], ['gain', '💪', T('Gain weight')]]
       .map(([v, ic, l]) => `<button class="opt ${dir === v ? 'on' : ''}" data-obdir="${v}">${ic} ${l}</button>`).join(''); ok = !!dir; }
   if (s === 'goal') { const list = plansFor(p, uiDir(p));
-    title = T('Which one fits you best?'); sub = T('Everything in the app adapts to it. You can change it any time in Settings.');
+    title = T('Which one fits you best?');
     body = list.map(x => `<button class="opt cmp ${p.plan === x.id ? 'on' : ''}" data-plan="${x.id}">${x.ic} ${T(x.name)}<small>${T(x.sub)}</small></button>`).join(''); ok = list.some(x => x.id === p.plan); }
   if (s === 'preg') { title = T('Where are you right now?'); sub = T('Your calories go up a little as your baby grows. Please also follow the advice of your doctor or midwife.');
     body = opts('preg', PREG.map(([v, l]) => [v, T(l)])); ok = !!p.preg; }
-  if (s === 'life') { title = T('Your lifestyle'); sub = T('Optional: pick everything that fits you, or just continue.'); body = lifeChips(p); }
-  if (s === 'fasting') { title = T('Do you want to fast?'); sub = T('Optional. You can change it any time in Settings.'); body = fastingChoice(p); }
+  if (s === 'life') { title = T('Your lifestyle'); sub = T('Optional. Pick all that fit.'); body = lifeChips(p); }
+  if (s === 'fasting') { title = T('Do you want to fast?'); sub = T('Optional.'); body = fastingChoice(p); }
   if (s === 'target') {
     fixTarget(p, p.weight);
     title = T('What is your desired weight?');
@@ -6214,7 +6197,7 @@ function renderOb() {
       reach = `<div class="tip" style="text-align:center;margin:0 0 18px">${p.goal === 'lose' ? T('You should lose:') : T('You should gain:')}<br><b style="font-size:18px">${T('{n} kg by {d}', { n: r1(Math.abs(p.targetWeight - p.weight)), d: fmtLong(d) })}</b></div>`; }
     title = T('Congratulations, your custom plan is ready!');
     sub = [`${planOf(p).ic} ${T(planOf(p).name)}`, ...goalExtras(p)].join(' · ');
-    body = `${reach}<b>${T('Daily recommendation')}</b><p class="small muted" style="margin:2px 0 12px">${T('You can edit this any time in Settings.')}</p>
+    body = `${reach}<b style="display:block;margin-bottom:10px">${T('Daily recommendation')}</b>
       <div class="plan4">${[['🔥', T('Calories'), t.kcal, '', 'var(--ink)'], ['🌾', T('Carbs'), t.carbs, 'g', 'var(--carbs)'], ['🍗', T('Protein'), t.protein, 'g', 'var(--protein)'], ['🥑', T('Fats'), t.fat, 'g', 'var(--fat)']]
         .map(([ic, l, v, u, c]) => `<div class="card"><span class="small" style="font-weight:600">${ic} ${l}</span>${ring(80, 7, 0.75, c, `<b>${v}${u}</b>`)}</div>`).join('')}</div>
       <div class="tip"><b>${T('How to reach your goals')}</b><br>${planTips(p).join('<br>')}</div>`;
