@@ -1031,7 +1031,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v150';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v151';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1262,6 +1262,10 @@ const MAC = [
 
 /* ================= Calculations ================= */
 const ACT = { '0': 1.2, '1-2': 1.375, '0-2': 1.375, '3-5': 1.55, '6+': 1.725 };   // mostly sitting / light / moderate / very active
+// Daily life (job and steps, without workouts) plus workouts on top. Profiles from before this question keep the old scale above.
+const DAILY = [['sit', '🪑', N('Mostly sitting'), N('Office, studying, driving')], ['feet', '🚶', N('On my feet a lot'), N('Shop, teaching, nursing, serving')], ['phys', '🏗️', N('Physical work'), N('Construction, warehouse, trades, farming')]];
+const DAILY_FAC = { sit: 1.2, feet: 1.375, phys: 1.55 }, WK_ADD = { '0': 0, '1-2': 0.1, '0-2': 0.1, '3-5': 0.2, '6+': 0.35 };
+const actFac = p => !p ? 1.375 : DAILY_FAC[p.daily] ? Math.min(1.9, DAILY_FAC[p.daily] + (WK_ADD[p.workouts] || 0)) : (ACT[p.workouts] || 1.375);
 // "lean" = build lean muscle: a small surplus so most of the gain is muscle, not fat.
 const isGain = g => g === 'gain' || g === 'lean';
 const LEAN_MAX = 0.5;   // kg/week; faster than this mostly adds fat
@@ -1399,7 +1403,7 @@ function calcTargets(p, w, fac) {   // fac: activity factor of one day (from the
   const mif = 10 * w + 6.25 * p.height - 5 * age(p) + (p.sex === 'm' ? 5 : p.sex === 'f' ? -161 : -78), bf = bodyFat(p);
   // With a body type: from lean mass (Katch-McArdle), kept within ±15 % of the standard formula
   const bmr = bf ? clamp(370 + 21.6 * w * (1 - bf / 100), mif * 0.85, mif * 1.15) : mif;
-  const tdee = bmr * (fac || ACT[p.workouts] || 1.375), plan = planOf(p).id;
+  const tdee = bmr * (fac || actFac(p)), plan = planOf(p).id;
   let kcal = tdee;
   if (p.goal === 'lose') kcal -= p.pace * 7700 / 7;
   if (p.goal === 'gain') kcal += p.pace * 7700 / 7;
@@ -1454,7 +1458,7 @@ const dayBurned = date => db.exercises.filter(e => e.date === date).reduce((a, e
 // or only their workouts. The base goal already contains normal daily movement and the usual training:
 // for a whole-day number that is everything above resting + digestion (x1.1), for workouts the step from x1.2.
 const burnWholeDay = () => (db.settings.burnType || 'day') === 'day';
-function includedExercise() { const t = targets(), p = db.profile; return p ? r0(t.bmr * ((ACT[p.workouts] || 1.375) - (burnWholeDay() ? 1.1 : 1.2))) : 0; }
+function includedExercise() { const t = targets(), p = db.profile; return p ? r0(t.bmr * (actFac(p) - (burnWholeDay() ? 1.1 : 1.2))) : 0; }
 // Tracker connected (whole-day numbers, no own calorie goal): the daily goal follows the real activity
 const trackerMode = () => !!(db.profile && linkInfo() && burnWholeDay() && !(num(db.overrides.kcal) > 0));
 const autoOn = d => db.exercises.find(e => e.id === 'auto-' + d);
@@ -1462,7 +1466,7 @@ const autoOn = d => db.exercises.find(e => e.id === 'auto-' + d);
 function activeAvg(date) {
   const v = [...Array(7)].map((_, i) => autoOn(addDays(date, -1 - i))).filter(Boolean).map(e => num(e.kcal));
   if (v.length >= 2) return r0(v.reduce((a, b) => a + b, 0) / v.length);
-  return r0((targets().bmr || 1600) * ((ACT[db.profile.workouts] || 1.375) - 1.1) / 0.75);
+  return r0((targets().bmr || 1600) * (actFac(db.profile) - 1.1) / 0.75);
 }
 // The active calories a day's goal is built on: measured so far, plus (today) the 7-day average for the hours still to come
 function activeFor(date) {
@@ -4965,7 +4969,7 @@ Sugar ${r0(dayExtras(today).sugar)} g (personal max ${nutriLimits(dayGoals(today
 ${todayMeals.map(meal).join('\n') || '- nothing logged yet'}
 ${todayEx.length ? `\n=== TODAY'S EXERCISE ===\n${todayEx.map(e => `- ${e.time || ''} ${e.name}: ${r0(e.kcal)} kcal${e.minutes ? `, ${e.minutes} min` : ''}`).join('\n')}\n` : ''}
 === PROFILE & GOAL ===
-${p ? `${{ m: 'Male', f: 'Female', o: 'Other' }[p.sex]}, ${age(p)} years, ${p.height} cm, ${cur} kg (BMI ${r1(cur / Math.pow(p.height / 100, 2))}), ${p.workouts} workouts per week${bodyFat(p) ? `; body type picked from pictures: "${BODY_TYPES[p.bodyType - 1]}" (about ${bodyFat(p)} % body fat, a rough self-estimate; calories and protein use lean mass)` : ''}.` : 'No profile yet.'}
+${p ? `${{ m: 'Male', f: 'Female', o: 'Other' }[p.sex]}, ${age(p)} years, ${p.height} cm, ${cur} kg (BMI ${r1(cur / Math.pow(p.height / 100, 2))}), ${p.workouts} workouts per week${DAILY_FAC[p.daily] ? `, daily life (job and steps): ${{ sit: 'mostly sitting', feet: 'on their feet a lot', phys: 'physical work' }[p.daily]}` : ''}${bodyFat(p) ? `; body type picked from pictures: "${BODY_TYPES[p.bodyType - 1]}" (about ${bodyFat(p)} % body fat, a rough self-estimate; calories and protein use lean mass)` : ''}.` : 'No profile yet.'}
 Goals chosen in the app: ${p ? goalsText(p) : 'none'}${p && carbCap(p) ? `; daily carb limit ${base.carbs} g` : ''}${p && isFastDay(p, iso()) ? `; TODAY IS A FAST DAY (about ${FAST_KCAL(p)} kcal)` : ''}${p && fastType(p) === 'once' ? `; one-time fast of ${fastOf(p).h || 24} h started ${new Date(fastOf(p).t || Date.now()).toLocaleString('en')}` : ''}${p && fastType(p) === 'if' ? `; fasting ${fastState(p).h}:${fastState(p).win}, eating window ${fastState(p).startStr}-${fastState(p).endStr}, right now ${fastState(p).inWin ? 'INSIDE the eating window' : 'FASTING (outside the window)'}` : ''}.
 Weight goal: ${goalTxt}${eta ? `. Expected to reach it around ${eta}` : ''}.
 Real weight change over the last 4 weeks: ${rate === null ? 'not enough weigh-ins yet (needs 2+ weeks)' : `${rate > 0 ? '+' : ''}${rate} kg/week`}
@@ -5016,7 +5020,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
 - Coach: the Memory button (top right) opens My memory: what you remember about them (they can add or delete facts), My memory snapshot (a short summary you write about them with one question and 3 quick answers) and Chat history (earlier conversations are kept when they start a new one; they can open, continue or delete them). The first suggestion button follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
-- Settings: Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, training 0 / 1-2 / 3-5 / 6+ per week, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy; Delete all data.
+- Settings: Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, daily life: mostly sitting / on their feet a lot / physical work, training 0 / 1-2 / 3-5 / 6+ per week; daily life and workouts together set the activity level, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy; Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
   const mem = memList();
@@ -5803,7 +5807,7 @@ function bindFast(root, f, cb) {
 function openPersonalSheet() {
   if (!db.profile) return startOnboarding();
   const p0 = db.profile, custom = Object.keys(db.overrides).length > 0;
-  const st = { sex: p0.sex || 'm', birth: p0.birth, height: num(p0.height) || 175, weight: currentWeight(), workouts: p0.workouts || '3-5', bodyType: p0.bodyType || 0 };
+  const st = { sex: p0.sex || 'm', birth: p0.birth, height: num(p0.height) || 175, weight: currentWeight(), workouts: p0.workouts || '3-5', daily: p0.daily || '', bodyType: p0.bodyType || 0 };
   const SEX = [['m', '♂', N('Male')], ['f', '♀', N('Female')], ['o', '⚧', N('Other')]];
   const WK = [['0', '🌱', '0', N('per week')], ['1-2', '🚶', '1–2', N('per week')], ['3-5', '🏃', '3–5', N('per week')], ['6+', '🏋️', '6+', N('per week')]];
   sheet(`<div class="pd-head"><div class="pd-av">👤</div><div><h3 style="margin:0">${T('Personal details')}</h3>
@@ -5817,6 +5821,8 @@ function openPersonalSheet() {
       ${[['h', T('Height'), isIn() ? '' : 'cm', isIn() ? CM_IN : 1], ['w', T('Weight'), wUnit(), isLb() ? 0.2 : 0.1]].map(([k, l, u, step]) => `<div class="pd-num"><div class="small muted" style="font-weight:600">${l}</div>
         <div class="pd-val"><input id="pd_${k}" inputmode="decimal" ${k === 'h' && isIn() ? 'readonly' : ''} value="${k === 'h' ? (isIn() ? ftIn(st.height) : st.height) : showW(st.weight)}"><span>${u}</span></div>
         <div class="pd-step"><button data-step="${k}" data-d="${-step}" aria-label="−">−</button><button data-step="${k}" data-d="${step}" aria-label="+">＋</button></div></div>`).join('')}</div>
+    <div class="pd-sec">${T('Daily life')}</div>
+    <div class="pd-wk" style="grid-template-columns:repeat(3,1fr)">${DAILY.map(([v, ic, l]) => `<button data-dl="${v}" class="${st.daily === v ? 'on' : ''}"><span class="pd-wic">${ic}</span><b style="font-size:13px;line-height:1.15">${T(l)}</b></button>`).join('')}</div>
     <div class="pd-sec">${T('Workouts / week')}</div>
     <div class="pd-wk">${WK.map(([v, ic, n, l]) => `<button data-wk="${v}" class="${st.workouts === v ? 'on' : ''}"><span class="pd-wic">${ic}</span><b>${n}</b><small>${T(l)}</small></button>`).join('')}</div>
     <div class="pd-sec">${T('Body type')} <span style="text-transform:none;letter-spacing:0;font-weight:600;opacity:.8">· ${T('optional')}</span></div>
@@ -5825,7 +5831,7 @@ function openPersonalSheet() {
     <div class="pd-prev" id="pPrev"></div>
     <button class="btn" id="pSave" style="margin-top:16px">${T('Save & update goals')}</button>`, s => {
     const $s = q => s.querySelector(q);
-    const p = () => { const x = { ...p0, sex: st.sex, birth: st.birth || p0.birth, height: st.height, workouts: st.workouts }; if (st.bodyType) x.bodyType = st.bodyType; else delete x.bodyType; return x; };
+    const p = () => { const x = { ...p0, sex: st.sex, birth: st.birth || p0.birth, height: st.height, workouts: st.workouts }; if (st.daily) x.daily = st.daily; if (st.bodyType) x.bodyType = st.bodyType; else delete x.bodyType; return x; };
     const bindBt = () => s.querySelectorAll('[data-bt]').forEach(b => b.onclick = () => { st.bodyType = st.bodyType === +b.dataset.bt ? 0 : +b.dataset.bt; $s('#pdBt').innerHTML = bodyTypeTiles(st.bodyType, st.sex); bindBt(); draw(); });
     const draw = () => {
       $s('#pdBirthTxt').textContent = st.birth ? fmtLong(dt(st.birth)) : '—';
@@ -5844,6 +5850,7 @@ function openPersonalSheet() {
     };
     s.querySelectorAll('[data-sex]').forEach(b => b.onclick = () => { st.sex = b.dataset.sex; s.querySelectorAll('[data-sex]').forEach(x => x.classList.toggle('on', x === b)); $s('#pdBt').innerHTML = bodyTypeTiles(st.bodyType, st.sex); bindBt(); draw(); });
     bindBt();
+    s.querySelectorAll('[data-dl]').forEach(b => b.onclick = () => { st.daily = b.dataset.dl; s.querySelectorAll('[data-dl]').forEach(x => x.classList.toggle('on', x === b)); draw(); });
     s.querySelectorAll('[data-wk]').forEach(b => b.onclick = () => { st.workouts = b.dataset.wk; s.querySelectorAll('[data-wk]').forEach(x => x.classList.toggle('on', x === b)); draw(); });
     $s('#pBirth').onchange = e => { if (e.target.value) { st.birth = e.target.value; draw(); } };
     const inp = { h: $s('#pd_h'), w: $s('#pd_w') };
@@ -6003,10 +6010,10 @@ function openGoalsSheet() {
 
 /* ================= Onboarding ================= */
 let ob = null;
-const OB = ['intro', 'gender', 'workouts', 'body', 'btype', 'birth', 'dir', 'goal', 'preg', 'target', 'speed', 'life', 'fasting', 'ai', 'ready'];
+const OB = ['intro', 'gender', 'daily', 'workouts', 'body', 'btype', 'birth', 'dir', 'goal', 'preg', 'target', 'speed', 'life', 'fasting', 'ai', 'ready'];
 function startOnboarding() {
   const base = db.profile ? clone(db.profile) : {};
-  ob = { step: 0, p: Object.assign({ sex: '', workouts: '', height: 175, weight: 75, birth: '', plan: '', goal: '', targetWeight: null, pace: 0.5,
+  ob = { step: 0, p: Object.assign({ sex: '', daily: '', workouts: '', height: 175, weight: 75, birth: '', plan: '', goal: '', targetWeight: null, pace: 0.5,
     preg: '', fast: { h: 16, start: '12:00' }, life: [], fasting: { type: '' } }, base) };
   if (db.profile) ob.p.weight = currentWeight();
   closeSheet(); renderOb();
@@ -6085,6 +6092,8 @@ function renderOb() {
     return;
   }
   if (s === 'gender') { title = T('Choose your gender'); sub = calib; body = opts('sex', [['m', T('Male')], ['f', T('Female')], ['o', T('Other')]]); ok = !!p.sex; }
+  if (s === 'daily') { title = T('How active is your daily life?'); sub = T('Your job and how much you walk, without workouts. Those come next.');
+    body = opts('daily', DAILY.map(([v, ic, l, d]) => [v, ic + ' ' + T(l), T(d)])); ok = !!p.daily; }
   if (s === 'workouts') { title = T('How many workouts do you do per week?'); sub = calib;
     body = opts('workouts', [['0', '0', T('workouts per week')], ['1-2', '1–2', T('workouts per week')], ['3-5', '3–5', T('workouts per week')], ['6+', '6+', T('workouts per week')]]); ok = !!p.workouts; }
   if (s === 'body') { title = T('Height & weight'); sub = calib;

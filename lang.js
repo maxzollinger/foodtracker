@@ -1373,7 +1373,16 @@ window.I18N = {
 "It sent the same number ({n} kcal) on several days.":"Er hat an mehreren Tagen dieselbe Zahl ({n} kcal) geschickt.",
 "It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Er hat {n} kcal für einen Tag geschickt. Das ist mehr als ein ganzer Tag Bewegung, er zählt also wohl mehrere Tage zusammen.",
 "It's correct":"Stimmt so",
-"Your Shortcut may send the wrong number":"Dein Kurzbefehl schickt vielleicht eine falsche Zahl"
+"Your Shortcut may send the wrong number":"Dein Kurzbefehl schickt vielleicht eine falsche Zahl",
+"Construction, warehouse, trades, farming":"Bau, Lager, Handwerk, Landwirtschaft",
+"Daily life":"Alltag",
+"How active is your daily life?":"Wie aktiv ist dein Alltag?",
+"Mostly sitting":"Meist sitzend",
+"Office, studying, driving":"Büro, Studium, Autofahren",
+"On my feet a lot":"Viel auf den Beinen",
+"Physical work":"Körperliche Arbeit",
+"Shop, teaching, nursing, serving":"Laden, Unterricht, Pflege, Service",
+"Your job and how much you walk, without workouts. Those come next.":"Dein Job und wie viel du gehst, ohne Training. Das kommt als Nächstes."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2748,7 +2757,16 @@ window.I18N = {
 "It sent the same number ({n} kcal) on several days.":"Envió el mismo número ({n} kcal) varios días.",
 "It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Envió {n} kcal en un día. Es más que un día entero de actividad, así que probablemente suma varios días.",
 "It's correct":"Está bien",
-"Your Shortcut may send the wrong number":"Puede que tu atajo envíe un número incorrecto"
+"Your Shortcut may send the wrong number":"Puede que tu atajo envíe un número incorrecto",
+"Construction, warehouse, trades, farming":"Construcción, almacén, oficios, campo",
+"Daily life":"Día a día",
+"How active is your daily life?":"¿Qué tan activo es tu día a día?",
+"Mostly sitting":"Casi siempre sentado",
+"Office, studying, driving":"Oficina, estudios, conducir",
+"On my feet a lot":"Mucho tiempo de pie",
+"Physical work":"Trabajo físico",
+"Shop, teaching, nursing, serving":"Tienda, enseñanza, enfermería, hostelería",
+"Your job and how much you walk, without workouts. Those come next.":"Tu trabajo y cuánto caminas, sin entrenamientos. Eso viene después."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4123,7 +4141,16 @@ window.I18N = {
 "It sent the same number ({n} kcal) on several days.":"Il a envoyé le même nombre ({n} kcal) plusieurs jours.",
 "It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Il a envoyé {n} kcal pour une journée. C’est plus qu’une journée entière d’activité, il additionne donc sans doute plusieurs jours.",
 "It's correct":"C’est correct",
-"Your Shortcut may send the wrong number":"Ton raccourci envoie peut-être un mauvais nombre"
+"Your Shortcut may send the wrong number":"Ton raccourci envoie peut-être un mauvais nombre",
+"Construction, warehouse, trades, farming":"Chantier, entrepôt, artisanat, agriculture",
+"Daily life":"Quotidien",
+"How active is your daily life?":"Ton quotidien est-il actif ?",
+"Mostly sitting":"Surtout assis",
+"Office, studying, driving":"Bureau, études, conduite",
+"On my feet a lot":"Souvent debout",
+"Physical work":"Travail physique",
+"Shop, teaching, nursing, serving":"Commerce, enseignement, soins, service",
+"Your job and how much you walk, without workouts. Those come next.":"Ton travail et combien tu marches, sans le sport. Ça vient ensuite."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5498,7 +5525,16 @@ window.I18N = {
 "It sent the same number ({n} kcal) on several days.":"Ha inviato lo stesso numero ({n} kcal) per più giorni.",
 "It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Ha inviato {n} kcal per un giorno. È più di un’intera giornata di attività, quindi probabilmente somma più giorni.",
 "It's correct":"È giusto",
-"Your Shortcut may send the wrong number":"Il tuo comando rapido potrebbe inviare un numero sbagliato"
+"Your Shortcut may send the wrong number":"Il tuo comando rapido potrebbe inviare un numero sbagliato",
+"Construction, warehouse, trades, farming":"Edilizia, magazzino, artigianato, agricoltura",
+"Daily life":"Vita quotidiana",
+"How active is your daily life?":"Quanto è attiva la tua vita quotidiana?",
+"Mostly sitting":"Quasi sempre seduto",
+"Office, studying, driving":"Ufficio, studio, guida",
+"On my feet a lot":"Spesso in piedi",
+"Physical work":"Lavoro fisico",
+"Shop, teaching, nursing, serving":"Negozio, insegnamento, assistenza, ristorazione",
+"Your job and how much you walk, without workouts. Those come next.":"Il tuo lavoro e quanto cammini, senza allenamenti. Quelli vengono dopo."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6873,7 +6909,16 @@ window.I18N = {
 "It sent the same number ({n} kcal) on several days.":"数日にわたり、同じ数値（{n} kcal）が送られました。",
 "It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"1日に {n} kcal が送られました。1日の活動量を超えているため、複数日を合計している可能性があります。",
 "It's correct":"正しいです",
-"Your Shortcut may send the wrong number":"ショートカットが誤った数値を送っているかもしれません"
+"Your Shortcut may send the wrong number":"ショートカットが誤った数値を送っているかもしれません",
+"Construction, warehouse, trades, farming":"建設、倉庫、職人、農業",
+"Daily life":"日常生活",
+"How active is your daily life?":"日常生活はどれくらい活動的ですか？",
+"Mostly sitting":"ほぼ座っている",
+"Office, studying, driving":"事務、勉強、運転",
+"On my feet a lot":"立っていることが多い",
+"Physical work":"体を使う仕事",
+"Shop, teaching, nursing, serving":"販売、教職、看護、接客",
+"Your job and how much you walk, without workouts. Those come next.":"仕事や歩く量（トレーニングを除く）。トレーニングは次で聞きます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8248,7 +8293,16 @@ window.I18N = {
 "It sent the same number ({n} kcal) on several days.":"Hij stuurde op meerdere dagen hetzelfde getal ({n} kcal).",
 "It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Hij stuurde {n} kcal voor één dag. Dat is meer dan een hele dag beweging, dus telt hij waarschijnlijk meerdere dagen op.",
 "It's correct":"Klopt zo",
-"Your Shortcut may send the wrong number":"Je opdracht stuurt misschien een verkeerd getal"
+"Your Shortcut may send the wrong number":"Je opdracht stuurt misschien een verkeerd getal",
+"Construction, warehouse, trades, farming":"Bouw, magazijn, vakwerk, landbouw",
+"Daily life":"Dagelijks leven",
+"How active is your daily life?":"Hoe actief is je dagelijks leven?",
+"Mostly sitting":"Vooral zittend",
+"Office, studying, driving":"Kantoor, studie, autorijden",
+"On my feet a lot":"Veel op de been",
+"Physical work":"Lichamelijk werk",
+"Shop, teaching, nursing, serving":"Winkel, onderwijs, zorg, horeca",
+"Your job and how much you walk, without workouts. Those come next.":"Je werk en hoeveel je loopt, zonder trainingen. Die komen hierna."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9623,7 +9677,16 @@ window.I18N = {
 "It sent the same number ({n} kcal) on several days.":"Przez kilka dni wysłał tę samą liczbę ({n} kcal).",
 "It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Wysłał {n} kcal za jeden dzień. To więcej niż cały dzień aktywności, więc pewnie sumuje kilka dni.",
 "It's correct":"Jest dobrze",
-"Your Shortcut may send the wrong number":"Twój skrót może wysyłać złą liczbę"
+"Your Shortcut may send the wrong number":"Twój skrót może wysyłać złą liczbę",
+"Construction, warehouse, trades, farming":"Budowa, magazyn, rzemiosło, rolnictwo",
+"Daily life":"Codzienność",
+"How active is your daily life?":"Jak aktywna jest twoja codzienność?",
+"Mostly sitting":"Głównie siedząco",
+"Office, studying, driving":"Biuro, nauka, jazda autem",
+"On my feet a lot":"Dużo na nogach",
+"Physical work":"Praca fizyczna",
+"Shop, teaching, nursing, serving":"Sklep, nauczanie, opieka, gastronomia",
+"Your job and how much you walk, without workouts. Those come next.":"Twoja praca i ile chodzisz, bez treningów. One są dalej."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -10998,7 +11061,16 @@ window.I18N = {
 "It sent the same number ({n} kcal) on several days.":"Enviou o mesmo número ({n} kcal) em vários dias.",
 "It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Enviou {n} kcal num dia. É mais do que um dia inteiro de atividade, por isso provavelmente soma vários dias.",
 "It's correct":"Está certo",
-"Your Shortcut may send the wrong number":"O seu atalho pode estar a enviar um número errado"
+"Your Shortcut may send the wrong number":"O seu atalho pode estar a enviar um número errado",
+"Construction, warehouse, trades, farming":"Construção, armazém, ofícios, agricultura",
+"Daily life":"Dia a dia",
+"How active is your daily life?":"Quão ativo é o seu dia a dia?",
+"Mostly sitting":"Sobretudo sentado",
+"Office, studying, driving":"Escritório, estudos, conduzir",
+"On my feet a lot":"Muito tempo de pé",
+"Physical work":"Trabalho físico",
+"Shop, teaching, nursing, serving":"Loja, ensino, enfermagem, restauração",
+"Your job and how much you walk, without workouts. Those come next.":"O seu trabalho e quanto anda, sem treinos. Esses vêm a seguir."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -12373,7 +12445,16 @@ window.I18N = {
 "It sent the same number ({n} kcal) on several days.":"Несколько дней она отправляла одно и то же число ({n} ккал).",
 "It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Она отправила {n} ккал за один день. Это больше, чем целый день активности, значит, она, вероятно, суммирует несколько дней.",
 "It's correct":"Всё верно",
-"Your Shortcut may send the wrong number":"Ваша быстрая команда, возможно, отправляет неверное число"
+"Your Shortcut may send the wrong number":"Ваша быстрая команда, возможно, отправляет неверное число",
+"Construction, warehouse, trades, farming":"Стройка, склад, ремёсла, сельское хозяйство",
+"Daily life":"Повседневная жизнь",
+"How active is your daily life?":"Насколько активна ваша повседневная жизнь?",
+"Mostly sitting":"В основном сидя",
+"Office, studying, driving":"Офис, учёба, за рулём",
+"On my feet a lot":"Много на ногах",
+"Physical work":"Физический труд",
+"Shop, teaching, nursing, serving":"Магазин, преподавание, уход, обслуживание",
+"Your job and how much you walk, without workouts. Those come next.":"Ваша работа и сколько вы ходите, без тренировок. О них дальше."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -13748,7 +13829,16 @@ window.I18N = {
 "It sent the same number ({n} kcal) on several days.":"Birkaç gün aynı sayıyı ({n} kcal) gönderdi.",
 "It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"Bir gün için {n} kcal gönderdi. Bu, tam bir günlük aktiviteden fazla; muhtemelen birkaç günü topluyor.",
 "It's correct":"Doğru",
-"Your Shortcut may send the wrong number":"Kestirmen yanlış bir sayı gönderiyor olabilir"
+"Your Shortcut may send the wrong number":"Kestirmen yanlış bir sayı gönderiyor olabilir",
+"Construction, warehouse, trades, farming":"İnşaat, depo, zanaat, tarım",
+"Daily life":"Günlük yaşam",
+"How active is your daily life?":"Günlük yaşamın ne kadar aktif?",
+"Mostly sitting":"Çoğunlukla oturarak",
+"Office, studying, driving":"Ofis, okul, araç kullanma",
+"On my feet a lot":"Çok ayakta",
+"Physical work":"Bedensel iş",
+"Shop, teaching, nursing, serving":"Mağaza, öğretmenlik, bakım, servis",
+"Your job and how much you walk, without workouts. Those come next.":"İşin ve ne kadar yürüdüğün, antrenmanlar hariç. Onlar sonra geliyor."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -15123,6 +15213,15 @@ window.I18N = {
 "It sent the same number ({n} kcal) on several days.":"有几天发送了相同的数字（{n} 千卡）。",
 "It sent {n} kcal for one day. That is more than a whole day of activity, so it probably adds up several days.":"它一天发送了 {n} 千卡，超过了一整天的活动量，可能把好几天加在了一起。",
 "It's correct":"没问题",
-"Your Shortcut may send the wrong number":"你的快捷指令可能发送了错误的数字"
+"Your Shortcut may send the wrong number":"你的快捷指令可能发送了错误的数字",
+"Construction, warehouse, trades, farming":"建筑、仓库、手工业、农业",
+"Daily life":"日常生活",
+"How active is your daily life?":"你的日常生活有多活跃？",
+"Mostly sitting":"大多坐着",
+"Office, studying, driving":"办公室、学习、开车",
+"On my feet a lot":"经常站着走动",
+"Physical work":"体力劳动",
+"Shop, teaching, nursing, serving":"商店、教学、护理、服务",
+"Your job and how much you walk, without workouts. Those come next.":"你的工作和步行量，不含训练。训练在下一步。"
 }
 };
