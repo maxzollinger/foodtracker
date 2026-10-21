@@ -1031,7 +1031,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v157';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v158';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1612,7 +1612,7 @@ function focusCard(date, t, tot) {
   if (hasLife(p, 'protein') || id === 'recomp') {
     const v = tot.protein, g = t.protein, left = r0(g - v);
     out.push(`<div class="card"><div class="spread"><b>${id === 'recomp' ? '🔄 ' + T('Lose fat & build muscle') : '🍗 ' + T('Protein target')}</b><span><b>${r0(v)}</b> <span class="muted">/ ${g} g</span></span></div>${bar(v, g, 'var(--protein)')}
-      <p class="small muted" style="margin:8px 0 0">${left > 0 ? T('{n} g protein to go today.', { n: left }) : T('Protein goal reached! 🎉')}${id === 'recomp' ? ' ' + (p.goal === 'lose' ? T('Train with weights so the weight you lose is fat, not muscle.') : T('Train with weights; your weight may stay similar while your body changes.')) : ''}</p></div>`);
+      <p class="small muted" style="margin:8px 0 0">${left > 0 ? T('{n} g protein to go today.', { n: left }) : T('Protein goal reached! 🎉')}</p></div>`);
   }
   return out.join('');
 }
@@ -2580,7 +2580,7 @@ function backupCard() {
     <p class="small" style="margin:6px 0 2px">👤 <b>${esc(a.email)}</b></p>
     <div class="spread" style="margin-top:6px"><span class="small" style="${last ? 'color:var(--good);font-weight:600' : ''}">${last ? '✓ ' + T('Last backup: {d}', { d: when }) : T('No backup yet')}</span>
       <button class="chipbtn" id="bkNow">${T('Back up now')}</button></div>
-    <p class="small muted" style="margin:8px 0 10px">${T('Backed up automatically every day, encrypted, including your meal photos. On a new phone, sign in with this email and password.')}</p>
+    <p class="small muted" style="margin:8px 0 10px">${T('Backed up every day, encrypted. Sign in on a new phone to get it back.')}</p>
     <button class="btn sm outline" id="acOut">${T('Sign out')}</button></div>`;
 }
 function bindBackupCard() {
@@ -3536,8 +3536,7 @@ async function loadUsersNow() {
           ${st.aiToday ? `<div class="small" style="margin-top:6px"><b>${T('Today so far: {n} AI requests', { n: st.aiToday.n.toLocaleString(LOC) })}</b></div>` : ''}
           <div class="small" style="margin-top:6px">${T('Yesterday: {n} AI requests', { n: y.n.toLocaleString(LOC) })}${y.refused ? ` · ${T('{n} refused by Google', { n: y.refused })}` : ''}</div>
           <div class="small" style="margin-top:6px;font-weight:600;color:${hit ? 'var(--bad)' : 'var(--good)'}">${hit ? '⚠️ ' + T('People saw "AI busy" {n} times this week. You are close to the free limit.', { n: hit }) : '✓ ' + T('Within the free limit: nobody had to wait.')}</div>
-          <div class="small muted" style="margin-top:6px">${T('Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.')}</div></div>`; })()}
-      <p class="small muted" style="margin:10px 0 0;text-align:left">${T('Total users counts every phone that opened the app and every account; a phone that later made an account counts once.')}</p>
+</div>`; })()}
       <p class="small muted" id="usWhen" style="margin:12px 0 0;text-align:center">${T('Updated {t} · refreshes by itself every minute', { t: new Date().toLocaleTimeString(LOC, { hour: '2-digit', minute: '2-digit', second: '2-digit' }) })}</p>`;
     box.animate([{ opacity: .35 }, { opacity: 1 }], { duration: 350, easing: 'ease-out' });   // you can see that it refreshed
     if ($('#usAcc')) $('#usAcc').onclick = openAccountsList;
@@ -4258,9 +4257,9 @@ function logPlanMeal(di, mi) {
 // Home card
 function mealPlanCard() {
   const plan = curPlan(), today = plan ? plan.days[todayIdx(plan)] : null;
-  const sub = plan ? (today && today.meals.length ? `${T('Today')}: ${today.meals.map(m => esc(m.name)).join(' · ')}` : T('Your plan for this week'))
+  const sub = plan ? (today && today.meals.length ? `${T('Today')}: ${esc(today.meals[0].name)}${today.meals.length > 1 ? ` +${today.meals.length - 1}` : ''}` : T('Your plan for this week'))
     : mpBusy === 'all' ? T('Creating your meal plan…') : '';
-  return `<button class="card mpcard" id="mpCard"><div class="ic">🛒</div><div class="grow"><b>${T('Meal plan & groceries')}</b>${sub ? `<div class="small muted mp-sub">${sub}</div>` : ''}</div><span class="muted" style="font-size:20px">›</span></button>`;
+  return `<button class="card mpcard" id="mpCard"><div class="ic">🛒</div><div class="grow"><b>${T('Meal plan & groceries')}</b>${sub ? `<div class="small muted mp-sub" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${sub}</div>` : ''}</div><span class="muted" style="font-size:20px">›</span></button>`;
 }
 
 function openMealPlan() {
@@ -5753,11 +5752,11 @@ function renderSettings() {
     ${isAdmin() || !SERVER_URL ? `<div class="h2">AI</div>
     <div class="card">
       <b>Google Gemini · ${T('free')}</b>
-      <p class="small muted" style="margin:4px 0 6px">${T('Open <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener"><b>aistudio.google.com/apikey</b></a>, sign in with Google, tap <b>Create API key</b> and paste it here. The app automatically switches between {n} free models, so you rarely hit a limit.', { n: GEMINI.length })}</p>
+      <p class="small muted" style="margin:4px 0 6px">${T('Free key from <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener"><b>aistudio.google.com/apikey</b></a>. Paste it here.')}</p>
       <input id="kKey" type="password" autocomplete="off" placeholder="AIza…" value="${esc(getKey())}">
       <div style="height:1px;background:var(--line);margin:18px 0"></div>
       <b>Claude · ${T('optional backup, no daily limit')}</b>
-      <p class="small muted" style="margin:4px 0 6px">${T('Paid per use (prepaid credit, no subscription). Create a key at <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener"><b>console.anthropic.com</b></a> and add credit there.')}</p>
+      <p class="small muted" style="margin:4px 0 6px">${T('Paid per use. Key from <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener"><b>console.anthropic.com</b></a>.')}</p>
       <input id="kClaude" type="password" autocomplete="off" placeholder="sk-ant-…" value="${esc(getClaudeKey())}">
       <div class="row"><div class="grow"><label class="lbl">${T('Claude model')}</label><select id="kCModel">
         <option value="claude-opus-5-5" ${(LS.get('ft_claude_model', '') || 'claude-opus-5-5') === 'claude-opus-5-5' ? 'selected' : ''}>Opus 5.5 · ${T('most accurate')}</option>
@@ -5777,7 +5776,7 @@ function renderSettings() {
       <button class="li" id="dImp"><span class="ic">⬆️</span><span class="grow">${T('Restore backup')}</span><span class="chev">›</span></button>
       <button class="li" id="dDel" style="color:var(--bad)"><span class="ic">🗑</span><span class="grow">${T('Delete all data')}</span></button>
     </div>
-    <p class="small muted" id="sNote" style="text-align:center;margin:20px 10px 10px">${acct() ? T('Your data is on this phone and backed up encrypted in your account. Nutrition values are estimates, not medical advice.') : T('Your data is saved only on this phone. Nutrition values are estimates, not medical advice.')}${isAdmin() ? '<br>Admin' : ''}</p>`;
+    <p class="small muted" id="sNote" style="text-align:center;margin:20px 10px 10px">${T('Nutrition values are estimates, not medical advice.')}${isAdmin() ? '<br>Admin' : ''}</p>`;
   // Hidden switch: tap the note 7 times to turn admin mode on/off
   let taps = 0, tapT;
   $('#sNote').onclick = () => { clearTimeout(tapT); tapT = setTimeout(() => taps = 0, 2500);

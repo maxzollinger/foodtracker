@@ -1422,7 +1422,10 @@ window.I18N = {
 "Past days stay as they are.":"Vergangene Tage bleiben, wie sie sind.",
 "Tell us what you like.":"Sag uns, was du magst.",
 "The <b>active</b> calories of your whole day from your watch (not \"total\").":"Die <b>aktiven</b> Kalorien deines ganzen Tages von deiner Uhr (nicht «gesamt»).",
-"Your active calories are filled in automatically.":"Deine aktiven Kalorien werden automatisch eingetragen."
+"Your active calories are filled in automatically.":"Deine aktiven Kalorien werden automatisch eingetragen.",
+"Free key from <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Paste it here.":"Kostenloser Schlüssel von <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Hier einfügen.",
+"Nutrition values are estimates, not medical advice.":"Nährwerte sind Schätzungen, keine medizinische Beratung.",
+"Paid per use. Key from <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>.":"Bezahlt pro Nutzung. Schlüssel von <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2846,7 +2849,10 @@ window.I18N = {
 "Past days stay as they are.":"Los días pasados se quedan como están.",
 "Tell us what you like.":"Cuéntanos qué te gusta.",
 "The <b>active</b> calories of your whole day from your watch (not \"total\").":"Las calorías <b>activas</b> de todo tu día según tu reloj (no las «totales»).",
-"Your active calories are filled in automatically.":"Tus calorías activas se rellenan solas."
+"Your active calories are filled in automatically.":"Tus calorías activas se rellenan solas.",
+"Free key from <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Paste it here.":"Clave gratis en <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Pégala aquí.",
+"Nutrition values are estimates, not medical advice.":"Los valores nutricionales son estimaciones, no consejo médico.",
+"Paid per use. Key from <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>.":"Pago por uso. Clave en <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4270,7 +4276,10 @@ window.I18N = {
 "Past days stay as they are.":"Les jours passés restent tels quels.",
 "Tell us what you like.":"Dis-nous ce que tu aimes.",
 "The <b>active</b> calories of your whole day from your watch (not \"total\").":"Les calories <b>actives</b> de toute ta journée selon ta montre (pas « total »).",
-"Your active calories are filled in automatically.":"Tes calories actives sont remplies automatiquement."
+"Your active calories are filled in automatically.":"Tes calories actives sont remplies automatiquement.",
+"Free key from <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Paste it here.":"Clé gratuite sur <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Colle-la ici.",
+"Nutrition values are estimates, not medical advice.":"Les valeurs nutritionnelles sont des estimations, pas un avis médical.",
+"Paid per use. Key from <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>.":"Payé à l’usage. Clé sur <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5694,7 +5703,10 @@ window.I18N = {
 "Past days stay as they are.":"I giorni passati restano come sono.",
 "Tell us what you like.":"Dicci cosa ti piace.",
 "The <b>active</b> calories of your whole day from your watch (not \"total\").":"Le calorie <b>attive</b> di tutta la giornata dal tuo orologio (non «totali»).",
-"Your active calories are filled in automatically.":"Le tue calorie attive vengono inserite in automatico."
+"Your active calories are filled in automatically.":"Le tue calorie attive vengono inserite in automatico.",
+"Free key from <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Paste it here.":"Chiave gratuita da <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Incollala qui.",
+"Nutrition values are estimates, not medical advice.":"I valori nutrizionali sono stime, non consigli medici.",
+"Paid per use. Key from <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>.":"A pagamento per uso. Chiave da <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7118,7 +7130,10 @@ window.I18N = {
 "Past days stay as they are.":"過去の日はそのままです。",
 "Tell us what you like.":"好みを教えてください。",
 "The <b>active</b> calories of your whole day from your watch (not \"total\").":"ウォッチの1日の<b>アクティブ</b>カロリー（「合計」ではありません）。",
-"Your active calories are filled in automatically.":"アクティブカロリーは自動で入力されます。"
+"Your active calories are filled in automatically.":"アクティブカロリーは自動で入力されます。",
+"Free key from <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Paste it here.":"<a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a> の無料キー。ここに貼り付け。",
+"Nutrition values are estimates, not medical advice.":"栄養値は推定であり、医学的助言ではありません。",
+"Paid per use. Key from <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>.":"従量課金。キーは <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a> から。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8542,7 +8557,10 @@ window.I18N = {
 "Past days stay as they are.":"Eerdere dagen blijven zoals ze zijn.",
 "Tell us what you like.":"Vertel ons wat je lekker vindt.",
 "The <b>active</b> calories of your whole day from your watch (not \"total\").":"De <b>actieve</b> calorieën van je hele dag van je horloge (niet ‘totaal’).",
-"Your active calories are filled in automatically.":"Je actieve calorieën worden automatisch ingevuld."
+"Your active calories are filled in automatically.":"Je actieve calorieën worden automatisch ingevuld.",
+"Free key from <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Paste it here.":"Gratis sleutel via <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Plak hem hier.",
+"Nutrition values are estimates, not medical advice.":"Voedingswaarden zijn schattingen, geen medisch advies.",
+"Paid per use. Key from <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>.":"Betalen per gebruik. Sleutel via <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9966,7 +9984,10 @@ window.I18N = {
 "Past days stay as they are.":"Poprzednie dni zostają bez zmian.",
 "Tell us what you like.":"Powiedz nam, co lubisz.",
 "The <b>active</b> calories of your whole day from your watch (not \"total\").":"<b>Aktywne</b> kalorie z całego dnia z zegarka (nie „łącznie”).",
-"Your active calories are filled in automatically.":"Aktywne kalorie uzupełniają się automatycznie."
+"Your active calories are filled in automatically.":"Aktywne kalorie uzupełniają się automatycznie.",
+"Free key from <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Paste it here.":"Darmowy klucz z <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Wklej go tutaj.",
+"Nutrition values are estimates, not medical advice.":"Wartości odżywcze są szacunkowe, to nie porada medyczna.",
+"Paid per use. Key from <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>.":"Płatne za użycie. Klucz z <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -11390,7 +11411,10 @@ window.I18N = {
 "Past days stay as they are.":"Os dias anteriores ficam como estão.",
 "Tell us what you like.":"Diga-nos do que gosta.",
 "The <b>active</b> calories of your whole day from your watch (not \"total\").":"As calorias <b>ativas</b> do seu dia inteiro, do relógio (não «total»).",
-"Your active calories are filled in automatically.":"As suas calorias ativas são preenchidas automaticamente."
+"Your active calories are filled in automatically.":"As suas calorias ativas são preenchidas automaticamente.",
+"Free key from <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Paste it here.":"Chave grátis em <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Cole-a aqui.",
+"Nutrition values are estimates, not medical advice.":"Os valores nutricionais são estimativas, não aconselhamento médico.",
+"Paid per use. Key from <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>.":"Pago por uso. Chave em <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -12814,7 +12838,10 @@ window.I18N = {
 "Past days stay as they are.":"Прошлые дни остаются без изменений.",
 "Tell us what you like.":"Расскажите, что вам нравится.",
 "The <b>active</b> calories of your whole day from your watch (not \"total\").":"<b>Активные</b> калории за весь день с ваших часов (не «всего»).",
-"Your active calories are filled in automatically.":"Активные калории заполняются автоматически."
+"Your active calories are filled in automatically.":"Активные калории заполняются автоматически.",
+"Free key from <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Paste it here.":"Бесплатный ключ на <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Вставьте его сюда.",
+"Nutrition values are estimates, not medical advice.":"Пищевая ценность — оценка, а не медицинский совет.",
+"Paid per use. Key from <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>.":"Оплата за использование. Ключ на <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -14238,7 +14265,10 @@ window.I18N = {
 "Past days stay as they are.":"Geçmiş günler olduğu gibi kalır.",
 "Tell us what you like.":"Neleri sevdiğini söyle.",
 "The <b>active</b> calories of your whole day from your watch (not \"total\").":"Saatinden tüm günün <b>aktif</b> kalorisi (“toplam” değil).",
-"Your active calories are filled in automatically.":"Aktif kalorilerin otomatik doldurulur."
+"Your active calories are filled in automatically.":"Aktif kalorilerin otomatik doldurulur.",
+"Free key from <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Paste it here.":"<a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a> adresinden ücretsiz anahtar. Buraya yapıştır.",
+"Nutrition values are estimates, not medical advice.":"Besin değerleri tahminidir, tıbbi tavsiye değildir.",
+"Paid per use. Key from <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>.":"Kullandıkça öde. Anahtar: <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -15662,6 +15692,9 @@ window.I18N = {
 "Past days stay as they are.":"过去的日子保持不变。",
 "Tell us what you like.":"告诉我们你喜欢什么。",
 "The <b>active</b> calories of your whole day from your watch (not \"total\").":"手表记录的全天<b>活动</b>卡路里（不是“总计”）。",
-"Your active calories are filled in automatically.":"你的活动卡路里会自动填入。"
+"Your active calories are filled in automatically.":"你的活动卡路里会自动填入。",
+"Free key from <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a>. Paste it here.":"在 <a href=\"https://aistudio.google.com/apikey\" target=\"_blank\" rel=\"noopener\"><b>aistudio.google.com/apikey</b></a> 获取免费密钥，粘贴到这里。",
+"Nutrition values are estimates, not medical advice.":"营养数值为估算，不构成医疗建议。",
+"Paid per use. Key from <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>.":"按使用付费。密钥来自 <a href=\"https://console.anthropic.com/settings/keys\" target=\"_blank\" rel=\"noopener\"><b>console.anthropic.com</b></a>。"
 }
 };
