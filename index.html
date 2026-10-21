@@ -1031,7 +1031,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v153';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v154';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3085,6 +3085,20 @@ async function linkSync(force) {
       if (list.length) { L.ok = Date.now(); L.last = Math.max(...list.map(x => x.t || 0)); L.err = ''; }
       L.warn = shortcutCheck(list);
     } else {
+      // Keys still on this phone (connected with an older version): hand them to the server's vault once
+      if (!L.vid && (L.refresh || L.access)) {
+        try {
+          const r = await post('/link/vault/new', { p: L.p, access: L.access, refresh: L.refresh, exp: L.exp });
+          if (r.ok) { const v = await r.json(); if (v.vid) { L.vid = v.vid; L.vs = v.vs; delete L.access; delete L.refresh; delete L.exp; LS.set('ft_link', JSON.stringify(L)); } }
+        } catch {}
+      }
+      let days;
+      if (L.vid) {   // the server renews the key itself and keeps it safe, so the connection does not expire
+        const r = await post(`/link/${L.p}/vault`, { vid: L.vid, vs: L.vs, from: addDays(iso(), -1), to: iso() });
+        if (r.status === 401) throw new Error('reconnect');
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        ({ days } = await r.json());
+      } else {
       const refresh = async () => {
         if (!L.refresh) throw new Error('reconnect');
         const r = await post(`/link/${L.p}/refresh`, { refresh: L.refresh });
@@ -3098,7 +3112,9 @@ async function linkSync(force) {
       if (r.status === 401) { await refresh(); r = await ask(); }
       if (r.status === 401) throw new Error('reconnect');
       if (!r.ok) throw new Error('HTTP ' + r.status);
-      const { days } = await r.json(), bmr = targets().bmr || 1600;
+      ({ days } = await r.json());
+      }
+      const bmr = targets().bmr || 1600;
       for (const d of days || []) {
         // WHOOP gives the total burn incl. what the body burns at rest; the app wants the active part
         // Oura, Polar, Withings: the active part directly, plus their total (shown like in their own app)
@@ -3125,11 +3141,12 @@ function watchPickup() {
     if (!w || Date.now() - w.t > 15 * 60e3) { clearInterval(pickTimer); LS.del('ft_link_pick'); return; }
     if (document.visibilityState !== 'visible') return;
     try {
-      const r = await fetch(SERVER_URL + '/link/pickup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pick: w.pick }) });
+      const r = await fetch(SERVER_URL + '/link/pickup', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pick: w.pick, vault: true }) });
       if (!r.ok) return;
       const t = await r.json();
       clearInterval(pickTimer); LS.del('ft_link_pick');
-      LS.set('ft_link', JSON.stringify({ p: t.p, access: t.access, refresh: t.refresh, exp: t.exp }));
+      const old = linkInfo(); if (old && old.vid) post('/link/vault/delete', { vid: old.vid, vs: old.vs }).catch(() => {});   // connected again: the old vault goes
+      LS.set('ft_link', JSON.stringify(t.vid ? { p: t.p, vid: t.vid, vs: t.vs } : { p: t.p, access: t.access, refresh: t.refresh, exp: t.exp }));
       connectedNow(t.p);
     } catch {}
   }, 2500);
@@ -3161,7 +3178,8 @@ async function openTrackerSheet() {
         <p class="small" style="margin:6px 0 0">${today ? T('Today: <b>{n} kcal</b> active', { n: r0(today.kcal) }) : L.p === 'apple' ? T('No numbers yet. Run the Shortcut once (see below).') : T('No numbers for today yet.')}</p>
         ${today && today.total != null ? `<p class="small muted" style="margin:6px 0 0;line-height:1.45">${T('{name} counts {t} kcal in total so far. About {r} kcal of it is what your body burns at rest, which is already in your daily goal. So {a} kcal of activity is added.', { name: esc(linkName(L.p)), t: r0(today.total).toLocaleString(LOC), r: r0(today.rest).toLocaleString(LOC), a: r0(today.kcal).toLocaleString(LOC) })}</p>` : ''}
         ${L.err === 'reconnect' ? `<p class="small" style="margin:6px 0 0;color:var(--bad)">${T('The connection expired. Please connect again.')}</p>` : L.err === 'net' ? `<p class="small muted" style="margin:6px 0 0">${T('Could not update right now. It tries again by itself.')}</p>` : ''}
-        <div class="row" style="margin-top:12px"><button class="btn sm grow" id="tkSync">${T('Update now')}</button><button class="btn sm outline grow" id="tkOff">${T('Disconnect')}</button></div>
+        ${L.err === 'reconnect' && L.p !== 'apple' ? `<button class="btn" id="tkAgain" style="margin-top:12px">${T('Connect {name} again', { name: esc(linkName(L.p)) })}</button>` : ''}
+        <div class="row" style="margin-top:12px"><button class="btn sm grow ${L.err === 'reconnect' && L.p !== 'apple' ? 'outline' : ''}" id="tkSync">${T('Update now')}</button><button class="btn sm outline grow" id="tkOff">${T('Disconnect')}</button></div>
         ${L.p === 'apple' ? `<button class="chipbtn" id="tkHow" style="margin-top:10px">${T('Show the Shortcut steps')}</button>` : ''}
         ${isAdmin() && LS.get('ft_admin_token', '') ? `<button class="chipbtn" id="tkLink" style="margin:10px 0 0 ${L.p === 'apple' ? 6 : 0}px">🔗 Admin: ${shortcutURL() ? T('Change the shared Shortcut link') : T('Share Apple Health with friends')}</button>` : ''}</div>`
       : `<div class="small muted" style="font-weight:600;margin:14px 0 8px">${T('What do you wear?')}</div>
@@ -3190,9 +3208,11 @@ async function openTrackerSheet() {
       const nb = $('#tkSync');
       if (nb) { nb.disabled = false; nb.innerHTML = ok ? '✓ ' + T('Updated') : T('Update now'); if (ok) setTimeout(() => { if (nb.isConnected) nb.innerHTML = T('Update now'); }, 2500); }
     };
+    if (sh.querySelector('#tkAgain')) sh.querySelector('#tkAgain').onclick = () => startTrackerLink(L.p);
     if (sh.querySelector('#tkOff')) sh.querySelector('#tkOff').onclick = () => {
       if (!confirm(T('Disconnect {name}? Calories already filled in stay.', { name: linkName(L.p) }))) return;
       const name = linkName(L.p);
+      if (L.vid) post('/link/vault/delete', { vid: L.vid, vs: L.vs }).catch(() => {});
       LS.del('ft_link'); LS.del('ft_brand'); openTrackerSheet(); if (tab === 'settings') renderSettings();
       toast('✓ ' + T('{name} is disconnected.', { name }));
     };

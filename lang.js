@@ -1385,7 +1385,8 @@ window.I18N = {
 "Your job and how much you walk, without workouts. Those come next.":"Dein Job und wie viel du gehst, ohne Training. Das kommt als Nächstes.",
 "Total users counts every phone that opened the app and every account; a phone that later made an account counts once.":"«Nutzer insgesamt» zählt jedes Handy, das die App geöffnet hat, und jedes Konto; ein Handy, das später ein Konto erstellt, zählt nur einmal.",
 "Users updated":"Nutzer aktualisiert",
-"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Handys melden ihre KI-Nutzung alle 10 Minuten, solange die App offen ist, und sofort beim Schliessen."
+"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Handys melden ihre KI-Nutzung alle 10 Minuten, solange die App offen ist, und sofort beim Schliessen.",
+"Connect {name} again":"{name} wieder verbinden"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2772,7 +2773,8 @@ window.I18N = {
 "Your job and how much you walk, without workouts. Those come next.":"Tu trabajo y cuánto caminas, sin entrenamientos. Eso viene después.",
 "Total users counts every phone that opened the app and every account; a phone that later made an account counts once.":"«Usuarios en total» cuenta cada móvil que abrió la app y cada cuenta; un móvil que luego creó una cuenta cuenta una sola vez.",
 "Users updated":"Usuarios actualizados",
-"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Los móviles informan de su uso de IA cada 10 minutos mientras la app está abierta, y al momento cuando se cierra."
+"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Los móviles informan de su uso de IA cada 10 minutos mientras la app está abierta, y al momento cuando se cierra.",
+"Connect {name} again":"Volver a conectar {name}"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4159,7 +4161,8 @@ window.I18N = {
 "Your job and how much you walk, without workouts. Those come next.":"Ton travail et combien tu marches, sans le sport. Ça vient ensuite.",
 "Total users counts every phone that opened the app and every account; a phone that later made an account counts once.":"« Utilisateurs au total » compte chaque téléphone qui a ouvert l’app et chaque compte ; un téléphone qui a ensuite créé un compte ne compte qu’une fois.",
 "Users updated":"Utilisateurs mis à jour",
-"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Les téléphones signalent leur utilisation de l’IA toutes les 10 minutes quand l’app est ouverte, et tout de suite à sa fermeture."
+"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Les téléphones signalent leur utilisation de l’IA toutes les 10 minutes quand l’app est ouverte, et tout de suite à sa fermeture.",
+"Connect {name} again":"Reconnecter {name}"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5546,7 +5549,8 @@ window.I18N = {
 "Your job and how much you walk, without workouts. Those come next.":"Il tuo lavoro e quanto cammini, senza allenamenti. Quelli vengono dopo.",
 "Total users counts every phone that opened the app and every account; a phone that later made an account counts once.":"«Utenti totali» conta ogni telefono che ha aperto l’app e ogni account; un telefono che poi ha creato un account conta una sola volta.",
 "Users updated":"Utenti aggiornati",
-"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"I telefoni segnalano l’uso dell’IA ogni 10 minuti mentre l’app è aperta, e subito quando viene chiusa."
+"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"I telefoni segnalano l’uso dell’IA ogni 10 minuti mentre l’app è aperta, e subito quando viene chiusa.",
+"Connect {name} again":"Ricollega {name}"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -6933,7 +6937,8 @@ window.I18N = {
 "Your job and how much you walk, without workouts. Those come next.":"仕事や歩く量（トレーニングを除く）。トレーニングは次で聞きます。",
 "Total users counts every phone that opened the app and every account; a phone that later made an account counts once.":"「合計ユーザー」は、アプリを開いたすべての端末とすべてのアカウントを数えます。後でアカウントを作った端末は1回だけ数えます。",
 "Users updated":"ユーザーを更新しました",
-"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"端末はアプリを開いている間は10分ごとに、閉じたときはすぐにAIの使用回数を報告します。"
+"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"端末はアプリを開いている間は10分ごとに、閉じたときはすぐにAIの使用回数を報告します。",
+"Connect {name} again":"{name} を再接続"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8320,7 +8325,8 @@ window.I18N = {
 "Your job and how much you walk, without workouts. Those come next.":"Je werk en hoeveel je loopt, zonder trainingen. Die komen hierna.",
 "Total users counts every phone that opened the app and every account; a phone that later made an account counts once.":"‘Totaal gebruikers’ telt elke telefoon die de app opende en elk account; een telefoon die later een account maakte, telt één keer.",
 "Users updated":"Gebruikers bijgewerkt",
-"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Telefoons melden hun AI-gebruik elke 10 minuten zolang de app open is, en meteen bij het sluiten."
+"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Telefoons melden hun AI-gebruik elke 10 minuten zolang de app open is, en meteen bij het sluiten.",
+"Connect {name} again":"{name} opnieuw verbinden"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9707,7 +9713,8 @@ window.I18N = {
 "Your job and how much you walk, without workouts. Those come next.":"Twoja praca i ile chodzisz, bez treningów. One są dalej.",
 "Total users counts every phone that opened the app and every account; a phone that later made an account counts once.":"„Wszyscy użytkownicy” liczy każdy telefon, który otworzył aplikację, i każde konto; telefon, który później założył konto, liczy się raz.",
 "Users updated":"Użytkownicy zaktualizowani",
-"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Telefony zgłaszają użycie AI co 10 minut, gdy aplikacja jest otwarta, i od razu po jej zamknięciu."
+"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Telefony zgłaszają użycie AI co 10 minut, gdy aplikacja jest otwarta, i od razu po jej zamknięciu.",
+"Connect {name} again":"Połącz ponownie {name}"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -11094,7 +11101,8 @@ window.I18N = {
 "Your job and how much you walk, without workouts. Those come next.":"O seu trabalho e quanto anda, sem treinos. Esses vêm a seguir.",
 "Total users counts every phone that opened the app and every account; a phone that later made an account counts once.":"«Total de utilizadores» conta cada telemóvel que abriu a app e cada conta; um telemóvel que depois criou conta conta só uma vez.",
 "Users updated":"Utilizadores atualizados",
-"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Os telemóveis comunicam o uso de IA a cada 10 minutos com a app aberta, e logo que é fechada."
+"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Os telemóveis comunicam o uso de IA a cada 10 minutos com a app aberta, e logo que é fechada.",
+"Connect {name} again":"Voltar a ligar {name}"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -12481,7 +12489,8 @@ window.I18N = {
 "Your job and how much you walk, without workouts. Those come next.":"Ваша работа и сколько вы ходите, без тренировок. О них дальше.",
 "Total users counts every phone that opened the app and every account; a phone that later made an account counts once.":"«Всего пользователей» учитывает каждый телефон, открывший приложение, и каждый аккаунт; телефон, который потом создал аккаунт, считается один раз.",
 "Users updated":"Пользователи обновлены",
-"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Телефоны сообщают об использовании ИИ каждые 10 минут, пока приложение открыто, и сразу при закрытии."
+"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Телефоны сообщают об использовании ИИ каждые 10 минут, пока приложение открыто, и сразу при закрытии.",
+"Connect {name} again":"Подключить {name} снова"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -13868,7 +13877,8 @@ window.I18N = {
 "Your job and how much you walk, without workouts. Those come next.":"İşin ve ne kadar yürüdüğün, antrenmanlar hariç. Onlar sonra geliyor.",
 "Total users counts every phone that opened the app and every account; a phone that later made an account counts once.":"“Toplam kullanıcı”, uygulamayı açan her telefonu ve her hesabı sayar; daha sonra hesap açan bir telefon bir kez sayılır.",
 "Users updated":"Kullanıcılar güncellendi",
-"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Telefonlar yapay zekâ kullanımını uygulama açıkken 10 dakikada bir, kapatıldığında ise hemen bildirir."
+"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"Telefonlar yapay zekâ kullanımını uygulama açıkken 10 dakikada bir, kapatıldığında ise hemen bildirir.",
+"Connect {name} again":"{name} yeniden bağla"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -15255,6 +15265,7 @@ window.I18N = {
 "Your job and how much you walk, without workouts. Those come next.":"你的工作和步行量，不含训练。训练在下一步。",
 "Total users counts every phone that opened the app and every account; a phone that later made an account counts once.":"“用户总数”统计每台打开过应用的手机和每个账户；之后创建了账户的手机只算一次。",
 "Users updated":"用户已更新",
-"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"应用打开时，手机每 10 分钟报告一次 AI 使用情况，关闭时会立即报告。"
+"Phones report their AI use every 10 minutes while the app is open, and right away when it is closed.":"应用打开时，手机每 10 分钟报告一次 AI 使用情况，关闭时会立即报告。",
+"Connect {name} again":"重新连接 {name}"
 }
 };
