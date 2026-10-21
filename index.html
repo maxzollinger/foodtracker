@@ -1031,7 +1031,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v158';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v159';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3178,10 +3178,12 @@ async function openTrackerSheet() {
         ${L.err === 'reconnect' && L.p !== 'apple' ? `<button class="btn" id="tkAgain" style="margin-top:12px">${T('Connect {name} again', { name: esc(linkName(L.p)) })}</button>` : ''}
         <div class="row" style="margin-top:12px"><button class="btn sm grow ${L.err === 'reconnect' && L.p !== 'apple' ? 'outline' : ''}" id="tkSync">${T('Update now')}</button><button class="btn sm outline grow" id="tkOff">${T('Disconnect')}</button></div>
         ${L.p === 'apple' ? `<button class="chipbtn" id="tkHow" style="margin-top:10px">${T('Show the Shortcut steps')}</button>` : ''}
-        ${isAdmin() && LS.get('ft_admin_token', '') ? `<button class="chipbtn" id="tkLink" style="margin:10px 0 0 ${L.p === 'apple' ? 6 : 0}px">🔗 Admin: ${shortcutURL() ? T('Change the shared Shortcut link') : T('Share Apple Health with friends')}</button>` : ''}</div>`
+        ${isAdmin() && scIssues().length ? scIssueCard(scIssues()) : ''}
+        ${isAdmin() && LS.get('ft_admin_token', '') ? `<button class="chipbtn" id="tkLink" style="margin:10px 0 0 ${L.p === 'apple' ? 6 : 0}px">🔗 Admin: ${(trackersAvail || {}).shortcut ? T('Change the shared Shortcut link') : T('Share Apple Health with friends')}</button>` : ''}</div>`
       : `<div class="small muted" style="font-weight:600;margin:14px 0 8px">${T('What do you wear?')}</div>
         <div class="list">${BRANDS.map(b => { const way = brandWay(b); return `<button class="li" data-brand="${b.id}"><span class="ic">${b.ic}</span><span class="grow"><b>${b.id === 'other' ? T(b.name) : b.name}</b><br><span class="small muted">${way === 'direct' ? T('Connect directly') : way === 'apple' ? (b.id === 'applewatch' ? T('Through Apple Health') + ` <span class="ptag" style="background:var(--good);color:#fff;margin-left:2px">${T('Recommended')}</span>` : T('Through Apple Health')) : T('Not possible yet, see why')}</span></span><span class="chev">›</span></button>`; }).join('')}</div>
-        ${isAdmin() && LS.get('ft_admin_token', '') ? `<button class="chipbtn" id="tkLink" style="margin-top:12px">🔗 Admin: ${shortcutURL() ? T('Change the shared Shortcut link') : T('Share Apple Health with friends')}</button>` : ''}
+        ${isAdmin() && scIssues().length ? scIssueCard(scIssues()) : ''}
+        ${isAdmin() && LS.get('ft_admin_token', '') ? `<button class="chipbtn" id="tkLink" style="margin-top:12px">🔗 Admin: ${(trackersAvail || {}).shortcut ? T('Change the shared Shortcut link') : T('Share Apple Health with friends')}</button>` : ''}
         ${isAdmin() && TRACKER_LIST.some(x => x.id !== 'apple' && !(trackersAvail || {})[x.id]) ? `<p class="small muted" style="margin:10px 0 0">Admin: ${TRACKER_LIST.filter(x => x.id !== 'apple' && !(trackersAvail || {})[x.id]).map(x => x.name).join(', ')} – ${T('not set up on your server yet.')}</p>` : ''}`}
     </div>`;
   sheet(html, sh => {
@@ -3229,7 +3231,20 @@ function openBrandInfo(b) {
 /* ---------- Connecting a watch: one checklist page that remembers where you are ----------
    Every step says exactly what to tap. Progress is saved, so after switching to Shortcuts or another
    app you come back to the same step (and a banner on Home leads back until it's finished). */
-const shortcutURL = () => HEALTH_SHORTCUT_URL || (trackersAvail || {}).shortcut || '';
+const SC_FATAL = ['kcal', 'code', 'today', 'health', 'url'];   // mistakes in the shared Shortcut that make it send nothing or a wrong number
+const scIssues = () => (trackersAvail || {}).shortcutIssues || [];
+const shortcutURL = () => HEALTH_SHORTCUT_URL || (scIssues().some(x => SC_FATAL.includes(x)) ? '' : (trackersAvail || {}).shortcut || '');
+// How the owner fixes each mistake in the shared Shortcut (shown to the admin only)
+const scFixText = k => ({
+  kcal: T('In the last action, delete the text [Statistics] after kcal= and tap Statistics in the bar above the keyboard. It must be a blue bubble.'),
+  code: T('In the last action, after code= there must be the blue Text bubble.'),
+  today: T('In Find Health Samples, keep one date row: Start Date · is today. Delete the others.'),
+  ask: T('Let iPhone ask friends for their code: tap the name at the top → Settings → Setup → Add New Question → tap PASTE YOUR CODE.'),
+  health: T('An action is missing. Build it again with the steps.'), url: T('An action is missing. Build it again with the steps.')
+})[k] || k;
+const scIssueCard = list => `<div class="card" style="background:var(--chip);box-shadow:inset 0 0 0 1.5px var(--carbs);margin-top:12px"><b class="small">⚠️ ${T('Your shared Shortcut needs a fix')}</b>
+  ${[...new Set(list.map(scFixText))].map((t, i) => `<div class="row" style="align-items:flex-start;gap:8px;margin-top:8px"><b class="small" style="flex:none">${i + 1}.</b><span class="small" style="line-height:1.45">${t}</span></div>`).join('')}
+  <p class="small muted" style="margin:8px 0 0">${T('Then share it again and save the new link here.')}</p></div>`;
 // The exact name of the Shortcut on this phone (the shared one keeps the name it was shared with)
 const shortcutName = () => (shortcutURL() && (trackersAvail || {}).shortcutName) || 'Food Tracker calories';
 const withName = str => str.split('Food Tracker calories').join(esc(shortcutName()));
@@ -3307,8 +3322,13 @@ async function openSetupPage() {
       : `<p class="small" style="line-height:1.5;margin:0">${T('Tap the button. iPhone asks once if the Shortcut may read Health: tap <b>Allow</b> (Active Energy). Then come back here, it checks by itself.')}</p>
         <p class="small" style="line-height:1.5;margin:8px 0 0">${T('Check first: the Shortcut must be in your Shortcuts list only once. If you see it twice, delete one (press and hold → Delete). Otherwise iPhone can not find it.')}</p>
         <a class="btn" id="spRun" href="shortcuts://run-shortcut?name=${encodeURIComponent(shortcutName())}" style="margin-top:14px;text-decoration:none">▶︎ ${T('Run it now')}</a>
-        <p class="small muted" style="margin:12px 0 0;text-align:center">${T('Waiting for the first number…')} <span class="spin" style="vertical-align:-3px"></span></p>
-        ${st.ranAt && Date.now() - st.ranAt > 10e3 ? `<div class="card" style="background:var(--chip);box-shadow:none;margin-top:12px"><b class="small">${T('Nothing arrived yet? Check:')}</b>
+        ${st.why === 'code' ? `<div class="card" style="background:var(--chip);box-shadow:inset 0 0 0 1.5px var(--bad);margin-top:12px"><b class="small">⚠️ ${T('The Shortcut ran, but your code is not in it.')}</b>
+          <p class="small" style="margin:6px 0 0;line-height:1.5">${T('Open it in Shortcuts, tap the first box (PASTE YOUR CODE) and paste your code. Then tap Run it now again.')}</p>
+          <p class="small" style="margin:8px 0 0">${T('Your code')}: <b style="font-family:ui-monospace,monospace">${code}</b> ${copyBtn('spCode', T('Copy code'))}</p></div>`
+        : st.why === 'kcal' ? `<div class="card" style="background:var(--chip);box-shadow:inset 0 0 0 1.5px var(--bad);margin-top:12px"><b class="small">⚠️ ${T('The Shortcut ran, but it sent no number.')}</b>
+          <p class="small" style="margin:6px 0 0;line-height:1.5">${link ? T('The shared Shortcut has a mistake. Tell the person who sent you the app.') : T('In Get Contents of URL, the end must be the blue Statistics bubble, not typed text.')}</p></div>`
+        : `<p class="small muted" style="margin:12px 0 0;text-align:center">${T('Waiting for the first number…')} <span class="spin" style="vertical-align:-3px"></span></p>`}
+        ${!st.why && st.ranAt && Date.now() - st.ranAt > 10e3 ? `<div class="card" style="background:var(--chip);box-shadow:none;margin-top:12px"><b class="small">${T('Nothing arrived yet? Check:')}</b>
           ${sub(1, T('<b>No access to Active Energy</b> (error in Shortcuts): open the <b>Health</b> app → your picture (top right) → <b>Apps</b> → <b>Shortcuts</b> → turn on <b>Active Energy</b>. Or tap <b>Show</b> in the error. Then tap Run it now again.'))}${sub(2, T('<b>File does not exist / Shortcut not found:</b> the Shortcut is in your list twice or was renamed. Keep only one, named exactly {name}.', { name: `<b>${esc(shortcutName())}</b>` }))}${sub(3, T('Is the code in the Shortcut exactly your code? {code}', { code: `<b style="font-family:ui-monospace,monospace">${code}</b>` }) + (link ? ' ' + T('It is in the first box of the Shortcut; paste it there if it still says PASTE YOUR CODE.') : ''))}${sub(4, T('Did the Shortcut show an error? Open it and tap ▶︎ to see.'))}</div>` : ''}`,
     auto: `${[
           [T('In the Shortcuts app, tap <b>Automation</b> (bottom), then <b>+</b> (top right) or <b>New Automation</b>.'), open],
@@ -3352,7 +3372,7 @@ async function openSetupPage() {
   if (pg.querySelector('#spAdd')) pg.querySelector('#spAdd').onclick = () => copy(code, true);
   if (pg.querySelector('#spDiff')) pg.querySelector('#spDiff').onclick = () => { st.mismatch = true; saveSetup(st); openSetupPage(); };
   if (steps[cur] === 'shortcut') copy(link ? code : pushURL, true);   // ready to paste
-  if (pg.querySelector('#spRun')) pg.querySelector('#spRun').onclick = () => { if (!linkInfo() || linkInfo().p !== 'apple') LS.set('ft_link', JSON.stringify({ p: 'apple' })); st.ranAt = Date.now(); saveSetup(st); };
+  if (pg.querySelector('#spRun')) pg.querySelector('#spRun').onclick = () => { if (!linkInfo() || linkInfo().p !== 'apple') LS.set('ft_link', JSON.stringify({ p: 'apple' })); st.ranAt = Date.now(); delete st.why; saveSetup(st); };
   if (pg.querySelector('#spSign')) pg.querySelector('#spSign').onclick = () => watchPickup();
   // Waiting steps check by themselves while the page is open
   clearInterval(setupPoll);
@@ -3360,6 +3380,8 @@ async function openSetupPage() {
     if (!$('#setupPg') || document.visibilityState !== 'visible') return;
     if (!linkInfo() || linkInfo().p !== 'apple') LS.set('ft_link', JSON.stringify({ p: 'apple' }));
     await linkSync(true);
+    // Refused by the server (code or number missing)? Then say why right away
+    if (st.ranAt) { try { const w = await (await post('/health/why', {})).json(); if (w.t && w.t > st.ranAt - 60e3 && w.why !== st.why) { st.why = w.why; saveSetup(st); return openSetupPage(); } } catch {} }
     const t2 = db.exercises.find(e => e.id === 'auto-' + iso());
     if ((t2 && linkInfo().ok) || (st.ranAt && Date.now() - st.ranAt > 10e3 && !$('#setupPg .card b.small'))) { clearInterval(setupPoll); if ((db.settings.burnType || 'day') !== 'day') { db.settings.burnType = 'day'; save(); } openSetupPage(); }
   }, 3000);
@@ -3375,7 +3397,7 @@ function openSharePage() {
   let pg = $('#sharePg');
   if (!pg) { pg = document.createElement('div'); pg.id = 'sharePg'; pg.className = 'page'; document.body.appendChild(pg); document.body.style.overflow = 'hidden'; }
   const steps = ['build', 'share', 'paste', 'test'], cur = steps.findIndex(k => !st.done[k]), y = pg.scrollTop;
-  const base = SERVER_URL + '/health/push?code=', link = shortcutURL();
+  const base = SERVER_URL + '/health/push?code=', link = (trackersAvail || {}).shortcut || '';
   const sub = (n, t, extra = '') => `<div class="row" style="align-items:flex-start;gap:10px;margin:10px 0"><b style="flex:none;width:22px;height:22px;border-radius:50%;background:var(--chip);font-size:12px;display:flex;align-items:center;justify-content:center">${n}</b><div class="grow small" style="line-height:1.5">${t}${extra}</div></div>`;
   const open = `<a class="btn outline sm" href="shortcuts://" style="text-decoration:none;margin-top:6px">${T('Open Shortcuts')}</a>`;
   const title = { build: T('Build the template Shortcut'), share: T('Copy its iCloud link'), paste: T('Save the link in Food Tracker'), test: T('Test it like a friend') };
@@ -3398,6 +3420,7 @@ function openSharePage() {
     paste: `<p class="small" style="margin:0 0 8px">${T('Paste the link here:')}</p>
       <input id="shLink" placeholder="https://www.icloud.com/shortcuts/…" value="${esc(link)}" autocomplete="off" autocapitalize="off" spellcheck="false">
       <button class="btn" id="shSave" style="margin-top:12px">${T('Save for everyone')}</button>
+      ${st.issues && st.issues.length ? scIssueCard(st.issues) + `<button class="small muted" id="shForce" style="display:block;margin:10px auto 0;padding:6px;text-decoration:underline">${T('The Shortcut is correct, save anyway')}</button>` : ''}
       ${LS.get('ft_admin_token', '') ? '' : `<p class="small" style="margin:10px 0 0;color:var(--bad)">${T('First save your admin password in Settings → Users.')}</p>`}`,
     test: `<p class="small" style="line-height:1.5;margin:0">${T('Delete your template Shortcut (press and hold → <b>Delete</b>). Then connect yourself exactly like a friend: Settings → <b>Watch & tracker</b> → <b>Apple Watch</b>. If that works, it works for everyone.')}</p>
       <button class="btn" data-sh="test" style="margin-top:12px">${T('Done, finish')}</button>`
@@ -3420,12 +3443,15 @@ function openSharePage() {
   if (pg.querySelector('#shUrl')) pg.querySelector('#shUrl').onclick = () => copy(base);
   pg.querySelectorAll('[data-sh]').forEach(b => b.onclick = () => { st.done[b.dataset.sh] = true; delete st.show; save(); pg.scrollTop = 0; openSharePage(); });
   pg.querySelectorAll('[data-shredo]').forEach(b => b.onclick = () => { st.show = st.show === b.dataset.shredo ? '' : b.dataset.shredo; save(); openSharePage(); });
+  if (pg.querySelector('#shForce')) pg.querySelector('#shForce').onclick = () => { pg.dataset.force = '1'; pg.querySelector('#shSave').click(); };
   if (pg.querySelector('#shSave')) pg.querySelector('#shSave').onclick = async () => {
     const v = pg.querySelector('#shLink').value.trim(), btn = pg.querySelector('#shSave');
     btn.innerHTML = '<span class="spin"></span>';
     try {
-      const r = await fetch(SERVER_URL + '/config', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + LS.get('ft_admin_token', '') }, body: JSON.stringify({ shortcut: v }) });
+      const r = await fetch(SERVER_URL + '/config', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + LS.get('ft_admin_token', '') }, body: JSON.stringify({ shortcut: v, force: !!pg.dataset.force }) });
+      if (r.status === 422) { const j = await r.json().catch(() => ({})); st.issues = j.issues || []; save(); openSharePage(); toast(T('Not saved: the Shortcut would send no number or a wrong one.')); return; }
       if (!r.ok) throw new Error(r.status === 403 ? T('Wrong admin password.') : r.status === 400 ? T('That is not a Shortcut link.') : 'HTTP ' + r.status);
+      { const j = await r.clone().json().catch(() => ({})); st.issues = j.issues || []; }
       trackersAvail = null; await loadTrackers();
       toast('✓ ' + T('Saved. Everyone now gets the Add button.'));
       st.done.paste = true; save(); openSharePage();
