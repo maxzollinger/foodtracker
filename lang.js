@@ -1412,7 +1412,9 @@ window.I18N = {
 "Tap + to add water or calories burned.":"Tippe auf +, um Wasser oder verbrannte Kalorien einzutragen.",
 "Tap a day to see it or add something.":"Tippe auf einen Tag, um ihn anzusehen oder etwas nachzutragen.",
 "Tap it to log what you eat.":"Tippe darauf, um einzutragen, was du isst.",
-"Your weekly meal plan and shopping list.":"Dein Essensplan und deine Einkaufsliste für die Woche."
+"Your weekly meal plan and shopping list.":"Dein Essensplan und deine Einkaufsliste für die Woche.",
+"No food logged yet":"Noch nichts eingetragen",
+"{d} fasted · opens {t}":"{d} gefastet · öffnet {t}"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2826,7 +2828,9 @@ window.I18N = {
 "Tap + to add water or calories burned.":"Toca + para añadir agua o calorías quemadas.",
 "Tap a day to see it or add something.":"Toca un día para verlo o añadir algo.",
 "Tap it to log what you eat.":"Tócalo para registrar lo que comes.",
-"Your weekly meal plan and shopping list.":"Tu plan de comidas semanal y tu lista de la compra."
+"Your weekly meal plan and shopping list.":"Tu plan de comidas semanal y tu lista de la compra.",
+"No food logged yet":"Aún no has registrado comida",
+"{d} fasted · opens {t}":"{d} de ayuno · abre a las {t}"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4240,7 +4244,9 @@ window.I18N = {
 "Tap + to add water or calories burned.":"Touche + pour ajouter de l’eau ou des calories brûlées.",
 "Tap a day to see it or add something.":"Touche un jour pour le voir ou ajouter quelque chose.",
 "Tap it to log what you eat.":"Touche-le pour enregistrer ce que tu manges.",
-"Your weekly meal plan and shopping list.":"Ton plan de repas de la semaine et ta liste de courses."
+"Your weekly meal plan and shopping list.":"Ton plan de repas de la semaine et ta liste de courses.",
+"No food logged yet":"Rien d’enregistré pour l’instant",
+"{d} fasted · opens {t}":"{d} de jeûne · ouvre à {t}"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5654,7 +5660,9 @@ window.I18N = {
 "Tap + to add water or calories burned.":"Tocca + per aggiungere acqua o calorie bruciate.",
 "Tap a day to see it or add something.":"Tocca un giorno per vederlo o aggiungere qualcosa.",
 "Tap it to log what you eat.":"Toccalo per registrare cosa mangi.",
-"Your weekly meal plan and shopping list.":"Il tuo piano pasti settimanale e la lista della spesa."
+"Your weekly meal plan and shopping list.":"Il tuo piano pasti settimanale e la lista della spesa.",
+"No food logged yet":"Ancora nessun pasto registrato",
+"{d} fasted · opens {t}":"{d} di digiuno · apre alle {t}"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7068,7 +7076,9 @@ window.I18N = {
 "Tap + to add water or calories burned.":"＋で水分や消費カロリーを追加。",
 "Tap a day to see it or add something.":"日付をタップして表示・追加。",
 "Tap it to log what you eat.":"タップして食べたものを記録。",
-"Your weekly meal plan and shopping list.":"1週間の献立と買い物リスト。"
+"Your weekly meal plan and shopping list.":"1週間の献立と買い物リスト。",
+"No food logged yet":"まだ記録がありません",
+"{d} fasted · opens {t}":"断食 {d} · {t} に開始"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8482,7 +8492,9 @@ window.I18N = {
 "Tap + to add water or calories burned.":"Tik op + om water of verbrande calorieën toe te voegen.",
 "Tap a day to see it or add something.":"Tik op een dag om hem te zien of iets toe te voegen.",
 "Tap it to log what you eat.":"Tik erop om te loggen wat je eet.",
-"Your weekly meal plan and shopping list.":"Je weekmenu en boodschappenlijst."
+"Your weekly meal plan and shopping list.":"Je weekmenu en boodschappenlijst.",
+"No food logged yet":"Nog niets gelogd",
+"{d} fasted · opens {t}":"{d} gevast · opent om {t}"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -9896,7 +9908,9 @@ window.I18N = {
 "Tap + to add water or calories burned.":"Dotknij +, aby dodać wodę lub spalone kalorie.",
 "Tap a day to see it or add something.":"Dotknij dnia, aby go zobaczyć lub coś dodać.",
 "Tap it to log what you eat.":"Dotknij, aby zapisać, co jesz.",
-"Your weekly meal plan and shopping list.":"Twój tygodniowy plan posiłków i lista zakupów."
+"Your weekly meal plan and shopping list.":"Twój tygodniowy plan posiłków i lista zakupów.",
+"No food logged yet":"Nic jeszcze nie zapisano",
+"{d} fasted · opens {t}":"{d} postu · otwiera się o {t}"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -11310,7 +11324,9 @@ window.I18N = {
 "Tap + to add water or calories burned.":"Toque em + para adicionar água ou calorias gastas.",
 "Tap a day to see it or add something.":"Toque num dia para o ver ou adicionar algo.",
 "Tap it to log what you eat.":"Toque para registar o que come.",
-"Your weekly meal plan and shopping list.":"O seu plano de refeições semanal e a lista de compras."
+"Your weekly meal plan and shopping list.":"O seu plano de refeições semanal e a lista de compras.",
+"No food logged yet":"Ainda sem refeições registadas",
+"{d} fasted · opens {t}":"{d} em jejum · abre às {t}"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -12724,7 +12740,9 @@ window.I18N = {
 "Tap + to add water or calories burned.":"Нажмите +, чтобы добавить воду или сожжённые калории.",
 "Tap a day to see it or add something.":"Нажмите на день, чтобы посмотреть его или что-то добавить.",
 "Tap it to log what you eat.":"Нажмите, чтобы записать, что вы едите.",
-"Your weekly meal plan and shopping list.":"Ваш план питания на неделю и список покупок."
+"Your weekly meal plan and shopping list.":"Ваш план питания на неделю и список покупок.",
+"No food logged yet":"Пока ничего не записано",
+"{d} fasted · opens {t}":"{d} голодания · откроется в {t}"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -14138,7 +14156,9 @@ window.I18N = {
 "Tap + to add water or calories burned.":"Su veya yakılan kalori eklemek için +’ya dokun.",
 "Tap a day to see it or add something.":"Görmek ya da bir şey eklemek için bir güne dokun.",
 "Tap it to log what you eat.":"Ne yediğini kaydetmek için dokun.",
-"Your weekly meal plan and shopping list.":"Haftalık yemek planın ve alışveriş listen."
+"Your weekly meal plan and shopping list.":"Haftalık yemek planın ve alışveriş listen.",
+"No food logged yet":"Henüz bir şey kaydedilmedi",
+"{d} fasted · opens {t}":"{d} oruç · {t}’de açılır"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -15552,6 +15572,8 @@ window.I18N = {
 "Tap + to add water or calories burned.":"点按 + 添加饮水或消耗的卡路里。",
 "Tap a day to see it or add something.":"点按某一天查看或补充记录。",
 "Tap it to log what you eat.":"点按记录你吃了什么。",
-"Your weekly meal plan and shopping list.":"你的每周饮食计划和购物清单。"
+"Your weekly meal plan and shopping list.":"你的每周饮食计划和购物清单。",
+"No food logged yet":"还没有记录饮食",
+"{d} fasted · opens {t}":"已断食 {d} · {t} 开始进食"
 }
 };

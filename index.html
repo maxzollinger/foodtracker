@@ -1031,7 +1031,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v155';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v156';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1568,7 +1568,7 @@ function fastingHTML() {
   const outside = db.meals.filter(m => m.date === iso() && /^\d\d:\d\d/.test(m.time || '') && !f.inside(+m.time.slice(0, 2) * 60 + +m.time.slice(3, 5))).length;
   return `<div class="card" id="fastCard"><div class="spread"><b>⏱️ ${T('Intermittent fasting')} ${f.h}:${f.win}</b><span class="etime">${f.startStr}–${f.endStr}</span></div>
     <div style="font-size:22px;font-weight:800;margin-top:8px">${f.inWin ? '🍽️ ' + T('Eating window open') : '🌙 ' + T('Fasting')}</div>
-    <div class="small muted" style="margin-top:2px">${f.inWin ? T('Closes at {t} · {d} left', { t: f.endStr, d: f.toEnd }) : T('{d} fasted · window opens at {t} (in {r})', { d: f.fasted, t: f.startStr, r: f.toStart })}</div>
+    <div class="small muted" style="margin-top:2px">${f.inWin ? T('Closes at {t} · {d} left', { t: f.endStr, d: f.toEnd }) : T('{d} fasted · opens {t}', { d: f.fasted, t: f.startStr })}</div>
     <div class="hbar"><i style="width:${r0(f.pct * 100)}%;background:${f.inWin ? 'var(--good)' : 'var(--flame)'}"></i></div>
     ${outside ? `<p class="small" style="color:var(--bad);margin:8px 0 0">${T('Meals outside your eating window today: {n}', { n: outside })}</p>` : ''}</div>`;
 }
@@ -1607,7 +1607,7 @@ function focusCard(date, t, tot) {
   if (carbCap(p)) {
     const v = tot.carbs, lim = t.carbs, over = v > lim;
     out.push(`<div class="card" id="carbCard"><div class="spread"><b>🥑 ${T('Carb limit')}</b><span><b style="${over ? 'color:var(--bad)' : ''}">${r0(v)}</b> <span class="muted">/ ${lim} g</span></span></div>${bar(v, lim, over ? 'var(--bad)' : 'var(--good)')}
-      <p class="small muted" style="margin:8px 0 0">${over ? T('You are over your carb limit today.') : hasLife(p, 'lowcarb') ? T('Stay under {n} g of carbs today.', { n: lim }) : T('Stay under {n} g of carbs to keep ketosis.', { n: lim })}</p></div>`);
+      ${over ? `<p class="small" style="margin:8px 0 0;color:var(--bad);font-weight:600">${T('You are over your carb limit today.')}</p>` : ''}</div>`);
   }
   if (hasLife(p, 'protein') || id === 'recomp') {
     const v = tot.protein, g = t.protein, left = r0(g - v);
@@ -1619,15 +1619,12 @@ function focusCard(date, t, tot) {
 // Small "your goal" pill on Home
 function planChip() {
   const p = db.profile; if (!p) return '';
-  const pl = planOf(p), t = targets(), diff = r0(t.kcal - t.tdee);
-  let detail;
-  if (carbCap(p) && !fastType(p)) detail = T('max {n} g carbs', { n: t.carbs });
-  else detail = diff > 30 ? T('+{n} kcal/day surplus', { n: diff }) : diff < -30 ? T('{n} kcal/day deficit', { n: diff }) : T('maintenance calories');
+  const pl = planOf(p);
   const gp = goalProgress(), kd = keepDays();
-  const extra = gp ? `<span class="chipprog"><i style="width:${r0(gp.pct)}%"></i></span><b class="chippct">${r0(gp.pct)}%</b><span class="chipsub">${goalLine(gp)}</span>`
+  const extra = gp ? `<span class="chipprog"><i style="width:${r0(gp.pct)}%"></i></span><b class="chippct">${r0(gp.pct)}%</b><span class="chipsub">${gp.reached ? '🏁 ' + T('Goal reached') : T('{w} kg to go', { w: gp.toGo })}</span>`
     : p.goal === 'maintain' && p.maintainSince ? `<span class="muted">· 🛡️ ${T('{n} days steady', { n: kd })}</span>` : '';
-  const more = goalExtras(p);
-  return `<button class="planchip" id="planChip"><span>${pl.ic}</span><b>${T(pl.name)}</b>${gp || (p.goal === 'maintain' && p.maintainSince) ? '' : `<span class="muted">· ${detail}</span>`}${extra}${more.length ? `<span class="chipsub">${more.join(' · ')}</span>` : ''}</button>`;
+  // Short on purpose: the plan's details (weeks left, lifestyle, fasting) are one tap away and have their own cards
+  return `<button class="planchip" id="planChip"><span>${pl.ic}</span><b>${T(pl.name)}</b>${extra}</button>`;
 }
 // Days logged in a row. One rest day per week is fine and doesn't break it (it just doesn't count).
 function streak() {
@@ -1732,8 +1729,8 @@ function renderHome() {
       <div class="ecal">🔥 ${T('{n} calories', { n: r0(mt.kcal) })}</div>
       <div class="emac"><span>🍗 ${r0(mt.protein)}g</span><span>🌾 ${r0(mt.carbs)}g</span><span>🥑 ${r0(mt.fat)}g</span>${mealHealth(m) ? `<span style="color:${healthColor(mealHealth(m))}">💚 ${mealHealth(m)}</span>` : ''}</div></div></button>`;
   }).join('');
-  if (!entries.length) list = `<div class="empty"><b>${T("You haven't uploaded any food")}</b><span class="muted">${T('Start tracking your meals by taking a quick picture')}</span>
-    <div style="margin-top:16px"><button class="btn sm" style="margin:0 auto" onclick="openAddMenu()">＋ ${T('Add food')}</button></div></div>`;
+  if (!entries.length) list = `<div class="empty"><b>${T('No food logged yet')}</b>
+    <div style="margin-top:14px"><button class="btn sm" style="margin:0 auto" onclick="openAddMenu()">＋ ${T('Add food')}</button></div></div>`;
 
   $('#view').innerHTML = `
     <div class="top"><div class="brand"><img src="icon-180.png" alt="">Food Tracker</div>
@@ -2924,7 +2921,7 @@ function habitHomeCard() {
     : `<span class="small" style="font-weight:700;color:${td === false ? 'var(--bad)' : td === true ? 'var(--good)' : 'var(--muted)'}">${notToday ? T('Counts on weekends') : td === true ? '✓ ' + T('Done today') : td === false ? T('Not today, that is okay') : T('So far so good')}</span>`;
   return `<div class="card" id="habitHome" role="button" tabindex="0" onclick="openHabitPage()" style="cursor:pointer;margin-bottom:14px">
     <div class="spread"><b>${habitTpl(h).ic} ${esc(habitName(h))}</b>${right}</div>
-    <div class="small muted" style="margin-top:4px">🔥 ${T('Streak: {n}', { n: st.streak })} · ${T('{n} of {m} days done', { n: st.ok, m: st.next || 66 })}</div></div>`;
+    <div class="small muted" style="margin-top:4px">🔥 ${st.streak} · ${st.ok}/${st.next || 66}</div></div>`;
 }
 // Progress: one calm card; suggestions can be hidden
 function habitProgCard() {
@@ -4262,8 +4259,8 @@ function logPlanMeal(di, mi) {
 function mealPlanCard() {
   const plan = curPlan(), today = plan ? plan.days[todayIdx(plan)] : null;
   const sub = plan ? (today && today.meals.length ? `${T('Today')}: ${today.meals.map(m => esc(m.name)).join(' · ')}` : T('Your plan for this week'))
-    : mpBusy === 'all' ? T('Creating your meal plan…') : T('Let AI plan tasty meals and your shopping list for this week');
-  return `<button class="card mpcard" id="mpCard"><div class="ic">🛒</div><div class="grow"><b>${T('Meal plan & groceries')}</b><div class="small muted mp-sub">${sub}</div></div><span class="muted" style="font-size:20px">›</span></button>`;
+    : mpBusy === 'all' ? T('Creating your meal plan…') : '';
+  return `<button class="card mpcard" id="mpCard"><div class="ic">🛒</div><div class="grow"><b>${T('Meal plan & groceries')}</b>${sub ? `<div class="small muted mp-sub">${sub}</div>` : ''}</div><span class="muted" style="font-size:20px">›</span></button>`;
 }
 
 function openMealPlan() {
