@@ -1033,7 +1033,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v171';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v172';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1881,7 +1881,7 @@ const GEMINI = [
   { id: 'gemini-3.8-flash', think: { thinkingLevel: 'low' } },
   { id: 'gemini-flash-latest' }
 ];
-const CF_CHAT = 'cf:gemma';   // Cloudflare's free AI (via our server): starts writing in about 1 s, about 175 answers a day, coach only
+const CF_CHAT = 'cf:gemma4';   // Cloudflare's free AI (via our server): starts writing in about 1 s, about 175 answers a day, coach only
 const SLOW_CHAT = 'gemini-3.8-flash';   // thinks first: can take over a minute to start, so only a last resort for chat
 const aiErr = (msg, fatal) => Object.assign(new Error(msg), { fatal });
 function parseJSON(text) {
@@ -2012,7 +2012,7 @@ async function geminiChain(key, msgs, system, json, onText, ms, strong) {
     if (r.status === 0 && ++offline >= 2) throw aiErr(T('No connection to the AI. Check your internet.'));
     if (key !== SHARED && (/api[_ ]?key|API_KEY_INVALID|unauthenticated/i.test(r.msg) || r.status === 401)) throw aiErr(T('Your Google AI key was rejected. Check it in Settings.'), true);
     let wait = 0;
-    if (r.status === 429) wait = /day|PerDay/i.test(r.msg) ? untilQuotaReset() : 60e3;
+    if (r.status === 429) wait = /day|PerDay/i.test(r.msg) ? (model === CF_CHAT ? 864e5 - Date.now() % 864e5 + 3e5 : untilQuotaReset()) : 60e3;   // Cloudflare starts a new day at 00:00 UTC
     else if (r.status === 404 || r.status === 403 || (r.status === 400 && /not (found|supported|available)|no longer|deprecat|access/i.test(r.msg))) wait = 7 * 864e5;
     else if (r.status >= 500) wait = r.status === 504 ? 3 * 60e3 : 20e3;   // too slow: leave it out for a few minutes
     else err = aiErr('Google AI: ' + r.msg);
