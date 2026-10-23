@@ -1033,7 +1033,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v165';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v166';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1859,11 +1859,12 @@ Identify every food and drink in the meal. Getting the AMOUNT right matters most
 2. Count only what is there: for an open bottle, glass or cup, estimate how full it is and count only that part.
 3. Glasses and cups: small glass about 200 ml, normal glass 250-300 ml, mug 250-350 ml, takeaway cup 250 / 350 / 450 ml (small / medium / large), then adjust for how full it is.
 4. Food on plates and in bowls: measure against known sizes in the photo (dinner plate about 26 cm, side plate 20 cm, fork 19 cm, spoon 15 cm, smartphone 15 cm, adult hand about 18 cm long, can 12 cm high). Estimate the area and thickness of each food from that.
-5. Drinks and other liquids: "unit" is "ml" and "grams" is the volume in ml. Use the nutrition of exactly that drink: regular lemonade or soda about 35-45 kcal per 100 ml, diet / zero about 0-1, juice about 45, milk (3.5 %) 64, beer 43, wine 83.
-6. When unsure, choose the most typical portion of that item, not a large one. Never inflate portions.
+5. Food in pieces (berries, fruit, nuts, eggs, cookies, slices, nuggets, sushi, dumplings…): COUNT the pieces you can see (also ones partly hidden), judge their size, then grams = pieces × weight of one piece. Typical weights of one piece: strawberry 12 g (small 8, large 20), raspberry 4, cherry 8, grape 5, cherry tomato 15, olive 4, almond 1.2, walnut half 2.5, egg 50 (without shell), slice of bread 35, toast slice 25, cookie 12, chicken nugget 17, sushi piece 30, dumpling 25, meatball 25, banana 120 (peeled), apple 180, mandarin 75. Fruit and berries look bigger than they weigh, so don't round up. Put the number of pieces in "count" and the weight of one piece in "per" (both 0 if it isn't food in pieces or there are too many to count, like rice or blueberries).
+6. Drinks and other liquids: "unit" is "ml" and "grams" is the volume in ml. Use the nutrition of exactly that drink: regular lemonade or soda about 35-45 kcal per 100 ml, diet / zero about 0-1, juice about 45, milk (3.5 %) 64, beer 43, wine 83.
+7. When unsure, choose the most typical portion of that item, not a large one. Never inflate portions.
 Include cooking oils, sauces and dressings. In "notes", say briefly which size you used and why (e.g. "330 ml can, label readable").
 Return ONLY JSON in this exact shape:
-{"name": "short appetising meal name", "items": [{"name": "ingredient", "grams": 0, "unit": "g", "kcal": 0, "protein": 0, "carbs": 0, "fat": 0, "sugar": 0, "fiber": 0, "sodium": 0}], "health_score": 7, "notes": "short"}
+{"name": "short appetising meal name", "items": [{"name": "ingredient", "grams": 0, "unit": "g", "count": 0, "per": 0, "kcal": 0, "protein": 0, "carbs": 0, "fat": 0, "sugar": 0, "fiber": 0, "sodium": 0}], "health_score": 7, "notes": "short"}
 Numbers are for the whole portion (not per 100 g); macros, sugar and fiber in grams, sodium in milligrams. health_score is an integer 1-10 (10 = very healthy: whole foods, high protein and fibre, low sugar). If there is no food, return "items": [] and explain in notes.
 Write "name", every ingredient name and "notes" in ${langInfo().ai}.`;
 
@@ -2096,6 +2097,7 @@ async function claudeCall(key, msgs, system, json, onText) {
 }
 const normItems = items => (items || []).map(it => ({
   name: String(it.name || T('Food')), grams: r0(num(it.grams)), ...(it.unit === 'ml' ? { unit: 'ml' } : {}), kcal: r0(num(it.kcal)),
+  ...(r0(num(it.count)) > 0 && r0(num(it.count)) <= 200 && num(it.grams) > 0 ? { count: r0(num(it.count)) } : {}),
   protein: r1(num(it.protein)), carbs: r1(num(it.carbs)), fat: r1(num(it.fat)),
   sugar: it.sugar == null ? null : r1(num(it.sugar)), fiber: it.fiber == null ? null : r1(num(it.fiber)), sodium: it.sodium == null ? null : r0(num(it.sodium))
 }));
@@ -4685,14 +4687,24 @@ async function fillIngredient(it) {
   renderIngredients();
   return it.calcBusy;
 }
+const gramsLine = it => num(it.grams) ? it.grams + ' ' + (it.unit || 'g') + (it.count ? ' · ' + T('{n} pcs', { n: it.count }) : '') : '';
+// Nutrition follows the amount (from the numbers at the amount when they were last set)
+function scaleItem(it) {
+  if (!(it.base && it.base.grams > 0)) return;
+  const k = num(it.grams) / it.base.grams;
+  for (const x of ['kcal', 'protein', 'carbs', 'fat']) it[x] = x === 'kcal' ? r0(it.base[x] * k) : r1(it.base[x] * k);
+  for (const x of ['sugar', 'fiber', 'sodium']) if (it.base[x] != null) it[x] = x === 'sodium' ? r0(it.base[x] * k) : r1(it.base[x] * k);   // fiber, sugar and sodium follow the amount too
+}
 function renderIngredients() {
   const box = $('#dIng'), m = det.m;
   const flabel = { kcal: N('Calories'), protein: N('Protein'), carbs: N('Carbs'), fat: N('Fats') };
   box.innerHTML = m.items.map((it, i) => `<div class="ing" data-i="${i}">
-    <button class="ing-head"><span><b data-h="name">${esc(it.name || T('New ingredient'))}</b><br><span class="small muted" data-h="grams">${num(it.grams) ? it.grams + ' ' + (it.unit || 'g') : ''}</span></span>
+    <button class="ing-head"><span><b data-h="name">${esc(it.name || T('New ingredient'))}</b><br><span class="small muted" data-h="grams">${gramsLine(it)}</span></span>
       <span style="font-weight:600">${it.calcBusy ? `<span class="spin" style="width:14px;height:14px;vertical-align:-2px"></span> ${T('Calculating…')}` : `<span data-h="kcal">${r0(it.kcal)}</span> kcal`} <span class="muted">${det.open === i ? '⌃' : '›'}</span></span></button>
     ${det.open === i ? `<div class="ing-edit">
       <div class="row"><input data-f="name" value="${esc(it.name)}" placeholder="${T('Ingredient')}" class="grow"><input data-f="grams" inputmode="decimal" value="${it.grams}" style="width:90px;text-align:right"><span class="muted">${it.unit || 'g'}</span></div>
+      ${it.count ? `<div class="spread" style="margin:0 0 12px"><span class="small muted" style="font-weight:600">${T('Pieces')}</span>
+        <span class="row" style="gap:8px"><button class="chipbtn" data-pc="-1" aria-label="−">−</button><b data-h="count" style="min-width:28px;text-align:center">${it.count}</b><button class="chipbtn" data-pc="1" aria-label="+">+</button></span></div>` : ''}
       <div class="g4">${['kcal', 'protein', 'carbs', 'fat'].map(f => `<div><label class="lbl">${T(flabel[f])}</label><input data-f="${f}" inputmode="decimal" value="${it[f]}"></div>`).join('')}</div>
       ${hasAI() && !it.calcDone && !num(it.kcal) && !num(it.protein) && !num(it.carbs) && !num(it.fat) ? `<p class="small muted" style="margin:10px 0 0">✨ ${T('Enter the name and amount: the numbers are filled in for you.')}</p>` : ''}
       <button class="chipbtn" data-rm style="margin-top:12px;color:var(--bad)">${T('Remove ingredient')}</button></div>` : ''}</div>`).join('')
@@ -4702,6 +4714,11 @@ function renderIngredients() {
   box.querySelectorAll('[data-f="name"],[data-f="grams"]').forEach(inp => inp.addEventListener('change', () => { const it = m.items[+inp.closest('.ing').dataset.i]; if (it) {
     if (inp.dataset.f === 'name') for (const k of ['sugar', 'fiber', 'sodium']) { delete it[k]; if (it.base) delete it.base[k]; }   // another food: its fiber, sugar and sodium are worked out again
     it.calcDone = false; fillIngredient(it); } }));
+  // Pieces: one more or less changes the amount by the weight of one piece (taken from the current amount, so a weighed amount stays right)
+  box.querySelectorAll('[data-pc]').forEach(b => b.onclick = () => {
+    const it = m.items[+b.closest('.ing').dataset.i], n = it.count + +b.dataset.pc; if (n < 1) return;
+    it.grams = r0(num(it.grams) / it.count * n); it.count = n; scaleItem(it); renderIngredients(); renderDetTotals();
+  });
   box.querySelectorAll('[data-rm]').forEach(b => b.onclick = () => { m.items.splice(+b.closest('.ing').dataset.i, 1); det.open = -1; renderIngredients(); renderDetTotals(); });
   box.querySelectorAll('[data-f]').forEach(inp => inp.oninput = e => {
     const card = e.target.closest('.ing'), it = m.items[+card.dataset.i], f = e.target.dataset.f;
@@ -4709,11 +4726,10 @@ function renderIngredients() {
     it[f] = num(e.target.value);
     if (f !== 'grams') it.calcDone = true;   // typed numbers are kept
     if (f === 'grams' && it.base.grams > 0) {
-      const k = it.grams / it.base.grams;   // scale nutrition with portion size
-      for (const x of ['kcal', 'protein', 'carbs', 'fat']) { it[x] = x === 'kcal' ? r0(it.base[x] * k) : r1(it.base[x] * k); card.querySelector(`[data-f="${x}"]`).value = it[x]; }
-      for (const x of ['sugar', 'fiber', 'sodium']) if (it.base[x] != null) it[x] = x === 'sodium' ? r0(it.base[x] * k) : r1(it.base[x] * k);   // fiber, sugar and sodium follow the amount too
+      scaleItem(it);   // scale nutrition with portion size
+      for (const x of ['kcal', 'protein', 'carbs', 'fat']) card.querySelector(`[data-f="${x}"]`).value = it[x];
     } else setBase(it);
-    card.querySelector('[data-h=grams]').textContent = num(it.grams) ? it.grams + ' ' + (it.unit || 'g') : '';
+    card.querySelector('[data-h=grams]').textContent = gramsLine(it);
     card.querySelector('[data-h=kcal]').textContent = r0(it.kcal);
     renderDetTotals();
   });

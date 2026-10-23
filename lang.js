@@ -1490,7 +1490,9 @@ window.I18N = {
 "Phone without account":"Handy ohne Konto",
 "{n} in 7 days":"{n} in 7 Tagen",
 "{n} today":"{n} heute",
-"Account":"Konto"
+"Account":"Konto",
+"Pieces":"Stück",
+"{n} pcs":"{n} Stk."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2982,7 +2984,9 @@ window.I18N = {
 "Phone without account":"Móvil sin cuenta",
 "{n} in 7 days":"{n} en 7 días",
 "{n} today":"{n} hoy",
-"Account":"Cuenta"
+"Account":"Cuenta",
+"Pieces":"Piezas",
+"{n} pcs":"{n} uds."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4474,7 +4478,9 @@ window.I18N = {
 "Phone without account":"Téléphone sans compte",
 "{n} in 7 days":"{n} en 7 jours",
 "{n} today":"{n} aujourd’hui",
-"Account":"Compte"
+"Account":"Compte",
+"Pieces":"Pièces",
+"{n} pcs":"{n} pcs"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5966,7 +5972,9 @@ window.I18N = {
 "Phone without account":"Telefono senza account",
 "{n} in 7 days":"{n} in 7 giorni",
 "{n} today":"{n} oggi",
-"Account":"Account"
+"Account":"Account",
+"Pieces":"Pezzi",
+"{n} pcs":"{n} pz"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7458,7 +7466,9 @@ window.I18N = {
 "Phone without account":"アカウントなしの端末",
 "{n} in 7 days":"7日間で {n}",
 "{n} today":"今日 {n}",
-"Account":"アカウント"
+"Account":"アカウント",
+"Pieces":"個数",
+"{n} pcs":"{n}個"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8950,7 +8960,9 @@ window.I18N = {
 "Phone without account":"Telefoon zonder account",
 "{n} in 7 days":"{n} in 7 dagen",
 "{n} today":"{n} vandaag",
-"Account":"Account"
+"Account":"Account",
+"Pieces":"Stuks",
+"{n} pcs":"{n} st."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -10442,7 +10454,9 @@ window.I18N = {
 "Phone without account":"Telefon bez konta",
 "{n} in 7 days":"{n} w 7 dni",
 "{n} today":"{n} dziś",
-"Account":"Konto"
+"Account":"Konto",
+"Pieces":"Sztuki",
+"{n} pcs":"{n} szt."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -11934,7 +11948,9 @@ window.I18N = {
 "Phone without account":"Telemóvel sem conta",
 "{n} in 7 days":"{n} em 7 dias",
 "{n} today":"{n} hoje",
-"Account":"Conta"
+"Account":"Conta",
+"Pieces":"Unidades",
+"{n} pcs":"{n} un."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -13426,7 +13442,9 @@ window.I18N = {
 "Phone without account":"Телефон без аккаунта",
 "{n} in 7 days":"{n} за 7 дней",
 "{n} today":"{n} сегодня",
-"Account":"Аккаунт"
+"Account":"Аккаунт",
+"Pieces":"Штук",
+"{n} pcs":"{n} шт."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -14918,7 +14936,9 @@ window.I18N = {
 "Phone without account":"Hesapsız telefon",
 "{n} in 7 days":"7 günde {n}",
 "{n} today":"bugün {n}",
-"Account":"Hesap"
+"Account":"Hesap",
+"Pieces":"Adet",
+"{n} pcs":"{n} adet"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -16410,6 +16430,8 @@ window.I18N = {
 "Phone without account":"无账户的手机",
 "{n} in 7 days":"7 天内 {n}",
 "{n} today":"今天 {n}",
-"Account":"账户"
+"Account":"账户",
+"Pieces":"个数",
+"{n} pcs":"{n} 个"
 }
 };
