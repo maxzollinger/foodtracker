@@ -302,6 +302,12 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 .stepper button{width:32px;height:32px;border-radius:50%;font-size:20px;font-weight:600}
 .stepper b{min-width:28px;text-align:center}
 .portion{display:flex;align-items:center;gap:10px;margin:0 0 14px}
+.treat .sheetx{position:static;width:30px;height:30px;font-size:13px;flex:none}
+.treat.earned b{color:var(--good)}
+.treat .bar{height:8px;border-radius:99px;background:var(--chip);overflow:hidden}.treat .bar i{display:block;height:100%;background:var(--good);border-radius:99px;transition:width .4s}
+.treat-opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px}
+.treat-opts button{background:var(--chip);border-radius:16px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:1px}
+.treat-opts span{font-size:22px}.treat-opts b{font-size:15px}.treat-opts small{font-size:11.5px;color:var(--muted);font-weight:600}
 #cam{position:fixed;inset:0;z-index:80;background:#000;color:#fff;overflow:hidden;touch-action:none}
 #cam video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 #cam.nocam video,#cam.nocam .cam-frame{display:none}
@@ -1091,7 +1097,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v181';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v182';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1544,7 +1550,9 @@ function activeFor(date) {
 // Extra energy is given back mostly as carbs (75%) and some fat (25%); protein stays the same.
 function dayGoals(date) {
   const t = targets(), burned = r0(dayBurned(date)), mode = db.settings.burnMode, included = includedExercise();
-  const extra = !burned || mode === 'off' ? 0 : mode === 'all' ? (burnWholeDay() ? Math.max(0, burned - included) : burned) : Math.max(0, r0(burned * 0.75 - included));
+  // "Earn your treat" activities are extra on top of the normal day, so they count fully
+  const treatK = r0(db.exercises.filter(e => e.date === date && e.treat).reduce((a, e) => a + num(e.kcal), 0)), b0 = burned - treatK;
+  const extra = (mode === 'off' ? 0 : treatK) + (!b0 || mode === 'off' ? 0 : mode === 'all' ? (burnWholeDay() ? Math.max(0, b0 - included) : b0) : Math.max(0, r0(b0 * 0.75 - included)));
   const keto = !!carbCap(db.profile);
   // 5:2 / alternate-day fasting: on a fast day only about 500-600 kcal, mostly protein
   if (db.profile && isFastDay(db.profile, date)) {
@@ -1800,6 +1808,7 @@ function renderHome() {
     ${!hasAI() ? `<button class="card" style="width:100%;text-align:left;display:flex;gap:12px;align-items:center" onclick="go('settings')"><span style="font-size:26px">✨</span><span class="grow"><b>${T('Turn on AI food scanning')}</b><br><span class="small muted">${T('Add your free Google AI key in Settings')}</span></span><span class="muted">›</span></button>` : ''}
     <button class="card calcard" data-toggle style="width:100%;text-align:left"><div>${calBig}</div>${ring(104, 9, tot.kcal / goalK, left < 0 ? 'var(--bad)' : 'var(--ink)', '<span style="font-size:28px">🔥</span>')}</button>
     <div class="macros">${macros}</div>
+    ${treatCard(sel)}
     ${focusCard(sel, t, tot)}
     ${healthCard(sel)}
     <div class="minirow">${waterCard(sel)}
@@ -1814,7 +1823,7 @@ function renderHome() {
   $('#burnAdd').onclick = e => { e.stopPropagation(); openBurnSheet(); };
   document.querySelector('.burncard').onclick = openBurnSheet;
   $('#mpCard').onclick = openMealPlan;
-  bindWater();
+  bindWater(); bindTreat(sel);
   if ($('#planChip')) $('#planChip').onclick = openMainGoalSheet;
   $('#wPrev').onclick = () => { weekOff--; renderHome(); };
   $('#wNext').onclick = () => { if (weekOff < 0) { weekOff++; renderHome(); } };
@@ -4256,6 +4265,60 @@ async function camBarScan(v) {
   camLoop = setTimeout(tick, 50);
 }
 
+/* ================= Earn your treat =================
+   Over the calorie goal today (e.g. a piece of cake)? Home offers an activity that makes up for it: a brisk walk,
+   a ride or a jog, with minutes worked out from body weight (calories above resting: (MET - 1) × kg × hours).
+   Only an offer: food is never blocked and "No thanks" hides it for the day. Not for under 18s, pregnancy or fast days,
+   and above 400 kcal it doesn't ask for hours of sport. With a watch the goal already follows real activity, so the
+   card simply fills up; without one, "Done" logs the activity once. */
+const TREAT_MAX = 400;
+const TREAT_ACTS = [['walk', '🚶', N('Brisk walk'), 4.3], ['bike', '🚴', N('Cycling'), 7], ['jog', '🏃', N('Jogging'), 8]];
+const treatOk = () => { const p = db.profile; return !!p && db.settings.treat !== false && age(p) >= 18 && planOf(p).id !== 'preg'; };
+// Minutes of an activity that cover kcal (with a watch only 75% of activity raises the goal, so a bit longer)
+function treatMinutes(kcal, met) {
+  const perMin = (met - 1) * (currentWeight() || 75) / 60;
+  return Math.max(5, Math.ceil(kcal / (trackerMode() ? 0.75 : 1) / perMin / 5) * 5);
+}
+function treatCard(date) {
+  if (date !== iso() || !treatOk() || isFastDay(db.profile, date)) return '';
+  const tr = db.treat && db.treat.date === date ? db.treat : null;
+  if (tr && tr.no) return '';
+  const over = r0(dayTotals(date).kcal - dayGoals(date).kcal);
+  // Picked an activity: waiting until the goal has caught up (watch) or "Done" was tapped
+  if (tr && tr.act) {
+    const a = TREAT_ACTS.find(x => x[0] === tr.act) || TREAT_ACTS[0];
+    if (over <= 0) return `<div class="card treat earned"><div class="spread"><b>🎉 ${T('Treat earned! Enjoy it.')}</b><button class="sheetx" id="trX" aria-label="${T('Close')}">✕</button></div></div>`;
+    const pct = clamp(100 - over / Math.max(tr.need, 1) * 100, 4, 100);
+    return `<div class="card treat"><div class="spread"><b>🍰 ${T('Treat waiting')}</b><span class="small muted">${T('{n} kcal to go', { n: over })}</span></div>
+      <div class="small" style="margin:6px 0 10px">${a[1]} ${T(a[2])} · ${T('{n} min', { n: tr.min })}</div>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      ${trackerMode() ? `<p class="small muted" style="margin:8px 0 0">⌚ ${T('Your watch counts it by itself.')}</p>
+        <div class="row" style="margin-top:8px"><button class="chipbtn" id="trCancel">${T('Cancel')}</button></div>`
+      : `<div class="row" style="margin-top:12px"><button class="btn sm grow" id="trDone">✓ ${T('Done')}</button><button class="chipbtn" id="trCancel">${T('Cancel')}</button></div>`}</div>`;
+  }
+  if (over < 30) return '';   // a few calories over is fine, no need to ask
+  if (over > TREAT_MAX) return `<div class="card treat"><div class="spread"><b>🍰 ${T('Big treat today? No problem.')}</b><button class="sheetx" id="trNo" aria-label="${T('Close')}">✕</button></div>
+    <p class="small muted" style="margin:4px 0 0">${T('Just get back on track tomorrow.')}</p></div>`;
+  const opts = TREAT_ACTS.map(a => ({ a, min: treatMinutes(over, a[3]) })).filter(o => o.min <= 90);
+  return `<div class="card treat"><div class="spread"><b>🍰 ${T('{n} kcal over your goal. Earn it?', { n: over })}</b><button class="sheetx" id="trNo" aria-label="${T('No thanks')}">✕</button></div>
+    <div class="treat-opts">${opts.map(o => `<button data-tract="${o.a[0]}" data-trmin="${o.min}"><span>${o.a[1]}</span><b>${T('{n} min', { n: o.min })}</b><small>${T(o.a[2])}</small></button>`).join('')}</div></div>`;
+}
+function bindTreat(date) {
+  const set = v => { db.treat = { date, ...v }; save(); renderHome(); };
+  document.querySelectorAll('[data-tract]').forEach(b => b.onclick = () => {
+    const over = r0(dayTotals(date).kcal - dayGoals(date).kcal);
+    set({ act: b.dataset.tract, min: +b.dataset.trmin, need: over });
+  });
+  if ($('#trNo')) $('#trNo').onclick = () => set({ no: true });
+  if ($('#trX')) $('#trX').onclick = () => set({ no: true });
+  if ($('#trCancel')) $('#trCancel').onclick = () => { db.treat = null; save(); renderHome(); };
+  if ($('#trDone')) $('#trDone').onclick = () => {
+    const tr = db.treat, a = TREAT_ACTS.find(x => x[0] === tr.act) || TREAT_ACTS[0];
+    db.exercises.push({ id: uid(), date, time: nowTime(), name: `🍰 ${T(a[2])}`, kcal: tr.need, minutes: tr.min, treat: true });
+    save(); renderHome(); toast('🎉 ' + T('Treat earned! Enjoy it.'));
+  };
+}
+
 /* ================= Water ================= */
 const waterLog = () => (db.water = db.water || {});
 /* Personal water goal: about 33 ml per kg of body weight, plus extra for regular training, for goals that
@@ -5468,7 +5531,7 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
-- Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). The first time they tap Scan food or Barcode a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. Ingredients of a meal show as tiles with a kitchen measure next to the grams (e.g. "½ medium · 60 g", "2 tbsp · 20 g"; with the kg setting European measures like tbsp, tsp, glass, slice, handful, never cups; with the lb setting US measures like cup, tbsp, tsp, oz); tap a tile to change it with − / + (½ → ¾) or to type exact grams. The meal plan shows each meal's ingredients per person with these measures (tap "Ingredients"), and the grocery list shows next to the total amount what to take from the shelf (e.g. "1 pack of 500 g"). For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
+- Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). The first time they tap Scan food or Barcode a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. Ingredients of a meal show as tiles with a kitchen measure next to the grams (e.g. "½ medium · 60 g", "2 tbsp · 20 g"; with the kg setting European measures like tbsp, tsp, glass, slice, handful, never cups; with the lb setting US measures like cup, tbsp, tsp, oz); tap a tile to change it with − / + (½ → ¾) or to type exact grams. The meal plan shows each meal's ingredients per person with these measures (tap "Ingredients"), and the grocery list shows next to the total amount what to take from the shelf (e.g. "1 pack of 500 g"). For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. "Earn your treat" (Home, only when today is over the calorie goal; adults only, not in pregnancy or on fast days; can be turned off in Settings → Preferences): a card offers a brisk walk, cycling or jogging with the minutes that make up for the extra calories (calculated from their weight); after picking one it fills up by itself with a watch, or they tap Done. Above 400 kcal over it doesn't suggest sport, just "back on track tomorrow". Food is never blocked. When they ate a treat and are over, you may mention this gently, never as punishment. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros; if the Shortcut sends the same number on several days, 0 every evening or over 4000 kcal a day, Home shows a warning: in Find Health Samples only one date filter may stay, Start Date · is today) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
@@ -6150,6 +6213,8 @@ function renderSettings() {
       <button class="li" id="sLang"><span class="ic">🌐</span><span class="grow">${T('Language')}</span><span class="val">${langInfo().f} ${langInfo().n}</span><span class="chev">›</span></button>
       <button class="li" id="sUnits"><span class="ic">📏</span><span class="grow">${T('Units')}</span><span class="val">${unitsName()}</span><span class="chev">›</span></button>
       <button class="li" id="sTour"><span class="ic">📖</span><span class="grow">${T('App tour')}</span><span class="chev">›</span></button>
+      ${db.profile && age(db.profile) >= 18 && planOf(db.profile).id !== 'preg' ? `<div class="li"><span class="ic">🍰</span><span class="grow">${T('Earn your treat')}<br><span class="small muted">${T('Over your goal? Get a walk or ride that makes up for it.')}</span></span>
+        <button class="tog ${db.settings.treat !== false ? 'on' : ''}" id="sTreat" role="switch" aria-checked="${db.settings.treat !== false}" aria-label="${T('Earn your treat')}"></button></div>` : ''}
     </div>
     <div class="card" id="appCard"><b>🌓 ${T('Appearance')}</b>
       <div class="seg">${[['auto', N('Automatic')], ['light', N('Light')], ['dark', N('Dark')]].map(([v, l]) => `<button data-th="${v}" class="${th === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>
@@ -6200,6 +6265,7 @@ function renderSettings() {
   $('#sLang').onclick = () => openLangSheet();
   $('#sUnits').onclick = openUnitsSheet;
   $('#sTour').onclick = () => openTour(() => setTimeout(() => askReminders(true), 600));
+  if ($('#sTreat')) $('#sTreat').onclick = () => { db.settings.treat = db.settings.treat === false; save(); renderSettings(); };
   document.querySelectorAll('[data-th]').forEach(b => b.onclick = () => { setTheme(b.dataset.th); renderSettings(); });
   $('#sBg').onclick = openBgSheet;
   bindReminders();
