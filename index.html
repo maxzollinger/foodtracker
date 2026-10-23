@@ -847,7 +847,7 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .mm-opt:active{transform:scale(.96)}
 .mm-loading{display:flex;flex-direction:column;align-items:center;gap:16px;padding:60px 0}
 /* Keyboard users see where they are */
-:focus-visible{outline:2.5px solid var(--text);outline-offset:2px;border-radius:12px}
+:focus-visible:not(input):not(textarea):not(select):not([contenteditable]){outline:2.5px solid var(--text);outline-offset:2px;border-radius:12px}
 </style>
 <script src="lang.js"></script>
 </head>
@@ -1033,7 +1033,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v167';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v168';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
