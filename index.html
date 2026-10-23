@@ -1033,7 +1033,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v169';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v170';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2019,7 +2019,7 @@ async function geminiChain(key, msgs, system, json, onText, ms, strong) {
   };
   const won = model => { if (key === SHARED) aiCount(0); if (!strong && model !== SLOW_CHAT) LS.set('ft_lastModel', model); lastAI = model; };
   const order = ready.length ? ready : list;
-  // Chat: start with the best model; if it has not started writing after 2 s, the next one starts too (then every 3 s).
+  // Chat: start with the best model; if it has not started writing after 1.5 s, the next one starts too (then every 2 s).
   // Google's free models sometimes queue a request for 15-45 s, so whichever writes first wins and the others are stopped.
   // Most answers start within 1-2 s, so the extra requests are rare.
   if (onText && !strong) return await new Promise((resolve, reject) => {
@@ -2030,7 +2030,7 @@ async function geminiChain(key, msgs, system, json, onText, ms, strong) {
       if (over || winner) return;
       if (next >= order.length) { if (!running) { if (key === SHARED) aiCount(2); end(reject, err); } return; }
       const model = order[next++], stop = new AbortController(); stops.push(stop); running++;
-      const hedge = setTimeout(start, next === 1 ? 2000 : 3000);
+      const hedge = setTimeout(start, next === 1 ? 1500 : 2000);
       geminiOnce(key, model, msgs, system, json, t => {
         if (!winner) { winner = model; clearTimeout(hedge); stops.forEach(c => { if (c !== stop) c.abort(); }); }
         if (winner === model) onText(t);
