@@ -301,9 +301,10 @@ a{color:inherit}
 .stepper button{width:32px;height:32px;border-radius:50%;font-size:20px;font-weight:600}
 .stepper b{min-width:28px;text-align:center}
 .portion{display:flex;align-items:center;gap:10px;margin:0 0 14px}
-.st-art{display:block;width:100%;max-width:340px;margin:10px auto 4px;border-radius:20px}
+.st-art{position:relative;width:100%;max-width:360px;aspect-ratio:3/2;margin:10px auto 4px;border-radius:20px;overflow:hidden;background:#1a1a1a}
+.st-art img,.st-art svg{position:absolute;inset:0;width:100%;height:100%;display:block}.st-art img{object-fit:cover}
 .st-line{animation:stScan 2.4s ease-in-out infinite;opacity:.85}
-@keyframes stScan{0%{transform:translateY(0)}50%{transform:translateY(150px)}100%{transform:translateY(0)}}
+@keyframes stScan{0%{transform:translateY(0)}50%{transform:translateY(165px)}100%{transform:translateY(0)}}
 .st-frame{animation:stPulse 2.4s ease-in-out infinite}
 @keyframes stPulse{50%{opacity:.55}}
 .stc{opacity:0;animation:stPop .35s ease-out forwards}
@@ -1042,7 +1043,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v173';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v174';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1843,19 +1844,15 @@ function openAddMenu() {
 /* Photo tips: shown once before the first food scan (and any time from "Photo tips" in the Add menu).
    Each tip matches what the AI really uses: the whole meal, a size reference, pieces it can count, readable labels. */
 function scanTipsArt() {
-  const berry = (x, y, n) => `<g transform="translate(${x} ${y}) scale(1.25)"><path d="M0 -9 C9 -9 11 2 0 12 C-11 2 -9 -9 0 -9Z" fill="#e5383b"/><path d="M-5 -9 L0 -13 L5 -9 L0 -7Z" fill="#3a9d4b"/>
-    <g class="stc" style="animation-delay:${0.6 + n * 0.35}s"><circle cx="10" cy="-11" r="8" fill="#111"/><text x="10" y="-7.4" font-size="10.5" font-weight="800" text-anchor="middle" fill="#fff">${n}</text></g></g>`;
-  return `<svg viewBox="0 0 300 190" class="st-art" aria-hidden="true">
-    <rect x="0" y="0" width="300" height="190" rx="20" fill="#c8945c"/><rect x="0" y="0" width="300" height="190" rx="20" fill="url(#stWood)" opacity=".35"/>
-    <defs><pattern id="stWood" width="300" height="14" patternUnits="userSpaceOnUse"><path d="M0 7 Q75 3 150 7 T300 7" stroke="#7a5230" stroke-width="1" fill="none"/></pattern></defs>
-    <ellipse cx="138" cy="98" rx="82" ry="78" fill="#000" opacity=".12"/><circle cx="135" cy="95" r="78" fill="#f7f7f9"/><circle cx="135" cy="95" r="60" fill="none" stroke="#e6e6ea" stroke-width="2"/>
-    <g transform="rotate(-25 120 95)"><ellipse cx="120" cy="95" rx="38" ry="22" fill="#d98a3d"/>${[0, 1, 2, 3].map(i => `<path d="M${98 + i * 14} 78 l-8 34" stroke="#6b3a17" stroke-width="4" stroke-linecap="round" opacity=".8"/>`).join('')}</g>
-    ${berry(170, 66, 1)}${berry(188, 96, 2)}${berry(166, 126, 3)}
-    <g transform="translate(238 22)"><rect x="-3" y="40" width="7" height="105" rx="3.5" fill="#b9bcc4"/><rect x="-10" y="0" width="21" height="44" rx="6" fill="#c9ccd3"/>${[-6, -1, 4, 9].map(x => `<rect x="${x - 1}" y="-2" width="2.5" height="24" fill="#c8945c"/>`).join('')}
-      <g class="stc" style="animation-delay:1.8s"><rect x="10" y="80" width="40" height="18" rx="9" fill="#111"/><text x="30" y="92.5" font-size="10" font-weight="700" text-anchor="middle" fill="#fff">19 cm</text></g></g>
-    <g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" class="st-frame"><path d="M22 34 v-16 h16"/><path d="M262 18 h16 v16"/><path d="M22 156 v16 h16"/><path d="M262 172 h16 v-16"/></g>
-    <rect x="24" y="20" width="252" height="3" rx="1.5" fill="#fff" class="st-line"/>
-  </svg>`;
+  // Real photo (Unsplash, Elena Leya, free Unsplash License) with the scan frame, counted pieces and the fork's size on top
+  const badge = (x, y, n, d) => `<g class="stc" style="animation-delay:${d}s"><circle cx="${x}" cy="${y}" r="10" fill="#fff"/><text x="${x}" y="${y + 4.2}" font-size="12" font-weight="800" text-anchor="middle" fill="#111">${n}</text></g>`;
+  return `<div class="st-art"><img src="scan-tips.jpg" alt="" width="900" height="600">
+  <svg viewBox="0 0 300 200" aria-hidden="true">
+    ${badge(118, 128, 1, 0.9)}${badge(170, 104, 2, 1.25)}
+    <g class="stc" style="animation-delay:1.8s"><rect x="242" y="26" width="44" height="20" rx="10" fill="#fff"/><text x="264" y="40" font-size="11" font-weight="700" text-anchor="middle" fill="#111">19 cm</text></g>
+    <g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" class="st-frame"><path d="M14 34 v-20 h20"/><path d="M266 14 h20 v20"/><path d="M14 166 v20 h20"/><path d="M266 186 h20 v-20"/></g>
+    <rect x="16" y="16" width="268" height="3" rx="1.5" fill="#fff" class="st-line"/>
+  </svg></div>`;
 }
 function openScanTips() {
   const tip = (icon, text) => `<div class="li" style="gap:12px;padding:10px 0"><span style="font-size:22px;width:30px;text-align:center">${icon}</span><span class="grow" style="font-weight:600">${text}</span></div>`;
