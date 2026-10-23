@@ -1074,7 +1074,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v175';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v176';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1842,12 +1842,12 @@ function sheet(html, mount) {
   if (mount) mount(sh);
 }
 function closeSheet() { document.querySelectorAll('.backdrop').forEach(x => x.remove()); }
-// Closing by hand slides the sheet down first
+// Closing by hand slides the sheet down first; a sheet can name where closing goes back to (sheet.back)
 function dismissSheet() {
   const b = $('.backdrop'), sh = b && b.querySelector('.sheet');
   if (!sh) return;
   sh.style.transition = 'transform .2s ease'; sh.style.transform = 'translateY(105%)'; b.style.transition = 'opacity .2s'; b.style.opacity = '0';
-  setTimeout(() => b.remove(), 200);
+  setTimeout(() => { b.remove(); if (sh.back) sh.back(); }, 200);
 }
 
 function openAddMenu() {
@@ -1898,6 +1898,7 @@ function openScanTips() {
     <button class="btn" id="stGo" style="margin-top:14px">📷 ${T('Scan now')}</button>
     <p class="small muted" style="text-align:center;margin:10px 0 0">${T('You can always correct the result afterwards.')}</p>`, s => {
     s.querySelector('#stGo').onclick = () => { LS.set('ft_scanTips', '1'); openCamera('food'); };
+    s.back = openAddMenu;   // closing the tips goes back to the Add menu
   });
 }
 
