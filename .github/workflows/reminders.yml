@@ -52,6 +52,8 @@ jobs:
             if (server) {
               const r = await fetch(server + '/subs', { headers: auth });
               if (!r.ok) { console.error('Could not read the phone list:', r.status); process.exit(1); }
+              // Cloudflare sends the reminders itself now (on time, every 15 minutes): nothing to do here
+              if (r.headers.get('x-cron-push') && !env.FORCE) { console.log('Reminders are sent by Cloudflare now.'); return; }
               list.push(...await r.json());
             }
             if (env.PUSH_SUBSCRIPTION) {
