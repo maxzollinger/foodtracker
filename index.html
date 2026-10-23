@@ -1033,7 +1033,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v164';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v165';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3637,6 +3637,10 @@ async function loadUsersNow() {
           <div class="small" style="margin-top:6px">${T('Yesterday: {n} AI requests', { n: y.n.toLocaleString(LOC) })}${y.refused ? ` · ${T('{n} refused by Google', { n: y.refused })}` : ''}</div>
           <div class="small" style="margin-top:6px;font-weight:600;color:${hit ? 'var(--bad)' : 'var(--good)'}">${hit ? '⚠️ ' + T('People saw "AI busy" {n} times this week. You are close to the free limit.', { n: hit }) : '✓ ' + T('Within the free limit: nobody had to wait.')}</div>
 </div>`; })()}
+      ${(st.perUser || []).length ? `<details style="margin-top:12px;text-align:left"><summary class="small" style="font-weight:700;cursor:pointer">✨ ${T('AI use per person')} (${st.perUser.length})</summary>
+        <div class="list" style="box-shadow:none;background:var(--chip);margin-top:8px">${st.perUser.map(u => `<div class="li" style="align-items:flex-start"><span class="grow" style="min-width:0">
+          <b style="overflow-wrap:anywhere;font-size:14px">${u.who ? esc(u.who) : u.acct ? '👤 ' + T('Account') : '📱 ' + T('Phone without account')}</b><br>
+          <span class="small muted">${T('{n} today', { n: u.today })} · ${T('{n} in 7 days', { n: u.week })}</span></span></div>`).join('')}</div></details>` : ''}
       <p class="small muted" id="usWhen" style="margin:12px 0 0;text-align:center">${T('Updated {t} · refreshes by itself every minute', { t: new Date().toLocaleTimeString(LOC, { hour: '2-digit', minute: '2-digit', second: '2-digit' }) })}</p>`;
     box.animate([{ opacity: .35 }, { opacity: 1 }], { duration: 350, easing: 'ease-out' });   // you can see that it refreshed
     if ($('#usAcc')) $('#usAcc').onclick = openAccountsList;

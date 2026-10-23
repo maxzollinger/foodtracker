@@ -1485,7 +1485,12 @@ window.I18N = {
 "This password appeared in a data leak. Please choose a different one.":"Dieses Passwort ist in einem Datenleck aufgetaucht. Bitte wähle ein anderes.",
 "This password is too easy to guess.":"Dieses Passwort ist zu leicht zu erraten.",
 "Too many wrong passwords. For safety, this account is locked for an hour.":"Zu viele falsche Passwörter. Zur Sicherheit ist dieses Konto für eine Stunde gesperrt.",
-"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Beim Erstellen eines Kontos prüft die App, ob dein Passwort in einem bekannten Datenleck aufgetaucht ist (Have I Been Pwned). Dafür werden nur die ersten 5 Zeichen einer verschlüsselten Version geschickt; dein Passwort verlässt dein Handy nie."
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Beim Erstellen eines Kontos prüft die App, ob dein Passwort in einem bekannten Datenleck aufgetaucht ist (Have I Been Pwned). Dafür werden nur die ersten 5 Zeichen einer verschlüsselten Version geschickt; dein Passwort verlässt dein Handy nie.",
+"AI use per person":"KI-Nutzung pro Person",
+"Phone without account":"Handy ohne Konto",
+"{n} in 7 days":"{n} in 7 Tagen",
+"{n} today":"{n} heute",
+"Account":"Konto"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2972,7 +2977,12 @@ window.I18N = {
 "This password appeared in a data leak. Please choose a different one.":"Esta contraseña apareció en una filtración de datos. Elige otra, por favor.",
 "This password is too easy to guess.":"Esta contraseña es demasiado fácil de adivinar.",
 "Too many wrong passwords. For safety, this account is locked for an hour.":"Demasiadas contraseñas incorrectas. Por seguridad, esta cuenta queda bloqueada una hora.",
-"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Al crear una cuenta, la app comprueba si tu contraseña apareció en una filtración conocida (Have I Been Pwned). Solo se envían los 5 primeros caracteres de una versión cifrada; tu contraseña nunca sale de tu móvil."
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Al crear una cuenta, la app comprueba si tu contraseña apareció en una filtración conocida (Have I Been Pwned). Solo se envían los 5 primeros caracteres de una versión cifrada; tu contraseña nunca sale de tu móvil.",
+"AI use per person":"Uso de IA por persona",
+"Phone without account":"Móvil sin cuenta",
+"{n} in 7 days":"{n} en 7 días",
+"{n} today":"{n} hoy",
+"Account":"Cuenta"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4459,7 +4469,12 @@ window.I18N = {
 "This password appeared in a data leak. Please choose a different one.":"Ce mot de passe est apparu dans une fuite de données. Choisis-en un autre.",
 "This password is too easy to guess.":"Ce mot de passe est trop facile à deviner.",
 "Too many wrong passwords. For safety, this account is locked for an hour.":"Trop de mots de passe erronés. Par sécurité, ce compte est bloqué pendant une heure.",
-"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Quand tu crées un compte, l’app vérifie si ton mot de passe est apparu dans une fuite connue (Have I Been Pwned). Seuls les 5 premiers caractères d’une version chiffrée sont envoyés ; ton mot de passe ne quitte jamais ton téléphone."
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Quand tu crées un compte, l’app vérifie si ton mot de passe est apparu dans une fuite connue (Have I Been Pwned). Seuls les 5 premiers caractères d’une version chiffrée sont envoyés ; ton mot de passe ne quitte jamais ton téléphone.",
+"AI use per person":"Utilisation de l’IA par personne",
+"Phone without account":"Téléphone sans compte",
+"{n} in 7 days":"{n} en 7 jours",
+"{n} today":"{n} aujourd’hui",
+"Account":"Compte"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5946,7 +5961,12 @@ window.I18N = {
 "This password appeared in a data leak. Please choose a different one.":"Questa password è comparsa in una fuga di dati. Scegline un’altra.",
 "This password is too easy to guess.":"Questa password è troppo facile da indovinare.",
 "Too many wrong passwords. For safety, this account is locked for an hour.":"Troppe password errate. Per sicurezza questo account è bloccato per un’ora.",
-"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Quando crei un account, l’app controlla se la password è comparsa in una fuga di dati nota (Have I Been Pwned). Vengono inviati solo i primi 5 caratteri di una versione cifrata; la password non lascia mai il telefono."
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Quando crei un account, l’app controlla se la password è comparsa in una fuga di dati nota (Have I Been Pwned). Vengono inviati solo i primi 5 caratteri di una versione cifrata; la password non lascia mai il telefono.",
+"AI use per person":"Uso dell’IA per persona",
+"Phone without account":"Telefono senza account",
+"{n} in 7 days":"{n} in 7 giorni",
+"{n} today":"{n} oggi",
+"Account":"Account"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7433,7 +7453,12 @@ window.I18N = {
 "This password appeared in a data leak. Please choose a different one.":"このパスワードはデータ漏えいで見つかっています。別のパスワードを選んでください。",
 "This password is too easy to guess.":"このパスワードは推測されやすすぎます。",
 "Too many wrong passwords. For safety, this account is locked for an hour.":"パスワードの間違いが多すぎます。安全のため、このアカウントは1時間ロックされます。",
-"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"アカウント作成時、パスワードが既知のデータ漏えいに含まれていないか確認します（Have I Been Pwned）。送信されるのは暗号化したパスワードの最初の5文字だけで、パスワード自体がスマホの外に出ることはありません。"
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"アカウント作成時、パスワードが既知のデータ漏えいに含まれていないか確認します（Have I Been Pwned）。送信されるのは暗号化したパスワードの最初の5文字だけで、パスワード自体がスマホの外に出ることはありません。",
+"AI use per person":"1人あたりのAI利用",
+"Phone without account":"アカウントなしの端末",
+"{n} in 7 days":"7日間で {n}",
+"{n} today":"今日 {n}",
+"Account":"アカウント"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8920,7 +8945,12 @@ window.I18N = {
 "This password appeared in a data leak. Please choose a different one.":"Dit wachtwoord kwam voor in een datalek. Kies een ander.",
 "This password is too easy to guess.":"Dit wachtwoord is te makkelijk te raden.",
 "Too many wrong passwords. For safety, this account is locked for an hour.":"Te veel verkeerde wachtwoorden. Voor de veiligheid is dit account een uur geblokkeerd.",
-"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Als je een account maakt, controleert de app of je wachtwoord in een bekend datalek voorkwam (Have I Been Pwned). Alleen de eerste 5 tekens van een versleutelde versie worden verstuurd; je wachtwoord verlaat je telefoon nooit."
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Als je een account maakt, controleert de app of je wachtwoord in een bekend datalek voorkwam (Have I Been Pwned). Alleen de eerste 5 tekens van een versleutelde versie worden verstuurd; je wachtwoord verlaat je telefoon nooit.",
+"AI use per person":"AI-gebruik per persoon",
+"Phone without account":"Telefoon zonder account",
+"{n} in 7 days":"{n} in 7 dagen",
+"{n} today":"{n} vandaag",
+"Account":"Account"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -10407,7 +10437,12 @@ window.I18N = {
 "This password appeared in a data leak. Please choose a different one.":"To hasło pojawiło się w wycieku danych. Wybierz inne.",
 "This password is too easy to guess.":"To hasło jest zbyt łatwe do odgadnięcia.",
 "Too many wrong passwords. For safety, this account is locked for an hour.":"Za dużo błędnych haseł. Dla bezpieczeństwa konto jest zablokowane na godzinę.",
-"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Przy zakładaniu konta aplikacja sprawdza, czy hasło pojawiło się w znanym wycieku (Have I Been Pwned). Wysyłane jest tylko 5 pierwszych znaków zaszyfrowanej wersji; hasło nigdy nie opuszcza telefonu."
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Przy zakładaniu konta aplikacja sprawdza, czy hasło pojawiło się w znanym wycieku (Have I Been Pwned). Wysyłane jest tylko 5 pierwszych znaków zaszyfrowanej wersji; hasło nigdy nie opuszcza telefonu.",
+"AI use per person":"Użycie AI na osobę",
+"Phone without account":"Telefon bez konta",
+"{n} in 7 days":"{n} w 7 dni",
+"{n} today":"{n} dziś",
+"Account":"Konto"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -11894,7 +11929,12 @@ window.I18N = {
 "This password appeared in a data leak. Please choose a different one.":"Esta palavra-passe apareceu numa fuga de dados. Escolha outra.",
 "This password is too easy to guess.":"Esta palavra-passe é demasiado fácil de adivinhar.",
 "Too many wrong passwords. For safety, this account is locked for an hour.":"Demasiadas palavras-passe erradas. Por segurança, esta conta fica bloqueada durante uma hora.",
-"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Ao criar uma conta, a app verifica se a palavra-passe apareceu numa fuga de dados conhecida (Have I Been Pwned). Só são enviados os primeiros 5 caracteres de uma versão encriptada; a palavra-passe nunca sai do telemóvel."
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Ao criar uma conta, a app verifica se a palavra-passe apareceu numa fuga de dados conhecida (Have I Been Pwned). Só são enviados os primeiros 5 caracteres de uma versão encriptada; a palavra-passe nunca sai do telemóvel.",
+"AI use per person":"Uso de IA por pessoa",
+"Phone without account":"Telemóvel sem conta",
+"{n} in 7 days":"{n} em 7 dias",
+"{n} today":"{n} hoje",
+"Account":"Conta"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -13381,7 +13421,12 @@ window.I18N = {
 "This password appeared in a data leak. Please choose a different one.":"Этот пароль встречался в утечке данных. Выберите другой.",
 "This password is too easy to guess.":"Этот пароль слишком легко угадать.",
 "Too many wrong passwords. For safety, this account is locked for an hour.":"Слишком много неверных паролей. В целях безопасности аккаунт заблокирован на час.",
-"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"При создании аккаунта приложение проверяет, не встречался ли пароль в известных утечках (Have I Been Pwned). Отправляются только первые 5 символов зашифрованной версии; сам пароль никогда не покидает телефон."
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"При создании аккаунта приложение проверяет, не встречался ли пароль в известных утечках (Have I Been Pwned). Отправляются только первые 5 символов зашифрованной версии; сам пароль никогда не покидает телефон.",
+"AI use per person":"Использование ИИ по людям",
+"Phone without account":"Телефон без аккаунта",
+"{n} in 7 days":"{n} за 7 дней",
+"{n} today":"{n} сегодня",
+"Account":"Аккаунт"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -14868,7 +14913,12 @@ window.I18N = {
 "This password appeared in a data leak. Please choose a different one.":"Bu şifre bir veri sızıntısında görüldü. Lütfen başka bir şifre seç.",
 "This password is too easy to guess.":"Bu şifre tahmin edilmesi çok kolay.",
 "Too many wrong passwords. For safety, this account is locked for an hour.":"Çok fazla yanlış şifre. Güvenlik için bu hesap bir saatliğine kilitlendi.",
-"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Hesap oluştururken uygulama, şifrenin bilinen bir veri sızıntısında görülüp görülmediğini kontrol eder (Have I Been Pwned). Yalnızca şifrelenmiş bir sürümün ilk 5 karakteri gönderilir; şifren telefonundan asla çıkmaz."
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Hesap oluştururken uygulama, şifrenin bilinen bir veri sızıntısında görülüp görülmediğini kontrol eder (Have I Been Pwned). Yalnızca şifrelenmiş bir sürümün ilk 5 karakteri gönderilir; şifren telefonundan asla çıkmaz.",
+"AI use per person":"Kişi başına yapay zekâ kullanımı",
+"Phone without account":"Hesapsız telefon",
+"{n} in 7 days":"7 günde {n}",
+"{n} today":"bugün {n}",
+"Account":"Hesap"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -16355,6 +16405,11 @@ window.I18N = {
 "This password appeared in a data leak. Please choose a different one.":"该密码曾出现在数据泄露中，请换一个。",
 "This password is too easy to guess.":"该密码太容易被猜到。",
 "Too many wrong passwords. For safety, this account is locked for an hour.":"错误密码次数过多。为了安全，此账户已锁定一小时。",
-"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"创建账户时，应用会检查你的密码是否出现在已知数据泄露中（Have I Been Pwned）。只会发送加密后版本的前 5 个字符，你的密码绝不会离开你的手机。"
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"创建账户时，应用会检查你的密码是否出现在已知数据泄露中（Have I Been Pwned）。只会发送加密后版本的前 5 个字符，你的密码绝不会离开你的手机。",
+"AI use per person":"每人 AI 使用量",
+"Phone without account":"无账户的手机",
+"{n} in 7 days":"7 天内 {n}",
+"{n} today":"今天 {n}",
+"Account":"账户"
 }
 };
