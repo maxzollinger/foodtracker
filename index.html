@@ -1033,7 +1033,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v161';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v162';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2352,7 +2352,7 @@ async function runBackup(manual, a = acct()) {
     const zz = await zipText(payload);
     const ct = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await aesKey(a.key), zz.bytes));
     const rep = OLD_HOME ? {} : aiReport();
-    const r = await fetch(SERVER_URL + '/backup', { method: 'POST', headers: { 'Content-Type': 'text/plain', 'X-Id': a.id, 'X-Auth': a.auth, ...(OLD_HOME ? {} : { 'X-Dev': devId(), 'X-AI': JSON.stringify(rep) }), ...(a.email && LS.get('ft_email_note', '') ? { 'X-Email': encodeURIComponent(a.email) } : {}) },
+    const r = await fetch(SERVER_URL + '/backup', { method: 'POST', headers: { 'Content-Type': 'text/plain', 'X-Id': a.id, 'X-Auth': a.auth, ...(OLD_HOME ? {} : { 'X-Dev': devId(), 'X-AI': JSON.stringify(rep) }), ...(a.email && LS.get('ft_email_note', '') === '1' ? { 'X-Email': encodeURIComponent(a.email) } : LS.get('ft_email_note', '') === 'no' ? { 'X-Email': '-' } : {}) },
       body: (zz.z ? 'z' : 'p') + '.' + b64(iv) + '.' + b64(ct) });
     if (!r.ok) throw new Error('HTTP ' + r.status);
     LS.set('ft_bk_last', String(Date.now()));
@@ -2389,6 +2389,21 @@ function applyAccountData(p) {
   if (p.push) LS.set('ft_push_prefs', p.push);
   sessionStorage.setItem('ft_restored', '1');
   kvWait().then(() => location.reload());
+}
+// "Delete all data": everything on this phone and everything about it on the server. Only language and look stay.
+async function wipeEverything() {
+  await deleteBackup();   // account backup and meal photos
+  const L = linkInfo();
+  if (L && L.vid && SERVER_URL) { try { await post('/link/vault/delete', { vid: L.vid, vs: L.vs }); } catch {} }   // tracker sign-in
+  try {   // reminders
+    const reg = await navigator.serviceWorker?.getRegistration(), sub = await reg?.pushManager.getSubscription();
+    if (sub) { if (SERVER_URL) { try { await post('/unsubscribe', { endpoint: sub.endpoint }); } catch {} } await sub.unsubscribe(); }
+  } catch {}
+  const keep = ['ft_lang', 'ft_theme', 'ft_bg'];
+  try { for (const k of Object.keys(localStorage)) if (k.startsWith('ft_') && !keep.includes(k)) localStorage.removeItem(k); } catch {}
+  for (const k of Object.keys(window.__kv || {})) delete window.__kv[k];
+  chat = []; db = EMPTY();
+  await idb.clear(); save();
 }
 async function deleteBackup() {   // used by "Delete all data": the account and its saved data are removed too
   const a = acct();
@@ -2571,7 +2586,11 @@ function emailNote() {
   sheet(`<div style="text-align:center;padding:6px 4px 0"><div class="askbell">👤</div>
     <h3 style="margin:14px 0 6px">${T('A small privacy update')}</h3>
     <p class="muted" style="margin:0 0 18px">${T('So the app owner can help you if you ever forget your login, your account email is now visible to them. Your meals, photos and everything else stay encrypted: only you can read them.')}</p>
-    <button class="btn" id="enOk">${T('OK')}</button></div>`, sh => { sh.querySelector('#enOk').onclick = () => { LS.set('ft_email_note', '1'); dismissSheet(); setTimeout(() => runBackup(false), 600); }; });
+    <button class="btn" id="enOk">${T('OK')}</button>
+    <button class="small muted" id="enNo" style="display:block;margin:12px auto 0;padding:6px;text-decoration:underline">${T("Don't show my email")}</button></div>`, sh => {
+      sh.querySelector('#enOk').onclick = () => { LS.set('ft_email_note', '1'); dismissSheet(); setTimeout(() => runBackup(false), 600); };
+      sh.querySelector('#enNo').onclick = () => { LS.set('ft_email_note', 'no'); dismissSheet(); toast('✓ ' + T('Your email stays hidden.')); setTimeout(() => runBackup(false), 600); };   // the email is removed from the owner's list too
+    });
 }
 function backupCard() {
   if (!SERVER_URL) return '';
@@ -3837,7 +3856,8 @@ function openPrivacy() {
     <p class="muted" style="margin:4px 0 14px">${T('Food Tracker is a private app shared among friends and family. This is exactly what happens with your data.')}</p>
     ${sec('📱', T('On your phone'), T('Your meals, photos, weights, goals, meal plans and coach chats are stored on your phone.'))}
     ${sec('☁️', T('Account & backup'), T("If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner."))}
-    ${sec('👤', T('Your account email'), T('The app owner can see the email address of each account, for example to help if you forget your login. Your meals, photos and everything else stay encrypted.'))}
+    ${sec('👤', T('Your account email'), T('The app owner can see the email address of each account, for example to help if you forget your login. Your meals, photos and everything else stay encrypted.') + ' ' + T('You can hide it any time.')
+      + (acct() ? `<br><button class="chipbtn" id="pvMail" style="margin-top:8px">${LS.get('ft_email_note', '') === 'no' ? T('Show my email to the owner') : T("Don't show my email")}</button>` : ''))}
     ${sec('✨', T('AI'), T('When you scan food, chat with the coach, use voice input or create a meal plan, that photo, text or recording is sent through the Food Tracker server to Google Gemini to get an answer. The server does not keep it. Google handles it under the Gemini API terms, so please don\'t send very sensitive things like medical documents.'))}
     ${sec('🔔', T('Notifications'), T("If you turn on reminders, the server keeps your phone's notification address, your reminder times and your time zone. Nothing else."))}
     ${sec('⌚', T('Watch & tracker'), T('If you connect Apple Health or a tracker, only your calories burned per day are read. For WHOOP, Oura, Polar and Withings the sign-in key is kept on the Food Tracker server, encrypted with a secret that only your phone has. Numbers from the Apple Health Shortcut wait on the server for up to 30 days until your app picks them up.'))}
@@ -3847,9 +3867,12 @@ function openPrivacy() {
     ${sec('🌍', T('Where data is stored'), T('The app and the server run on Cloudflare, AI answers come from Google. Their computers can be outside Switzerland and the EU.'))}
     ${sec('✋', T('Your rights'), T('You can get a copy of your data any time (Settings → Backup data), delete it (Settings → Delete all data) and ask what is stored about you.'))}
     ${sec('🚫', T('What never happens'), T('No ads, no tracking and no selling of data. No emails are sent to you.'))}
-    ${sec('🗑️', T('Deleting'), T('Settings → Delete all data removes everything on this phone and your account backup on the server.'))}
+    ${sec('🗑️', T('Deleting'), T('Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, reminders and tracker connection.') + (OWNER.email ? ' ' + T('Lost your phone? Email {email} and your account is deleted.', { email: esc(OWNER.email) }) : ''))}
     <p class="small muted" style="text-align:center;margin:16px 0 0">${ownerLine()}</p>
-    <button class="chipbtn" style="display:block;margin:12px auto 0" onclick="closeSheet();setTimeout(openTerms,250)">📄 ${T('Terms of use')}</button>`);
+    <button class="chipbtn" style="display:block;margin:12px auto 0" onclick="closeSheet();setTimeout(openTerms,250)">📄 ${T('Terms of use')}</button>`, sh => {
+    const m = sh.querySelector('#pvMail');
+    if (m) m.onclick = () => { const hide = LS.get('ft_email_note', '') !== 'no'; LS.set('ft_email_note', hide ? 'no' : '1'); toast('✓ ' + (hide ? T('Your email stays hidden.') : T('Saved'))); runBackup(false); m.textContent = hide ? T('Show my email to the owner') : T("Don't show my email"); };
+  });
 }
 function openTerms() {
   const sec = (ic, title, text) => `<div class="priv"><div class="priv-ic">${ic}</div><div><b>${title}</b><p>${text}</p></div></div>`;
@@ -5903,7 +5926,7 @@ function renderSettings() {
   $('#dImp').onclick = () => $('#fileImport').click();
   $('#dDel').onclick = async () => {
     if (!confirm(T('Delete ALL meals, weights and goals? This cannot be undone.'))) return;
-    busyStart(); try { await deleteBackup(); db = EMPTY(); save(); await idb.clear(); } finally { busyEnd(); }
+    busyStart(); try { await wipeEverything(); } finally { busyEnd(); }
     toast(T('All data deleted')); startOnboarding();
   };
 }
@@ -6191,6 +6214,15 @@ function birthPicker(birth) {
   return `<div class="row" style="gap:10px;align-items:flex-end">${order.map(k => parts[k]).join('')}</div>
     <p class="small muted" id="obAge" style="text-align:center;margin:14px 0 0;font-weight:600">${birth ? T('You are {n} years old.', { n: age({ birth }) }) : ''}</p>`;
 }
+// Young people: under 16 only with a parent's OK; under 18 a short note that goals are made for adults
+function kidBox(p) {
+  if (!p.birth) return '';
+  const a = age({ birth: p.birth });
+  if (a >= 18) return '';
+  return `<div class="tip" style="margin-top:16px">${a < 16 ? `<label class="row" style="gap:10px;align-items:flex-start;cursor:pointer"><input type="checkbox" id="obParent" ${p.parentOk ? 'checked' : ''} style="width:22px;height:22px;flex:none;margin:1px 0 0">
+    <span>${T('A parent or guardian allows me to use Food Tracker.')}</span></label>` : ''}
+    <p class="small muted" style="margin:${a < 16 ? '10px' : '0'} 0 0">${T('The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.')}</p></div>`;
+}
 function renderOb() {
   let pg = $('#onb');
   if (!pg) { pg = document.createElement('div'); pg.id = 'onb'; pg.className = 'page'; pg.style.zIndex = 45; document.body.appendChild(pg); }
@@ -6235,7 +6267,7 @@ function renderOb() {
   if (s === 'btype') { title = T('Which body type is closest to you?'); sub = T('Optional. Makes your goal more accurate.');
     body = bodyTypeTiles(p.bodyType || 0, p.sex); cta = p.bodyType ? T('Continue') : T('Skip'); }
   if (s === 'birth') { title = T('When were you born?');
-    body = birthPicker(p.birth); ok = !!p.birth; }
+    body = birthPicker(p.birth) + `<div id="obKid">${kidBox(p)}</div>`; ok = !!p.birth && !(age({ birth: p.birth }) < 16 && !p.parentOk); }
   if (s === 'dir') { const dir = p.plan ? uiDir(p) : '';
     title = T('What about your weight?'); sub = T('Lifestyle and fasting come next.');
     body = [['lose', '🔥', T('Lose weight')], ['maintain', '⚖️', T('Keep my weight')], ['gain', '💪', T('Gain weight')]]
@@ -6311,7 +6343,9 @@ function renderOb() {
       if (d && m && y) { const last = new Date(y, m, 0).getDate(); if (d > last) pg.querySelector('#obBd').value = String(last); p.birth = `${y}-${String(m).padStart(2, '0')}-${String(Math.min(d, last)).padStart(2, '0')}`;
         if (p.birth > iso()) { p.birth = iso(); const [ty, tm, td] = p.birth.split('-').map(Number); pg.querySelector('#obBy').value = String(ty); pg.querySelector('#obBm').value = String(tm); pg.querySelector('#obBd').value = String(td); } }   // never after today
       else p.birth = '';
-      pg.querySelector('#obNext').disabled = !p.birth;
+      if (!(p.birth && age({ birth: p.birth }) < 16)) delete p.parentOk;
+      const kb = pg.querySelector('#obKid'); if (kb) { kb.innerHTML = kidBox(p); const cb = kb.querySelector('#obParent'); if (cb) cb.onchange = () => { p.parentOk = cb.checked; pg.querySelector('#obNext').disabled = !p.parentOk; }; }
+      pg.querySelector('#obNext').disabled = !p.birth || (age({ birth: p.birth }) < 16 && !p.parentOk);
       const a = pg.querySelector('#obAge'); if (a) a.textContent = p.birth ? T('You are {n} years old.', { n: age({ birth: p.birth }) }) : '';
     };
     ['#obBd', '#obBm', '#obBy'].forEach(id => pg.querySelector(id).onchange = upd);

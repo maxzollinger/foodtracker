@@ -1470,7 +1470,15 @@ window.I18N = {
 "Your content":"Deine Inhalte",
 "Your meals, photos and chats stay yours. The app only uses them to work for you.":"Deine Mahlzeiten, Fotos und Chats gehören dir. Die App nutzt sie nur, um für dich zu funktionieren.",
 "Your rights":"Deine Rechte",
-"Privacy policy":"Datenschutzhinweis"
+"Privacy policy":"Datenschutzhinweis",
+"A parent or guardian allows me to use Food Tracker.":"Ein Elternteil oder eine erziehungsberechtigte Person erlaubt mir, Food Tracker zu nutzen.",
+"Don't show my email":"Meine E-Mail nicht zeigen",
+"Lost your phone? Email {email} and your account is deleted.":"Handy verloren? Schreib an {email}, dann wird dein Konto gelöscht.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, reminders and tracker connection.":"Einstellungen → Alle Daten löschen entfernt alles auf diesem Handy und alles dazu auf dem Server: Konto, Fotos, Erinnerungen und Uhr-Verbindung.",
+"Show my email to the owner":"Meine E-Mail dem Besitzer zeigen",
+"The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Die Kalorienziele sind für Erwachsene gemacht. Sprich mit deinen Eltern oder einer Ärztin, bevor du abnehmen willst.",
+"You can hide it any time.":"Du kannst sie jederzeit verbergen.",
+"Your email stays hidden.":"Deine E-Mail bleibt verborgen."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2942,7 +2950,15 @@ window.I18N = {
 "Your content":"Tu contenido",
 "Your meals, photos and chats stay yours. The app only uses them to work for you.":"Tus comidas, fotos y chats son tuyos. La app solo los usa para funcionar para ti.",
 "Your rights":"Tus derechos",
-"Privacy policy":"política de privacidad"
+"Privacy policy":"política de privacidad",
+"A parent or guardian allows me to use Food Tracker.":"Mi madre, padre o tutor me permite usar Food Tracker.",
+"Don't show my email":"No mostrar mi correo",
+"Lost your phone? Email {email} and your account is deleted.":"¿Perdiste el móvil? Escribe a {email} y se borra tu cuenta.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, reminders and tracker connection.":"Ajustes → Borrar todos los datos elimina todo en este móvil y todo lo relacionado en el servidor: cuenta, fotos, recordatorios y conexión del reloj.",
+"Show my email to the owner":"Mostrar mi correo al propietario",
+"The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Los objetivos de calorías están pensados para adultos. Habla con tus padres o un médico antes de intentar bajar de peso.",
+"You can hide it any time.":"Puedes ocultarlo cuando quieras.",
+"Your email stays hidden.":"Tu correo queda oculto."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4414,7 +4430,15 @@ window.I18N = {
 "Your content":"Ton contenu",
 "Your meals, photos and chats stay yours. The app only uses them to work for you.":"Tes repas, photos et discussions t’appartiennent. L’app ne les utilise que pour fonctionner pour toi.",
 "Your rights":"Tes droits",
-"Privacy policy":"politique de confidentialité"
+"Privacy policy":"politique de confidentialité",
+"A parent or guardian allows me to use Food Tracker.":"Un parent ou tuteur m’autorise à utiliser Food Tracker.",
+"Don't show my email":"Ne pas montrer mon e-mail",
+"Lost your phone? Email {email} and your account is deleted.":"Téléphone perdu ? Écris à {email} et ton compte sera supprimé.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, reminders and tracker connection.":"Réglages → Supprimer toutes les données efface tout sur ce téléphone et tout ce qui le concerne sur le serveur : compte, photos, rappels et connexion de la montre.",
+"Show my email to the owner":"Montrer mon e-mail au propriétaire",
+"The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Les objectifs caloriques sont faits pour les adultes. Parle à un parent ou un médecin avant d’essayer de perdre du poids.",
+"You can hide it any time.":"Tu peux le masquer à tout moment.",
+"Your email stays hidden.":"Ton e-mail reste masqué."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5886,7 +5910,15 @@ window.I18N = {
 "Your content":"I tuoi contenuti",
 "Your meals, photos and chats stay yours. The app only uses them to work for you.":"I tuoi pasti, foto e chat restano tuoi. L’app li usa solo per funzionare per te.",
 "Your rights":"I tuoi diritti",
-"Privacy policy":"informativa sulla privacy"
+"Privacy policy":"informativa sulla privacy",
+"A parent or guardian allows me to use Food Tracker.":"Un genitore o tutore mi permette di usare Food Tracker.",
+"Don't show my email":"Non mostrare la mia email",
+"Lost your phone? Email {email} and your account is deleted.":"Hai perso il telefono? Scrivi a {email} e il tuo account verrà eliminato.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, reminders and tracker connection.":"Impostazioni → Elimina tutti i dati cancella tutto su questo telefono e tutto ciò che lo riguarda sul server: account, foto, promemoria e collegamento dell’orologio.",
+"Show my email to the owner":"Mostra la mia email al proprietario",
+"The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Gli obiettivi calorici sono pensati per adulti. Parla con un genitore o un medico prima di provare a dimagrire.",
+"You can hide it any time.":"Puoi nasconderla in qualsiasi momento.",
+"Your email stays hidden.":"La tua email resta nascosta."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7358,7 +7390,15 @@ window.I18N = {
 "Your content":"あなたのコンテンツ",
 "Your meals, photos and chats stay yours. The app only uses them to work for you.":"食事、写真、チャットはあなたのものです。アプリはあなたのために動作する目的でのみ使用します。",
 "Your rights":"あなたの権利",
-"Privacy policy":"プライバシーポリシー"
+"Privacy policy":"プライバシーポリシー",
+"A parent or guardian allows me to use Food Tracker.":"保護者が Food Tracker の利用を許可しています。",
+"Don't show my email":"メールアドレスを表示しない",
+"Lost your phone? Email {email} and your account is deleted.":"スマホをなくした場合は {email} に連絡すると、アカウントが削除されます。",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, reminders and tracker connection.":"設定 → すべてのデータを削除 で、このスマホのデータとサーバー上の関連データ（アカウント、写真、リマインダー、ウォッチ連携）がすべて削除されます。",
+"Show my email to the owner":"メールアドレスを管理者に表示する",
+"The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"カロリー目標は大人向けです。減量を始める前に保護者や医師に相談してください。",
+"You can hide it any time.":"いつでも非表示にできます。",
+"Your email stays hidden.":"メールアドレスは非表示のままです。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8830,7 +8870,15 @@ window.I18N = {
 "Your content":"Jouw inhoud",
 "Your meals, photos and chats stay yours. The app only uses them to work for you.":"Je maaltijden, foto’s en chats blijven van jou. De app gebruikt ze alleen om voor jou te werken.",
 "Your rights":"Jouw rechten",
-"Privacy policy":"privacybeleid"
+"Privacy policy":"privacybeleid",
+"A parent or guardian allows me to use Food Tracker.":"Een ouder of voogd geeft me toestemming om Food Tracker te gebruiken.",
+"Don't show my email":"Mijn e-mail niet tonen",
+"Lost your phone? Email {email} and your account is deleted.":"Telefoon kwijt? Mail naar {email} en je account wordt verwijderd.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, reminders and tracker connection.":"Instellingen → Alle gegevens verwijderen wist alles op deze telefoon en alles wat erbij hoort op de server: account, foto’s, herinneringen en horlogekoppeling.",
+"Show my email to the owner":"Mijn e-mail tonen aan de eigenaar",
+"The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"De caloriedoelen zijn gemaakt voor volwassenen. Praat met een ouder of arts voordat je probeert af te vallen.",
+"You can hide it any time.":"Je kunt hem altijd verbergen.",
+"Your email stays hidden.":"Je e-mail blijft verborgen."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -10302,7 +10350,15 @@ window.I18N = {
 "Your content":"Twoje treści",
 "Your meals, photos and chats stay yours. The app only uses them to work for you.":"Twoje posiłki, zdjęcia i czaty należą do ciebie. Aplikacja używa ich tylko po to, by dla ciebie działać.",
 "Your rights":"Twoje prawa",
-"Privacy policy":"politykę prywatności"
+"Privacy policy":"politykę prywatności",
+"A parent or guardian allows me to use Food Tracker.":"Rodzic lub opiekun pozwala mi korzystać z Food Tracker.",
+"Don't show my email":"Nie pokazuj mojego e-maila",
+"Lost your phone? Email {email} and your account is deleted.":"Zgubiłeś telefon? Napisz na {email}, a twoje konto zostanie usunięte.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, reminders and tracker connection.":"Ustawienia → Usuń wszystkie dane usuwa wszystko z tego telefonu i wszystko, co go dotyczy na serwerze: konto, zdjęcia, przypomnienia i połączenie z zegarkiem.",
+"Show my email to the owner":"Pokaż mój e-mail właścicielowi",
+"The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Cele kaloryczne są przeznaczone dla dorosłych. Porozmawiaj z rodzicem lub lekarzem, zanim zaczniesz się odchudzać.",
+"You can hide it any time.":"Możesz go w każdej chwili ukryć.",
+"Your email stays hidden.":"Twój e-mail pozostaje ukryty."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -11774,7 +11830,15 @@ window.I18N = {
 "Your content":"O seu conteúdo",
 "Your meals, photos and chats stay yours. The app only uses them to work for you.":"As suas refeições, fotos e conversas são suas. A app só as usa para funcionar para si.",
 "Your rights":"Os seus direitos",
-"Privacy policy":"política de privacidade"
+"Privacy policy":"política de privacidade",
+"A parent or guardian allows me to use Food Tracker.":"Um dos meus pais ou tutor autoriza-me a usar o Food Tracker.",
+"Don't show my email":"Não mostrar o meu e-mail",
+"Lost your phone? Email {email} and your account is deleted.":"Perdeu o telemóvel? Escreva para {email} e a sua conta é apagada.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, reminders and tracker connection.":"Definições → Apagar todos os dados remove tudo deste telemóvel e tudo o que lhe diz respeito no servidor: conta, fotos, lembretes e ligação do relógio.",
+"Show my email to the owner":"Mostrar o meu e-mail ao proprietário",
+"The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Os objetivos de calorias são feitos para adultos. Fale com os pais ou um médico antes de tentar perder peso.",
+"You can hide it any time.":"Pode ocultá-lo a qualquer momento.",
+"Your email stays hidden.":"O seu e-mail fica oculto."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -13246,7 +13310,15 @@ window.I18N = {
 "Your content":"Ваш контент",
 "Your meals, photos and chats stay yours. The app only uses them to work for you.":"Ваши приёмы пищи, фото и чаты принадлежат вам. Приложение использует их только для работы для вас.",
 "Your rights":"Ваши права",
-"Privacy policy":"политикой конфиденциальности"
+"Privacy policy":"политикой конфиденциальности",
+"A parent or guardian allows me to use Food Tracker.":"Родитель или опекун разрешает мне пользоваться Food Tracker.",
+"Don't show my email":"Не показывать мой e-mail",
+"Lost your phone? Email {email} and your account is deleted.":"Потеряли телефон? Напишите на {email}, и ваш аккаунт будет удалён.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, reminders and tracker connection.":"Настройки → Удалить все данные удаляет всё на этом телефоне и всё, что к нему относится, на сервере: аккаунт, фото, напоминания и подключение часов.",
+"Show my email to the owner":"Показывать мой e-mail владельцу",
+"The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Цели по калориям рассчитаны на взрослых. Поговорите с родителями или врачом, прежде чем пытаться похудеть.",
+"You can hide it any time.":"Вы можете скрыть его в любой момент.",
+"Your email stays hidden.":"Ваш e-mail скрыт."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -14718,7 +14790,15 @@ window.I18N = {
 "Your content":"İçeriğin",
 "Your meals, photos and chats stay yours. The app only uses them to work for you.":"Öğünlerin, fotoğrafların ve sohbetlerin sana aittir. Uygulama bunları yalnızca senin için çalışmak üzere kullanır.",
 "Your rights":"Hakların",
-"Privacy policy":"gizlilik politikasını"
+"Privacy policy":"gizlilik politikasını",
+"A parent or guardian allows me to use Food Tracker.":"Bir ebeveynim veya vasim Food Tracker’ı kullanmama izin veriyor.",
+"Don't show my email":"E-postamı gösterme",
+"Lost your phone? Email {email} and your account is deleted.":"Telefonunu mu kaybettin? {email} adresine yaz, hesabın silinsin.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, reminders and tracker connection.":"Ayarlar → Tüm verileri sil, bu telefondaki her şeyi ve sunucudaki ilgili her şeyi siler: hesap, fotoğraflar, hatırlatıcılar ve saat bağlantısı.",
+"Show my email to the owner":"E-postamı sahibine göster",
+"The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Kalori hedefleri yetişkinler için hazırlanmıştır. Kilo vermeye çalışmadan önce ebeveyninle veya bir doktorla konuş.",
+"You can hide it any time.":"İstediğin zaman gizleyebilirsin.",
+"Your email stays hidden.":"E-postan gizli kalır."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -16190,6 +16270,14 @@ window.I18N = {
 "Your content":"你的内容",
 "Your meals, photos and chats stay yours. The app only uses them to work for you.":"你的餐食、照片和聊天属于你。应用只为你提供服务时使用它们。",
 "Your rights":"你的权利",
-"Privacy policy":"隐私政策"
+"Privacy policy":"隐私政策",
+"A parent or guardian allows me to use Food Tracker.":"我的父母或监护人允许我使用 Food Tracker。",
+"Don't show my email":"不显示我的邮箱",
+"Lost your phone? Email {email} and your account is deleted.":"手机丢了？发邮件到 {email}，我们会删除你的账户。",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, reminders and tracker connection.":"设置 → 删除所有数据 会删除这部手机上的所有内容，以及服务器上相关的所有内容：账户、照片、提醒和手表连接。",
+"Show my email to the owner":"向所有者显示我的邮箱",
+"The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"卡路里目标是为成年人设计的。在尝试减重之前，请先和父母或医生谈谈。",
+"You can hide it any time.":"你可以随时隐藏它。",
+"Your email stays hidden.":"你的邮箱将保持隐藏。"
 }
 };
