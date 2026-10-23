@@ -1492,7 +1492,8 @@ window.I18N = {
 "{n} today":"{n} heute",
 "Account":"Konto",
 "Pieces":"Stück",
-"{n} pcs":"{n} Stk."
+"{n} pcs":"{n} Stk.",
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Wenn Google langsam ist, kann Cloudflare Workers AI eine Coach-Nachricht stattdessen beantworten; auch dort wird sie nicht gespeichert."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2986,7 +2987,8 @@ window.I18N = {
 "{n} today":"{n} hoy",
 "Account":"Cuenta",
 "Pieces":"Piezas",
-"{n} pcs":"{n} uds."
+"{n} pcs":"{n} uds.",
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Si Google va lento, Cloudflare Workers AI puede responder un mensaje del coach en su lugar; tampoco lo guarda."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4480,7 +4482,8 @@ window.I18N = {
 "{n} today":"{n} aujourd’hui",
 "Account":"Compte",
 "Pieces":"Pièces",
-"{n} pcs":"{n} pcs"
+"{n} pcs":"{n} pcs",
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Si Google est lent, Cloudflare Workers AI peut répondre à un message du coach à sa place ; il ne le conserve pas non plus."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5974,7 +5977,8 @@ window.I18N = {
 "{n} today":"{n} oggi",
 "Account":"Account",
 "Pieces":"Pezzi",
-"{n} pcs":"{n} pz"
+"{n} pcs":"{n} pz",
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Se Google è lento, Cloudflare Workers AI può rispondere al suo posto a un messaggio del coach; anche lui non lo conserva."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7468,7 +7472,8 @@ window.I18N = {
 "{n} today":"今日 {n}",
 "Account":"アカウント",
 "Pieces":"個数",
-"{n} pcs":"{n}個"
+"{n} pcs":"{n}個",
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Google が遅いときは、Cloudflare Workers AI がコーチへのメッセージに代わりに答えることがあります。こちらも保存しません。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8962,7 +8967,8 @@ window.I18N = {
 "{n} today":"{n} vandaag",
 "Account":"Account",
 "Pieces":"Stuks",
-"{n} pcs":"{n} st."
+"{n} pcs":"{n} st.",
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Als Google traag is, kan Cloudflare Workers AI een coachbericht beantwoorden; ook dat bewaart het niet."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -10456,7 +10462,8 @@ window.I18N = {
 "{n} today":"{n} dziś",
 "Account":"Konto",
 "Pieces":"Sztuki",
-"{n} pcs":"{n} szt."
+"{n} pcs":"{n} szt.",
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Gdy Google działa wolno, na wiadomość do coacha może odpowiedzieć Cloudflare Workers AI; ono też jej nie przechowuje."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -11950,7 +11957,8 @@ window.I18N = {
 "{n} today":"{n} hoje",
 "Account":"Conta",
 "Pieces":"Unidades",
-"{n} pcs":"{n} un."
+"{n} pcs":"{n} un.",
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Quando o Google está lento, o Cloudflare Workers AI pode responder a uma mensagem do coach; também não a guarda."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -13444,7 +13452,8 @@ window.I18N = {
 "{n} today":"{n} сегодня",
 "Account":"Аккаунт",
 "Pieces":"Штук",
-"{n} pcs":"{n} шт."
+"{n} pcs":"{n} шт.",
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Если Google работает медленно, на сообщение коучу может ответить Cloudflare Workers AI; он тоже его не хранит."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -14938,7 +14947,8 @@ window.I18N = {
 "{n} today":"bugün {n}",
 "Account":"Hesap",
 "Pieces":"Adet",
-"{n} pcs":"{n} adet"
+"{n} pcs":"{n} adet",
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Google yavaş olduğunda koç mesajını bunun yerine Cloudflare Workers AI yanıtlayabilir; o da mesajı saklamaz."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -16432,6 +16442,7 @@ window.I18N = {
 "{n} today":"今天 {n}",
 "Account":"账户",
 "Pieces":"个数",
-"{n} pcs":"{n} 个"
+"{n} pcs":"{n} 个",
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"当 Google 较慢时，教练消息可能改由 Cloudflare Workers AI 回答；它同样不会保存。"
 }
 };
