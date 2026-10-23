@@ -1097,7 +1097,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v183';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v184';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2928,8 +2928,8 @@ async function syncDone() {
     if (daysBetween(lastW, today) + until <= 3) todo.push(['weight', lastW]);   // the weigh-in reminder is skipped within 3 days of a weigh-in
   }
   if (pf.ci >= 0 && wd === (pf.cd ?? 0) && hr < pf.ci + 3 && LS.get('ft_checkin', '') === today) todo.push(['checkin', today]);
-  // Water reminders come at 11:00, 14:00 and 17:00 only when behind: 25 %, 50 % and 75 % of the goal reached skips them (at most 3 notes a day)
-  if (pf.wa === 1 && hr < 18) { const w = waterOn(today), g = waterGoal(today), lvl = [0.25, 0.5, 0.75].filter(f => w >= g * f).length; if (lvl) todo.push(['water', today + ':' + lvl]); }
+  // Water reminders come from 11:00, 14:00 and 17:00 (until 20:00) only when behind: 25 %, 50 % and 75 % of the goal reached skips them (at most 3 notes a day)
+  if (pf.wa === 1 && hr < 20) { const w = waterOn(today), g = waterGoal(today), lvl = [0.25, 0.5, 0.75].filter(f => w >= g * f).length; if (lvl) todo.push(['water', today + ':' + lvl]); }
   for (const [kind, date] of todo) {
     if (sent[kind] === date) continue;
     try {

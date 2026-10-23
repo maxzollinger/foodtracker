@@ -72,10 +72,11 @@ jobs:
                 if (p.wDay >= 0 && L.wd === p.wDay && inWin(p.wTime) && last.weight !== L.date && daysSince(done.weight) > 3) due.push('weight');
                 if (id && p.ci >= 0 && L.wd === (p.cd ?? 0) && inWin(p.ci) && last.checkin !== L.date && done.checkin !== L.date) due.push('checkin');
                 if (id && p.hb >= 0 && inWin(p.hb) && last.habit !== L.date) due.push('habit');   // optional habit plan reminder
-                // Water: 11:00, 14:00 and 17:00, each only when the phone hasn't reported 25 / 50 / 75 % of the day's goal
+                // Water: from 11:00, 14:00 and 17:00 (each until the next one starts, as GitHub runs this only every few hours),
+                // each only when the phone hasn't reported 25 / 50 / 75 % of the day's goal; never after 20:00
                 if (id && p.wa === 1) {
                   const dw = String(done.water || ''), lvl = dw.slice(0, 10) === L.date ? +dw.slice(11) || 0 : 0;
-                  [11, 14, 17].forEach((h, i) => { if (L.hour === h && lvl <= i && last['water' + (i + 1)] !== L.date) due.push('water' + (i + 1)); });
+                  [11, 14, 17].forEach((h, i) => { if (L.hour >= h && L.hour < h + 3 && lvl <= i && last['water' + (i + 1)] !== L.date) due.push('water' + (i + 1)); });
                 }
                 // Eating window (intermittent fasting): when it opens, and 30 minutes before it closes
                 if (id && p.fo && /^\d{2}:\d{2}$/.test(p.fs) && p.fh > 0) {
