@@ -301,6 +301,37 @@ a{color:inherit}
 .stepper button{width:32px;height:32px;border-radius:50%;font-size:20px;font-weight:600}
 .stepper b{min-width:28px;text-align:center}
 .portion{display:flex;align-items:center;gap:10px;margin:0 0 14px}
+#cam{position:fixed;inset:0;z-index:80;background:#000;color:#fff;overflow:hidden;touch-action:none}
+#cam video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+#cam.nocam video,#cam.nocam .cam-frame{display:none}
+#cam.nocam .cam-hint{top:38%}
+.cam-frame{position:absolute;left:7%;right:7%;top:17%;bottom:36%;pointer-events:none;transition:top .3s,bottom .3s,left .3s,right .3s}
+#cam[data-m=bar] .cam-frame{left:10%;right:10%;top:36%;bottom:48%}
+#cam[data-m=label] .cam-frame{left:16%;right:16%;top:15%;bottom:34%}
+.cam-frame i{position:absolute;width:46px;height:46px;border:4px solid #fff;filter:drop-shadow(0 0 4px rgba(0,0,0,.45))}
+.cam-frame i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0;border-top-left-radius:22px}
+.cam-frame i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0;border-top-right-radius:22px}
+.cam-frame i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0;border-bottom-left-radius:22px}
+.cam-frame i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0;border-bottom-right-radius:22px}
+.cam-line{position:absolute;left:10px;right:10px;top:4px;height:3px;border-radius:2px;background:rgba(255,255,255,.9);box-shadow:0 0 14px rgba(255,255,255,.8);animation:camScan 2.6s ease-in-out infinite}
+@keyframes camScan{50%{top:calc(100% - 7px)}}
+.cam-top{position:absolute;left:0;right:0;top:0;padding:calc(env(safe-area-inset-top) + 10px) 16px 0;display:flex;justify-content:space-between}
+.cam-round{width:46px;height:46px;border-radius:50%;background:rgba(0,0,0,.42);border:0;color:#fff;font-size:18px;font-weight:700;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);display:grid;place-items:center;padding:0}
+.cam-round.on{background:#ffd60a;color:#000}
+.cam-hint{position:absolute;left:20px;right:20px;top:calc(env(safe-area-inset-top) + 66px);margin:0;text-align:center;font-weight:700;font-size:15px;text-shadow:0 1px 8px rgba(0,0,0,.8)}
+.cam-msg{margin:0 6px 10px;min-height:20px;text-align:center;font-weight:600;font-size:14px;text-shadow:0 1px 8px rgba(0,0,0,.8)}
+.cam-bottom{position:absolute;left:0;right:0;bottom:0;padding:0 14px calc(env(safe-area-inset-bottom) + 20px)}
+.cam-modes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.cam-modes button{background:rgba(255,255,255,.72);color:#111;border:0;border-radius:16px;padding:9px 2px 8px;font-size:11.5px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:3px;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.cam-modes button span{font-size:18px;line-height:1}
+.cam-modes button.on{background:#fff;box-shadow:inset 0 0 0 2.5px #111}
+.cam-row{display:flex;align-items:center;justify-content:space-between;padding:0 22px}
+.cam-shutter{width:78px;height:78px;border-radius:50%;background:#fff;border:0;box-shadow:0 0 0 5px rgba(255,255,255,.35);transition:transform .1s;padding:0}
+.cam-shutter:active{transform:scale(.9)}
+.cam-fx{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none}
+.cam-fx.go{animation:camFx .35s ease-out}
+@keyframes camFx{from{opacity:.85}to{opacity:0}}
+@media (prefers-reduced-motion:reduce){.cam-line{animation:none;top:50%}}
 .st-art{position:relative;width:100%;max-width:360px;aspect-ratio:3/2;margin:10px auto 4px;border-radius:20px;overflow:hidden;background:#1a1a1a}
 .st-art img,.st-art svg{position:absolute;inset:0;width:100%;height:100%;display:block}.st-art img{object-fit:cover}
 .st-line{animation:stScan 2.4s ease-in-out infinite;opacity:.85}
@@ -1043,7 +1074,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v174';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v175';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1828,10 +1859,10 @@ function openAddMenu() {
     <button class="addtile" id="aText"><span>💬</span>${T('Describe food')}</button>
     <button class="addtile wide" id="aMan"><span>✏️</span>${T('Manual entry')}</button></div>
     <button class="chipbtn" id="aTips" style="display:block;margin:14px auto 0">📸 ${T('Photo tips')}</button>`, s => {
-    s.querySelector('#aScan').onclick = () => { if (LS.get('ft_scanTips', '')) { closeSheet(); $('#fileCam').click(); } else openScanTips(); };
+    s.querySelector('#aScan').onclick = () => { if (LS.get('ft_scanTips', '')) openCamera('food'); else openScanTips(); };
     s.querySelector('#aTips').onclick = () => openScanTips();
     s.querySelector('#aLib').onclick = () => { closeSheet(); openPicker('#fileLib', $('#fab')); };
-    s.querySelector('#aBar').onclick = openBarcodeSheet;
+    s.querySelector('#aBar').onclick = () => openCamera('bar');
     s.querySelector('#aFav').onclick = openFavorites;
     s.querySelector('#aText').onclick = openDescribeSheet;
     s.querySelector('#aMan').onclick = () => {
@@ -1866,7 +1897,7 @@ function openScanTips() {
     </div>
     <button class="btn" id="stGo" style="margin-top:14px">📷 ${T('Scan now')}</button>
     <p class="small muted" style="text-align:center;margin:10px 0 0">${T('You can always correct the result afterwards.')}</p>`, s => {
-    s.querySelector('#stGo').onclick = () => { LS.set('ft_scanTips', '1'); closeSheet(); $('#fileCam').click(); };
+    s.querySelector('#stGo').onclick = () => { LS.set('ft_scanTips', '1'); openCamera('food'); };
   });
 }
 
@@ -2219,11 +2250,12 @@ function removePending(id) { pending = pending.filter(x => x.id !== id); savePen
 window.addEventListener('online', () => setTimeout(processQueue, 800));
 setInterval(processQueue, 30e3);
 
-async function onFoodPhoto(file) {
+async function onFoodPhoto(file, label) {
   if (!file) return;
   try {
     const full = await scaleImage(file, 1600, 0.85), thumb = await scaleImage(full, 480);   // sharp enough to read "330 ml" on a label
-    addPending(thumb, [{ text: foodPrompt() }, { image: full.split(',')[1] }]);
+    const hint = label ? '\nThe photo shows a nutrition label or a package. Use the exact numbers printed on it. Use one serving as printed; if no serving size is printed, use the whole package if its size is printed, otherwise 100 g (100 ml for drinks). Use the product name as the meal name and say in "notes" which amount you used.' : '';
+    addPending(thumb, [{ text: foodPrompt() + hint }, { image: full.split(',')[1] }]);
   } catch (e) { toast(e.message); }
 }
 $('#fileCam').onchange = e => { onFoodPhoto(e.target.files[0]); e.target.value = ''; };
@@ -2291,16 +2323,19 @@ function openBarcodeSheet() {
 const bMsg = (t, err) => { const el = $('#bMsg'); if (el) { el.innerHTML = t; el.style.color = err ? 'var(--bad)' : ''; } };
 $('#fileBar').onchange = async e => {
   const f = e.target.files[0]; e.target.value = ''; if (!f) return;
+  try { barFromPhoto(await scaleImage(f, 1800)); } catch { bMsg(T("Couldn't read the barcode. Try closer and sharper, or type the number."), true); }
+};
+async function barFromPhoto(url) {
   bMsg(`<span class="spin"></span> ${T('Reading barcode…')}`);
   try {
-    const url = await scaleImage(f, 1800), img = new Image(); img.src = url; await img.decode();
+    const img = new Image(); img.src = url; await img.decode();
     let code = await readCode(img, 'hard');
     if (!code) { bMsg(`<span class="spin"></span> ${T('Reading the numbers under the barcode…')}`); code = await aiReadCode(url); }
     if (!code) throw new Error('none');
     if ($('#bCode')) $('#bCode').value = code;
-    lookupBarcode(code);
-  } catch { bMsg(T("Couldn't read the barcode. Try closer and sharper, or type the number."), true); }
-};
+    await lookupBarcode(code); return true;
+  } catch { bMsg(T("Couldn't read the barcode. Try closer and sharper, or type the number."), true); return false; }
+}
 async function lookupBarcode(code) {
   bMsg(`<span class="spin"></span> ${T('Looking up product…')}`);
   try {
@@ -2315,7 +2350,7 @@ async function lookupBarcode(code) {
     const brand = p.brands ? p.brands.split(',')[0].trim() : '';
     const name = (pname || T('Product') + ' ' + code) + (brand && !(pname || '').toLowerCase().includes(brand.toLowerCase()) ? ' – ' + brand : '');
     const ns = { a: 9, b: 7, c: 5, d: 3, e: 2 }[p.nutriscore_grade] || null;
-    closeSheet();
+    closeSheet(); closeCamera();
     openNewMeal({ id: uid(), date: sel, time: nowTime(), name, servings: 1, health: ns, source: 'barcode', photo: false,
       items: [{ name, grams: r0(g), kcal: r0(kcal100 * f), protein: r1(num(n.proteins_100g) * f), carbs: r1(num(n.carbohydrates_100g) * f), fat: r1(num(n.fat_100g) * f),
         sugar: 'sugars_100g' in n ? r1(num(n.sugars_100g) * f) : null, fiber: 'fiber_100g' in n ? r1(num(n.fiber_100g) * f) : null,
@@ -4025,7 +4060,7 @@ let camStream = null, camOffT = null, scanLoop = null;
 async function getCamera() {
   clearTimeout(camOffT);
   if (camStream && camStream.getVideoTracks().some(t => t.readyState === 'live')) return camStream;
-  camStream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } } });
+  camStream = await navigator.mediaDevices.getUserMedia({ audio: false, video: { facingMode: { ideal: 'environment' }, width: { ideal: 1920 }, height: { ideal: 1080 } } });
   return camStream;
 }
 function cameraOff() { clearTimeout(camOffT); if (camStream) camStream.getTracks().forEach(t => t.stop()); camStream = null; }
@@ -4063,6 +4098,101 @@ async function startBarScan() {
     const b = $('#bLive');
     if (b) b.innerHTML = `<div class="small" style="padding:26px 14px;text-align:center;color:#bbb">${T('Camera not available. Take a photo of the barcode or type the number.')}</div>`;
   }
+}
+
+/* ================= Own camera screen =================
+   Full-screen camera like the big food apps: scan frame, modes (food, barcode, food label, gallery), our own
+   shutter, and the flash where the phone allows it (iPhone web apps can't use the flash).
+   If the camera can't be opened, the phone's own camera is used as before. */
+const CAM_MODES = { food: ['📷', 'Scan food'], bar: ['🏷️', 'Barcode'], label: ['📋', 'Food label'], lib: ['🖼️', 'Gallery'] };
+const CAM_HINT = { food: 'Whole meal inside the frame', bar: 'Hold the barcode inside the frame. It scans by itself.', label: 'Nutrition label inside the frame' };
+let camLoop = null, camTorch = false;
+function openCamera(mode = 'food') {
+  closeSheet(); closeCamera();
+  const pg = document.createElement('div'); pg.id = 'cam'; pg.dataset.m = mode;
+  pg.innerHTML = `<video playsinline muted autoplay></video>
+    <div class="cam-frame"><i></i><i></i><i></i><i></i><b class="cam-line"></b></div>
+    <div class="cam-top"><button class="cam-round" id="camX" aria-label="${T('Close')}">✕</button><button class="cam-round" id="camHelp" aria-label="${T('Photo tips')}">?</button></div>
+    <p class="cam-hint" id="camHint"></p>
+    <div class="cam-bottom"><p class="cam-msg" id="bMsg"></p>
+      <div class="cam-modes">${Object.entries(CAM_MODES).map(([k, [i, t]]) => `<button data-cm="${k}"><span>${i}</span>${T(t)}</button>`).join('')}</div>
+      <div class="cam-row"><button class="cam-round" id="camFlash" aria-label="${T('Flash')}" style="visibility:hidden">⚡</button>
+        <button class="cam-shutter" id="camShot" aria-label="${T('Take photo')}"></button>
+        <button class="cam-round" id="camType" aria-label="${T('Type the number')}" style="visibility:hidden">⌨️</button></div></div>
+    <div class="cam-fx"></div>`;
+  document.body.appendChild(pg);
+  const v = pg.querySelector('video');
+  const setMode = m => {
+    if (m === 'lib') { closeCamera(); openPicker('#fileLib', $('#fab')); return; }
+    pg.dataset.m = m; $('#camHint').textContent = T(CAM_HINT[m]); bMsg('');
+    pg.querySelectorAll('[data-cm]').forEach(b => b.classList.toggle('on', b.dataset.cm === m));
+    $('#camType').style.visibility = m === 'bar' ? 'visible' : 'hidden';
+    clearTimeout(camLoop); camLoop = null;
+    if (m === 'bar') camBarScan(v);
+  };
+  pg.querySelectorAll('[data-cm]').forEach(b => b.onclick = () => setMode(b.dataset.cm));
+  $('#camX').onclick = closeCamera;
+  $('#camHelp').onclick = () => { closeCamera(); openScanTips(); };
+  $('#camType').onclick = () => { closeCamera(); openBarcodeSheet(); };
+  $('#camShot').onclick = () => camShoot(v);
+  $('#camFlash').onclick = async () => {
+    const t = camStream && camStream.getVideoTracks()[0]; if (!t) return;
+    try { camTorch = !camTorch; await t.applyConstraints({ advanced: [{ torch: camTorch }] }); $('#camFlash').classList.toggle('on', camTorch); } catch { camTorch = false; }
+  };
+  setMode(mode);
+  getCamera().then(async stream => {
+    if (!$('#cam')) return;
+    v.srcObject = stream; try { await v.play(); } catch {}
+    const t = stream.getVideoTracks()[0], caps = t && t.getCapabilities ? t.getCapabilities() : {};
+    if (caps.torch) $('#camFlash').style.visibility = 'visible';
+    if (pg.dataset.m === 'bar') camBarScan(v);
+  }).catch(() => {
+    if (!$('#cam')) return;
+    pg.classList.add('nocam');
+    $('#camHint').innerHTML = `${T('Camera not available.')}<br><button class="btn sm" id="camNative" style="margin:12px auto 0;width:auto;display:inline-flex;padding:10px 18px">📷 ${T('Take photo')}</button>`;
+    $('#camNative').onclick = $('#camShot').onclick = () => { const bar = pg.dataset.m === 'bar'; closeCamera(); $(bar ? '#fileBar' : '#fileCam').click(); };
+  });
+}
+function closeCamera() {
+  clearTimeout(camLoop); camLoop = null; camTorch = false;
+  const pg = $('#cam'); if (!pg) return;
+  pg.remove(); cameraOff();   // the camera light goes off right away
+}
+document.addEventListener('visibilitychange', () => { if (document.hidden) closeCamera(); });
+// Shutter: food or label photo from the live picture; in barcode mode a photo of the code
+function camShoot(v) {
+  if (!v.videoWidth) return;
+  const c = document.createElement('canvas'); c.width = v.videoWidth; c.height = v.videoHeight;
+  c.getContext('2d').drawImage(v, 0, 0);
+  const fx = $('#cam .cam-fx'); if (fx) { fx.classList.remove('go'); void fx.offsetWidth; fx.classList.add('go'); }
+  if (navigator.vibrate) navigator.vibrate(30);
+  const mode = $('#cam').dataset.m;
+  if (mode === 'bar') { clearTimeout(camLoop); camLoop = null; barFromPhoto(c.toDataURL('image/jpeg', 0.92)).then(ok => { if (!ok && $('#cam')) camBarScan(v); }); return; }
+  c.toBlob(b => { setTimeout(closeCamera, 180); onFoodPhoto(b, mode === 'label'); }, 'image/jpeg', 0.92);
+}
+// Barcode mode: reads the code by itself from the live picture
+async function camBarScan(v) {
+  clearTimeout(camLoop);
+  let det; try { det = await getDetector(); } catch { return; }
+  let busy = false, n = 0;
+  const tick = async () => {
+    if (!$('#cam') || $('#cam').dataset.m !== 'bar') return;
+    if (!busy && v.readyState >= 2) {
+      busy = true;
+      try {
+        const code = await readCode(v, ++n % 8 === 0 ? 'live' : '');
+        if (code.length >= 6) {
+          if (navigator.vibrate) navigator.vibrate(40);
+          await lookupBarcode(code);
+          if ($('#cam')) camLoop = setTimeout(tick, 2500);   // not found: keep scanning
+          return;
+        }
+      } catch {}
+      busy = false;
+    }
+    camLoop = setTimeout(tick, 120);
+  };
+  camLoop = setTimeout(tick, 50);
 }
 
 /* ================= Water ================= */
@@ -5260,7 +5390,7 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
-- Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Before the first photo scan a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
+- Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). Before the first photo scan a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros; if the Shortcut sends the same number on several days, 0 every evening or over 4000 kcal a day, Home shows a warning: in Find Health Samples only one date filter may stay, Start Date · is today) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.

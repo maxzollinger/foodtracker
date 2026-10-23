@@ -1501,7 +1501,14 @@ window.I18N = {
 "Spread out pieces, so they can be counted.":"Stücke etwas verteilen, damit sie gezählt werden können.",
 "Turn labels and package sizes to the camera.":"Etiketten und Packungsgrössen zur Kamera drehen.",
 "Scan now":"Jetzt scannen",
-"You can always correct the result afterwards.":"Du kannst das Ergebnis danach jederzeit korrigieren."
+"You can always correct the result afterwards.":"Du kannst das Ergebnis danach jederzeit korrigieren.",
+"Food label":"Nährwerte",
+"Gallery":"Galerie",
+"Flash":"Blitz",
+"Type the number":"Nummer eintippen",
+"Whole meal inside the frame":"Ganze Mahlzeit in den Rahmen",
+"Nutrition label inside the frame":"Nährwerttabelle in den Rahmen",
+"Camera not available.":"Kamera nicht verfügbar."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3004,7 +3011,14 @@ window.I18N = {
 "Spread out pieces, so they can be counted.":"Separa las piezas para que se puedan contar.",
 "Turn labels and package sizes to the camera.":"Gira etiquetas y tamaños del envase hacia la cámara.",
 "Scan now":"Escanear ahora",
-"You can always correct the result afterwards.":"Siempre puedes corregir el resultado después."
+"You can always correct the result afterwards.":"Siempre puedes corregir el resultado después.",
+"Food label":"Etiqueta",
+"Gallery":"Galería",
+"Flash":"Flash",
+"Type the number":"Escribir el número",
+"Whole meal inside the frame":"Toda la comida dentro del marco",
+"Nutrition label inside the frame":"Etiqueta nutricional dentro del marco",
+"Camera not available.":"Cámara no disponible."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4507,7 +4521,14 @@ window.I18N = {
 "Spread out pieces, so they can be counted.":"Écarte les morceaux pour qu’on puisse les compter.",
 "Turn labels and package sizes to the camera.":"Tourne les étiquettes et tailles d’emballage vers l’appareil.",
 "Scan now":"Scanner maintenant",
-"You can always correct the result afterwards.":"Tu peux toujours corriger le résultat ensuite."
+"You can always correct the result afterwards.":"Tu peux toujours corriger le résultat ensuite.",
+"Food label":"Étiquette",
+"Gallery":"Galerie",
+"Flash":"Flash",
+"Type the number":"Taper le numéro",
+"Whole meal inside the frame":"Tout le repas dans le cadre",
+"Nutrition label inside the frame":"Étiquette nutritionnelle dans le cadre",
+"Camera not available.":"Caméra indisponible."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6010,7 +6031,14 @@ window.I18N = {
 "Spread out pieces, so they can be counted.":"Distanzia i pezzi così si possono contare.",
 "Turn labels and package sizes to the camera.":"Gira etichette e formati della confezione verso la fotocamera.",
 "Scan now":"Scansiona ora",
-"You can always correct the result afterwards.":"Puoi sempre correggere il risultato dopo."
+"You can always correct the result afterwards.":"Puoi sempre correggere il risultato dopo.",
+"Food label":"Etichetta",
+"Gallery":"Galleria",
+"Flash":"Flash",
+"Type the number":"Digita il numero",
+"Whole meal inside the frame":"Tutto il pasto nella cornice",
+"Nutrition label inside the frame":"Etichetta nutrizionale nella cornice",
+"Camera not available.":"Fotocamera non disponibile."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7513,7 +7541,14 @@ window.I18N = {
 "Spread out pieces, so they can be counted.":"数えられるように、個数のある食べ物は少し離して置きましょう。",
 "Turn labels and package sizes to the camera.":"ラベルや容量の表示をカメラに向けましょう。",
 "Scan now":"今すぐスキャン",
-"You can always correct the result afterwards.":"結果はあとからいつでも修正できます。"
+"You can always correct the result afterwards.":"結果はあとからいつでも修正できます。",
+"Food label":"栄養表示",
+"Gallery":"ギャラリー",
+"Flash":"ライト",
+"Type the number":"番号を入力",
+"Whole meal inside the frame":"食事全体を枠の中に",
+"Nutrition label inside the frame":"栄養成分表示を枠の中に",
+"Camera not available.":"カメラを使用できません。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -9016,7 +9051,14 @@ window.I18N = {
 "Spread out pieces, so they can be counted.":"Leg stukjes wat uit elkaar, zodat ze geteld kunnen worden.",
 "Turn labels and package sizes to the camera.":"Draai etiketten en verpakkingsgroottes naar de camera.",
 "Scan now":"Nu scannen",
-"You can always correct the result afterwards.":"Je kunt het resultaat achteraf altijd aanpassen."
+"You can always correct the result afterwards.":"Je kunt het resultaat achteraf altijd aanpassen.",
+"Food label":"Etiket",
+"Gallery":"Galerij",
+"Flash":"Flitser",
+"Type the number":"Nummer typen",
+"Whole meal inside the frame":"De hele maaltijd in het kader",
+"Nutrition label inside the frame":"Voedingsetiket in het kader",
+"Camera not available.":"Camera niet beschikbaar."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -10519,7 +10561,14 @@ window.I18N = {
 "Spread out pieces, so they can be counted.":"Rozłóż kawałki, żeby dało się je policzyć.",
 "Turn labels and package sizes to the camera.":"Obróć etykiety i rozmiary opakowań do aparatu.",
 "Scan now":"Skanuj teraz",
-"You can always correct the result afterwards.":"Wynik zawsze możesz potem poprawić."
+"You can always correct the result afterwards.":"Wynik zawsze możesz potem poprawić.",
+"Food label":"Etykieta",
+"Gallery":"Galeria",
+"Flash":"Lampa",
+"Type the number":"Wpisz numer",
+"Whole meal inside the frame":"Cały posiłek w ramce",
+"Nutrition label inside the frame":"Etykieta wartości odżywczych w ramce",
+"Camera not available.":"Aparat niedostępny."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -12022,7 +12071,14 @@ window.I18N = {
 "Spread out pieces, so they can be counted.":"Espalhe os pedaços para que possam ser contados.",
 "Turn labels and package sizes to the camera.":"Vire rótulos e tamanhos da embalagem para a câmara.",
 "Scan now":"Digitalizar agora",
-"You can always correct the result afterwards.":"Pode sempre corrigir o resultado depois."
+"You can always correct the result afterwards.":"Pode sempre corrigir o resultado depois.",
+"Food label":"Rótulo",
+"Gallery":"Galeria",
+"Flash":"Flash",
+"Type the number":"Escrever o número",
+"Whole meal inside the frame":"A refeição inteira dentro da moldura",
+"Nutrition label inside the frame":"Rótulo nutricional dentro da moldura",
+"Camera not available.":"Câmara indisponível."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -13525,7 +13581,14 @@ window.I18N = {
 "Spread out pieces, so they can be counted.":"Разложите кусочки, чтобы их можно было посчитать.",
 "Turn labels and package sizes to the camera.":"Поверните этикетки и объём упаковки к камере.",
 "Scan now":"Сканировать",
-"You can always correct the result afterwards.":"Результат всегда можно исправить потом."
+"You can always correct the result afterwards.":"Результат всегда можно исправить потом.",
+"Food label":"Этикетка",
+"Gallery":"Галерея",
+"Flash":"Вспышка",
+"Type the number":"Ввести номер",
+"Whole meal inside the frame":"Всё блюдо в рамке",
+"Nutrition label inside the frame":"Таблица пищевой ценности в рамке",
+"Camera not available.":"Камера недоступна."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -15028,7 +15091,14 @@ window.I18N = {
 "Spread out pieces, so they can be counted.":"Parçaları biraz ayır ki sayılabilsin.",
 "Turn labels and package sizes to the camera.":"Etiketleri ve paket boyutlarını kameraya çevir.",
 "Scan now":"Şimdi tara",
-"You can always correct the result afterwards.":"Sonucu sonradan her zaman düzeltebilirsin."
+"You can always correct the result afterwards.":"Sonucu sonradan her zaman düzeltebilirsin.",
+"Food label":"Etiket",
+"Gallery":"Galeri",
+"Flash":"Flaş",
+"Type the number":"Numarayı yaz",
+"Whole meal inside the frame":"Yemeğin tamamı çerçevede",
+"Nutrition label inside the frame":"Besin etiketi çerçevede",
+"Camera not available.":"Kamera kullanılamıyor."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -16531,6 +16601,13 @@ window.I18N = {
 "Spread out pieces, so they can be counted.":"把一块块的食物稍微分开，方便计数。",
 "Turn labels and package sizes to the camera.":"把标签和包装规格朝向镜头。",
 "Scan now":"立即扫描",
-"You can always correct the result afterwards.":"之后随时可以修改结果。"
+"You can always correct the result afterwards.":"之后随时可以修改结果。",
+"Food label":"营养标签",
+"Gallery":"相册",
+"Flash":"闪光灯",
+"Type the number":"输入号码",
+"Whole meal inside the frame":"整份餐食放进框内",
+"Nutrition label inside the frame":"营养成分表放进框内",
+"Camera not available.":"无法使用相机。"
 }
 };
