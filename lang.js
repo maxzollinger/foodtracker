@@ -1508,7 +1508,9 @@ window.I18N = {
 "Type the number":"Nummer eintippen",
 "Whole meal inside the frame":"Ganze Mahlzeit in den Rahmen",
 "Nutrition label inside the frame":"Nährwerttabelle in den Rahmen",
-"Camera not available.":"Kamera nicht verfügbar."
+"Camera not available.":"Kamera nicht verfügbar.",
+"per person":"pro Person",
+"1 person":"1 Person"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3018,7 +3020,9 @@ window.I18N = {
 "Type the number":"Escribir el número",
 "Whole meal inside the frame":"Toda la comida dentro del marco",
 "Nutrition label inside the frame":"Etiqueta nutricional dentro del marco",
-"Camera not available.":"Cámara no disponible."
+"Camera not available.":"Cámara no disponible.",
+"per person":"por persona",
+"1 person":"1 persona"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4528,7 +4532,9 @@ window.I18N = {
 "Type the number":"Taper le numéro",
 "Whole meal inside the frame":"Tout le repas dans le cadre",
 "Nutrition label inside the frame":"Étiquette nutritionnelle dans le cadre",
-"Camera not available.":"Caméra indisponible."
+"Camera not available.":"Caméra indisponible.",
+"per person":"par personne",
+"1 person":"1 personne"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6038,7 +6044,9 @@ window.I18N = {
 "Type the number":"Digita il numero",
 "Whole meal inside the frame":"Tutto il pasto nella cornice",
 "Nutrition label inside the frame":"Etichetta nutrizionale nella cornice",
-"Camera not available.":"Fotocamera non disponibile."
+"Camera not available.":"Fotocamera non disponibile.",
+"per person":"a persona",
+"1 person":"1 persona"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7548,7 +7556,9 @@ window.I18N = {
 "Type the number":"番号を入力",
 "Whole meal inside the frame":"食事全体を枠の中に",
 "Nutrition label inside the frame":"栄養成分表示を枠の中に",
-"Camera not available.":"カメラを使用できません。"
+"Camera not available.":"カメラを使用できません。",
+"per person":"1人分",
+"1 person":"1人分"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -9058,7 +9068,9 @@ window.I18N = {
 "Type the number":"Nummer typen",
 "Whole meal inside the frame":"De hele maaltijd in het kader",
 "Nutrition label inside the frame":"Voedingsetiket in het kader",
-"Camera not available.":"Camera niet beschikbaar."
+"Camera not available.":"Camera niet beschikbaar.",
+"per person":"per persoon",
+"1 person":"1 persoon"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -10568,7 +10580,9 @@ window.I18N = {
 "Type the number":"Wpisz numer",
 "Whole meal inside the frame":"Cały posiłek w ramce",
 "Nutrition label inside the frame":"Etykieta wartości odżywczych w ramce",
-"Camera not available.":"Aparat niedostępny."
+"Camera not available.":"Aparat niedostępny.",
+"per person":"na osobę",
+"1 person":"1 osoba"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -12078,7 +12092,9 @@ window.I18N = {
 "Type the number":"Escrever o número",
 "Whole meal inside the frame":"A refeição inteira dentro da moldura",
 "Nutrition label inside the frame":"Rótulo nutricional dentro da moldura",
-"Camera not available.":"Câmara indisponível."
+"Camera not available.":"Câmara indisponível.",
+"per person":"por pessoa",
+"1 person":"1 pessoa"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -13588,7 +13604,9 @@ window.I18N = {
 "Type the number":"Ввести номер",
 "Whole meal inside the frame":"Всё блюдо в рамке",
 "Nutrition label inside the frame":"Таблица пищевой ценности в рамке",
-"Camera not available.":"Камера недоступна."
+"Camera not available.":"Камера недоступна.",
+"per person":"на человека",
+"1 person":"1 человек"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -15098,7 +15116,9 @@ window.I18N = {
 "Type the number":"Numarayı yaz",
 "Whole meal inside the frame":"Yemeğin tamamı çerçevede",
 "Nutrition label inside the frame":"Besin etiketi çerçevede",
-"Camera not available.":"Kamera kullanılamıyor."
+"Camera not available.":"Kamera kullanılamıyor.",
+"per person":"kişi başı",
+"1 person":"1 kişi"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -16608,6 +16628,8 @@ window.I18N = {
 "Type the number":"输入号码",
 "Whole meal inside the frame":"整份餐食放进框内",
 "Nutrition label inside the frame":"营养成分表放进框内",
-"Camera not available.":"无法使用相机。"
+"Camera not available.":"无法使用相机。",
+"per person":"每人",
+"1 person":"1 人份"
 }
 };

@@ -359,6 +359,22 @@ a{color:inherit}
 .hbar{height:8px;border-radius:5px;background:var(--track);overflow:hidden;margin-top:10px}
 .hbar i{display:block;height:100%;border-radius:5px;background:var(--good)}
 .ing{background:var(--card);border-radius:18px;box-shadow:var(--shadow);margin-bottom:8px;overflow:hidden}
+.ingrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ingrid .ing{grid-column:1/-1;margin:0}
+.ingrid>p{grid-column:1/-1}
+.ing-tile{background:var(--card);border-radius:18px;box-shadow:var(--shadow);padding:12px 6px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;min-height:92px;min-width:0}
+.it-n{font-size:13px;color:var(--muted);font-weight:600;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.it-m{font-size:16px;font-weight:800;line-height:1.2;overflow-wrap:anywhere}
+.it-g{font-size:11.5px;color:var(--muted)}
+.mp-buy{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:1px}
+.mp-ing{margin-top:6px;font-size:13px}
+.mp-ing summary{cursor:pointer;color:var(--muted);font-weight:600;list-style:none}
+.mp-ing summary::-webkit-details-marker{display:none}
+.mp-ing summary::after{content:' ›'}
+.mp-ing[open] summary::after{content:' ⌄'}
+.mp-ing div{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.mp-ing span{background:var(--chip);border-radius:10px;padding:4px 8px}
+.mp-ing i{font-style:normal;color:var(--muted);font-size:11.5px}
 .ing-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;width:100%;text-align:left}
 .ing-edit{padding:0 16px 16px}
 .ing-edit .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
@@ -1074,7 +1090,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v176';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v177';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1924,6 +1940,37 @@ function openWeightSheet() {
   }, isLb() ? 0.2 : 0.1);
 }
 
+/* ================= Household measures =================
+   Next to the grams every ingredient can show a kitchen measure people know (½ medium, 2 tbsp, ⅔ cup).
+   Europe (kg setting): spoons, glasses, slices, pieces, no cups. US (lb setting): cups, tbsp, tsp, oz.
+   Only amounts people can really measure: whole numbers and ¼ ⅓ ½ ⅔ ¾ (⅛ for spices). */
+const FRAC = [[0, ''], [0.125, '⅛'], [0.25, '¼'], [1 / 3, '⅓'], [0.5, '½'], [2 / 3, '⅔'], [0.75, '¾'], [1, '']];
+function fmtQ(q) {
+  q = +q || 0; let w = Math.floor(q + 1e-6), f = q - w, best = FRAC[0];
+  for (const x of FRAC) if (Math.abs(f - x[0]) < Math.abs(f - best[0])) best = x;
+  if (best[0] === 1) { w++; best = FRAC[0]; }
+  return (w || !best[1] ? String(w) : '') + best[1];
+}
+// Rounds to an amount people can measure (bigger amounts in bigger steps)
+function niceQ(x) {
+  x = +x || 0; if (x <= 0) return 0;
+  if (x >= 10) return Math.round(x);
+  if (x >= 3) return Math.round(x * 2) / 2;
+  const w = Math.floor(x), f = x - w, opts = [0, x < 1 ? 0.125 : 0.25, 0.25, 1 / 3, 0.5, 2 / 3, 0.75, 1];
+  let best = 0; for (const o of opts) if (Math.abs(f - o) < Math.abs(f - best)) best = o;
+  return Math.max(0.125, w + best);
+}
+// One step up or down: thirds stay thirds, otherwise quarters below 1, halves up to 3, then whole ones
+function stepQ(q, dir) {
+  const third = Math.abs(q * 3 - Math.round(q * 3)) < 0.01 && Math.abs(q * 4 - Math.round(q * 4)) > 0.01;
+  const st = third ? 1 / 3 : q < 1 || (dir < 0 && q <= 1) ? 0.25 : q < 3 || (dir < 0 && q <= 3) ? 0.5 : 1;
+  return Math.max(st === 1 / 3 ? 1 / 3 : 0.25, Math.round((q + dir * st) * 1000) / 1000);
+}
+const measureRule = () => isLb()
+  ? 'US kitchen measures: cup, tbsp, tsp, fl oz, oz, slice, scoop, can, or a piece with its size (small / medium / large).'
+  : 'European kitchen measures, never cups: tbsp, tsp, glass (200 ml), mug (250 ml), slice, handful, pinch, scoop, bowl, can, pack, or a piece with its size (small / medium / large).';
+const measureText = it => it.count ? T('{n} pcs', { n: it.count }) : it.mq ? fmtQ(it.mq) + ' ' + it.mu : '';
+
 /* ================= AI analysis ================= */
 // Food names come back in the app language
 const foodPrompt = () => `You are an expert nutritionist powering a calorie tracking app.
@@ -1933,11 +1980,12 @@ Identify every food and drink in the meal. Getting the AMOUNT right matters most
 3. Glasses and cups: small glass about 200 ml, normal glass 250-300 ml, mug 250-350 ml, takeaway cup 250 / 350 / 450 ml (small / medium / large), then adjust for how full it is.
 4. Food on plates and in bowls: measure against known sizes in the photo (dinner plate about 26 cm, side plate 20 cm, fork 19 cm, spoon 15 cm, smartphone 15 cm, adult hand about 18 cm long, can 12 cm high). Estimate the area and thickness of each food from that.
 5. COUNT everything that can be counted, for every kind of food: fruit and berries, vegetables, nuts, eggs, bread and rolls, slices (bread, cheese, ham, pizza), cookies and sweets, meat and fish pieces (wings, drumsticks, nuggets, meatballs, shrimp, fillets), sushi, dumplings, falafel, potatoes, pancakes… Count the pieces you see (also ones partly hidden), judge their size against the things around them, then grams = pieces × weight of one piece. Typical weight of one medium piece (edible part): strawberry 12 g (small 8, large 20), raspberry 4, cherry 8, grape 5, plum 60, apricot 40, kiwi 75, mandarin 75, apple 180, pear 170, banana 120 (peeled), orange 150 (peeled), cherry tomato 15, tomato 120, carrot 60, broccoli floret 15, mushroom 20, potato 150, small potato 50, olive 4, almond 1.2, walnut half 2.5, cashew 1.5, egg 50, slice of bread 35, toast slice 25, bread roll 60, croissant 60, pancake 40, waffle 35, tortilla 45, slice of cheese 20, slice of ham 15, pizza slice 110 (1/8 of a 30 cm pizza), cookie 12, chocolate square 5, gummy bear 2.3, chicken wing 30 (meat), drumstick 70 (meat), chicken nugget 17, meatball 25, shrimp 10, fish fillet 120, chicken breast 170, sushi piece 30, maki piece 20, dumpling 25, falafel 20, spring roll 60. Fruit and berries look bigger than they weigh, so don't round up. Put the number of pieces in "count" and the weight of one piece in "per". Only foods that can't be counted (rice, pasta, sauce, soup, salad leaves, fries, cereal, many tiny pieces like blueberries) get count 0 and per 0; measure those by their area and height as in step 4.
-6. Drinks and other liquids: "unit" is "ml" and "grams" is the volume in ml. Use the nutrition of exactly that drink: regular lemonade or soda about 35-45 kcal per 100 ml, diet / zero about 0-1, juice about 45, milk (3.5 %) 64, beer 43, wine 83.
-7. When unsure, choose the most typical portion of that item, not a large one. Never inflate portions.
+6. Also give every item that is NOT counted in step 5 a kitchen measure people know: "mq" = amount, "mu" = the unit (short, in ${langInfo().ai}), "me" = grams (or ml) of ONE unit. ${measureRule()} Amounts only as whole numbers or 0.25 / 0.33 / 0.5 / 0.67 / 0.75 (0.125 only for spices). Examples: half a banana mq 0.5, mu "medium", me 120; oats mq 4, mu "tbsp", me 10. If plain g or ml is the only sensible measure (meat, rice, pasta, a drink in ml), use mq 0.
+7. Drinks and other liquids: "unit" is "ml" and "grams" is the volume in ml. Use the nutrition of exactly that drink: regular lemonade or soda about 35-45 kcal per 100 ml, diet / zero about 0-1, juice about 45, milk (3.5 %) 64, beer 43, wine 83.
+8. When unsure, choose the most typical portion of that item, not a large one. Never inflate portions.
 Include cooking oils, sauces and dressings. In "notes", say briefly which size you used and why (e.g. "330 ml can, label readable").
 Return ONLY JSON in this exact shape:
-{"name": "short appetising meal name", "items": [{"name": "ingredient", "grams": 0, "unit": "g", "count": 0, "per": 0, "kcal": 0, "protein": 0, "carbs": 0, "fat": 0, "sugar": 0, "fiber": 0, "sodium": 0}], "health_score": 7, "notes": "short"}
+{"name": "short appetising meal name", "items": [{"name": "ingredient", "grams": 0, "unit": "g", "count": 0, "per": 0, "mq": 0, "mu": "", "me": 0, "kcal": 0, "protein": 0, "carbs": 0, "fat": 0, "sugar": 0, "fiber": 0, "sodium": 0}], "health_score": 7, "notes": "short"}
 Numbers are for the whole portion (not per 100 g); macros, sugar and fiber in grams, sodium in milligrams. health_score is an integer 1-10 (10 = very healthy: whole foods, high protein and fibre, low sugar). If there is no food, return "items": [] and explain in notes.
 Write "name", every ingredient name and "notes" in ${langInfo().ai}.`;
 
@@ -2177,7 +2225,7 @@ const normItems = items => (items || []).map(it => ({
   ...(r0(num(it.count)) > 0 && r0(num(it.count)) <= 200 && num(it.grams) > 0 ? { count: r0(num(it.count)), per: num(it.per) } : {}),
   protein: r1(num(it.protein)), carbs: r1(num(it.carbs)), fat: r1(num(it.fat)),
   sugar: it.sugar == null ? null : r1(num(it.sugar)), fiber: it.fiber == null ? null : r1(num(it.fiber)), sodium: it.sodium == null ? null : r0(num(it.sodium))
-})).map(fixCount);
+})).map((it, i) => fixMeasure(fixCount(it), (items || [])[i] || {}));
 // When the AI counted pieces, the amount must be pieces × weight of one piece; if its maths is off, the amount and nutrition are fixed to match
 function fixCount(it) {
   const per = it.per; delete it.per;
@@ -2188,6 +2236,13 @@ function fixCount(it) {
   for (const x of ['kcal', 'sodium']) if (it[x] != null) it[x] = r0(it[x] * k);
   for (const x of ['protein', 'carbs', 'fat', 'sugar', 'fiber']) if (it[x] != null) it[x] = r1(it[x] * k);
   return it;
+}
+// The kitchen measure follows the grams (rounded to an amount people can measure); counted pieces don't need one
+function fixMeasure(it, raw) {
+  const q = num(raw.mq), e = num(raw.me), u = String(raw.mu || '').trim().slice(0, 24);
+  const g = it.grams || num(raw.grams);   // spices: 0.3 g still has its pinch or ⅛ tsp
+  if (it.count || !(q > 0) || !(e > 0) || !u || !(g > 0)) return it;
+  return Object.assign(it, { mq: niceQ(g / e), mu: u, me: e });
 }
 const healthOf = v => { const n = r0(num(v)); return n >= 1 && n <= 10 ? n : null; };
 
@@ -4491,9 +4546,10 @@ function planBrief(plan, withList) {
 }
 const cleanMeal = m => ({ type: String(m.type || ''), name: String(m.name || ''), desc: String(m.desc || ''), min: r0(num(m.min)), g: r0(num(m.g)),
   kcal: r0(num(m.kcal)), protein: r0(num(m.protein)), carbs: r0(num(m.carbs)), fat: r0(num(m.fat)),
-  ...(m.sugar != null ? { sugar: r1(num(m.sugar)) } : {}), ...(m.fiber != null ? { fiber: r1(num(m.fiber)) } : {}), ...(m.sodium != null ? { sodium: r0(num(m.sodium)) } : {}) });
+  ...(m.sugar != null ? { sugar: r1(num(m.sugar)) } : {}), ...(m.fiber != null ? { fiber: r1(num(m.fiber)) } : {}), ...(m.sodium != null ? { sodium: r0(num(m.sodium)) } : {}),
+  ...(Array.isArray(m.ing) && m.ing.length ? { ing: m.ing.filter(x => x && x.n).slice(0, 14).map(x => ({ n: String(x.n), q: String(x.q || ''), g: r0(num(x.g)) })) } : {}) });
 const cleanGroceries = gs => gs.map(g => ({ cat: String(g.cat || ''), items: (g.items || []).filter(i => i && i.name)
-  .map(i => ({ name: String(i.name), qty: String(i.qty || ''), have: false })) })).filter(g => g.items.length);
+  .map(i => ({ name: String(i.name), qty: String(i.qty || ''), ...(i.buy && String(i.buy).trim() !== String(i.qty || '').trim() ? { buy: String(i.buy) } : {}), have: false })) })).filter(g => g.items.length);
 function trimPlans() { const ks = Object.keys(mealPlans()).sort(); ks.slice(0, Math.max(0, ks.length - 8)).forEach(k => delete db.mealPlans[k]); }
 
 async function generatePlan(change, background) {
@@ -4516,12 +4572,13 @@ RULES
 - Reuse ingredients across the week so little is wasted.
 ${recent.length ? `- Do NOT repeat these meals from the previous weeks: ${[...new Set(recent)].slice(0, 40).join(', ')}.` : ''}
 ${change && old ? `- The user wants to CHANGE the current plan: "${change}". Keep what doesn't need to change.\nCurrent plan:\n${planBrief(old)}` : change ? `- Extra wish from the user: "${change}".` : ''}
-- The grocery list covers ALL meals for ${pr.people} person(s) for the whole week, merged (each ingredient once with the total amount, metric units or pieces), grouped into supermarket sections in a sensible shopping order. Leave out water; basic spices and oil go once into a pantry section.
+- Every meal lists its ingredients for ONE person in "ing": "n" = name, "q" = kitchen measure (${measureRule()} Amounts like 1, ½, ⅔, 2), "g" = grams (or ml).
+- The grocery list covers ALL meals for ${pr.people} person(s) for the whole week, merged (each ingredient once with the total amount in "qty": ${isLb() ? 'lb, oz, fl oz or pieces' : 'g, kg, ml, l or pieces'}), grouped into supermarket sections in a sensible shopping order. "buy" = what to take from the shelf in normal store packs in the user's country (e.g. "1 pack of 500 g", "2 cartons of 1 l", "1 bunch", "1 box of 6"); leave "buy" empty if it is the same as qty. Leave out water; basic spices and oil go once into a pantry section.
 - "prep": 3 to 6 short, practical meal-prep tips for exactly this plan (what to cook ahead, on which day, how to store it).
 - Write all names, descriptions, section names and tips in ${langInfo().ai}. Nutrition numbers are per person, per serving (sugar and fiber in grams, sodium in milligrams).${isLb() ? ' Grocery quantities in US units (lb, oz, fl oz, pieces).' : ''}
 
 Return JSON only:
-{"days":[{"meals":[{"type":"Breakfast","name":"","desc":"one short sentence: main ingredients and how it is made","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0,"sugar":0,"fiber":0,"sodium":0}]}],"groceries":[{"cat":"","items":[{"name":"","qty":""}]}],"prep":[""]}`;
+{"days":[{"meals":[{"type":"Breakfast","name":"","desc":"one short sentence: main ingredients and how it is made","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0,"sugar":0,"fiber":0,"sodium":0,"ing":[{"n":"","q":"","g":0}]}]}],"groceries":[{"cat":"","items":[{"name":"","qty":"","buy":""}]}],"prep":[""]}`;
   try {
     const r = await askAI([{ text: prompt }], { timeout: 120000 });
     if (!r || !Array.isArray(r.days) || r.days.length < 7 || !Array.isArray(r.groceries)) throw new Error(T('The AI answer was incomplete. Please try again.'));
@@ -4547,7 +4604,8 @@ ${planGoalText()}
 Preferences: ${prefsText(mealPrefs())}
 
 Replace ONLY this meal: ${engDay(plan.start, di)}, ${m.type} "${m.name}" (${m.kcal} kcal, ${m.protein} g protein). Give a different, tasty meal of the same type with about the same calories and protein that is not already in the plan. Then return the complete updated grocery list (remove what is no longer needed, add what the new meal needs, keep the same sections). Write in ${langInfo().ai}.
-Return JSON only: {"meal":{"type":"","name":"","desc":"","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0,"sugar":0,"fiber":0,"sodium":0},"groceries":[{"cat":"","items":[{"name":"","qty":""}]}]}`;
+The meal lists its ingredients for ONE person in "ing" ("q" = kitchen measure: ${measureRule()}); grocery items keep "qty" and "buy" (store packs) like before.
+Return JSON only: {"meal":{"type":"","name":"","desc":"","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0,"sugar":0,"fiber":0,"sodium":0,"ing":[{"n":"","q":"","g":0}]},"groceries":[{"cat":"","items":[{"name":"","qty":"","buy":""}]}]}`;
   try {
     const r = await askAI([{ text: prompt }], { timeout: 90000 });
     if (!r || !r.meal || !r.meal.name) throw new Error(T('The AI answer was incomplete. Please try again.'));
@@ -4603,13 +4661,14 @@ function renderMealPlan() {
     const total = plan.groceries.reduce((a, g) => a + g.items.length, 0), left = plan.groceries.reduce((a, g) => a + g.items.filter(i => !i.have).length, 0);
     const list = `<p class="small muted" style="margin:12px 4px">${left ? T('{n} of {t} items still to buy · tap an item when you have it', { n: left, t: total }) : '✓ ' + T('You have everything for this week!')}</p>
       ${plan.groceries.map((g, gi) => `<div class="card mp-cat"><div class="mp-catname">${esc(g.cat)}</div>${g.items.map((it, ii) =>
-        `<button class="mp-item ${it.have ? 'have' : ''}" data-gi="${gi}" data-ii="${ii}"><span class="mp-check">${it.have ? '✓' : ''}</span><span class="grow mp-iname">${esc(it.name)}</span><span class="mp-qty">${esc(it.qty)}</span></button>`).join('')}</div>`).join('')}`;
+        `<button class="mp-item ${it.have ? 'have' : ''}" data-gi="${gi}" data-ii="${ii}"><span class="mp-check">${it.have ? '✓' : ''}</span><span class="grow mp-iname">${esc(it.name)}${it.buy ? `<span class="mp-buy">🛒 ${esc(it.buy)}</span>` : ''}</span><span class="mp-qty">${esc(it.qty)}</span></button>`).join('')}</div>`).join('')}`;
     const meals = plan.days.map((d, di) => {
       const date = addDays(ws, di), isToday = date === iso();
       const tk = d.meals.reduce((a, m) => a + m.kcal, 0), tp = d.meals.reduce((a, m) => a + m.protein, 0);
       return `<div class="card mp-day ${isToday ? 'today' : ''}"><div class="spread mp-dayhead"><b>${esc(fmtDate(date, { weekday: 'long', day: 'numeric', month: 'short' }))}${isToday ? ` · ${T('Today')}` : ''}</b><span class="small muted">${tk} kcal · ${tp} g P</span></div>
         ${d.meals.map((m, mi) => `<div class="mp-meal"><div class="grow"><div class="mp-type">${esc(m.type)}${m.min ? ` · ${m.min} min` : ''}</div><div class="mp-name">${esc(m.name)}</div>
-          ${m.desc ? `<div class="small muted">${esc(m.desc)}</div>` : ''}<div class="mp-mac">${m.kcal} kcal · P ${m.protein} g · C ${m.carbs} g · F ${m.fat} g</div>
+          ${m.desc ? `<div class="small muted">${esc(m.desc)}</div>` : ''}
+          ${m.ing ? `<details class="mp-ing"><summary>${T('Ingredients')} · ${mealPrefs().people > 1 ? T('per person') : T('1 person')}</summary><div>${m.ing.map(x => `<span><b>${esc(x.q || (x.g ? x.g + ' g' : ''))}</b> ${esc(x.n)}${x.q && x.g ? ` <i>${x.g} g</i>` : ''}</span>`).join('')}</div></details>` : ''}<div class="mp-mac">${m.kcal} kcal · P ${m.protein} g · C ${m.carbs} g · F ${m.fat} g</div>
           <button class="mp-ate ${m.ate === date ? 'done' : ''}" data-ate="${di}-${mi}">${m.ate === date ? '✓ ' + T('Logged') : '＋ ' + T('I ate this')}</button></div>
           <button class="mp-swap" data-sw="${di}-${mi}" aria-label="${T('Swap meal')}">${mpBusy === di + '-' + mi ? '<span class="spin"></span>' : '🔄'}</button></div>`).join('')}</div>`;
     }).join('') + (plan.prep.length ? `<div class="card"><b>🥡 ${T('Meal prep tips')}</b><ul class="mp-tips">${plan.prep.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : '');
@@ -4705,7 +4764,7 @@ async function exportPlan() {
     text(`${weekLabel(ws)} · Food Tracker`, 30, 500, '#8a8a8e');
     for (const g of plan.groceries) {
       y += 30; text(g.cat, 36, 700, '#f08000');
-      for (const it of g.items) text(`${it.have ? '☑' : '☐'}  ${it.name}${it.qty ? ' — ' + it.qty : ''}`, 32, 400, it.have ? '#b0b0b4' : '#222', 1.5);
+      for (const it of g.items) text(`${it.have ? '☑' : '☐'}  ${it.name}${it.qty ? ' — ' + it.qty : ''}${it.buy ? ' (' + it.buy + ')' : ''}`, 32, 400, it.have ? '#b0b0b4' : '#222', 1.5);
     }
     y += 56; text(T('Meal plan'), 52, 800, '#111', 1.2);
     plan.days.forEach((d, i) => {
@@ -4760,7 +4819,7 @@ ${autoPlan() ? 'A new plan is made automatically every Saturday morning.' : 'The
 Preferences: ${prefsText(pr)}
 ${plan.days.map((d, i) => `${engDay(ws, i)}${i === today ? ' (TODAY)' : ''}: ${d.meals.map(m => `${m.type}: ${m.name} — ${m.desc} (${m.kcal} kcal, P ${m.protein} g, C ${m.carbs} g, F ${m.fat} g${m.min ? `, ${m.min} min` : ''})`).join(' | ')}`).join('\n')}
 GROCERY LIST (✓ = already bought / at home):
-${plan.groceries.map(g => `${g.cat}: ${g.items.map(i => `${i.have ? '✓ ' : ''}${i.name} ${i.qty}`).join(', ')}`).join('\n')}
+${plan.groceries.map(g => `${g.cat}: ${g.items.map(i => `${i.have ? '✓ ' : ''}${i.name} ${i.qty}${i.buy ? ' (buy ' + i.buy + ')' : ''}`).join(', ')}`).join('\n')}
 Meal prep tips in the app: ${plan.prep.join(' / ') || 'none'}`;
 }
 
@@ -4865,6 +4924,7 @@ async function fillIngredient(it) {
         const sum = k => items.reduce((a, x) => a + num(x[k]), 0), has = k => items.some(x => x[k] != null);
         it.kcal = r0(sum('kcal')); for (const k of ['protein', 'carbs', 'fat']) it[k] = r1(sum(k));
         for (const k of ['sugar', 'fiber']) it[k] = has(k) ? r1(sum(k)) : null; it.sodium = has('sodium') ? r0(sum('sodium')) : null;
+        if (items.length === 1 && items[0].me && !it.count) Object.assign(it, { mq: niceQ(num(it.grams) / items[0].me), mu: items[0].mu, me: items[0].me });
         setBase(it);
       }
     } catch {}
@@ -4874,7 +4934,7 @@ async function fillIngredient(it) {
   renderIngredients();
   return it.calcBusy;
 }
-const gramsLine = it => num(it.grams) ? it.grams + ' ' + (it.unit || 'g') + (it.count ? ' · ' + T('{n} pcs', { n: it.count }) : '') : '';
+const gramsLine = it => num(it.grams) ? (measureText(it) ? measureText(it) + ' · ' : '') + it.grams + ' ' + (it.unit || 'g') : '';
 // Nutrition follows the amount (from the numbers at the amount when they were last set)
 function scaleItem(it) {
   if (!(it.base && it.base.grams > 0)) return;
@@ -4885,21 +4945,32 @@ function scaleItem(it) {
 function renderIngredients() {
   const box = $('#dIng'), m = det.m;
   const flabel = { kcal: N('Calories'), protein: N('Protein'), carbs: N('Carbs'), fat: N('Fats') };
-  box.innerHTML = m.items.map((it, i) => `<div class="ing" data-i="${i}">
+  box.className = 'ingrid';
+  // Closed ingredients are small tiles (name, kitchen measure, grams); the open one spans the whole width to edit it
+  box.innerHTML = m.items.map((it, i) => det.open !== i ? `<button class="ing-tile" data-i="${i}"><span class="it-n">${esc(it.name || T('New ingredient'))}</span>
+    <span class="it-m">${esc(measureText(it) || (num(it.grams) ? it.grams + ' ' + (it.unit || 'g') : '–'))}</span>
+    <span class="it-g">${it.calcBusy ? '<span class="spin" style="width:11px;height:11px"></span>' : `${measureText(it) && num(it.grams) ? it.grams + ' ' + (it.unit || 'g') + ' · ' : ''}${r0(it.kcal)} kcal`}</span></button>` : `<div class="ing" data-i="${i}">
     <button class="ing-head"><span><b data-h="name">${esc(it.name || T('New ingredient'))}</b><br><span class="small muted" data-h="grams">${gramsLine(it)}</span></span>
       <span style="font-weight:600">${it.calcBusy ? `<span class="spin" style="width:14px;height:14px;vertical-align:-2px"></span> ${T('Calculating…')}` : `<span data-h="kcal">${r0(it.kcal)}</span> kcal`} <span class="muted">${det.open === i ? '⌃' : '›'}</span></span></button>
     ${det.open === i ? `<div class="ing-edit">
       <div class="row"><input data-f="name" value="${esc(it.name)}" placeholder="${T('Ingredient')}" class="grow"><input data-f="grams" inputmode="decimal" value="${it.grams}" style="width:90px;text-align:right"><span class="muted">${it.unit || 'g'}</span></div>
+      ${it.mq && !it.count ? `<div class="spread" style="margin:0 0 12px"><span class="small muted" style="font-weight:600">${esc(it.mu)}</span>
+        <span class="row" style="gap:8px"><button class="chipbtn" data-mqs="-1" aria-label="−">−</button><b data-h="mq" style="min-width:34px;text-align:center">${fmtQ(it.mq)}</b><button class="chipbtn" data-mqs="1" aria-label="+">+</button></span></div>` : ''}
       ${it.count ? `<div class="spread" style="margin:0 0 12px"><span class="small muted" style="font-weight:600">${T('Pieces')}</span>
         <span class="row" style="gap:8px"><button class="chipbtn" data-pc="-1" aria-label="−">−</button><b data-h="count" style="min-width:28px;text-align:center">${it.count}</b><button class="chipbtn" data-pc="1" aria-label="+">+</button></span></div>` : ''}
       <div class="g4">${['kcal', 'protein', 'carbs', 'fat'].map(f => `<div><label class="lbl">${T(flabel[f])}</label><input data-f="${f}" inputmode="decimal" value="${it[f]}"></div>`).join('')}</div>
       ${hasAI() && !it.calcDone && !num(it.kcal) && !num(it.protein) && !num(it.carbs) && !num(it.fat) ? `<p class="small muted" style="margin:10px 0 0">✨ ${T('Enter the name and amount: the numbers are filled in for you.')}</p>` : ''}
       <button class="chipbtn" data-rm style="margin-top:12px;color:var(--bad)">${T('Remove ingredient')}</button></div>` : ''}</div>`).join('')
     || `<p class="muted">${T('No ingredients yet.')}</p>`;
-  box.querySelectorAll('.ing-head').forEach(h => h.onclick = () => { const i = +h.parentNode.dataset.i, was = det.open; det.open = det.open === i ? -1 : i; renderIngredients(); if (was >= 0 && m.items[was]) fillIngredient(m.items[was]); });
+  box.querySelectorAll('.ing-head,.ing-tile').forEach(h => h.onclick = () => { const i = +(h.dataset.i ?? h.parentNode.dataset.i), was = det.open; det.open = det.open === i ? -1 : i; renderIngredients(); if (was >= 0 && was !== i && m.items[was]) fillIngredient(m.items[was]); });
+  // Kitchen measure: one step more or less changes the amount by that much (½ → ¾ banana)
+  box.querySelectorAll('[data-mqs]').forEach(b => b.onclick = () => {
+    const it = m.items[+b.closest('.ing').dataset.i], q = stepQ(it.mq, +b.dataset.mqs);
+    it.mq = q; it.grams = r0(q * it.me); scaleItem(it); renderIngredients(); renderDetTotals();
+  });
   // Leaving the name or amount field: calculate the numbers if none were typed
   box.querySelectorAll('[data-f="name"],[data-f="grams"]').forEach(inp => inp.addEventListener('change', () => { const it = m.items[+inp.closest('.ing').dataset.i]; if (it) {
-    if (inp.dataset.f === 'name') for (const k of ['sugar', 'fiber', 'sodium']) { delete it[k]; if (it.base) delete it.base[k]; }   // another food: its fiber, sugar and sodium are worked out again
+    if (inp.dataset.f === 'name') { for (const k of ['sugar', 'fiber', 'sodium']) { delete it[k]; if (it.base) delete it.base[k]; } for (const k of ['mq', 'mu', 'me', 'count']) delete it[k]; }   // another food: its fiber, sugar and sodium are worked out again
     it.calcDone = false; fillIngredient(it); } }));
   // Pieces: one more or less changes the amount by the weight of one piece (taken from the current amount, so a weighed amount stays right)
   box.querySelectorAll('[data-pc]').forEach(b => b.onclick = () => {
@@ -4915,6 +4986,7 @@ function renderIngredients() {
     if (f === 'grams' && it.base.grams > 0) {
       scaleItem(it);   // scale nutrition with portion size
       for (const x of ['kcal', 'protein', 'carbs', 'fat']) card.querySelector(`[data-f="${x}"]`).value = it[x];
+      if (it.mq && it.me) { it.mq = niceQ(it.grams / it.me); const q = card.querySelector('[data-h=mq]'); if (q) q.textContent = fmtQ(it.mq); }   // weighed amount: the measure follows
     } else setBase(it);
     card.querySelector('[data-h=grams]').textContent = gramsLine(it);
     card.querySelector('[data-h=kcal]').textContent = r0(it.kcal);
@@ -5305,7 +5377,7 @@ function coachContext() {
   const left = k => { const v = r0(g[k] - tot[k]); return v >= 0 ? `${v} left` : `${-v} OVER`; };
   const meal = m => {
     const x = mealTotals(m), h = mealHealth(m);
-    return `- ${m.time || '--:--'} ${m.name}${m.servings !== 1 ? ` (${m.servings} servings)` : ''}: ${r0(x.kcal)} kcal, P ${r0(x.protein)} g, C ${r0(x.carbs)} g, F ${r0(x.fat)} g${h ? `, health ${h}/10` : ''}\n    ingredients: ${m.items.map(i => `${i.name} ${i.grams} g (${r0(i.kcal)} kcal, P ${r1(i.protein)} g)`).join('; ')}`;
+    return `- ${m.time || '--:--'} ${m.name}${m.servings !== 1 ? ` (${m.servings} servings)` : ''}: ${r0(x.kcal)} kcal, P ${r0(x.protein)} g, C ${r0(x.carbs)} g, F ${r0(x.fat)} g${h ? `, health ${h}/10` : ''}\n    ingredients: ${m.items.map(i => `${i.name} ${measureText(i) ? measureText(i) + ' = ' : ''}${i.grams} g (${r0(i.kcal)} kcal, P ${r1(i.protein)} g)`).join('; ')}`;
   };
   const todayMeals = db.meals.filter(m => m.date === today).sort((a, b) => (a.time || '').localeCompare(b.time || ''));
   const todayEx = db.exercises.filter(e => e.date === today);
@@ -5391,7 +5463,7 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
-- Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). Before the first photo scan a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
+- Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). Before the first photo scan a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. Ingredients of a meal show as tiles with a kitchen measure next to the grams (e.g. "½ medium · 60 g", "2 tbsp · 20 g"; with the kg setting European measures like tbsp, tsp, glass, slice, handful, never cups; with the lb setting US measures like cup, tbsp, tsp, oz); tap a tile to change it with − / + (½ → ¾) or to type exact grams. The meal plan shows each meal's ingredients per person with these measures (tap "Ingredients"), and the grocery list shows next to the total amount what to take from the shelf (e.g. "1 pack of 500 g"). For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros; if the Shortcut sends the same number on several days, 0 every evening or over 4000 kcal a day, Home shows a warning: in Find Health Samples only one date filter may stay, Start Date · is today) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
