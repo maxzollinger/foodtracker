@@ -1033,7 +1033,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v163';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v164';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2326,6 +2326,24 @@ const hexOf = bytes => [...bytes].map(b => b.toString(16).padStart(2, '0')).join
 const bytesOf = hex => Uint8Array.from(hex.match(/../g).map(h => parseInt(h, 16)));
 const normEmail = e => String(e || '').trim().toLowerCase();
 // Password → login proof + encryption key (slow on purpose, so passwords can't be guessed quickly)
+// New passwords: not too easy to guess, not the email, and not one that showed up in a known data leak.
+// The leak check (Have I Been Pwned) only sends the first 5 characters of a scrambled (SHA-1) version of the password.
+function pwWeak(pw, email) {
+  const p = pw.toLowerCase(), name = normEmail(email).split('@')[0];
+  if (name.length >= 4 && p.includes(name)) return T('The password must not contain your email.');
+  const common = ['password', 'passwort', '12345678', '123456789', '1234567890', '87654321', 'qwertyui', 'qwerty123', 'qwertz123', 'iloveyou', 'abcdefgh', 'abcd1234', 'foodtracker', 'letmein1'];
+  if (/^(.)\1+$/.test(p) || common.some(c => p.startsWith(c)) || /^\d{8,9}$/.test(p) || /^(0123|1234|2345|3456|4567|5678|6789|abcd|qwer)/.test(p) && p.length < 10) return T('This password is too easy to guess.');
+  return '';
+}
+async function pwLeaked(pw) {
+  try {
+    const h = hexOf(new Uint8Array(await crypto.subtle.digest('SHA-1', new TextEncoder().encode(pw)))).toUpperCase();
+    const ctl = new AbortController(), t = setTimeout(() => ctl.abort(), 5000);
+    const r = await fetch('https://api.pwnedpasswords.com/range/' + h.slice(0, 5), { headers: { 'Add-Padding': 'true' }, signal: ctl.signal });
+    clearTimeout(t); if (!r.ok) return false;
+    return (await r.text()).split('\n').some(l => { const [suf, n] = l.trim().split(':'); return suf === h.slice(5) && +n > 0; });
+  } catch { return false; }   // no connection to the check: do not block the person
+}
 async function deriveAcct(email, password) {
   const e = normEmail(email), base = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
   const bits = new Uint8Array(await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: new TextEncoder().encode('foodtracker:' + e), iterations: 210000 }, base, 512));
@@ -2373,7 +2391,7 @@ async function fetchAccountData(a) {
   const r = await post('/backup/restore', { id: a.id, auth: a.auth });
   if (r.status === 404) throw new Error('none');
   if (r.status === 403) throw new Error('wrong');
-  if (r.status === 429) throw new Error('busy');
+  if (r.status === 429) throw new Error((await r.clone().json().catch(() => ({}))).error === 'locked' ? 'locked' : 'busy');
   if (!r.ok) throw new Error('net');
   const txt = await r.text(), box = txt.startsWith('{') ? JSON.parse(txt).data : txt;   // older backups were wrapped
   const [z, iv, ct] = box.split('.');
@@ -2531,6 +2549,11 @@ function openAccountSheet(mode = 'signup') {
       const email = s.querySelector('#acEmail').value, pw = s.querySelector('#acPw').value;
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(normEmail(email))) return msg(T('Please enter a valid email.'), true);
       if (pw.length < 8) return msg(T('The password needs at least 8 characters.'), true);
+      if (up) {
+        const weak = pwWeak(pw, email); if (weak) return msg(weak, true);
+        msg(`<span class="spin"></span> ${T('Checking your password…')}`);
+        if (await pwLeaked(pw)) return msg(T('This password appeared in a data leak. Please choose a different one.'), true);
+      }
       msg(`<span class="spin"></span> ${up ? T('Creating your account…') : T('Signing in…')}`);
       busyStart(up ? T('Creating your account…') : T('Signing in…'));
       try {
@@ -2540,6 +2563,7 @@ function openAccountSheet(mode = 'signup') {
         catch (err) {
           if (err.message === 'wrong') return msg(up ? T('This email already has an account. Sign in instead, with the right password.') : T('Wrong password. Please try again.'), true);
           if (err.message === 'net') return msg(T('No connection. Check your internet and try again.'), true);
+          if (err.message === 'locked') return msg(T('Too many wrong passwords. For safety, this account is locked for an hour.'), true);
           if (err.message === 'busy') return msg(T('Too many tries. Please wait a few minutes and try again.'), true);
           if (!up) return msg(T('No account with this email. Check it, or create a new account.'), true);
         }
@@ -3858,6 +3882,7 @@ function openPrivacy() {
     ${sec('✨', T('AI'), T('When you scan food, chat with the coach, use voice input or create a meal plan, that photo, text or recording is sent through the Food Tracker server to Google Gemini to get an answer. The server does not keep it. Google handles it under the Gemini API terms, so please don\'t send very sensitive things like medical documents.'))}
     ${sec('🔔', T('Notifications'), T("If you turn on reminders, the server keeps your phone's notification address, your reminder times and your time zone. Nothing else."))}
     ${sec('⌚', T('Watch & tracker'), T('If you connect Apple Health or a tracker, only your calories burned per day are read. For WHOOP, Oura, Polar and Withings the sign-in key is kept on the Food Tracker server, encrypted with a secret that only your phone has. Numbers from the Apple Health Shortcut wait on the server for up to 30 days until your app picks them up.'))}
+    ${sec('🔑', T('Password check'), T('When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.'))}
     ${sec('🏷️', T('Barcodes'), T('When you scan a barcode, only its number is sent to Open Food Facts, a free food database. On some phones the scanner first loads a free reading tool from jsdelivr.net.'))}
     ${sec('📊', T('Usage count'), T('To know how many people use Food Tracker, the app sends a random number, the first and last day it was used and how many AI requests it made. With an account, this is stored together with your account. It never contains your food or photos.'))}
     ${sec('🍪', T('Cookies'), T('Food Tracker uses no cookies and no tracking. It only stores on your phone what it needs to work, like your settings, so no cookie banner is needed.'))}

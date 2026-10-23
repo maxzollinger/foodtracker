@@ -1478,7 +1478,14 @@ window.I18N = {
 "Show my email to the owner":"Meine E-Mail dem Besitzer zeigen",
 "The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Die Kalorienziele sind für Erwachsene gemacht. Sprich mit deinen Eltern oder einer Ärztin, bevor du abnehmen willst.",
 "You can hide it any time.":"Du kannst sie jederzeit verbergen.",
-"Your email stays hidden.":"Deine E-Mail bleibt verborgen."
+"Your email stays hidden.":"Deine E-Mail bleibt verborgen.",
+"Checking your password…":"Passwort wird geprüft…",
+"Password check":"Passwort-Check",
+"The password must not contain your email.":"Das Passwort darf deine E-Mail nicht enthalten.",
+"This password appeared in a data leak. Please choose a different one.":"Dieses Passwort ist in einem Datenleck aufgetaucht. Bitte wähle ein anderes.",
+"This password is too easy to guess.":"Dieses Passwort ist zu leicht zu erraten.",
+"Too many wrong passwords. For safety, this account is locked for an hour.":"Zu viele falsche Passwörter. Zur Sicherheit ist dieses Konto für eine Stunde gesperrt.",
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Beim Erstellen eines Kontos prüft die App, ob dein Passwort in einem bekannten Datenleck aufgetaucht ist (Have I Been Pwned). Dafür werden nur die ersten 5 Zeichen einer verschlüsselten Version geschickt; dein Passwort verlässt dein Handy nie."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2958,7 +2965,14 @@ window.I18N = {
 "Show my email to the owner":"Mostrar mi correo al propietario",
 "The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Los objetivos de calorías están pensados para adultos. Habla con tus padres o un médico antes de intentar bajar de peso.",
 "You can hide it any time.":"Puedes ocultarlo cuando quieras.",
-"Your email stays hidden.":"Tu correo queda oculto."
+"Your email stays hidden.":"Tu correo queda oculto.",
+"Checking your password…":"Comprobando tu contraseña…",
+"Password check":"Comprobación de contraseña",
+"The password must not contain your email.":"La contraseña no puede contener tu correo.",
+"This password appeared in a data leak. Please choose a different one.":"Esta contraseña apareció en una filtración de datos. Elige otra, por favor.",
+"This password is too easy to guess.":"Esta contraseña es demasiado fácil de adivinar.",
+"Too many wrong passwords. For safety, this account is locked for an hour.":"Demasiadas contraseñas incorrectas. Por seguridad, esta cuenta queda bloqueada una hora.",
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Al crear una cuenta, la app comprueba si tu contraseña apareció en una filtración conocida (Have I Been Pwned). Solo se envían los 5 primeros caracteres de una versión cifrada; tu contraseña nunca sale de tu móvil."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4438,7 +4452,14 @@ window.I18N = {
 "Show my email to the owner":"Montrer mon e-mail au propriétaire",
 "The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Les objectifs caloriques sont faits pour les adultes. Parle à un parent ou un médecin avant d’essayer de perdre du poids.",
 "You can hide it any time.":"Tu peux le masquer à tout moment.",
-"Your email stays hidden.":"Ton e-mail reste masqué."
+"Your email stays hidden.":"Ton e-mail reste masqué.",
+"Checking your password…":"Vérification du mot de passe…",
+"Password check":"Vérification du mot de passe",
+"The password must not contain your email.":"Le mot de passe ne doit pas contenir ton e-mail.",
+"This password appeared in a data leak. Please choose a different one.":"Ce mot de passe est apparu dans une fuite de données. Choisis-en un autre.",
+"This password is too easy to guess.":"Ce mot de passe est trop facile à deviner.",
+"Too many wrong passwords. For safety, this account is locked for an hour.":"Trop de mots de passe erronés. Par sécurité, ce compte est bloqué pendant une heure.",
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Quand tu crées un compte, l’app vérifie si ton mot de passe est apparu dans une fuite connue (Have I Been Pwned). Seuls les 5 premiers caractères d’une version chiffrée sont envoyés ; ton mot de passe ne quitte jamais ton téléphone."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5918,7 +5939,14 @@ window.I18N = {
 "Show my email to the owner":"Mostra la mia email al proprietario",
 "The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Gli obiettivi calorici sono pensati per adulti. Parla con un genitore o un medico prima di provare a dimagrire.",
 "You can hide it any time.":"Puoi nasconderla in qualsiasi momento.",
-"Your email stays hidden.":"La tua email resta nascosta."
+"Your email stays hidden.":"La tua email resta nascosta.",
+"Checking your password…":"Controllo della password…",
+"Password check":"Controllo password",
+"The password must not contain your email.":"La password non deve contenere la tua email.",
+"This password appeared in a data leak. Please choose a different one.":"Questa password è comparsa in una fuga di dati. Scegline un’altra.",
+"This password is too easy to guess.":"Questa password è troppo facile da indovinare.",
+"Too many wrong passwords. For safety, this account is locked for an hour.":"Troppe password errate. Per sicurezza questo account è bloccato per un’ora.",
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Quando crei un account, l’app controlla se la password è comparsa in una fuga di dati nota (Have I Been Pwned). Vengono inviati solo i primi 5 caratteri di una versione cifrata; la password non lascia mai il telefono."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7398,7 +7426,14 @@ window.I18N = {
 "Show my email to the owner":"メールアドレスを管理者に表示する",
 "The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"カロリー目標は大人向けです。減量を始める前に保護者や医師に相談してください。",
 "You can hide it any time.":"いつでも非表示にできます。",
-"Your email stays hidden.":"メールアドレスは非表示のままです。"
+"Your email stays hidden.":"メールアドレスは非表示のままです。",
+"Checking your password…":"パスワードを確認しています…",
+"Password check":"パスワードチェック",
+"The password must not contain your email.":"パスワードにメールアドレスを含めないでください。",
+"This password appeared in a data leak. Please choose a different one.":"このパスワードはデータ漏えいで見つかっています。別のパスワードを選んでください。",
+"This password is too easy to guess.":"このパスワードは推測されやすすぎます。",
+"Too many wrong passwords. For safety, this account is locked for an hour.":"パスワードの間違いが多すぎます。安全のため、このアカウントは1時間ロックされます。",
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"アカウント作成時、パスワードが既知のデータ漏えいに含まれていないか確認します（Have I Been Pwned）。送信されるのは暗号化したパスワードの最初の5文字だけで、パスワード自体がスマホの外に出ることはありません。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8878,7 +8913,14 @@ window.I18N = {
 "Show my email to the owner":"Mijn e-mail tonen aan de eigenaar",
 "The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"De caloriedoelen zijn gemaakt voor volwassenen. Praat met een ouder of arts voordat je probeert af te vallen.",
 "You can hide it any time.":"Je kunt hem altijd verbergen.",
-"Your email stays hidden.":"Je e-mail blijft verborgen."
+"Your email stays hidden.":"Je e-mail blijft verborgen.",
+"Checking your password…":"Wachtwoord controleren…",
+"Password check":"Wachtwoordcontrole",
+"The password must not contain your email.":"Het wachtwoord mag je e-mail niet bevatten.",
+"This password appeared in a data leak. Please choose a different one.":"Dit wachtwoord kwam voor in een datalek. Kies een ander.",
+"This password is too easy to guess.":"Dit wachtwoord is te makkelijk te raden.",
+"Too many wrong passwords. For safety, this account is locked for an hour.":"Te veel verkeerde wachtwoorden. Voor de veiligheid is dit account een uur geblokkeerd.",
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Als je een account maakt, controleert de app of je wachtwoord in een bekend datalek voorkwam (Have I Been Pwned). Alleen de eerste 5 tekens van een versleutelde versie worden verstuurd; je wachtwoord verlaat je telefoon nooit."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -10358,7 +10400,14 @@ window.I18N = {
 "Show my email to the owner":"Pokaż mój e-mail właścicielowi",
 "The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Cele kaloryczne są przeznaczone dla dorosłych. Porozmawiaj z rodzicem lub lekarzem, zanim zaczniesz się odchudzać.",
 "You can hide it any time.":"Możesz go w każdej chwili ukryć.",
-"Your email stays hidden.":"Twój e-mail pozostaje ukryty."
+"Your email stays hidden.":"Twój e-mail pozostaje ukryty.",
+"Checking your password…":"Sprawdzanie hasła…",
+"Password check":"Sprawdzenie hasła",
+"The password must not contain your email.":"Hasło nie może zawierać twojego e-maila.",
+"This password appeared in a data leak. Please choose a different one.":"To hasło pojawiło się w wycieku danych. Wybierz inne.",
+"This password is too easy to guess.":"To hasło jest zbyt łatwe do odgadnięcia.",
+"Too many wrong passwords. For safety, this account is locked for an hour.":"Za dużo błędnych haseł. Dla bezpieczeństwa konto jest zablokowane na godzinę.",
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Przy zakładaniu konta aplikacja sprawdza, czy hasło pojawiło się w znanym wycieku (Have I Been Pwned). Wysyłane jest tylko 5 pierwszych znaków zaszyfrowanej wersji; hasło nigdy nie opuszcza telefonu."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -11838,7 +11887,14 @@ window.I18N = {
 "Show my email to the owner":"Mostrar o meu e-mail ao proprietário",
 "The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Os objetivos de calorias são feitos para adultos. Fale com os pais ou um médico antes de tentar perder peso.",
 "You can hide it any time.":"Pode ocultá-lo a qualquer momento.",
-"Your email stays hidden.":"O seu e-mail fica oculto."
+"Your email stays hidden.":"O seu e-mail fica oculto.",
+"Checking your password…":"A verificar a palavra-passe…",
+"Password check":"Verificação da palavra-passe",
+"The password must not contain your email.":"A palavra-passe não pode conter o seu e-mail.",
+"This password appeared in a data leak. Please choose a different one.":"Esta palavra-passe apareceu numa fuga de dados. Escolha outra.",
+"This password is too easy to guess.":"Esta palavra-passe é demasiado fácil de adivinhar.",
+"Too many wrong passwords. For safety, this account is locked for an hour.":"Demasiadas palavras-passe erradas. Por segurança, esta conta fica bloqueada durante uma hora.",
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Ao criar uma conta, a app verifica se a palavra-passe apareceu numa fuga de dados conhecida (Have I Been Pwned). Só são enviados os primeiros 5 caracteres de uma versão encriptada; a palavra-passe nunca sai do telemóvel."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -13318,7 +13374,14 @@ window.I18N = {
 "Show my email to the owner":"Показывать мой e-mail владельцу",
 "The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Цели по калориям рассчитаны на взрослых. Поговорите с родителями или врачом, прежде чем пытаться похудеть.",
 "You can hide it any time.":"Вы можете скрыть его в любой момент.",
-"Your email stays hidden.":"Ваш e-mail скрыт."
+"Your email stays hidden.":"Ваш e-mail скрыт.",
+"Checking your password…":"Проверяем пароль…",
+"Password check":"Проверка пароля",
+"The password must not contain your email.":"Пароль не должен содержать ваш e-mail.",
+"This password appeared in a data leak. Please choose a different one.":"Этот пароль встречался в утечке данных. Выберите другой.",
+"This password is too easy to guess.":"Этот пароль слишком легко угадать.",
+"Too many wrong passwords. For safety, this account is locked for an hour.":"Слишком много неверных паролей. В целях безопасности аккаунт заблокирован на час.",
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"При создании аккаунта приложение проверяет, не встречался ли пароль в известных утечках (Have I Been Pwned). Отправляются только первые 5 символов зашифрованной версии; сам пароль никогда не покидает телефон."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -14798,7 +14861,14 @@ window.I18N = {
 "Show my email to the owner":"E-postamı sahibine göster",
 "The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"Kalori hedefleri yetişkinler için hazırlanmıştır. Kilo vermeye çalışmadan önce ebeveyninle veya bir doktorla konuş.",
 "You can hide it any time.":"İstediğin zaman gizleyebilirsin.",
-"Your email stays hidden.":"E-postan gizli kalır."
+"Your email stays hidden.":"E-postan gizli kalır.",
+"Checking your password…":"Şifren kontrol ediliyor…",
+"Password check":"Şifre kontrolü",
+"The password must not contain your email.":"Şifre e-postanı içermemeli.",
+"This password appeared in a data leak. Please choose a different one.":"Bu şifre bir veri sızıntısında görüldü. Lütfen başka bir şifre seç.",
+"This password is too easy to guess.":"Bu şifre tahmin edilmesi çok kolay.",
+"Too many wrong passwords. For safety, this account is locked for an hour.":"Çok fazla yanlış şifre. Güvenlik için bu hesap bir saatliğine kilitlendi.",
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"Hesap oluştururken uygulama, şifrenin bilinen bir veri sızıntısında görülüp görülmediğini kontrol eder (Have I Been Pwned). Yalnızca şifrelenmiş bir sürümün ilk 5 karakteri gönderilir; şifren telefonundan asla çıkmaz."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -16278,6 +16348,13 @@ window.I18N = {
 "Show my email to the owner":"向所有者显示我的邮箱",
 "The calorie goals are made for adults. Talk to a parent or doctor before you try to lose weight.":"卡路里目标是为成年人设计的。在尝试减重之前，请先和父母或医生谈谈。",
 "You can hide it any time.":"你可以随时隐藏它。",
-"Your email stays hidden.":"你的邮箱将保持隐藏。"
+"Your email stays hidden.":"你的邮箱将保持隐藏。",
+"Checking your password…":"正在检查密码…",
+"Password check":"密码检查",
+"The password must not contain your email.":"密码不能包含你的邮箱。",
+"This password appeared in a data leak. Please choose a different one.":"该密码曾出现在数据泄露中，请换一个。",
+"This password is too easy to guess.":"该密码太容易被猜到。",
+"Too many wrong passwords. For safety, this account is locked for an hour.":"错误密码次数过多。为了安全，此账户已锁定一小时。",
+"When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.":"创建账户时，应用会检查你的密码是否出现在已知数据泄露中（Have I Been Pwned）。只会发送加密后版本的前 5 个字符，你的密码绝不会离开你的手机。"
 }
 };
