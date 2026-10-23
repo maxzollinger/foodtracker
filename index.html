@@ -2,7 +2,7 @@
 <html lang="en" style="background:#0b0b0d">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Food Tracker</title>
 <meta name="description" content="Snap a photo of your meal and AI counts the calories, protein, carbs and fat. Free calorie tracker with an AI coach.">
 <!-- Link preview in WhatsApp, Snapchat, iMessage, Instagram etc. -->
@@ -172,7 +172,8 @@ a{color:inherit}
 .days{flex:1;display:flex;justify-content:space-between}
 .day{display:flex;flex-direction:column;align-items:center;gap:6px;padding:8px 5px;border-radius:16px;min-width:42px}
 .day.sel{background:var(--card);box-shadow:var(--shadow)}
-.day.future{opacity:.35;pointer-events:none}
+.day.future{pointer-events:none}.day.future .dn{opacity:.6}
+html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no accidental double-tap zoom */
 .day .dl{font-size:12px;color:var(--muted);font-weight:600}
 .day .dn{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;
   border:2px dashed var(--line)}
@@ -1090,7 +1091,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v180';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v181';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
