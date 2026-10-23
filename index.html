@@ -301,6 +301,15 @@ a{color:inherit}
 .stepper button{width:32px;height:32px;border-radius:50%;font-size:20px;font-weight:600}
 .stepper b{min-width:28px;text-align:center}
 .portion{display:flex;align-items:center;gap:10px;margin:0 0 14px}
+.st-art{display:block;width:100%;max-width:340px;margin:10px auto 4px;border-radius:20px}
+.st-line{animation:stScan 2.4s ease-in-out infinite;opacity:.85}
+@keyframes stScan{0%{transform:translateY(0)}50%{transform:translateY(150px)}100%{transform:translateY(0)}}
+.st-frame{animation:stPulse 2.4s ease-in-out infinite}
+@keyframes stPulse{50%{opacity:.55}}
+.stc{opacity:0;animation:stPop .35s ease-out forwards}
+@keyframes stPop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+.stc{transform-box:fill-box;transform-origin:center}
+@media (prefers-reduced-motion:reduce){.st-line,.st-frame{animation:none}.stc{animation:none;opacity:1}}
 .pchips{display:flex;gap:6px;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}
 .pchips::-webkit-scrollbar{display:none}
 .stepper.sm{padding:2px}
@@ -1033,7 +1042,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v172';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v173';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1816,8 +1825,10 @@ function openAddMenu() {
     <button class="addtile" id="aBar"><span>🏷️</span>${T('Barcode')}</button>
     <button class="addtile" id="aLib"><span>🖼️</span>${T('Upload photo')}</button>
     <button class="addtile" id="aText"><span>💬</span>${T('Describe food')}</button>
-    <button class="addtile wide" id="aMan"><span>✏️</span>${T('Manual entry')}</button></div>`, s => {
-    s.querySelector('#aScan').onclick = () => { closeSheet(); $('#fileCam').click(); };
+    <button class="addtile wide" id="aMan"><span>✏️</span>${T('Manual entry')}</button></div>
+    <button class="chipbtn" id="aTips" style="display:block;margin:14px auto 0">📸 ${T('Photo tips')}</button>`, s => {
+    s.querySelector('#aScan').onclick = () => { if (LS.get('ft_scanTips', '')) { closeSheet(); $('#fileCam').click(); } else openScanTips(); };
+    s.querySelector('#aTips').onclick = () => openScanTips();
     s.querySelector('#aLib').onclick = () => { closeSheet(); openPicker('#fileLib', $('#fab')); };
     s.querySelector('#aBar').onclick = openBarcodeSheet;
     s.querySelector('#aFav').onclick = openFavorites;
@@ -1826,6 +1837,39 @@ function openAddMenu() {
       closeSheet();
       openNewMeal({ id: uid(), date: sel, time: nowTime(), name: '', items: [{ name: '', grams: 100, kcal: 0, protein: 0, carbs: 0, fat: 0 }], servings: 1, health: null, source: 'manual', photo: false }, 0);
     };
+  });
+}
+
+/* Photo tips: shown once before the first food scan (and any time from "Photo tips" in the Add menu).
+   Each tip matches what the AI really uses: the whole meal, a size reference, pieces it can count, readable labels. */
+function scanTipsArt() {
+  const berry = (x, y, n) => `<g transform="translate(${x} ${y}) scale(1.25)"><path d="M0 -9 C9 -9 11 2 0 12 C-11 2 -9 -9 0 -9Z" fill="#e5383b"/><path d="M-5 -9 L0 -13 L5 -9 L0 -7Z" fill="#3a9d4b"/>
+    <g class="stc" style="animation-delay:${0.6 + n * 0.35}s"><circle cx="10" cy="-11" r="8" fill="#111"/><text x="10" y="-7.4" font-size="10.5" font-weight="800" text-anchor="middle" fill="#fff">${n}</text></g></g>`;
+  return `<svg viewBox="0 0 300 190" class="st-art" aria-hidden="true">
+    <rect x="0" y="0" width="300" height="190" rx="20" fill="#c8945c"/><rect x="0" y="0" width="300" height="190" rx="20" fill="url(#stWood)" opacity=".35"/>
+    <defs><pattern id="stWood" width="300" height="14" patternUnits="userSpaceOnUse"><path d="M0 7 Q75 3 150 7 T300 7" stroke="#7a5230" stroke-width="1" fill="none"/></pattern></defs>
+    <ellipse cx="138" cy="98" rx="82" ry="78" fill="#000" opacity=".12"/><circle cx="135" cy="95" r="78" fill="#f7f7f9"/><circle cx="135" cy="95" r="60" fill="none" stroke="#e6e6ea" stroke-width="2"/>
+    <g transform="rotate(-25 120 95)"><ellipse cx="120" cy="95" rx="38" ry="22" fill="#d98a3d"/>${[0, 1, 2, 3].map(i => `<path d="M${98 + i * 14} 78 l-8 34" stroke="#6b3a17" stroke-width="4" stroke-linecap="round" opacity=".8"/>`).join('')}</g>
+    ${berry(170, 66, 1)}${berry(188, 96, 2)}${berry(166, 126, 3)}
+    <g transform="translate(238 22)"><rect x="-3" y="40" width="7" height="105" rx="3.5" fill="#b9bcc4"/><rect x="-10" y="0" width="21" height="44" rx="6" fill="#c9ccd3"/>${[-6, -1, 4, 9].map(x => `<rect x="${x - 1}" y="-2" width="2.5" height="24" fill="#c8945c"/>`).join('')}
+      <g class="stc" style="animation-delay:1.8s"><rect x="10" y="80" width="40" height="18" rx="9" fill="#111"/><text x="30" y="92.5" font-size="10" font-weight="700" text-anchor="middle" fill="#fff">19 cm</text></g></g>
+    <g fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" class="st-frame"><path d="M22 34 v-16 h16"/><path d="M262 18 h16 v16"/><path d="M22 156 v16 h16"/><path d="M262 172 h16 v-16"/></g>
+    <rect x="24" y="20" width="252" height="3" rx="1.5" fill="#fff" class="st-line"/>
+  </svg>`;
+}
+function openScanTips() {
+  const tip = (icon, text) => `<div class="li" style="gap:12px;padding:10px 0"><span style="font-size:22px;width:30px;text-align:center">${icon}</span><span class="grow" style="font-weight:600">${text}</span></div>`;
+  sheet(`<h3 style="text-align:center">${T('Get the best result')}</h3>
+    ${scanTipsArt()}
+    <div style="margin:6px 2px 0">
+      ${tip('🍽️', T('The whole meal in the photo, from slightly above.'))}
+      ${tip('🍴', T('A fork or your hand next to it shows the size.'))}
+      ${tip('🍓', T('Spread out pieces, so they can be counted.'))}
+      ${tip('🏷️', T('Turn labels and package sizes to the camera.'))}
+    </div>
+    <button class="btn" id="stGo" style="margin-top:14px">📷 ${T('Scan now')}</button>
+    <p class="small muted" style="text-align:center;margin:10px 0 0">${T('You can always correct the result afterwards.')}</p>`, s => {
+    s.querySelector('#stGo').onclick = () => { LS.set('ft_scanTips', '1'); closeSheet(); $('#fileCam').click(); };
   });
 }
 
@@ -5219,7 +5263,7 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
-- Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
+- Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Before the first photo scan a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros; if the Shortcut sends the same number on several days, 0 every evening or over 4000 kcal a day, Home shows a warning: in Find Health Samples only one date filter may stay, Start Date · is today) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.

@@ -1493,7 +1493,15 @@ window.I18N = {
 "Account":"Konto",
 "Pieces":"Stück",
 "{n} pcs":"{n} Stk.",
-"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Wenn Google langsam ist, kann Cloudflare Workers AI eine Coach-Nachricht stattdessen beantworten; auch dort wird sie nicht gespeichert."
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Wenn Google langsam ist, kann Cloudflare Workers AI eine Coach-Nachricht stattdessen beantworten; auch dort wird sie nicht gespeichert.",
+"Photo tips":"Foto-Tipps",
+"Get the best result":"So wird's am genauesten",
+"The whole meal in the photo, from slightly above.":"Die ganze Mahlzeit im Bild, leicht von oben.",
+"A fork or your hand next to it shows the size.":"Eine Gabel oder deine Hand daneben zeigt die Grösse.",
+"Spread out pieces, so they can be counted.":"Stücke etwas verteilen, damit sie gezählt werden können.",
+"Turn labels and package sizes to the camera.":"Etiketten und Packungsgrössen zur Kamera drehen.",
+"Scan now":"Jetzt scannen",
+"You can always correct the result afterwards.":"Du kannst das Ergebnis danach jederzeit korrigieren."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -2988,7 +2996,15 @@ window.I18N = {
 "Account":"Cuenta",
 "Pieces":"Piezas",
 "{n} pcs":"{n} uds.",
-"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Si Google va lento, Cloudflare Workers AI puede responder un mensaje del coach en su lugar; tampoco lo guarda."
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Si Google va lento, Cloudflare Workers AI puede responder un mensaje del coach en su lugar; tampoco lo guarda.",
+"Photo tips":"Consejos de foto",
+"Get the best result":"Para el mejor resultado",
+"The whole meal in the photo, from slightly above.":"Toda la comida en la foto, un poco desde arriba.",
+"A fork or your hand next to it shows the size.":"Un tenedor o tu mano al lado muestra el tamaño.",
+"Spread out pieces, so they can be counted.":"Separa las piezas para que se puedan contar.",
+"Turn labels and package sizes to the camera.":"Gira etiquetas y tamaños del envase hacia la cámara.",
+"Scan now":"Escanear ahora",
+"You can always correct the result afterwards.":"Siempre puedes corregir el resultado después."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4483,7 +4499,15 @@ window.I18N = {
 "Account":"Compte",
 "Pieces":"Pièces",
 "{n} pcs":"{n} pcs",
-"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Si Google est lent, Cloudflare Workers AI peut répondre à un message du coach à sa place ; il ne le conserve pas non plus."
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Si Google est lent, Cloudflare Workers AI peut répondre à un message du coach à sa place ; il ne le conserve pas non plus.",
+"Photo tips":"Conseils photo",
+"Get the best result":"Pour le meilleur résultat",
+"The whole meal in the photo, from slightly above.":"Tout le repas sur la photo, un peu d’en haut.",
+"A fork or your hand next to it shows the size.":"Une fourchette ou ta main à côté montre la taille.",
+"Spread out pieces, so they can be counted.":"Écarte les morceaux pour qu’on puisse les compter.",
+"Turn labels and package sizes to the camera.":"Tourne les étiquettes et tailles d’emballage vers l’appareil.",
+"Scan now":"Scanner maintenant",
+"You can always correct the result afterwards.":"Tu peux toujours corriger le résultat ensuite."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -5978,7 +6002,15 @@ window.I18N = {
 "Account":"Account",
 "Pieces":"Pezzi",
 "{n} pcs":"{n} pz",
-"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Se Google è lento, Cloudflare Workers AI può rispondere al suo posto a un messaggio del coach; anche lui non lo conserva."
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Se Google è lento, Cloudflare Workers AI può rispondere al suo posto a un messaggio del coach; anche lui non lo conserva.",
+"Photo tips":"Consigli foto",
+"Get the best result":"Per il risultato migliore",
+"The whole meal in the photo, from slightly above.":"Tutto il pasto nella foto, un po’ dall’alto.",
+"A fork or your hand next to it shows the size.":"Una forchetta o la tua mano accanto mostra le dimensioni.",
+"Spread out pieces, so they can be counted.":"Distanzia i pezzi così si possono contare.",
+"Turn labels and package sizes to the camera.":"Gira etichette e formati della confezione verso la fotocamera.",
+"Scan now":"Scansiona ora",
+"You can always correct the result afterwards.":"Puoi sempre correggere il risultato dopo."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7473,7 +7505,15 @@ window.I18N = {
 "Account":"アカウント",
 "Pieces":"個数",
 "{n} pcs":"{n}個",
-"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Google が遅いときは、Cloudflare Workers AI がコーチへのメッセージに代わりに答えることがあります。こちらも保存しません。"
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Google が遅いときは、Cloudflare Workers AI がコーチへのメッセージに代わりに答えることがあります。こちらも保存しません。",
+"Photo tips":"撮影のコツ",
+"Get the best result":"いちばん正確に撮るには",
+"The whole meal in the photo, from slightly above.":"食事全体を、少し上から写しましょう。",
+"A fork or your hand next to it shows the size.":"フォークや手を横に置くと大きさが分かります。",
+"Spread out pieces, so they can be counted.":"数えられるように、個数のある食べ物は少し離して置きましょう。",
+"Turn labels and package sizes to the camera.":"ラベルや容量の表示をカメラに向けましょう。",
+"Scan now":"今すぐスキャン",
+"You can always correct the result afterwards.":"結果はあとからいつでも修正できます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -8968,7 +9008,15 @@ window.I18N = {
 "Account":"Account",
 "Pieces":"Stuks",
 "{n} pcs":"{n} st.",
-"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Als Google traag is, kan Cloudflare Workers AI een coachbericht beantwoorden; ook dat bewaart het niet."
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Als Google traag is, kan Cloudflare Workers AI een coachbericht beantwoorden; ook dat bewaart het niet.",
+"Photo tips":"Fototips",
+"Get the best result":"Voor het beste resultaat",
+"The whole meal in the photo, from slightly above.":"De hele maaltijd in beeld, een beetje van boven.",
+"A fork or your hand next to it shows the size.":"Een vork of je hand ernaast laat de grootte zien.",
+"Spread out pieces, so they can be counted.":"Leg stukjes wat uit elkaar, zodat ze geteld kunnen worden.",
+"Turn labels and package sizes to the camera.":"Draai etiketten en verpakkingsgroottes naar de camera.",
+"Scan now":"Nu scannen",
+"You can always correct the result afterwards.":"Je kunt het resultaat achteraf altijd aanpassen."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -10463,7 +10511,15 @@ window.I18N = {
 "Account":"Konto",
 "Pieces":"Sztuki",
 "{n} pcs":"{n} szt.",
-"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Gdy Google działa wolno, na wiadomość do coacha może odpowiedzieć Cloudflare Workers AI; ono też jej nie przechowuje."
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Gdy Google działa wolno, na wiadomość do coacha może odpowiedzieć Cloudflare Workers AI; ono też jej nie przechowuje.",
+"Photo tips":"Wskazówki do zdjęć",
+"Get the best result":"Dla najlepszego wyniku",
+"The whole meal in the photo, from slightly above.":"Cały posiłek na zdjęciu, lekko z góry.",
+"A fork or your hand next to it shows the size.":"Widelec lub dłoń obok pokazuje rozmiar.",
+"Spread out pieces, so they can be counted.":"Rozłóż kawałki, żeby dało się je policzyć.",
+"Turn labels and package sizes to the camera.":"Obróć etykiety i rozmiary opakowań do aparatu.",
+"Scan now":"Skanuj teraz",
+"You can always correct the result afterwards.":"Wynik zawsze możesz potem poprawić."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -11958,7 +12014,15 @@ window.I18N = {
 "Account":"Conta",
 "Pieces":"Unidades",
 "{n} pcs":"{n} un.",
-"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Quando o Google está lento, o Cloudflare Workers AI pode responder a uma mensagem do coach; também não a guarda."
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Quando o Google está lento, o Cloudflare Workers AI pode responder a uma mensagem do coach; também não a guarda.",
+"Photo tips":"Dicas de foto",
+"Get the best result":"Para o melhor resultado",
+"The whole meal in the photo, from slightly above.":"A refeição inteira na foto, um pouco de cima.",
+"A fork or your hand next to it shows the size.":"Um garfo ou a sua mão ao lado mostra o tamanho.",
+"Spread out pieces, so they can be counted.":"Espalhe os pedaços para que possam ser contados.",
+"Turn labels and package sizes to the camera.":"Vire rótulos e tamanhos da embalagem para a câmara.",
+"Scan now":"Digitalizar agora",
+"You can always correct the result afterwards.":"Pode sempre corrigir o resultado depois."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -13453,7 +13517,15 @@ window.I18N = {
 "Account":"Аккаунт",
 "Pieces":"Штук",
 "{n} pcs":"{n} шт.",
-"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Если Google работает медленно, на сообщение коучу может ответить Cloudflare Workers AI; он тоже его не хранит."
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Если Google работает медленно, на сообщение коучу может ответить Cloudflare Workers AI; он тоже его не хранит.",
+"Photo tips":"Советы по фото",
+"Get the best result":"Для лучшего результата",
+"The whole meal in the photo, from slightly above.":"Всё блюдо в кадре, немного сверху.",
+"A fork or your hand next to it shows the size.":"Вилка или ладонь рядом показывают размер.",
+"Spread out pieces, so they can be counted.":"Разложите кусочки, чтобы их можно было посчитать.",
+"Turn labels and package sizes to the camera.":"Поверните этикетки и объём упаковки к камере.",
+"Scan now":"Сканировать",
+"You can always correct the result afterwards.":"Результат всегда можно исправить потом."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -14948,7 +15020,15 @@ window.I18N = {
 "Account":"Hesap",
 "Pieces":"Adet",
 "{n} pcs":"{n} adet",
-"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Google yavaş olduğunda koç mesajını bunun yerine Cloudflare Workers AI yanıtlayabilir; o da mesajı saklamaz."
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"Google yavaş olduğunda koç mesajını bunun yerine Cloudflare Workers AI yanıtlayabilir; o da mesajı saklamaz.",
+"Photo tips":"Fotoğraf ipuçları",
+"Get the best result":"En iyi sonuç için",
+"The whole meal in the photo, from slightly above.":"Yemeğin tamamı fotoğrafta, biraz yukarıdan.",
+"A fork or your hand next to it shows the size.":"Yanında bir çatal veya elin boyutu gösterir.",
+"Spread out pieces, so they can be counted.":"Parçaları biraz ayır ki sayılabilsin.",
+"Turn labels and package sizes to the camera.":"Etiketleri ve paket boyutlarını kameraya çevir.",
+"Scan now":"Şimdi tara",
+"You can always correct the result afterwards.":"Sonucu sonradan her zaman düzeltebilirsin."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -16443,6 +16523,14 @@ window.I18N = {
 "Account":"账户",
 "Pieces":"个数",
 "{n} pcs":"{n} 个",
-"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"当 Google 较慢时，教练消息可能改由 Cloudflare Workers AI 回答；它同样不会保存。"
+"When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.":"当 Google 较慢时，教练消息可能改由 Cloudflare Workers AI 回答；它同样不会保存。",
+"Photo tips":"拍照技巧",
+"Get the best result":"获得最准确的结果",
+"The whole meal in the photo, from slightly above.":"整份餐食都拍进去，稍微从上方拍。",
+"A fork or your hand next to it shows the size.":"旁边放一把叉子或你的手，可以显示大小。",
+"Spread out pieces, so they can be counted.":"把一块块的食物稍微分开，方便计数。",
+"Turn labels and package sizes to the camera.":"把标签和包装规格朝向镜头。",
+"Scan now":"立即扫描",
+"You can always correct the result afterwards.":"之后随时可以修改结果。"
 }
 };
