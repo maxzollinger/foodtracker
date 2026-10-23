@@ -1090,7 +1090,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v177';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v178';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1969,7 +1969,7 @@ function stepQ(q, dir) {
 const measureRule = () => isLb()
   ? 'US kitchen measures: cup, tbsp, tsp, fl oz, oz, slice, scoop, can, or a piece with its size (small / medium / large).'
   : 'European kitchen measures, never cups: tbsp, tsp, glass (200 ml), mug (250 ml), slice, handful, pinch, scoop, bowl, can, pack, or a piece with its size (small / medium / large).';
-const measureText = it => it.count ? T('{n} pcs', { n: it.count }) : it.mq ? fmtQ(it.mq) + ' ' + it.mu : '';
+const measureText = it => it.count ? (it.cu ? it.count + ' ' + it.cu : T('{n} pcs', { n: it.count })) : it.mq ? fmtQ(it.mq) + ' ' + it.mu : '';
 
 /* ================= AI analysis ================= */
 // Food names come back in the app language
@@ -1979,7 +1979,7 @@ Identify every food and drink in the meal. Getting the AMOUNT right matters most
 2. Count only what is there: for an open bottle, glass or cup, estimate how full it is and count only that part.
 3. Glasses and cups: small glass about 200 ml, normal glass 250-300 ml, mug 250-350 ml, takeaway cup 250 / 350 / 450 ml (small / medium / large), then adjust for how full it is.
 4. Food on plates and in bowls: measure against known sizes in the photo (dinner plate about 26 cm, side plate 20 cm, fork 19 cm, spoon 15 cm, smartphone 15 cm, adult hand about 18 cm long, can 12 cm high). Estimate the area and thickness of each food from that.
-5. COUNT everything that can be counted, for every kind of food: fruit and berries, vegetables, nuts, eggs, bread and rolls, slices (bread, cheese, ham, pizza), cookies and sweets, meat and fish pieces (wings, drumsticks, nuggets, meatballs, shrimp, fillets), sushi, dumplings, falafel, potatoes, pancakes… Count the pieces you see (also ones partly hidden), judge their size against the things around them, then grams = pieces × weight of one piece. Typical weight of one medium piece (edible part): strawberry 12 g (small 8, large 20), raspberry 4, cherry 8, grape 5, plum 60, apricot 40, kiwi 75, mandarin 75, apple 180, pear 170, banana 120 (peeled), orange 150 (peeled), cherry tomato 15, tomato 120, carrot 60, broccoli floret 15, mushroom 20, potato 150, small potato 50, olive 4, almond 1.2, walnut half 2.5, cashew 1.5, egg 50, slice of bread 35, toast slice 25, bread roll 60, croissant 60, pancake 40, waffle 35, tortilla 45, slice of cheese 20, slice of ham 15, pizza slice 110 (1/8 of a 30 cm pizza), cookie 12, chocolate square 5, gummy bear 2.3, chicken wing 30 (meat), drumstick 70 (meat), chicken nugget 17, meatball 25, shrimp 10, fish fillet 120, chicken breast 170, sushi piece 30, maki piece 20, dumpling 25, falafel 20, spring roll 60. Fruit and berries look bigger than they weigh, so don't round up. Put the number of pieces in "count" and the weight of one piece in "per". Only foods that can't be counted (rice, pasta, sauce, soup, salad leaves, fries, cereal, many tiny pieces like blueberries) get count 0 and per 0; measure those by their area and height as in step 4.
+5. COUNT everything that can be counted, for every kind of food: fruit and berries, vegetables, nuts, eggs, bread and rolls, slices (bread, cheese, ham, pizza), cookies and sweets, meat and fish pieces (wings, drumsticks, nuggets, meatballs, shrimp, fillets), sushi, dumplings, falafel, potatoes, pancakes… Count the pieces you see (also ones partly hidden), judge their size against the things around them, then grams = pieces × weight of one piece. Typical weight of one medium piece (edible part): strawberry 12 g (small 8, large 20), raspberry 4, cherry 8, grape 5, plum 60, apricot 40, kiwi 75, mandarin 75, apple 180, pear 170, banana 120 (peeled), orange 150 (peeled), cherry tomato 15, tomato 120, carrot 60, broccoli floret 15, mushroom 20, potato 150, small potato 50, olive 4, almond 1.2, walnut half 2.5, cashew 1.5, egg 50, slice of bread 35, toast slice 25, bread roll 60, croissant 60, pancake 40, waffle 35, tortilla 45, slice of cheese 20, slice of ham 15, pizza slice 110 (1/8 of a 30 cm pizza), cookie 12, chocolate square 5, gummy bear 2.3, chicken wing 30 (meat), drumstick 70 (meat), chicken nugget 17, meatball 25, shrimp 10, fish fillet 120, chicken breast 170, sushi piece 30, maki piece 20, dumpling 25, falafel 20, spring roll 60. Fruit and berries look bigger than they weigh, so don't round up. Put the number of WHOLE pieces in "count", the weight of one piece in "per" and the piece word in "mu" (e.g. "slices", "berries", "eggs", in ${langInfo().ai}). A part of a piece (half a banana, ¾ of an apple) or one single big piece (1 apple, 1 chicken breast) is not counted: give it a kitchen measure as in step 6 instead (e.g. mq 0.5, mu "medium"). Only foods that can't be counted (rice, pasta, sauce, soup, salad leaves, fries, cereal, many tiny pieces like blueberries) get count 0 and per 0; measure those by their area and height as in step 4.
 6. Also give every item that is NOT counted in step 5 a kitchen measure people know: "mq" = amount, "mu" = the unit (short, in ${langInfo().ai}), "me" = grams (or ml) of ONE unit. ${measureRule()} Amounts only as whole numbers or 0.25 / 0.33 / 0.5 / 0.67 / 0.75 (0.125 only for spices). Examples: half a banana mq 0.5, mu "medium", me 120; oats mq 4, mu "tbsp", me 10. If plain g or ml is the only sensible measure (meat, rice, pasta, a drink in ml), use mq 0.
 7. Drinks and other liquids: "unit" is "ml" and "grams" is the volume in ml. Use the nutrition of exactly that drink: regular lemonade or soda about 35-45 kcal per 100 ml, diet / zero about 0-1, juice about 45, milk (3.5 %) 64, beer 43, wine 83.
 8. When unsure, choose the most typical portion of that item, not a large one. Never inflate portions.
@@ -2241,7 +2241,8 @@ function fixCount(it) {
 function fixMeasure(it, raw) {
   const q = num(raw.mq), e = num(raw.me), u = String(raw.mu || '').trim().slice(0, 24);
   const g = it.grams || num(raw.grams);   // spices: 0.3 g still has its pinch or ⅛ tsp
-  if (it.count || !(q > 0) || !(e > 0) || !u || !(g > 0)) return it;
+  if (it.count) { if (u && !/\d/.test(u)) it.cu = u; return it; }   // counted pieces: "2 slices" instead of "2 pcs"
+  if (!(q > 0) || !(e > 0) || !u || !(g > 0) || /^(g|gr|grams?|ml|millilit(er|re)s?|cl|l)$/i.test(u)) return it;   // plain g / ml is no kitchen measure (oz and fl oz stay for the US setting)
   return Object.assign(it, { mq: niceQ(g / e), mu: u, me: e });
 }
 const healthOf = v => { const n = r0(num(v)); return n >= 1 && n <= 10 ? n : null; };
@@ -4970,7 +4971,7 @@ function renderIngredients() {
   });
   // Leaving the name or amount field: calculate the numbers if none were typed
   box.querySelectorAll('[data-f="name"],[data-f="grams"]').forEach(inp => inp.addEventListener('change', () => { const it = m.items[+inp.closest('.ing').dataset.i]; if (it) {
-    if (inp.dataset.f === 'name') { for (const k of ['sugar', 'fiber', 'sodium']) { delete it[k]; if (it.base) delete it.base[k]; } for (const k of ['mq', 'mu', 'me', 'count']) delete it[k]; }   // another food: its fiber, sugar and sodium are worked out again
+    if (inp.dataset.f === 'name') { for (const k of ['sugar', 'fiber', 'sodium']) { delete it[k]; if (it.base) delete it.base[k]; } for (const k of ['mq', 'mu', 'me', 'count', 'cu']) delete it[k]; }   // another food: its fiber, sugar and sodium are worked out again
     it.calcDone = false; fillIngredient(it); } }));
   // Pieces: one more or less changes the amount by the weight of one piece (taken from the current amount, so a weighed amount stays right)
   box.querySelectorAll('[data-pc]').forEach(b => b.onclick = () => {
