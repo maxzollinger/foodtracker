@@ -51,7 +51,7 @@
 <style>
 :root{
   color-scheme:light;
-  --bg:#f7f7f9;--card:#fff;--text:#111113;--muted:#8e8e93;--line:#ececf0;--track:#efeff3;
+  --bg:#f7f7f9;--card:#fff;--text:#111113;--muted:#636368;--line:#ececf0;--track:#efeff3;
   --ink:#111113;--on-ink:#fff;--chip:#f2f2f5;
   --protein:#e3605b;--carbs:#ef9f45;--fat:#4b8cf5;--flame:#ff9500;--good:#34c759;--bad:#ff3b30;--water:#3aa0ff;
   --shadow:0 2px 14px rgba(0,0,0,.05);
@@ -846,6 +846,8 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .mm-opt{padding:12px 18px;border-radius:999px;background:var(--ink);color:var(--on-ink);background-image:var(--btnimg);box-shadow:var(--btnshadow);font-weight:600;font-size:15px;transition:transform .18s var(--spring)}
 .mm-opt:active{transform:scale(.96)}
 .mm-loading{display:flex;flex-direction:column;align-items:center;gap:16px;padding:60px 0}
+/* Keyboard users see where they are */
+:focus-visible{outline:2.5px solid var(--text);outline-offset:2px;border-radius:12px}
 </style>
 <script src="lang.js"></script>
 </head>
@@ -1031,7 +1033,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v159';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v160';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2490,6 +2492,7 @@ function togglePw(id, btn) {
 }
 
 // One sheet for both: create an account, or sign in on a new phone
+const agreeLine = text => `<p class="small muted" style="text-align:center;margin:10px 0 0;line-height:1.5">${T(text, { terms: `<a href="#" onclick="event.preventDefault();openTerms()" style="color:inherit;text-decoration:underline">${T('Terms of use')}</a>`, privacy: `<a href="#" onclick="event.preventDefault();openPrivacy()" style="color:inherit;text-decoration:underline">${T('Privacy policy')}</a>` })}</p>`;
 function openAccountSheet(mode = 'signup') {
   const up = mode === 'signup';
   sheet(`<h3>${up ? '☁️ ' + T('Create your account') : '👋 ' + T('Sign in')}</h3>
@@ -2500,6 +2503,7 @@ function openAccountSheet(mode = 'signup') {
       <label class="lbl" for="acPw">${T('Password')}</label>
       <div class="pwbox"><input id="acPw" name="password" type="password" autocomplete="${up ? 'new-password' : 'current-password'}" minlength="8" required placeholder="${up ? T('At least 8 characters') : ''}">${eyeBtn('acPw')}</div>
       <button class="btn" type="submit" style="margin-top:18px">${up ? T('Create account') : T('Sign in')}</button>
+      ${up ? agreeLine(N('By creating an account you agree to the {terms} and the {privacy}.')) : ''}
     </form>
     <p class="small" id="acMsg" style="text-align:center;min-height:20px;margin:10px 0 0"></p>
     ${up ? `<p class="small muted" style="margin:4px 0 0">🔒 ${T("Your iPhone can save the password for you. Without the password the data can't be opened, not even by us.")}</p>` : ''}
@@ -3509,6 +3513,35 @@ function startTrackerLink(p) {
   watchPickup();
 }
 
+/* ================= Accessibility =================
+   Screen readers read a name for every button and field. Icon-only buttons and fields whose label is a
+   separate line get one automatically, also in windows added later. Elements acting as buttons work with Enter/Space. */
+const A11Y_SYM = { '‹': N('Back'), '←': N('Back'), '›': N('Next'), '→': N('Next'), '＋': N('Add'), '+': N('Add'), '−': N('Remove'), '✕': N('Close'), '×': N('Close'), '✓': N('Done'), '↻': N('Refresh'), '✨': 'AI', '⌄': N('More') };
+function a11yFix(root) {
+  if (!root || !root.querySelectorAll) return;
+  for (const b of root.querySelectorAll('button:not([aria-label]), [role=button]:not([aria-label])')) {
+    const t = (b.innerText || '').trim();
+    if (/[\p{L}\p{N}]{2,}/u.test(t.replace(/[\u{1F000}-\u{1FFFF}]/gu, ''))) continue;   // has real words: fine
+    const k = Object.keys(A11Y_SYM).find(x => t.includes(x)) ;
+    if (k) b.setAttribute('aria-label', T(A11Y_SYM[k]));
+  }
+  for (const f of root.querySelectorAll('input:not([type=hidden]):not([aria-label]), select:not([aria-label]), textarea:not([aria-label])')) {
+    if (f.closest('label') || (f.id && root.querySelector(`label[for="${CSS.escape(f.id)}"]`)) || f.placeholder) continue;
+    let el = f, name = '';
+    for (let i = 0; i < 4 && el && !name; i++) {   // the nearest text label before the field
+      let prev = el.previousElementSibling;
+      while (prev && !name) { const tx = (prev.innerText || '').trim(); if (tx && tx.length < 60) name = tx; prev = prev.previousElementSibling; }
+      el = el.parentElement;
+    }
+    if (name) f.setAttribute('aria-label', name.replace(/\s+/g, ' '));
+  }
+}
+new MutationObserver(list => { for (const m of list) for (const n of m.addedNodes) if (n.nodeType === 1) a11yFix(n.parentElement || n); }).observe(document.body, { childList: true, subtree: true });
+document.addEventListener('keydown', e => {
+  const t = e.target;
+  if ((e.key === 'Enter' || e.key === ' ') && t && t.getAttribute && t.getAttribute('role') === 'button' && t.tagName !== 'BUTTON') { e.preventDefault(); t.click(); }
+});
+
 /* ================= Users count =================
    Each phone says "hello" once a day with a random number, so the owner can see how many people use the
    app. Nothing else is sent: no name, email or food data. The owner sees the totals in Settings (admin). */
@@ -3793,6 +3826,11 @@ function openTour(onDone) {
 }
 
 /* ================= Privacy ================= */
+// Who is responsible for the app (shown in Privacy and Terms). Filled in by the owner.
+const OWNER = { name: '', email: '', country: N('Switzerland') };
+const ownerLine = () => OWNER.name || OWNER.email
+  ? T('Responsible for Food Tracker: {who}', { who: esc([OWNER.name, OWNER.email].filter(Boolean).join(', ')) })
+  : T('Questions? Ask the person who shared the app with you.');
 function openPrivacy() {
   const sec = (ic, title, text) => `<div class="priv"><div class="priv-ic">${ic}</div><div><b>${title}</b><p>${text}</p></div></div>`;
   sheet(`<h3>🔒 ${T('Privacy')}</h3>
@@ -3802,12 +3840,31 @@ function openPrivacy() {
     ${sec('👤', T('Your account email'), T('The app owner can see the email address of each account, for example to help if you forget your login. Your meals, photos and everything else stay encrypted.'))}
     ${sec('✨', T('AI'), T('When you scan food, chat with the coach, use voice input or create a meal plan, that photo, text or recording is sent through the Food Tracker server to Google Gemini to get an answer. The server does not keep it. Google handles it under the Gemini API terms, so please don\'t send very sensitive things like medical documents.'))}
     ${sec('🔔', T('Notifications'), T("If you turn on reminders, the server keeps your phone's notification address, your reminder times and your time zone. Nothing else."))}
-    ${sec('⌚', T('Watch & tracker'), T('If you connect Apple Health or a tracker, only your calories burned per day are read. The connection key stays on your phone; the Food Tracker server only passes the numbers on. When the key is renewed, the server keeps the new one for one hour, locked so only your phone can open it, so the connection does not break if an answer gets lost. Numbers from the Apple Health Shortcut wait on the server for a few days until your app picks them up.'))}
-    ${sec('🏷️', T('Barcodes'), T('When you scan a barcode, only its number is sent to Open Food Facts, a free food database, to find the product.'))}
-    ${sec('📊', T('Usage count'), T('To know how many people use Food Tracker, the app sends a random number once a day. It is not linked to you, your email or your food. Only the number of users is counted.'))}
+    ${sec('⌚', T('Watch & tracker'), T('If you connect Apple Health or a tracker, only your calories burned per day are read. For WHOOP, Oura, Polar and Withings the sign-in key is kept on the Food Tracker server, encrypted with a secret that only your phone has. Numbers from the Apple Health Shortcut wait on the server for up to 30 days until your app picks them up.'))}
+    ${sec('🏷️', T('Barcodes'), T('When you scan a barcode, only its number is sent to Open Food Facts, a free food database. On some phones the scanner first loads a free reading tool from jsdelivr.net.'))}
+    ${sec('📊', T('Usage count'), T('To know how many people use Food Tracker, the app sends a random number, the first and last day it was used and how many AI requests it made. With an account, this is stored together with your account. It never contains your food or photos.'))}
+    ${sec('🍪', T('Cookies'), T('Food Tracker uses no cookies and no tracking. It only stores on your phone what it needs to work, like your settings, so no cookie banner is needed.'))}
+    ${sec('🌍', T('Where data is stored'), T('The app and the server run on Cloudflare, AI answers come from Google. Their computers can be outside Switzerland and the EU.'))}
+    ${sec('✋', T('Your rights'), T('You can get a copy of your data any time (Settings → Backup data), delete it (Settings → Delete all data) and ask what is stored about you.'))}
     ${sec('🚫', T('What never happens'), T('No ads, no tracking and no selling of data. No emails are sent to you.'))}
     ${sec('🗑️', T('Deleting'), T('Settings → Delete all data removes everything on this phone and your account backup on the server.'))}
-    <p class="small muted" style="text-align:center;margin:16px 0 0">${T('Questions? Ask the person who shared the app with you.')}</p>`);
+    <p class="small muted" style="text-align:center;margin:16px 0 0">${ownerLine()}</p>
+    <button class="chipbtn" style="display:block;margin:12px auto 0" onclick="closeSheet();setTimeout(openTerms,250)">📄 ${T('Terms of use')}</button>`);
+}
+function openTerms() {
+  const sec = (ic, title, text) => `<div class="priv"><div class="priv-ic">${ic}</div><div><b>${title}</b><p>${text}</p></div></div>`;
+  sheet(`<h3>📄 ${T('Terms of use')}</h3>
+    <p class="muted" style="margin:4px 0 14px">${T('Short and simple. By using Food Tracker you agree to this.')}</p>
+    ${sec('🎁', T('Free'), T('Food Tracker is free for friends and family. Nothing is sold in the app, so there are no payments or refunds.'))}
+    ${sec('🩺', T('Not medical advice'), T('Calories and nutrition are estimates by AI and food databases and can be wrong. Talk to a doctor before big changes, especially if you are pregnant, ill or have had an eating disorder.'))}
+    ${sec('🔞', T('Age'), T('You need to be at least 16, or have a parent’s permission.'))}
+    ${sec('🤝', T('Fair use'), T('Do not use the app or its AI for anything illegal or harmful, and do not try to break or overload it.'))}
+    ${sec('🔄', T('Changes'), T('The app can change, pause or stop at any time. Keep your own copy: Settings → Backup data.'))}
+    ${sec('🧾', T('Your content'), T('Your meals, photos and chats stay yours. The app only uses them to work for you.'))}
+    ${sec('⚖️', T('Liability'), T('The app is provided as it is. As far as the law allows, there is no liability for wrong numbers or lost data.'))}
+    ${sec('🏛️', T('Law'), T('The law of {country} applies.', { country: T(OWNER.country) }))}
+    <p class="small muted" style="text-align:center;margin:16px 0 0">${ownerLine()}</p>
+    <button class="chipbtn" style="display:block;margin:12px auto 0" onclick="closeSheet();setTimeout(openPrivacy,250)">🔒 ${T('Privacy')}</button>`);
 }
 
 /* ================= Live barcode scanning =================
@@ -5090,7 +5147,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
 - Coach: the Memory button (top right) opens My memory: what you remember about them (they can add or delete facts), My memory snapshot (a short summary you write about them with one question and 3 quick answers) and Chat history (earlier conversations are kept when they start a new one; they can open, continue or delete them). The first suggestion button follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
-- Settings: Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, daily life: mostly sitting / on their feet a lot / physical work, training 0 / 1-2 / 3-5 / 6+ per week; daily life and workouts together set the activity level, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy; Delete all data.
+- Settings: Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, daily life: mostly sitting / on their feet a lot / physical work, training 0 / 1-2 / 3-5 / 6+ per week; daily life and workouts together set the activity level, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy (what happens with the data, no cookies, their rights); Terms of use (free, estimates not medical advice, 16+, fair use); Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
   const mem = memList();
@@ -5795,7 +5852,8 @@ function renderSettings() {
       <div class="row" style="margin-top:14px"><button class="btn" id="kSave">${T('Save')}</button><button class="btn outline" id="kTest">${T('Test')}</button></div>
       <p class="small" id="kMsg" style="margin:10px 0 0;text-align:center">${hasAI() ? '✓ ' + T('AI is on') : T('No key yet')}</p></div>` : ''}
     <div class="h2">${T('Your data')}</div>
-    <div class="list"><button class="li" id="sPriv"><span class="ic">🔒</span><span class="grow">${T('Privacy')}<br><span class="small muted">${T('What happens with your data')}</span></span><span class="chev">›</span></button></div>
+    <div class="list"><button class="li" id="sPriv"><span class="ic">🔒</span><span class="grow">${T('Privacy')}<br><span class="small muted">${T('What happens with your data')}</span></span><span class="chev">›</span></button>
+      <button class="li" id="sTerms"><span class="ic">📄</span><span class="grow">${T('Terms of use')}</span><span class="chev">›</span></button></div>
     ${backupCard()}
     <div class="list">
       <button class="li" id="dExp"><span class="ic">⬇️</span><span class="grow">${T('Backup data')}</span><span class="chev">›</span></button>
@@ -5822,6 +5880,7 @@ function renderSettings() {
   bindBackupCard();
   bindUsersCard();
   $('#sPriv').onclick = openPrivacy;
+  $('#sTerms').onclick = openTerms;
   if ($('#kSave')) $('#kSave').onclick = () => {
     const set = (k, v) => v ? LS.set(k, v) : LS.del(k);
     set('ft_key', $('#kKey').value.trim()); set('ft_claude_key', $('#kClaude').value.trim()); set('ft_model', $('#kModel').value.trim());
@@ -6154,6 +6213,7 @@ function renderOb() {
         <div class="obfeat"><span>📸 ${T('Scan food')}</span><span>💬 ${T('Coach')}</span><span>📈 ${T('Progress')}</span></div></div>
       <div class="langpick"><button id="obLang" class="lp-btn">🌐 <span class="lp-flag">${langInfo().f}</span> ${langInfo().n} <span class="lp-change">⌄</span></button></div>
       <button class="btn" id="obNext">${T('Get started')}</button>
+      ${agreeLine(N('By continuing you agree to the {terms} and the {privacy}.'))}
       ${SERVER_URL && !db.profile ? `<button class="small muted" id="obRestore" style="margin-top:14px;padding:6px">${T('Already have an account? Sign in')}</button>` : ''}</div>`;
     pg.querySelector('#obNext').onclick = () => obMove(1);
     if (pg.querySelector('#obRestore')) pg.querySelector('#obRestore').onclick = () => openAccountSheet('login');
