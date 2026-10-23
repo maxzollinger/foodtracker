@@ -1525,7 +1525,12 @@ window.I18N = {
 "{n} kcal over your goal. Earn it?":"{n} kcal über deinem Ziel. Verdienen?",
 "No thanks":"Nein danke",
 "Earn your treat":"Gönnung verdienen",
-"Over your goal? Get a walk or ride that makes up for it.":"Über dem Ziel? Ein Spaziergang oder eine Velotour gleicht es aus."
+"Over your goal? Get a walk or ride that makes up for it.":"Über dem Ziel? Ein Spaziergang oder eine Velotour gleicht es aus.",
+"Up to 3 times a day, only when you are behind.":"Bis zu 3-mal am Tag, nur wenn du hinterher bist.",
+"Time for a glass of water 💧":"Zeit für ein Glas Wasser 💧",
+"Halfway through the day: a glass of water? 💧":"Halber Tag geschafft: ein Glas Wasser? 💧",
+"A few more glasses to reach your water goal 💧":"Noch ein paar Gläser bis zu deinem Wasserziel 💧",
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Kurze Erinnerungen: Wasser trinken, verbrannte Kalorien eintragen, einmal pro Woche wiegen und dein Wochen-Check-in."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3052,7 +3057,12 @@ window.I18N = {
 "{n} kcal over your goal. Earn it?":"{n} kcal por encima de tu objetivo. ¿Te lo ganas?",
 "No thanks":"No, gracias",
 "Earn your treat":"Gánate tu capricho",
-"Over your goal? Get a walk or ride that makes up for it.":"¿Te pasaste? Una caminata o un paseo en bici lo compensa."
+"Over your goal? Get a walk or ride that makes up for it.":"¿Te pasaste? Una caminata o un paseo en bici lo compensa.",
+"Up to 3 times a day, only when you are behind.":"Hasta 3 veces al día, solo si vas atrasado.",
+"Time for a glass of water 💧":"Hora de un vaso de agua 💧",
+"Halfway through the day: a glass of water? 💧":"Mitad del día: ¿un vaso de agua? 💧",
+"A few more glasses to reach your water goal 💧":"Unos vasos más para tu objetivo de agua 💧",
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Recordatorios cortos para beber agua, anotar las calorías quemadas, pesarte una vez por semana y ver tu resumen semanal."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4579,7 +4589,12 @@ window.I18N = {
 "{n} kcal over your goal. Earn it?":"{n} kcal au-dessus de ton objectif. Le mériter ?",
 "No thanks":"Non merci",
 "Earn your treat":"Mérite ton plaisir",
-"Over your goal? Get a walk or ride that makes up for it.":"Au-dessus de l’objectif ? Une marche ou du vélo compense."
+"Over your goal? Get a walk or ride that makes up for it.":"Au-dessus de l’objectif ? Une marche ou du vélo compense.",
+"Up to 3 times a day, only when you are behind.":"Jusqu’à 3 fois par jour, seulement si tu es en retard.",
+"Time for a glass of water 💧":"C’est l’heure d’un verre d’eau 💧",
+"Halfway through the day: a glass of water? 💧":"Mi-journée : un verre d’eau ? 💧",
+"A few more glasses to reach your water goal 💧":"Encore quelques verres pour ton objectif d’eau 💧",
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"De courts rappels pour boire de l’eau, noter les calories brûlées, te peser une fois par semaine et voir ton bilan hebdo."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6106,7 +6121,12 @@ window.I18N = {
 "{n} kcal over your goal. Earn it?":"{n} kcal sopra il tuo obiettivo. Guadagnarlo?",
 "No thanks":"No, grazie",
 "Earn your treat":"Guadagnati lo sfizio",
-"Over your goal? Get a walk or ride that makes up for it.":"Sopra l’obiettivo? Una camminata o un giro in bici lo compensa."
+"Over your goal? Get a walk or ride that makes up for it.":"Sopra l’obiettivo? Una camminata o un giro in bici lo compensa.",
+"Up to 3 times a day, only when you are behind.":"Fino a 3 volte al giorno, solo se sei indietro.",
+"Time for a glass of water 💧":"È ora di un bicchiere d’acqua 💧",
+"Halfway through the day: a glass of water? 💧":"Metà giornata: un bicchiere d’acqua? 💧",
+"A few more glasses to reach your water goal 💧":"Ancora qualche bicchiere per il tuo obiettivo d’acqua 💧",
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Brevi promemoria per bere acqua, registrare le calorie bruciate, pesarti una volta a settimana e vedere il check-in settimanale."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7633,7 +7653,12 @@ window.I18N = {
 "{n} kcal over your goal. Earn it?":"目標より {n} kcal オーバー。運動で取り戻す？",
 "No thanks":"いいえ",
 "Earn your treat":"ごほうびを運動で",
-"Over your goal? Get a walk or ride that makes up for it.":"目標オーバー？ウォーキングやサイクリングで取り戻せます。"
+"Over your goal? Get a walk or ride that makes up for it.":"目標オーバー？ウォーキングやサイクリングで取り戻せます。",
+"Up to 3 times a day, only when you are behind.":"1日最大3回、遅れているときだけ。",
+"Time for a glass of water 💧":"水を1杯飲む時間です 💧",
+"Halfway through the day: a glass of water? 💧":"1日の半分です：水を1杯どう？ 💧",
+"A few more glasses to reach your water goal 💧":"水分目標まであと数杯 💧",
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"水分補給、消費カロリーの記録、週1回の体重測定、週間チェックインを短くお知らせします。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -9160,7 +9185,12 @@ window.I18N = {
 "{n} kcal over your goal. Earn it?":"{n} kcal boven je doel. Verdienen?",
 "No thanks":"Nee, bedankt",
 "Earn your treat":"Verdien je traktatie",
-"Over your goal? Get a walk or ride that makes up for it.":"Boven je doel? Een wandeling of fietstocht maakt het goed."
+"Over your goal? Get a walk or ride that makes up for it.":"Boven je doel? Een wandeling of fietstocht maakt het goed.",
+"Up to 3 times a day, only when you are behind.":"Tot 3 keer per dag, alleen als je achterloopt.",
+"Time for a glass of water 💧":"Tijd voor een glas water 💧",
+"Halfway through the day: a glass of water? 💧":"Halverwege de dag: een glas water? 💧",
+"A few more glasses to reach your water goal 💧":"Nog een paar glazen tot je waterdoel 💧",
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Korte herinneringen om water te drinken, verbrande calorieën in te vullen, één keer per week te wegen en je weekcheck-in te zien."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -10687,7 +10717,12 @@ window.I18N = {
 "{n} kcal over your goal. Earn it?":"{n} kcal ponad cel. Zasłużyć?",
 "No thanks":"Nie, dziękuję",
 "Earn your treat":"Zasłuż na przysmak",
-"Over your goal? Get a walk or ride that makes up for it.":"Ponad cel? Spacer lub rower to wyrówna."
+"Over your goal? Get a walk or ride that makes up for it.":"Ponad cel? Spacer lub rower to wyrówna.",
+"Up to 3 times a day, only when you are behind.":"Do 3 razy dziennie, tylko gdy jesteś w tyle.",
+"Time for a glass of water 💧":"Czas na szklankę wody 💧",
+"Halfway through the day: a glass of water? 💧":"Połowa dnia: szklanka wody? 💧",
+"A few more glasses to reach your water goal 💧":"Jeszcze kilka szklanek do celu wody 💧",
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Krótkie przypomnienia o piciu wody, wpisaniu spalonych kalorii, ważeniu raz w tygodniu i tygodniowym podsumowaniu."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -12214,7 +12249,12 @@ window.I18N = {
 "{n} kcal over your goal. Earn it?":"{n} kcal acima do objetivo. Merecer?",
 "No thanks":"Não, obrigado",
 "Earn your treat":"Mereça o seu mimo",
-"Over your goal? Get a walk or ride that makes up for it.":"Acima do objetivo? Uma caminhada ou bicicleta compensa."
+"Over your goal? Get a walk or ride that makes up for it.":"Acima do objetivo? Uma caminhada ou bicicleta compensa.",
+"Up to 3 times a day, only when you are behind.":"Até 3 vezes por dia, só quando está atrasado.",
+"Time for a glass of water 💧":"Hora de um copo de água 💧",
+"Halfway through the day: a glass of water? 💧":"Meio do dia: um copo de água? 💧",
+"A few more glasses to reach your water goal 💧":"Mais uns copos para o seu objetivo de água 💧",
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Lembretes curtos para beber água, registar calorias queimadas, pesar-se uma vez por semana e ver o resumo semanal."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -13741,7 +13781,12 @@ window.I18N = {
 "{n} kcal over your goal. Earn it?":"На {n} ккал больше цели. Заработать?",
 "No thanks":"Нет, спасибо",
 "Earn your treat":"Заработай вкусняшку",
-"Over your goal? Get a walk or ride that makes up for it.":"Больше цели? Прогулка или велосипед это компенсируют."
+"Over your goal? Get a walk or ride that makes up for it.":"Больше цели? Прогулка или велосипед это компенсируют.",
+"Up to 3 times a day, only when you are behind.":"До 3 раз в день, только если вы отстаёте.",
+"Time for a glass of water 💧":"Время для стакана воды 💧",
+"Halfway through the day: a glass of water? 💧":"Полдня позади: стакан воды? 💧",
+"A few more glasses to reach your water goal 💧":"Ещё несколько стаканов до цели по воде 💧",
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Короткие напоминания: пить воду, записать сожжённые калории, взвешиваться раз в неделю и смотреть недельный итог."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -15268,7 +15313,12 @@ window.I18N = {
 "{n} kcal over your goal. Earn it?":"Hedefinin {n} kcal üstündesin. Kazanmak ister misin?",
 "No thanks":"Hayır, teşekkürler",
 "Earn your treat":"Ödülünü kazan",
-"Over your goal? Get a walk or ride that makes up for it.":"Hedefin üstünde misin? Bir yürüyüş veya bisiklet bunu dengeler."
+"Over your goal? Get a walk or ride that makes up for it.":"Hedefin üstünde misin? Bir yürüyüş veya bisiklet bunu dengeler.",
+"Up to 3 times a day, only when you are behind.":"Günde en fazla 3 kez, yalnızca geride kaldığında.",
+"Time for a glass of water 💧":"Bir bardak su zamanı 💧",
+"Halfway through the day: a glass of water? 💧":"Günün yarısı: bir bardak su? 💧",
+"A few more glasses to reach your water goal 💧":"Su hedefine birkaç bardak kaldı 💧",
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Su içmek, yakılan kaloriyi girmek, haftada bir tartılmak ve haftalık özetini görmek için kısa hatırlatmalar."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -16795,6 +16845,11 @@ window.I18N = {
 "{n} kcal over your goal. Earn it?":"超出目标 {n} 千卡。运动赢回来？",
 "No thanks":"不用了",
 "Earn your treat":"运动换零食",
-"Over your goal? Get a walk or ride that makes up for it.":"超出目标？散步或骑车就能补回来。"
+"Over your goal? Get a walk or ride that makes up for it.":"超出目标？散步或骑车就能补回来。",
+"Up to 3 times a day, only when you are behind.":"每天最多 3 次，只在你落后时提醒。",
+"Time for a glass of water 💧":"该喝一杯水了 💧",
+"Halfway through the day: a glass of water? 💧":"一天过半：来杯水？ 💧",
+"A few more glasses to reach your water goal 💧":"再喝几杯就达到饮水目标 💧",
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"简短提醒：喝水、记录消耗的热量、每周称重一次，以及查看每周总结。"
 }
 };

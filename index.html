@@ -1097,7 +1097,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v182';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v183';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2928,6 +2928,8 @@ async function syncDone() {
     if (daysBetween(lastW, today) + until <= 3) todo.push(['weight', lastW]);   // the weigh-in reminder is skipped within 3 days of a weigh-in
   }
   if (pf.ci >= 0 && wd === (pf.cd ?? 0) && hr < pf.ci + 3 && LS.get('ft_checkin', '') === today) todo.push(['checkin', today]);
+  // Water reminders come at 11:00, 14:00 and 17:00 only when behind: 25 %, 50 % and 75 % of the goal reached skips them (at most 3 notes a day)
+  if (pf.wa === 1 && hr < 18) { const w = waterOn(today), g = waterGoal(today), lvl = [0.25, 0.5, 0.75].filter(f => w >= g * f).length; if (lvl) todo.push(['water', today + ':' + lvl]); }
   for (const [kind, date] of todo) {
     if (sent[kind] === date) continue;
     try {
@@ -4438,7 +4440,7 @@ Write my WEEKLY CHECK-IN for this week. First line: a short title starting with 
 }
 
 /* ================= Reminder times (per person) ================= */
-const PUSH_DEF = { burn: 20, wDay: 0, wTime: 9, ci: 18, cd: 0, fo: 1, hb: -1 };   // cd = check-in day (0 = Sunday)
+const PUSH_DEF = { burn: 20, wDay: 0, wTime: 9, ci: 18, cd: 0, fo: 1, hb: -1, wa: 1 };   // cd = check-in day (0 = Sunday); wa = water reminders
 const pushPrefs = () => { try { return { ...PUSH_DEF, ...JSON.parse(LS.get('ft_push_prefs', '{}')) }; } catch { return { ...PUSH_DEF }; } };
 const userTZ = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'Europe/Zurich'; } catch { return 'Europe/Zurich'; } };
 // Each reminder: a row with a switch; when it is on, its day and time are chosen underneath
@@ -4452,6 +4454,7 @@ function reminderTimesHTML() {
       ${on && pick ? `<div class="rpick">${pick}</div>` : ''}</div>`;
   const fasting = db.profile && fastType(db.profile) === 'if';
   return `<div class="rtimes">
+    ${row('water', '💧', T('Water'), T('Up to 3 times a day, only when you are behind.'), p.wa === 1, '')}
     ${row('burn', '🏃', T('Calories burned'), T('Daily'), p.burn >= 0, `<select id="rBurn" class="rsel">${hourOpts(p.burn)}</select>`)}
     ${row('weight', '⚖️', T('Weigh-in'), T('Once a week'), p.wDay >= 0, `<select id="rWDay" class="rsel">${dayOpts(p.wDay)}</select><select id="rWTime" class="rsel">${hourOpts(p.wTime)}</select>`)}
     ${row('checkin', '📊', T('Weekly check-in'), T('Once a week'), p.ci >= 0, `<select id="rCd" class="rsel">${dayOpts(p.cd ?? 0)}</select><select id="rCi" class="rsel">${hourOpts(p.ci)}</select>`)}
@@ -4471,6 +4474,7 @@ function bindReminderTimes() {
       weight: () => on ? { wDay: last.wDay ?? 0 } : { wDay: -1, last: { ...last, wDay: p.wDay } },
       checkin: () => on ? { ci: last.ci ?? 18 } : { ci: -1, last: { ...last, ci: p.ci } },
       fast: () => ({ fo: on ? 1 : 0 }),
+      water: () => ({ wa: on ? 1 : 0 }),
       habit: () => { const v = on ? (last.hb ?? 20) : -1; if (db.habit) { db.habit.remind = v; save_db(); } return on ? { hb: v } : { hb: -1, last: { ...last, hb: p.hb } }; } }[k]();
     save(ch, on ? '🔔 ' + T('Reminder on') : T('Reminder off'));
   });
@@ -5536,7 +5540,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
 - Coach: the Memory button (top right) opens My memory: what you remember about them (they can add or delete facts), My memory snapshot (a short summary you write about them with one question and 3 quick answers) and Chat history (earlier conversations are kept when they start a new one; they can open, continue or delete them). The first suggestion button follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
-- Settings: Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, daily life: mostly sitting / on their feet a lot / physical work, training 0 / 1-2 / 3-5 / 6+ per week; daily life and workouts together set the activity level, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy (what happens with the data, no cookies, their rights); Terms of use (free, estimates not medical advice, 16+, fair use); Delete all data.
+- Settings: Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, daily life: mostly sitting / on their feet a lot / physical work, training 0 / 1-2 / 3-5 / 6+ per week; daily life and workouts together set the activity level, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (water: up to 3 a day at 11:00, 14:00 and 17:00, only when they are behind their water goal (25 / 50 / 75 % by then), none once it is reached; calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy (what happens with the data, no cookies, their rights); Terms of use (free, estimates not medical advice, 16+, fair use); Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
   const mem = memList();
@@ -5946,7 +5950,8 @@ function b64ToBytes(b) { const p = '='.repeat((4 - b.length % 4) % 4), raw = ato
 // The service worker shows the notifications in the app's language; it reads the texts from here.
 // Minimal look: just the short message in bold; iPhone adds "from <app name>" below it by itself.
 const reminderData = () => ({ burn: T('Calories burned today?'), weight: T('Weekly weigh-in'), checkin: T('Your weekly check-in is ready 📊'),
-  fastOpen: T('Your eating window is open now ⏱️'), fastClose: T('Your eating window closes in 30 min ⏱️'), habit: habitReminderText() });
+  fastOpen: T('Your eating window is open now ⏱️'), fastClose: T('Your eating window closes in 30 min ⏱️'), habit: habitReminderText(),
+  water1: T('Time for a glass of water 💧'), water2: T('Halfway through the day: a glass of water? 💧'), water3: T('A few more glasses to reach your water goal 💧') });
 const reminderContent = (R, kind) => ({ title: R[kind], body: '' });
 let remT;
 function saveReminderTexts() {
@@ -6025,7 +6030,7 @@ function askReminders(force, then) {
   sheet(`<div style="text-align:center;padding:8px 4px 4px">
       <div class="askbell">🔔</div>
       <h3 style="margin:14px 0 6px">${T('Turn on reminders')}</h3>
-      <p class="muted" style="margin:0 0 8px">${T('Short reminders to log your calories burned, for your weekly weigh-in and your weekly check-in.')}</p>
+      <p class="muted" style="margin:0 0 8px">${T('Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.')}</p>
       <p class="small muted" style="margin:0 0 22px">${T('You can turn each one on or off and choose the times in Settings → Notifications.')}</p>
       <button class="btn" id="askYes">${T('Allow')}</button>
       <button class="btn outline" id="askNo" style="margin-top:10px">${T('Not now')}</button></div>`, sh => {
@@ -6191,6 +6196,7 @@ function handleOpen(what) {
   if (what === 'weight') openWeightSheet();
   if (what === 'checkin') { go('chat'); weeklyCheckin(); }
   if (what === 'habit') setTimeout(openHabitPage, 300);
+  if (/^water/.test(what)) setTimeout(openWaterSheet, 300);
 }
 
 /* ================= Settings ================= */
