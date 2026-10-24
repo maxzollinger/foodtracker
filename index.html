@@ -156,8 +156,8 @@ a{color:inherit}
 
 /* Rings */
 .ring{position:relative;flex:none}
-.ring svg{transform:rotate(-90deg);display:block}
-.ring circle{transition:stroke-dashoffset .6s ease}
+.ring>svg{transform:rotate(-90deg);display:block}
+.ring>svg circle{transition:stroke-dashoffset .6s ease}
 .ring-in{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:20px}
 
 /* Header + week */
@@ -180,6 +180,9 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 .day .dn.logged{border:2px solid var(--text)}
 .day .dn.over{border:2px solid var(--bad)}
 .ico{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em;flex:none}
+/* Icons that stand in for emojis keep a quiet accent colour where the colour means something */
+.e-flame,.e-zap{color:var(--flame)}.e-drop,.e-waves{color:var(--water)}.e-protein{color:var(--protein)}.e-wheat{color:var(--carbs)}.e-avocado{color:var(--fat)}
+.e-heart,.e-sprout,.e-leaf,.e-tree,.e-check,.e-salad{color:var(--good)}.e-alert,.e-nofork{color:var(--bad)}.e-trophy,.e-medal,.e-star,.e-crown,.e-party{color:#e0a526}
 .acts{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .actcard{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--card);border-radius:14px;padding:10px 10px 10px 12px;box-shadow:var(--shadow);font-size:14px}
 .actcard>.ico{font-size:20px;color:var(--good)}
@@ -204,7 +207,7 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 .mhead span{font-size:12px;font-weight:700;color:var(--muted)}
 .mday{display:flex;padding:3px;border-radius:50%}
 .mday .ring-in span{font-size:12.5px;font-weight:700}
-.mday.nolog .ring svg circle:first-child{stroke-dasharray:3 3}
+.mday.nolog .ring>svg circle:first-child{stroke-dasharray:3 3}
 .mday.today .ring-in span{color:var(--good)}
 .mday.sel{background:var(--chip)}
 .mday.future{opacity:.35}
@@ -905,7 +908,7 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .onb.tight .plan4{grid-template-columns:repeat(4,1fr);gap:7px}
 .onb.tight .plan4 .card{padding:10px 2px 12px;gap:8px;border-radius:18px}
 .onb.tight .plan4 .card>span{font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.onb.tight .plan4 .ring,.onb.tight .plan4 .ring svg{width:62px!important;height:62px!important}
+.onb.tight .plan4 .ring,.onb.tight .plan4 .ring>svg{width:62px!important;height:62px!important}
 .onb.tight .plan4 .ring b{font-size:14px}
 .onb.tight .tip{font-size:13px;line-height:1.5;padding:12px 14px;margin-top:12px}
 .onb.tight #obNext{margin-top:14px!important}
@@ -1140,7 +1143,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v189';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v190';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1443,9 +1446,51 @@ const ICONS = {
   info: _p('<circle cx="12" cy="12" r="10"/>', 'M12 16v-4', 'M12 8h.01'),
   plus: _p('M12 5v14', 'M5 12h14'),
   steps: _p('M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0z', 'M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0z', 'M16 17h4', 'M4 13h4'),
-  sliders: _p('M4 21v-7', 'M4 10V3', 'M12 21v-9', 'M12 8V3', 'M20 21v-5', 'M20 12V3', 'M2 14h4', 'M10 8h4', 'M18 16h4')
+  sliders: _p('M4 21v-7', 'M4 10V3', 'M12 21v-9', 'M12 8V3', 'M20 21v-5', 'M20 12V3', 'M2 14h4', 'M10 8h4', 'M18 16h4'),
+  ring: _p('<circle cx="12" cy="14" r="7"/>', 'M9.5 4h5L12 7.2z'),
+  keyboard: _p('<rect x="2" y="5" width="20" height="14" rx="2"/>', 'M6 9h.01', 'M10 9h.01', 'M14 9h.01', 'M18 9h.01', 'M6 13h.01', 'M18 13h.01', 'M10 13h4', 'M7 16h10'),
+  salt: _p('M7.5 10h9l-1.2 11H8.7z', 'M7.5 10a4.5 4.5 0 0 1 9 0', 'M11 6.5h.01', 'M13 7h.01', 'M12 4.5h.01'),
+  compass: _p('<circle cx="12" cy="12" r="10"/>', 'M16.24 7.76l-2.12 6.36-6.36 2.12 2.12-6.36z'),
+  trenddown: _p('M22 17l-8.5-8.5-5 5L2 7', 'M16 17h6v-6'),
+  download: _p('M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4', 'M7 10l5 5 5-5', 'M12 15V3'),
+  upload: _p('M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4', 'M17 8l-5-5-5 5', 'M12 3v12'),
+  egg: _p('M12 22c4.2 0 7-3.1 7-7.5C19 9.5 15.9 2 12 2S5 9.5 5 14.5C5 18.9 7.8 22 12 22z')
 };
 const ic = (name, cls = '') => `<svg class="ico ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.star}</svg>`;
+/* Every emoji the app shows (also inside translations, toasts and coach answers) is swapped for the matching line icon
+   right after it lands on the page, so the whole app speaks one calm visual language. Flags and plain symbols (✓ ✕ →) stay. */
+const EMO = {
+  '🔥': 'flame', '🎯': 'target', '📷': 'camera', '📸': 'camera', '💧': 'drop', '🥑': 'avocado', '🍗': 'protein', '🥩': 'protein', '🌾': 'wheat',
+  '🔄': 'refresh', '🔁': 'refresh', '↻': 'refresh', '⚠': 'alert', '⏱': 'timer', '🎉': 'party', '🔒': 'lock', '🔞': 'lock', '🍽': 'utensils', '🍴': 'utensils',
+  '🍣': 'utensils', '🥡': 'utensils', '🍝': 'utensils', '⚖': 'scale', '🥗': 'salad', '👤': 'user', '👨': 'user', '🏃': 'run', '🔔': 'bell', '📏': 'ruler',
+  '💪': 'dumbbell', '🏋': 'dumbbell', '🦾': 'dumbbell', '⏳': 'hourglass', '💬': 'message', '🏷': 'tag', '☁': 'cloud', '🛒': 'cart', '✅': 'check', '📊': 'chart',
+  '📄': 'file', '📋': 'file', '🧾': 'file', '🍰': 'cake', '🎂': 'cake', '📅': 'calendar', '🌙': 'moon', '🌓': 'moon', '🛡': 'shield', '🏛': 'shield', '✏': 'pencil',
+  '⚡': 'zap', '🚀': 'zap', '🐆': 'zap', '🍳': 'egg', '🌐': 'globe', '🌍': 'globe', '🚶': 'walk', '🐢': 'walk', '🐇': 'run', '💚': 'heart', '❤': 'heart',
+  '🏁': 'flag', '🚩': 'flag', '⭐': 'star', '🌟': 'star', '🌱': 'sprout', '🏆': 'trophy', '🏅': 'medal', '📱': 'phone', '🗑': 'trash', '🍔': 'burger',
+  '🤰': 'baby', '🖼': 'image', '💡': 'bulb', '🧠': 'bulb', '📤': 'share', '💍': 'ring', '⌚': 'watch', '🔗': 'link', '👥': 'users', '🤝': 'users',
+  '📧': 'mail', '🚫': 'nofork', '✋': 'nofork', '🩺': 'activity', '⌨': 'keyboard', '⚙': 'sliders', '📌': 'pin', '📈': 'trend', '📉': 'trenddown',
+  '🍎': 'apple', '🍓': 'apple', '🥦': 'leaf', '🥬': 'leaf', '🌿': 'leaf', '🍌': 'apple', '🎨': 'sparkles', '✨': 'sparkles', '👋': 'sparkles', '🪑': 'chair',
+  '🦥': 'chair', '🏗': 'helmet', '🍬': 'candy', '🍫': 'candy', '🍪': 'candy', '🧂': 'salt', '☀': 'sun', '👑': 'crown', '🍱': 'grid', '🌊': 'waves',
+  '💎': 'gem', '🌳': 'tree', '🥤': 'cup', '☕': 'coffee', '🧭': 'compass', '🔑': 'key', '🎁': 'gift', '🚴': 'bike', '📖': 'book', '⏰': 'clock', '🕒': 'clock',
+  '✏️': 'pencil', '🙂': 'heart', '😊': 'heart', '👍': 'check', '🏠': 'store', '🛍': 'cart', '🏪': 'store', '💰': 'wallet', '💶': 'wallet', '💵': 'wallet', '📍': 'pin',
+  '🗺': 'pin', '🫶': 'heart', '🥇': 'medal', '🥈': 'medal', '🥉': 'medal', '🍞': 'wheat', '🥛': 'cup', '🧃': 'cup', '🥚': 'egg', '🐟': 'protein', '🍚': 'grid', '⬇': 'download', '⬆': 'upload', '☑': 'check'
+};
+const EMO_RE = new RegExp('(' + Object.keys(EMO).sort((a, b) => b.length - a.length).map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')\\uFE0F?', 'gu');
+const EMO_SKIP = new Set(['SCRIPT', 'STYLE', 'TEXTAREA', 'INPUT', 'OPTION', 'SELECT', 'TITLE', 'CANVAS', 'svg', 'text']);
+function iconize(root) {
+  if (!root || EMO_SKIP.has(root.nodeName)) return;
+  const nodes = [], w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => EMO_SKIP.has(n.parentNode && n.parentNode.nodeName) || n.parentNode.closest?.('svg,[contenteditable]') ? 2 : 1 });
+  if (root.nodeType === 3) nodes.push(root); else while (w.nextNode()) nodes.push(w.currentNode);
+  for (const n of nodes) {
+    const s = n.nodeValue; EMO_RE.lastIndex = 0; if (!EMO_RE.test(s)) continue;
+    const span = document.createElement('span'); span.className = 'emo-wrap';
+    span.innerHTML = esc(s).replace(EMO_RE, (m, e) => ic(EMO[e], 'e-' + EMO[e]));
+    n.replaceWith(...span.childNodes);
+  }
+}
+new MutationObserver(ms => { for (const m of ms) { if (m.type === 'characterData') iconize(m.target); else m.addedNodes.forEach(iconize); } })
+  .observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+document.addEventListener('DOMContentLoaded', () => iconize(document.body));
 function ring(size, stroke, pct, color, inner = '') {
   const r = (size - stroke) / 2, C = 2 * Math.PI * r;
   return `<div class="ring" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
@@ -2048,7 +2093,7 @@ function openAddMenu() {
   sheet(`<h3>${T('Add')}</h3><div class="addgrid">
     <button class="addtile wide" id="aFav"><span>⭐</span>${T('Favorites & recent')}</button>
     <button class="addtile" id="aScan"><span>📷</span>${T('Scan food')}</button>
-    <button class="addtile" id="aBar"><span>🏷️</span>${T('Barcode')}</button>
+    <button class="addtile" id="aBar"><span>${ic('barcode')}</span>${T('Barcode')}</button>
     <button class="addtile" id="aLib"><span>🖼️</span>${T('Upload photo')}</button>
     <button class="addtile" id="aText"><span>💬</span>${T('Describe food')}</button>
     <button class="addtile wide" id="aMan"><span>✏️</span>${T('Manual entry')}</button></div>
@@ -5860,7 +5905,7 @@ RULES
 - Earlier messages in this chat may mention older numbers or an older time. They are out of date: the user may have logged, edited or deleted things since. Always use ONLY the live data below for numbers, meals and the time of day.
 - Use the current time (see RIGHT NOW): when they ask what to eat without saying which meal, answer for the meal that is due now. Plan the rest of the day around the main meals still to come and split what is left over them. Breakfast foods in the morning, no big meal late at night: after dinner time suggest something light or nothing. If they usually eat at other times (their usual meal times), follow their rhythm.
 - When they ask how to do something in the app, explain it step by step using THE APP below.
-- Be practical, specific and encouraging. Keep answers short and easy to read on a phone: short paragraphs or bullet points, no tables.
+- Be practical, specific and encouraging. Keep answers short and easy to read on a phone: short paragraphs or bullet points, no tables, no emojis (the app has its own icons).
 - When suggesting food, give concrete foods with grams plus calories and protein, and make them fit exactly what is left today. Vary suggestions; look at what they ate recently.
 - Write clock times as ${use12h() ? '12-hour times with AM/PM (e.g. 7:30 PM)' : '24-hour times (e.g. 19:30)'}.
 - Use metric units. The app is set to ${langInfo().ai}: answer in ${langInfo().ai} unless the user writes in another language, then answer in theirs.
@@ -6272,7 +6317,9 @@ const pushSupported = () => 'serviceWorker' in navigator && 'PushManager' in win
 function b64ToBytes(b) { const p = '='.repeat((4 - b.length % 4) % 4), raw = atob((b + p).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from(raw, c => c.charCodeAt(0)); }
 // The service worker shows the notifications in the app's language; it reads the texts from here.
 // Minimal look: just the short message in bold; iPhone adds "from <app name>" below it by itself.
-const reminderData = () => ({ burn: T('Calories burned today?'), weight: T('Weekly weigh-in'), checkin: T('Your weekly check-in is ready 📊'),
+// Notification texts go out without emojis (the lock screen can't show the app's icons)
+const deEmo = o => Object.fromEntries(Object.entries(o).map(([k, v]) => [k, typeof v === 'string' ? v.replace(/\s*\p{Extended_Pictographic}️?/gu, '').trim() : v]));
+const reminderData = () => deEmo({ burn: T('Calories burned today?'), weight: T('Weekly weigh-in'), checkin: T('Your weekly check-in is ready 📊'),
   fastOpen: T('Your eating window is open now ⏱️'), fastClose: T('Your eating window closes in 30 min ⏱️'), habit: habitReminderText(),
   water1: T('Time for a glass of water 💧'), water2: T('Halfway through the day: a glass of water? 💧'), water3: T('A few more glasses to reach your water goal 💧') });
 const reminderContent = (R, kind) => ({ title: R[kind], body: '' });
