@@ -226,6 +226,11 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 .chathead .memchip{padding:7px 11px;font-size:14px;gap:5px}.chathead .brand{font-size:22px;white-space:nowrap}
 @media (max-width:360px){.chathead .chip-t{display:none}}
 .chathead .top.tight .chip-t{display:none}
+/* Right-to-left (Arabic): arrows and "back" buttons point the other way, left-aligned text goes right */
+[dir=rtl] .chev,[dir=rtl] .mp-back,[dir=rtl] .week .nav,[dir=rtl] .mnav,[dir=rtl] .onb-back{transform:scaleX(-1)}
+[dir=rtl] [style*="text-align:left"]{text-align:right!important}
+[dir=rtl] .gmsg.mine .gbub{border-radius:18px 18px 18px 6px}[dir=rtl] .gbub{border-radius:18px 18px 6px 18px}
+[dir=rtl] .chips{-webkit-mask-image:linear-gradient(270deg,#000 82%,transparent);mask-image:linear-gradient(270deg,#000 82%,transparent)}
 .acts{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .actcard{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--card);border-radius:14px;padding:10px 10px 10px 12px;box-shadow:var(--shadow);font-size:14px}
 .actcard>.ico{font-size:20px;color:var(--good)}
@@ -1007,7 +1012,7 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 <body>
 
 <!-- Launch animation: food flies into the ring, the ring fills like a calorie ring, the dot pops, the name appears -->
-<div id="splash" aria-hidden="true">
+<div id="splash" aria-hidden="true" dir="ltr">
   <style>
     #splash{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;overflow:hidden;
       background:radial-gradient(120% 75% at 50% 42%,#221c16 0%,#0b0b0d 62%);transition:opacity 0.675s ease}
@@ -1186,7 +1191,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v192';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v193';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1242,7 +1247,11 @@ const LANGS = [
   { c: 'tr', n: 'Türkçe', f: '🇹🇷', loc: 'tr-TR', ai: 'Turkish' },
   { c: 'ru', n: 'Русский', f: '🇷🇺', loc: 'ru-RU', ai: 'Russian' },
   { c: 'zh', n: '中文', f: '🇨🇳', loc: 'zh-CN', ai: 'Simplified Chinese' },
-  { c: 'ja', n: '日本語', f: '🇯🇵', loc: 'ja-JP', ai: 'Japanese' }
+  { c: 'ja', n: '日本語', f: '🇯🇵', loc: 'ja-JP', ai: 'Japanese' },
+  { c: 'ko', n: '한국어', f: '🇰🇷', loc: 'ko-KR', ai: 'Korean' },
+  { c: 'hi', n: 'हिन्दी', f: '🇮🇳', loc: 'hi-IN', ai: 'Hindi' },
+  { c: 'id', n: 'Bahasa Indonesia', f: '🇮🇩', loc: 'id-ID', ai: 'Indonesian' },
+  { c: 'ar', n: 'العربية', f: '🇸🇦', loc: 'ar-u-nu-latn', ai: 'Arabic', rtl: true }
 ];
 const DICT = window.I18N || {};
 // Existing users keep English until they choose; new users start in their phone's language
@@ -1258,6 +1267,7 @@ function T(s, v) {
 }
 function i18nStatic() {
   document.documentElement.lang = LANG;
+  document.documentElement.dir = langInfo().rtl ? 'rtl' : 'ltr';   // Arabic reads right to left: the layout mirrors
   document.querySelectorAll('[data-i18n]').forEach(e => e.textContent = T(e.dataset.i18n));
 }
 function setLang(c) {
@@ -1972,7 +1982,7 @@ function renderHome() {
   const week = days.map(d => {
     const dtot = dayTotals(d), cls = dtot.count ? (dtot.kcal > dayGoals(d).kcal * 1.1 ? 'over' : 'logged') : '';
     return `<button class="day ${d === sel ? 'sel' : ''} ${d > today ? 'future' : ''}" data-d="${d}">
-      <span class="dl">${dt(d).toLocaleDateString(LOC, { weekday: 'short' }).replace('.', '').slice(0, 3)}</span><span class="dn ${cls}">${dt(d).getDate()}</span></button>`;
+      <span class="dl">${LANG === 'ar' ? dt(d).toLocaleDateString(LOC, { weekday: 'narrow' }) : dt(d).toLocaleDateString(LOC, { weekday: 'short' }).replace('.', '').slice(0, 3)}</span><span class="dn ${cls}">${dt(d).getDate()}</span></button>`;
   }).join('');
   const left = goalK - tot.kcal;
   const calBig = calMode === 'left'
@@ -6337,7 +6347,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Home shows a slim "Habits · Choose a habit" line (can be hidden with ✕; it's always on Progress), and the habit card once they chose one.
 - Coach: the Memory button (top right) opens My memory: what you remember about them (they can add or delete facts), My memory snapshot (a short summary you write about them with one question and 3 quick answers) and Chat history (earlier conversations are kept when they start a new one; they can open, continue or delete them). The suggestion buttons above the text field can be swiped sideways for more questions; the first one follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them. You can also do things for them from the chat (see ACTIONS): log food they tell you they ate, water, weight and activity, start a habit (it then shows on Home), change the water goal or open a page; each shows as a small card under your answer with Undo.
 - Groups (Coach page top "Groups" button, or Settings → Groups): private groups with friends or family. Create one (name, optional description and picture) and share the invite link or 6-letter code; others join with the code. Each group has a Ranking (days logged this week Monday-Sunday, then the logging streak; top 3 get gold/silver/bronze) and a Chat (tap your own message to delete it; the owner can delete any message, edit the group, remove members or delete the group). Members only see each other's name, small profile picture, streak and days logged this week, never meals or weight. Messages are kept 60 days. No public groups.
-- Settings: at the top their profile picture and name (tap the picture to add or change a photo, tap the name to set it); Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, daily life: mostly sitting / on their feet a lot / physical work, training 0 / 1-2 / 3-5 / 6+ per week; daily life and workouts together set the activity level, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (water: up to 3 a day at 11:00, 14:00 and 17:00, only when they are behind their water goal (25 / 50 / 75 % by then), none once it is reached; calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy (what happens with the data, no cookies, their rights); Terms of use (free, estimates not medical advice, 16+, fair use); Delete all data.
+- Settings: at the top their profile picture and name (tap the picture to add or change a photo, tap the name to set it); Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, daily life: mostly sitting / on their feet a lot / physical work, training 0 / 1-2 / 3-5 / 6+ per week; daily life and workouts together set the activity level, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (16 languages: English, German, French, Spanish, Italian, Portuguese, Dutch, Polish, Turkish, Russian, Chinese, Japanese, Korean, Hindi, Indonesian, Arabic; Arabic mirrors the layout right to left), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (water: up to 3 a day at 11:00, 14:00 and 17:00, only when they are behind their water goal (25 / 50 / 75 % by then), none once it is reached; calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy (what happens with the data, no cookies, their rights); Terms of use (free, estimates not medical advice, 16+, fair use); Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
   const mem = memList();
