@@ -1713,7 +1713,17 @@ window.I18N = {
 "until {d}":"bis {d}",
 "Save to Files":"In Dateien sichern",
 "Save to Photos":"In Fotos sichern",
-"Then tap \"Save Image\". Or press and hold the picture.":"Dann tippe auf «Bild sichern». Oder halte das Bild gedrückt."
+"Then tap \"Save Image\". Or press and hold the picture.":"Dann tippe auf «Bild sichern». Oder halte das Bild gedrückt.",
+"Celiac (no traces of gluten)":"Zöliakie (keine Gluten-Spuren)",
+"Diet & food needs":"Ernährung & Unverträglichkeiten",
+"Food needs":"Unverträglichkeiten & Bedürfnisse",
+"Gluten-free":"Glutenfrei",
+"Lactose-free":"Laktosefrei",
+"Little dairy":"Wenig Milchprodukte",
+"No dairy":"Keine Milchprodukte",
+"No eggs":"Keine Eier",
+"No fish or seafood":"Kein Fisch, keine Meeresfrüchte",
+"No nuts":"Keine Nüsse"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3428,7 +3438,17 @@ window.I18N = {
 "until {d}":"hasta el {d}",
 "Save to Files":"Guardar en Archivos",
 "Save to Photos":"Guardar en Fotos",
-"Then tap \"Save Image\". Or press and hold the picture.":"Luego toca «Guardar imagen». O mantén pulsada la imagen."
+"Then tap \"Save Image\". Or press and hold the picture.":"Luego toca «Guardar imagen». O mantén pulsada la imagen.",
+"Celiac (no traces of gluten)":"Celiaquía (sin trazas de gluten)",
+"Diet & food needs":"Dieta y necesidades",
+"Food needs":"Necesidades alimentarias",
+"Gluten-free":"Sin gluten",
+"Lactose-free":"Sin lactosa",
+"Little dairy":"Pocos lácteos",
+"No dairy":"Sin lácteos",
+"No eggs":"Sin huevo",
+"No fish or seafood":"Sin pescado ni mariscos",
+"No nuts":"Sin frutos secos"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5143,7 +5163,17 @@ window.I18N = {
 "until {d}":"jusqu’au {d}",
 "Save to Files":"Enregistrer dans Fichiers",
 "Save to Photos":"Enregistrer dans Photos",
-"Then tap \"Save Image\". Or press and hold the picture.":"Puis touche « Enregistrer l’image ». Ou maintiens ton doigt sur l’image."
+"Then tap \"Save Image\". Or press and hold the picture.":"Puis touche « Enregistrer l’image ». Ou maintiens ton doigt sur l’image.",
+"Celiac (no traces of gluten)":"Maladie cœliaque (aucune trace de gluten)",
+"Diet & food needs":"Régime & besoins",
+"Food needs":"Besoins alimentaires",
+"Gluten-free":"Sans gluten",
+"Lactose-free":"Sans lactose",
+"Little dairy":"Peu de produits laitiers",
+"No dairy":"Sans produits laitiers",
+"No eggs":"Sans œufs",
+"No fish or seafood":"Sans poisson ni fruits de mer",
+"No nuts":"Sans fruits à coque"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6858,7 +6888,17 @@ window.I18N = {
 "until {d}":"fino al {d}",
 "Save to Files":"Salva su File",
 "Save to Photos":"Salva in Foto",
-"Then tap \"Save Image\". Or press and hold the picture.":"Poi tocca «Salva immagine». Oppure tieni premuta l’immagine."
+"Then tap \"Save Image\". Or press and hold the picture.":"Poi tocca «Salva immagine». Oppure tieni premuta l’immagine.",
+"Celiac (no traces of gluten)":"Celiachia (nessuna traccia di glutine)",
+"Diet & food needs":"Dieta ed esigenze",
+"Food needs":"Esigenze alimentari",
+"Gluten-free":"Senza glutine",
+"Lactose-free":"Senza lattosio",
+"Little dairy":"Pochi latticini",
+"No dairy":"Senza latticini",
+"No eggs":"Senza uova",
+"No fish or seafood":"Niente pesce né frutti di mare",
+"No nuts":"Senza frutta a guscio"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8573,7 +8613,17 @@ window.I18N = {
 "until {d}":"{d}まで",
 "Save to Files":"ファイルに保存",
 "Save to Photos":"写真に保存",
-"Then tap \"Save Image\". Or press and hold the picture.":"次に「画像を保存」をタップ。または画像を長押し。"
+"Then tap \"Save Image\". Or press and hold the picture.":"次に「画像を保存」をタップ。または画像を長押し。",
+"Celiac (no traces of gluten)":"セリアック病（グルテンの痕跡もNG）",
+"Diet & food needs":"食事スタイルと制限",
+"Food needs":"食事の制限",
+"Gluten-free":"グルテンフリー",
+"Lactose-free":"乳糖不使用",
+"Little dairy":"乳製品は少なめ",
+"No dairy":"乳製品なし",
+"No eggs":"卵なし",
+"No fish or seafood":"魚・魚介類なし",
+"No nuts":"ナッツなし"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10288,7 +10338,17 @@ window.I18N = {
 "until {d}":"tot {d}",
 "Save to Files":"Bewaar in Bestanden",
 "Save to Photos":"Bewaar in Foto's",
-"Then tap \"Save Image\". Or press and hold the picture.":"Tik daarna op 'Bewaar afbeelding'. Of houd de afbeelding ingedrukt."
+"Then tap \"Save Image\". Or press and hold the picture.":"Tik daarna op 'Bewaar afbeelding'. Of houd de afbeelding ingedrukt.",
+"Celiac (no traces of gluten)":"Coeliakie (geen sporen van gluten)",
+"Diet & food needs":"Dieet & voedingsbehoeften",
+"Food needs":"Voedingsbehoeften",
+"Gluten-free":"Glutenvrij",
+"Lactose-free":"Lactosevrij",
+"Little dairy":"Weinig zuivel",
+"No dairy":"Geen zuivel",
+"No eggs":"Geen eieren",
+"No fish or seafood":"Geen vis of zeevruchten",
+"No nuts":"Geen noten"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -12003,7 +12063,17 @@ window.I18N = {
 "until {d}":"do {d}",
 "Save to Files":"Zachowaj w Plikach",
 "Save to Photos":"Zachowaj w Zdjęciach",
-"Then tap \"Save Image\". Or press and hold the picture.":"Potem stuknij „Zachowaj obrazek”. Albo przytrzymaj obrazek."
+"Then tap \"Save Image\". Or press and hold the picture.":"Potem stuknij „Zachowaj obrazek”. Albo przytrzymaj obrazek.",
+"Celiac (no traces of gluten)":"Celiakia (bez śladów glutenu)",
+"Diet & food needs":"Dieta i potrzeby",
+"Food needs":"Potrzeby żywieniowe",
+"Gluten-free":"Bez glutenu",
+"Lactose-free":"Bez laktozy",
+"Little dairy":"Mało nabiału",
+"No dairy":"Bez nabiału",
+"No eggs":"Bez jajek",
+"No fish or seafood":"Bez ryb i owoców morza",
+"No nuts":"Bez orzechów"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -13718,7 +13788,17 @@ window.I18N = {
 "until {d}":"até {d}",
 "Save to Files":"Salvar em Arquivos",
 "Save to Photos":"Salvar em Fotos",
-"Then tap \"Save Image\". Or press and hold the picture.":"Depois toque em “Salvar Imagem”. Ou toque e segure a imagem."
+"Then tap \"Save Image\". Or press and hold the picture.":"Depois toque em “Salvar Imagem”. Ou toque e segure a imagem.",
+"Celiac (no traces of gluten)":"Doença celíaca (sem traços de glúten)",
+"Diet & food needs":"Dieta e necessidades",
+"Food needs":"Necessidades alimentares",
+"Gluten-free":"Sem glúten",
+"Lactose-free":"Sem lactose",
+"Little dairy":"Pouco laticínio",
+"No dairy":"Sem laticínios",
+"No eggs":"Sem ovos",
+"No fish or seafood":"Sem peixe nem frutos do mar",
+"No nuts":"Sem nozes"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -15433,7 +15513,17 @@ window.I18N = {
 "until {d}":"до {d}",
 "Save to Files":"Сохранить в Файлы",
 "Save to Photos":"Сохранить в Фото",
-"Then tap \"Save Image\". Or press and hold the picture.":"Затем нажми «Сохранить изображение». Или удерживай картинку."
+"Then tap \"Save Image\". Or press and hold the picture.":"Затем нажми «Сохранить изображение». Или удерживай картинку.",
+"Celiac (no traces of gluten)":"Целиакия (без следов глютена)",
+"Diet & food needs":"Питание и ограничения",
+"Food needs":"Ограничения в питании",
+"Gluten-free":"Без глютена",
+"Lactose-free":"Без лактозы",
+"Little dairy":"Мало молочного",
+"No dairy":"Без молочного",
+"No eggs":"Без яиц",
+"No fish or seafood":"Без рыбы и морепродуктов",
+"No nuts":"Без орехов"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -17148,7 +17238,17 @@ window.I18N = {
 "until {d}":"{d} tarihine kadar",
 "Save to Files":"Dosyalar'a kaydet",
 "Save to Photos":"Fotoğraflar'a kaydet",
-"Then tap \"Save Image\". Or press and hold the picture.":"Sonra “Görüntüyü Kaydet”e dokun. Ya da resme basılı tut."
+"Then tap \"Save Image\". Or press and hold the picture.":"Sonra “Görüntüyü Kaydet”e dokun. Ya da resme basılı tut.",
+"Celiac (no traces of gluten)":"Çölyak (gluten izi bile yok)",
+"Diet & food needs":"Beslenme ve ihtiyaçlar",
+"Food needs":"Beslenme ihtiyaçları",
+"Gluten-free":"Glutensiz",
+"Lactose-free":"Laktozsuz",
+"Little dairy":"Az süt ürünü",
+"No dairy":"Süt ürünü yok",
+"No eggs":"Yumurta yok",
+"No fish or seafood":"Balık ve deniz ürünü yok",
+"No nuts":"Kuruyemiş yok"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -18863,7 +18963,17 @@ window.I18N = {
 "until {d}":"至 {d}",
 "Save to Files":"存储到文件",
 "Save to Photos":"存储到照片",
-"Then tap \"Save Image\". Or press and hold the picture.":"然后轻点“存储图像”。或长按图片。"
+"Then tap \"Save Image\". Or press and hold the picture.":"然后轻点“存储图像”。或长按图片。",
+"Celiac (no traces of gluten)":"乳糜泻（不能有任何麸质）",
+"Diet & food needs":"饮食与需求",
+"Food needs":"饮食需求",
+"Gluten-free":"无麸质",
+"Lactose-free":"无乳糖",
+"Little dairy":"少乳制品",
+"No dairy":"不吃乳制品",
+"No eggs":"不吃蛋",
+"No fish or seafood":"不吃鱼和海鲜",
+"No nuts":"不吃坚果"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -20297,7 +20407,17 @@ window.I18N = {
 "until {d}":"{d}까지",
 "Save to Files":"파일에 저장",
 "Save to Photos":"사진에 저장",
-"Then tap \"Save Image\". Or press and hold the picture.":"그다음 ‘이미지 저장’을 탭하세요. 또는 사진을 길게 누르세요."
+"Then tap \"Save Image\". Or press and hold the picture.":"그다음 ‘이미지 저장’을 탭하세요. 또는 사진을 길게 누르세요.",
+"Celiac (no traces of gluten)":"셀리악병 (글루텐 흔적도 안 됨)",
+"Diet & food needs":"식단 및 식이 제한",
+"Food needs":"식이 제한",
+"Gluten-free":"글루텐 프리",
+"Lactose-free":"유당 없음",
+"Little dairy":"유제품 적게",
+"No dairy":"유제품 없음",
+"No eggs":"달걀 없음",
+"No fish or seafood":"생선·해산물 없음",
+"No nuts":"견과류 없음"
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -21731,7 +21851,17 @@ window.I18N = {
 "until {d}":"{d} तक",
 "Save to Files":"Files में सेव करें",
 "Save to Photos":"Photos में सेव करें",
-"Then tap \"Save Image\". Or press and hold the picture.":"फिर “इमेज सहेजें” पर टैप करें। या तस्वीर को दबाकर रखें।"
+"Then tap \"Save Image\". Or press and hold the picture.":"फिर “इमेज सहेजें” पर टैप करें। या तस्वीर को दबाकर रखें।",
+"Celiac (no traces of gluten)":"सीलिएक (ग्लूटेन का अंश भी नहीं)",
+"Diet & food needs":"डाइट और खाने की ज़रूरतें",
+"Food needs":"खाने की ज़रूरतें",
+"Gluten-free":"ग्लूटेन-फ़्री",
+"Lactose-free":"लैक्टोज़-फ़्री",
+"Little dairy":"कम डेयरी",
+"No dairy":"डेयरी नहीं",
+"No eggs":"अंडा नहीं",
+"No fish or seafood":"मछली या सीफ़ूड नहीं",
+"No nuts":"नट्स नहीं"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -23165,7 +23295,17 @@ window.I18N = {
 "until {d}":"sampai {d}",
 "Save to Files":"Simpan ke File",
 "Save to Photos":"Simpan ke Foto",
-"Then tap \"Save Image\". Or press and hold the picture.":"Lalu ketuk “Simpan Gambar”. Atau tekan lama gambarnya."
+"Then tap \"Save Image\". Or press and hold the picture.":"Lalu ketuk “Simpan Gambar”. Atau tekan lama gambarnya.",
+"Celiac (no traces of gluten)":"Celiac (tanpa jejak gluten)",
+"Diet & food needs":"Diet & kebutuhan makanan",
+"Food needs":"Kebutuhan makanan",
+"Gluten-free":"Bebas gluten",
+"Lactose-free":"Bebas laktosa",
+"Little dairy":"Sedikit susu",
+"No dairy":"Tanpa susu",
+"No eggs":"Tanpa telur",
+"No fish or seafood":"Tanpa ikan & seafood",
+"No nuts":"Tanpa kacang"
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -24599,6 +24739,16 @@ window.I18N = {
 "until {d}":"حتى {d}",
 "Save to Files":"حفظ في الملفات",
 "Save to Photos":"حفظ في الصور",
-"Then tap \"Save Image\". Or press and hold the picture.":"ثم اضغط على «حفظ الصورة». أو اضغط مطولًا على الصورة."
+"Then tap \"Save Image\". Or press and hold the picture.":"ثم اضغط على «حفظ الصورة». أو اضغط مطولًا على الصورة.",
+"Celiac (no traces of gluten)":"الداء البطني (بدون أي أثر للغلوتين)",
+"Diet & food needs":"النظام الغذائي والاحتياجات",
+"Food needs":"الاحتياجات الغذائية",
+"Gluten-free":"خالٍ من الغلوتين",
+"Lactose-free":"خالٍ من اللاكتوز",
+"Little dairy":"قليل من الألبان",
+"No dairy":"بدون ألبان",
+"No eggs":"بدون بيض",
+"No fish or seafood":"بدون سمك أو مأكولات بحرية",
+"No nuts":"بدون مكسرات"
 }
 };
