@@ -1196,7 +1196,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v199';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v200';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -6515,6 +6515,15 @@ function buildChatbar(scr) {
 }
 function closeChatMenu() { const bar = $('.chatbar'); if (bar && bar.classList.contains('menuOpen')) { bar.classList.remove('menuOpen'); bar.querySelector('#cPlus').textContent = '＋'; } }
 document.addEventListener('click', e => { if (!e.target.closest('#cMenu') && !e.target.closest('#cPlus')) closeChatMenu(); });
+/* While the keyboard is open, iOS paints the area around its own bar above the keyboard (arrows + ✓, which no web app
+   can switch off) with the page's background colour. That colour is normally the top of the gradient (dark), so it
+   looked like a black band: during typing it becomes the gradient's bottom colour, so the background flows through. */
+function kbBottomColor() {
+  const cs = getComputedStyle(document.documentElement), hex = (cs.getPropertyValue('--bgimg') || '').match(/#[0-9a-f]{6}/gi);
+  return hex ? hex[hex.length - 1] : cs.getPropertyValue('--bg').trim();
+}
+document.addEventListener('focusin', e => { if (e.target.matches && e.target.matches('textarea,input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file])')) document.documentElement.style.backgroundColor = kbBottomColor(); });
+document.addEventListener('focusout', () => setTimeout(() => { const a = document.activeElement; if (!a || !a.matches || !a.matches('textarea,input')) document.documentElement.style.backgroundColor = ''; }, 150));
 // Mic when empty, send arrow when there's something to send
 function updateSendState() { const bar = $('.chatbar'); if (bar) bar.classList.toggle('hasText', !!($('#cIn').value.trim() || chatAtt.length)); }
 // When the keyboard opens, the chat screen shrinks to the visible area, so the bar sits right on the keyboard
