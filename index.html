@@ -1221,7 +1221,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v208';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v209';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1551,7 +1551,11 @@ const ICONS = {
   userminus: _p('M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2', '<circle cx="9" cy="7" r="4"/>', 'M16 11h6'),
   egg: _p('M12 22c4.2 0 7-3.1 7-7.5C19 9.5 15.9 2 12 2S5 9.5 5 14.5C5 18.9 7.8 22 12 22z')
 };
-const ic = (name, cls = '') => `<svg class="ico e-${name} ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.star}</svg>`;
+// Things (food, fire, water, medals…) show as small realistic 3D pictures (Microsoft Fluent Emoji, MIT licence, in /emoji);
+// controls (plus, share, trash, pencil…) stay simple line icons.
+const ICON3D = new Set('activity alert apple avocado baby bell bike body book bulb burger cake calendar camera candy cart chair chart check chef clock cloud coffee compass crown cup drop dumbbell egg file flag flame gem gift globe heart helmet hourglass image key leaf link lock mail medal message moon nofork party phone pin protein ring ruler run salad salt scale shield sparkles sprout star steps store sun tag target timer tree trend trenddown trophy user users utensils walk wallet watch waves wheat zap'.split(' '));
+const ic = (name, cls = '') => ICON3D.has(name) ? `<img class="ico i3d e-${name} ${cls}" src="emoji/${name}.webp" alt="" aria-hidden="true" draggable="false">`
+  : `<svg class="ico e-${name} ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.star}</svg>`;
 // Every icon has its own colour (like the emojis had), and in lists it sits on a soft tile of that colour, like iPhone Settings.
 // Inside buttons, the tab bar and the photo buttons icons keep the text colour.
 const ICON_COL = {
@@ -1570,7 +1574,10 @@ const ICON_COL = {
     css += `.e-${n}{color:${c}}.ic:has(>.e-${n}){color:${c};background-color:color-mix(in srgb,${c} 15%,transparent)}`;
   document.head.insertAdjacentHTML('beforeend', `<style>${css}
     .li>.ic:has(>.ico),.rhead>.ic:has(>.ico){width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
-    :is(.btn,.circ,.tabbar,.pills,.tab,.mp-back,.sheetx) .ico{color:inherit!important}</style>`); }
+    :is(.btn,.circ,.tabbar,.pills,.tab,.mp-back,.sheetx) .ico{color:inherit!important}
+    img.i3d{width:1.2em;height:1.2em;vertical-align:-.24em;object-fit:contain;display:inline-block;-webkit-user-drag:none;user-select:none}
+    .ring-in .i3d{width:1.45em;height:1.45em}
+    .ic:has(>.i3d){background-color:color-mix(in srgb,var(--text) 7%,transparent)!important}</style>`); }
 /* Every emoji the app shows (also inside translations, toasts and coach answers) is swapped for the matching line icon
    right after it lands on the page, so the whole app speaks one calm visual language. Flags and plain symbols (✓ ✕ →) stay. */
 const EMO = {
