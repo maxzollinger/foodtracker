@@ -950,6 +950,9 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .bd-pick-x{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:700;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .pp-btns .btn{white-space:nowrap;padding-inline:10px;min-width:0}
 .celshare{margin-top:12px;background:var(--ink);color:var(--on-ink)}
+.rc-dots{display:inline-flex;gap:4px;vertical-align:middle;margin-inline-start:6px}.rc-dots i{width:9px;height:9px;border-radius:50%;border:1.5px dashed var(--line)}
+.rc-dots i.ok{border:none;background:var(--good)}.rc-dots i.warn{border:none;background:var(--warn)}.rc-dots i.over{border:none;background:var(--bad)}.rc-dots i.under{border:none;background:var(--water)}
+.rc-share{color:var(--muted);font-size:17px;padding:0 6px}
 .rc-rings{display:flex;justify-content:space-between;margin-top:14px}.rc-rings i{width:30px;height:30px;border-radius:50%;border:3px dashed var(--line)}
 .rc-rings i.ok{border:3px solid var(--good)}.rc-rings i.warn{border:3px solid var(--warn)}.rc-rings i.over{border:3px solid var(--bad)}.rc-rings i.under{border:3px solid var(--water)}
 .wr{position:fixed;inset:0;z-index:2000;color:#fff;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 14px) 22px calc(env(safe-area-inset-bottom) + 28px);
@@ -1286,7 +1289,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v229';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v230';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2196,7 +2199,7 @@ function renderHome() {
     <div class="minirow">${waterCard(sel)}
       <div class="card mini burncard"><div class="spread"><div class="mini-ic">🏃</div><button class="mini-plus" id="burnAdd" aria-label="${T('Add')}">＋</button></div>
         ${burnTileHTML(sel, burned)}</div></div>
-    ${weeklyRecapCard()}${habitHomeCard()}${setupBanner()}${shortcutWarnCard()}${mealPlanCard()}
+    ${habitHomeCard()}${setupBanner()}${shortcutWarnCard()}${mealPlanCard()}${weeklyRecapCard()}
     <div class="h2">${sel === today ? T('Recently uploaded') : fmtDate(sel, { weekday: 'long', day: 'numeric', month: 'long' })}</div>
     ${list}`;
   document.querySelectorAll('.day').forEach(b => b.onclick = () => { sel = b.dataset.d; renderHome(); });
@@ -2211,7 +2214,7 @@ function renderHome() {
   if ($('#homeAva')) $('#homeAva').onclick = () => db.profile.avatar ? go('settings') : openAvatarSheet();
   $('#wPrev').onclick = () => { weekOff--; renderHome(); };
   if ($('#rcShare')) $('#rcShare').onclick = () => shareWeek();
-  if ($('#rcX')) $('#rcX').onclick = () => { LS.set('ft_recap_x', recapWeekStart()); renderHome(); };
+  if ($('#rcX')) $('#rcX').onclick = e => { e.stopPropagation(); LS.set('ft_recap_x', recapWeekStart()); renderHome(); };
   $('#wNext').onclick = () => { if (weekOff < 0) { weekOff++; renderHome(); } };
   hydratePhotos($('#view'));
 }
@@ -6243,10 +6246,10 @@ function weeklyRecapCard() {
   const dow = (dt(iso()).getDay() + 6) % 7; if (dow !== 6 && dow !== 0) return '';   // Sunday and Monday
   const mon = recapWeekStart(); if (LS.get('ft_recap_x', '') === mon) return '';
   const r = weekRecap(mon); if (r.logged < 2) return '';
-  return `<div class="card recapcard"><div class="spread"><b>${ic('chart')} ${T('Your week')}</b><button class="muted" id="rcX" aria-label="${T('Close')}" style="padding:4px 6px">✕</button></div>
-    <div class="rc-rings">${r.days.map(x => `<i class="${x.tier}"></i>`).join('')}</div>
-    <p class="small muted" style="margin:10px 0 12px">${T('{a} of 7 days logged · {b} within goal', { a: r.logged, b: r.ok })}</p>
-    <button class="btn sm" id="rcShare">${ic('share')} ${T('Share my week')}</button></div>`;
+  // one slim line like the habit row: tiny week dots, a share icon, ✕ hides it for this week
+  return `<div class="slimrow" role="button" tabindex="0" id="rcShare" aria-label="${T('Share my week')}">
+    <span class="slim-ic">${ic('chart')}</span><span class="grow"><b>${T('Your week')}</b> <span class="rc-dots">${r.days.map(x => `<i class="${x.tier}"></i>`).join('')}</span></span>
+    <span class="rc-share">${ic('share')}</span><button class="slim-x" id="rcX" aria-label="${T('Close')}">✕</button></div>`;
 }
 // Spotify Wrapped: a month or a year as a little story, ending in a picture to share
 function periodStats(from, to) {
