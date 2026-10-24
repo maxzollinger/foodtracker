@@ -232,6 +232,7 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 .tab{position:relative}.tab.dot::after{content:'';position:absolute;top:2px;left:calc(50% + 9px);width:9px;height:9px;border-radius:50%;background:var(--bad);border:2px solid var(--card)}
 .gcard.unread b{font-weight:800}.gdot{width:10px;height:10px;border-radius:50%;background:var(--bad);flex:none}
 .list .li.acct-row{align-items:center;gap:10px}.acct-row .chipbtn{flex:none}.acct-mail{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.faq details{border-bottom:1px solid var(--line);padding:12px 2px}.faq summary{font-weight:700;cursor:pointer;list-style:none}.faq summary::-webkit-details-marker{display:none}.faq summary::after{content:'+';float:right;color:var(--muted);font-weight:400}[dir=rtl] .faq summary::after{float:left}.faq details[open] summary::after{content:'−'}.faq p{margin:8px 0 0;color:var(--muted);line-height:1.45}
 .acts{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .actcard{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--card);border-radius:14px;padding:10px 10px 10px 12px;box-shadow:var(--shadow);font-size:14px}
 .actcard>.ico{font-size:20px;color:var(--good)}
@@ -1196,7 +1197,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v200';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v201';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -7062,6 +7063,86 @@ function handleOpen(what) {
   if (what === 'checkin') { go('chat'); weeklyCheckin(); }
   if (what === 'habit') setTimeout(openHabitPage, 300);
   if (/^water/.test(what)) setTimeout(openWaterSheet, 300);
+  if (what === 'scan') setTimeout(() => LS.get('ft_scanTips', '') ? openCamera('food') : openScanTips('food'), 300);
+  if (what === 'barcode') setTimeout(() => openCamera('bar'), 300);
+  if (what === 'describe') setTimeout(openDescribeSheet, 300);
+  if (what === 'coach') go('chat');
+}
+
+/* ================= Support: FAQ, feedback, PDF report ================= */
+// E-mail to the app owner, with the version and language so a problem is easy to look into
+function mailOwner(subject) {
+  const dev = (navigator.userAgent.match(/(iPhone OS|Android) [\d_.]+/) || [''])[0];
+  const body = `\n\n--\n${APP_VERSION} · ${LANG} · ${dev}`;
+  location.href = `mailto:${OWNER.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+const FAQ = [
+  [N('How exact are the calories?'), N('They are AI estimates. Weigh the food or correct an ingredient (tap the meal) and the numbers follow. Good photos help: see Photo tips.')],
+  [N('Why does my calorie goal change?'), N('With a watch connected it follows your real activity. Extra workouts you log add to it.')],
+  [N('How do I get my data on a new phone?'), N('Create an account in Settings. Then sign in on the new phone and everything comes back.')],
+  [N('Who can see my data?'), N('Only you. Backups are encrypted with your password. Groups only see your name, picture, streak and days logged.')],
+  [N('How do I get reminders?'), N('Settings → Notifications: water, calories burned, weigh-in and the weekly check-in.')],
+  [N('How do I get updates?'), N('The app updates itself. Just open it.')]
+];
+function openFaq() {
+  sheet(`<h3>${T('FAQ')}</h3><div class="faq">${FAQ.map(([q, a]) => `<details><summary>${T(q)}</summary><p>${T(a)}</p></details>`).join('')}</div>
+    <button class="btn outline" id="faqCoach" style="margin-top:14px">${ic('message')} ${T('Ask the coach')}</button>`, s => {
+    s.querySelector('#faqCoach').onclick = () => { closeSheet(); go('chat'); };
+  });
+}
+/* PDF progress report (last 30 days): drawn on a canvas (so every language and script looks right), then put into a PDF
+   with jsPDF (loaded only when needed) and shared or saved. */
+function loadJsPdf() {
+  if (window.jspdf) return Promise.resolve();
+  return new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js'; sc.onload = res; sc.onerror = () => rej(new Error(T('No internet connection?'))); document.head.appendChild(sc); });
+}
+async function makeReport() {
+  const p = db.profile; if (!p) return;
+  busyStart();
+  try {
+    await loadJsPdf();
+    const W = 1240, H = 1754, c = document.createElement('canvas'); c.width = W; c.height = H;
+    const x = c.getContext('2d'), rtl = !!langInfo().rtl, F = 'system-ui,-apple-system,Segoe UI,Roboto,sans-serif';
+    x.fillStyle = '#fff'; x.fillRect(0, 0, W, H); x.direction = rtl ? 'rtl' : 'ltr';
+    const L = rtl ? W - 90 : 90, R = rtl ? 90 : W - 90, al = rtl ? 'right' : 'left', ar = rtl ? 'left' : 'right';
+    const txt = (t, xx, y, size, w = 400, col = '#111', a = al) => { x.font = `${w} ${size}px ${F}`; x.fillStyle = col; x.textAlign = a; x.fillText(String(t), xx, y); };
+    const to = iso(), from = addDays(to, -29), days = [...Array(30)].map((_, i) => addDays(from, i)), logged = days.filter(d => dayTotals(d).count);
+    const avg = k => logged.length ? r0(logged.reduce((a, d) => a + dayTotals(d)[k], 0) / logged.length) : 0, g = targets();
+    const ws = db.weights.filter(w => w.date >= from).sort((a, b) => a.date.localeCompare(b.date));
+    txt('Food Tracker', L, 130, 54, 800);
+    txt(T('Progress report'), L, 185, 30, 600, '#555');
+    txt(`${fmtDate(from, { day: 'numeric', month: 'long' })} – ${fmtDate(to, { day: 'numeric', month: 'long', year: 'numeric' })}`, L, 230, 26, 400, '#777');
+    if (p.name) txt(p.name, R, 130, 32, 700, '#111', ar);
+    x.fillStyle = '#eee'; x.fillRect(90, 270, W - 180, 3);
+    let y = 350;
+    const row = (label, val) => { txt(label, L, y, 28, 400, '#555'); txt(val, R, y, 28, 700, '#111', ar); y += 56; };
+    txt(T('Overview'), L, y, 34, 800); y += 60;
+    row(T('Your goal'), T(planOf(p).name));
+    row(T('Current weight'), `${showW(currentWeight())} ${wUnit()}`);
+    if (ws.length >= 2) { const d = r1(showW(ws[ws.length - 1].kg) - showW(ws[0].kg)); row(T('Change since {d}', { d: fmtDate(ws[0].date) }), `${d > 0 ? '+' : ''}${d} ${wUnit()}`); }
+    row(T('Days logged'), `${logged.length} / 30`);
+    row(T('Day streak'), String(streak()));
+    y += 30; txt(T('Average per logged day'), L, y, 34, 800); y += 60;
+    row(T('Calories'), `${avg('kcal')} / ${g.kcal} kcal`);
+    row(T('Protein'), `${avg('protein')} / ${g.protein} g`);
+    row(T('Carbs'), `${avg('carbs')} / ${g.carbs} g`);
+    row(T('Fats'), `${avg('fat')} / ${g.fat} g`);
+    // Calories per day as small bars, with the goal as a dashed line
+    y += 40; txt(T('Calories eaten'), L, y, 34, 800); y += 30;
+    const ch = 300, cw = W - 180, bw = cw / 30, max = Math.max(g.kcal * 1.4, ...days.map(d => dayTotals(d).kcal), 1);
+    days.forEach((d, i) => { const k = dayTotals(d).kcal, h = Math.max(k / max * ch, 4), bx = rtl ? W - 90 - (i + 1) * bw : 90 + i * bw;
+      x.fillStyle = k > dayGoals(d).kcal * 1.1 ? '#e5484d' : k ? '#111' : '#e6e6e6'; x.fillRect(bx + 3, y + ch - h, bw - 6, h); });
+    const gy = y + ch - g.kcal / max * ch; x.strokeStyle = '#2f9e44'; x.setLineDash([10, 8]); x.lineWidth = 3; x.beginPath(); x.moveTo(90, gy); x.lineTo(W - 90, gy); x.stroke(); x.setLineDash([]);
+    y += ch + 70;
+    if (ws.length) { txt(T('Weight history'), L, y, 34, 800); y += 56; ws.slice(-8).forEach(w => row(fmtDate(w.date, { weekday: 'short', day: 'numeric', month: 'short' }), `${showW(w.kg)} ${wUnit()}`)); }
+    txt(T('Nutrition values are estimates, not medical advice.'), W / 2, H - 70, 22, 400, '#999', 'center');
+    const pdf = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
+    pdf.addImage(c.toDataURL('image/jpeg', 0.9), 'JPEG', 0, 0, 595.28, 841.89);
+    const blob = pdf.output('blob'), file = new File([blob], `food-tracker-report-${to}.pdf`, { type: 'application/pdf' });
+    busyEnd();
+    if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file], title: T('Progress report') }); } catch {} }
+    else { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000); }
+  } catch (e) { busyEnd(); toast(e.message || T('Something went wrong. Please try again.')); }
 }
 
 /* ================= Settings ================= */
@@ -7115,6 +7196,13 @@ function renderSettings() {
         <label class="lbl">${T('Force a Gemini model (optional)')}</label><input id="kModel" value="${esc(LS.get('ft_model', ''))}" placeholder="${T('automatic')}"></details>
       <div class="row" style="margin-top:14px"><button class="btn" id="kSave">${T('Save')}</button><button class="btn outline" id="kTest">${T('Test')}</button></div>
       <p class="small" id="kMsg" style="margin:10px 0 0;text-align:center">${hasAI() ? '✓ ' + T('AI is on') : T('No key yet')}</p></div>` : ''}
+    <div class="h2">${T('Support')}</div>
+    <div class="list">
+      <button class="li" id="sFaq"><span class="ic">${ic('info')}</span><span class="grow">${T('FAQ')}</span><span class="chev">›</span></button>
+      <button class="li" id="sIdea"><span class="ic">${ic('bulb')}</span><span class="grow">${T('Request a feature')}</span><span class="chev">›</span></button>
+      <button class="li" id="sMail"><span class="ic">${ic('mail')}</span><span class="grow">${T('Contact support')}</span><span class="chev">›</span></button>
+      ${db.profile ? `<button class="li" id="sPdf"><span class="ic">${ic('file')}</span><span class="grow">${T('Progress report (PDF)')}<br><span class="small muted">${T('Last 30 days, e.g. for your doctor or trainer')}</span></span><span class="chev">›</span></button>` : ''}
+    </div>
     <div class="h2">${T('Your data')}</div>
     <div class="list"><button class="li" id="sPriv"><span class="ic">🔒</span><span class="grow">${T('Privacy')}<br><span class="small muted">${T('What happens with your data')}</span></span><span class="chev">›</span></button>
       <button class="li" id="sTerms"><span class="ic">📄</span><span class="grow">${T('Terms of use')}</span><span class="chev">›</span></button></div>
@@ -7146,6 +7234,10 @@ function renderSettings() {
   bindBackupCard();
   bindUsersCard();
   $('#sPriv').onclick = openPrivacy;
+  $('#sFaq').onclick = openFaq;
+  $('#sIdea').onclick = () => mailOwner('Food Tracker: ' + T('Request a feature'));
+  $('#sMail').onclick = () => mailOwner('Food Tracker: ' + T('Contact support'));
+  if ($('#sPdf')) $('#sPdf').onclick = makeReport;
   $('#sTerms').onclick = openTerms;
   if ($('#kSave')) $('#kSave').onclick = () => {
     const set = (k, v) => v ? LS.set(k, v) : LS.del(k);
