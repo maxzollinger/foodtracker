@@ -1196,7 +1196,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v198';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v199';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -7106,16 +7106,15 @@ function renderSettings() {
         <label class="lbl">${T('Force a Gemini model (optional)')}</label><input id="kModel" value="${esc(LS.get('ft_model', ''))}" placeholder="${T('automatic')}"></details>
       <div class="row" style="margin-top:14px"><button class="btn" id="kSave">${T('Save')}</button><button class="btn outline" id="kTest">${T('Test')}</button></div>
       <p class="small" id="kMsg" style="margin:10px 0 0;text-align:center">${hasAI() ? '✓ ' + T('AI is on') : T('No key yet')}</p></div>` : ''}
-    ${backupCard()}
     <div class="h2">${T('Your data')}</div>
+    <div class="list"><button class="li" id="sPriv"><span class="ic">🔒</span><span class="grow">${T('Privacy')}<br><span class="small muted">${T('What happens with your data')}</span></span><span class="chev">›</span></button>
+      <button class="li" id="sTerms"><span class="ic">📄</span><span class="grow">${T('Terms of use')}</span><span class="chev">›</span></button></div>
     <div class="list">
       <button class="li" id="dExp"><span class="ic">⬇️</span><span class="grow">${T('Backup data')}</span><span class="chev">›</span></button>
       <button class="li" id="dImp"><span class="ic">⬆️</span><span class="grow">${T('Restore backup')}</span><span class="chev">›</span></button>
       <button class="li" id="dDel" style="color:var(--bad)"><span class="ic">🗑</span><span class="grow">${T('Delete all data')}</span></button>
     </div>
-    <div class="h2">${T('Legal')}</div>
-    <div class="list"><button class="li" id="sPriv"><span class="ic">🔒</span><span class="grow">${T('Privacy')}<br><span class="small muted">${T('What happens with your data')}</span></span><span class="chev">›</span></button>
-      <button class="li" id="sTerms"><span class="ic">📄</span><span class="grow">${T('Terms of use')}</span><span class="chev">›</span></button></div>
+    ${backupCard()}
     <p class="small muted" id="sNote" style="text-align:center;margin:20px 10px 10px">${T('Nutrition values are estimates, not medical advice.')}${isAdmin() ? '<br>Admin' : ''}</p>`;
   // Hidden switch: tap the note 7 times to turn admin mode on/off
   let taps = 0, tapT;
