@@ -949,6 +949,27 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .bd-pick img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .bd-pick-x{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:700;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
 .pp-btns .btn{white-space:nowrap;padding-inline:10px;min-width:0}
+.celshare{margin-top:12px;background:var(--ink);color:var(--on-ink)}
+.rc-rings{display:flex;justify-content:space-between;margin-top:14px}.rc-rings i{width:30px;height:30px;border-radius:50%;border:3px dashed var(--line)}
+.rc-rings i.ok{border:3px solid var(--good)}.rc-rings i.warn{border:3px solid var(--warn)}.rc-rings i.over{border:3px solid var(--bad)}.rc-rings i.under{border:3px solid var(--water)}
+.wr{position:fixed;inset:0;z-index:2000;color:#fff;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 14px) 22px calc(env(safe-area-inset-bottom) + 28px);
+  background:radial-gradient(120% 60% at 50% 32%,rgba(255,149,0,.26),transparent 70%),linear-gradient(180deg,#1d1f29,#07080b);animation:fade .25s ease;user-select:none;-webkit-user-select:none}
+.wr-bars{display:flex;gap:5px}.wr-bars i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.25);transition:background .3s}.wr-bars i.on{background:#fff}
+.wr-x{align-self:flex-end;margin-top:10px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:16px}
+.wr-slide{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;animation:wrIn .5s cubic-bezier(.2,1,.3,1)}
+@keyframes wrIn{from{opacity:0;transform:translateY(26px) scale(.97)}}
+.wr-logo{font-size:56px}.wr-big{font-size:44px;font-weight:900;letter-spacing:-.03em;line-height:1.05}
+.wr-num{font-size:112px;font-weight:900;letter-spacing:-.05em;line-height:1;background:linear-gradient(180deg,#fff,#ffb54d);-webkit-background-clip:text;background-clip:text;color:transparent}.wr-num small{font-size:44px}
+.wr-sub{font-size:22px;font-weight:700}.wr-small{font-size:16px;opacity:.7}.wr-h{font-size:28px;font-weight:800;margin-bottom:8px}
+.wr-list{list-style:none;padding:0;margin:0;width:100%;max-width:340px;display:flex;flex-direction:column;gap:10px}
+.wr-list li{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.08);border-radius:16px;padding:12px 14px;text-align:start}
+.wr-list b{color:#ff9f1c;font-size:20px;width:22px}.wr-list span{flex:1;font-weight:700;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.wr-list em{font-style:normal;opacity:.7}
+.wr-dots{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:340px}.wr-dots i{width:16px;height:16px;border-radius:50%;border:2px dashed rgba(255,255,255,.3)}
+.wr-dots.cal{display:grid;grid-template-columns:repeat(7,24px);gap:9px}.wr-dots.cal i{width:24px;height:24px}.wr-dots i.pad{visibility:hidden}
+.wr-dots.small{gap:3px}.wr-dots.small i{width:9px;height:9px;border-width:1px}
+.wr-dots i.ok{border:none;background:#34c759}.wr-dots i.warn{border:none;background:#f5b83d}.wr-dots i.over{border:none;background:#ff3b30}.wr-dots i.under{border:none;background:#3aa0ff}
+.wr-tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:340px;margin-top:6px}.wr-tiles div{background:rgba(255,255,255,.08);border-radius:18px;padding:14px}
+.wr-tiles b{display:block;font-size:30px;font-weight:900}.wr-tiles span{font-size:13px;opacity:.7}
 .pp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .pp-tile{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;background:var(--chip);padding:0}
 .pp-tile img,.pp-tile .ph-miss{width:100%;height:100%;object-fit:cover;display:flex;align-items:center;justify-content:center}
@@ -1265,7 +1286,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v224';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v225';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2159,7 +2180,7 @@ function renderHome() {
     <div class="minirow">${waterCard(sel)}
       <div class="card mini burncard"><div class="spread"><div class="mini-ic">🏃</div><button class="mini-plus" id="burnAdd" aria-label="${T('Add')}">＋</button></div>
         ${burnTileHTML(sel, burned)}</div></div>
-    ${habitHomeCard()}${setupBanner()}${shortcutWarnCard()}${mealPlanCard()}
+    ${weeklyRecapCard()}${habitHomeCard()}${setupBanner()}${shortcutWarnCard()}${mealPlanCard()}
     <div class="h2">${sel === today ? T('Recently uploaded') : fmtDate(sel, { weekday: 'long', day: 'numeric', month: 'long' })}</div>
     ${list}`;
   document.querySelectorAll('.day').forEach(b => b.onclick = () => { sel = b.dataset.d; renderHome(); });
@@ -2173,6 +2194,8 @@ function renderHome() {
   $('#mBtn').onclick = () => openMonth(days[3].slice(0, 7));
   if ($('#homeAva')) $('#homeAva').onclick = () => db.profile.avatar ? go('settings') : openAvatarSheet();
   $('#wPrev').onclick = () => { weekOff--; renderHome(); };
+  if ($('#rcShare')) $('#rcShare').onclick = () => shareWeek();
+  if ($('#rcX')) $('#rcX').onclick = () => { LS.set('ft_recap_x', recapWeekStart()); renderHome(); };
   $('#wNext').onclick = () => { if (weekOff < 0) { weekOff++; renderHome(); } };
   hydratePhotos($('#view'));
 }
@@ -3518,15 +3541,17 @@ function confetti() {
 }
 // Small celebration in the middle of the screen (one after another if several happen at once)
 const celQ = []; let celOn = false;
-function celebrate(ic, title, text) { celQ.push([ic, title, text]); if (!celOn) nextCel(); }
+const ic_share = () => ic('share');
+function celebrate(ic, title, text, share) { celQ.push([ic, title, text, share]); if (!celOn) nextCel(); }
 function nextCel() {
   const it = celQ.shift(); if (!it) { celOn = false; return; }
   celOn = true;
-  const [ic, title, text] = it, el = document.createElement('div'); el.className = 'celpop';
-  el.innerHTML = `<div class="celcard"><div class="celic">${ic}</div><b>${title}</b>${text ? `<div class="small muted">${text}</div>` : ''}</div>`;
+  const [ic, title, text, share] = it, el = document.createElement('div'); el.className = 'celpop';
+  el.innerHTML = `<div class="celcard"><div class="celic">${ic}</div><b>${title}</b>${text ? `<div class="small muted">${text}</div>` : ''}${share ? `<button class="chipbtn celshare">${ic_share()} ${T('Share')}</button>` : ''}</div>`;
   document.body.appendChild(el); confetti(); if (navigator.vibrate) navigator.vibrate([20, 40, 20]);
   const close = () => { if (!el.isConnected) return; el.classList.add('out'); setTimeout(() => { el.remove(); nextCel(); }, 300); };
-  el.onclick = close; setTimeout(close, 2800);
+  el.onclick = close; setTimeout(close, share ? 5000 : 2800);
+  if (share) el.querySelector('.celshare').onclick = e => { e.stopPropagation(); close(); setTimeout(share, 350); };
 }
 
 // Progress towards the weight goal (start = weight when the goal was set, or the first weigh-in)
@@ -3648,7 +3673,7 @@ function checkRewards() {
   if (fresh.length || reached) LS.set('ft_data', JSON.stringify(db));
   if (reached) return setTimeout(openGoalReached, 400);
   for (const [ic, a, b] of wins) celebrate(ic, a, b);
-  for (const b of fresh) celebrate(`<span class="celmedal">${medalSVG(b.id, true)}</span>`, T('New badge: {n}', { n: T(b.name) }), T(b.desc));
+  for (const b of fresh) celebrate(`<span class="celmedal">${medalSVG(b.id, true)}</span>`, T('New badge: {n}', { n: T(b.name) }), T(b.desc), () => shareBadge(b.id));
   if (fresh.length && tab === 'progress') renderProgress();
 }
 
@@ -3706,7 +3731,8 @@ function openBadge(id) {
   const b = BADGES.find(x => x.id === id), [have, need] = b.need(badgeStats()), when = earned()[id];
   sheet(`<div style="text-align:center;padding:4px 0 6px"><div class="bigmedal ${when ? 'on' : ''}">${medalSVG(b.id, !!when)}</div>
     <h3 style="margin:14px 0 4px">${T(b.name)}</h3><p class="muted" style="margin:0">${T(b.desc)}</p>
-    <p style="margin:14px 0 0;font-weight:700;${when ? 'color:var(--good)' : ''}">${when ? '✓ ' + T('Earned on {d}', { d: fmtLong(dt(when)) }) : T('{a} of {b}', { a: r1(Math.min(have, need)), b: need })}</p></div>`);
+    <p style="margin:14px 0 0;font-weight:700;${when ? 'color:var(--good)' : ''}">${when ? '✓ ' + T('Earned on {d}', { d: fmtLong(dt(when)) }) : T('{a} of {b}', { a: r1(Math.min(have, need)), b: need })}</p></div>
+    ${when ? `<button class="btn" id="bgShare" style="margin-top:14px">${ic('share')} ${T('Share')}</button>` : ''}`, sh => { if (sh.querySelector('#bgShare')) sh.querySelector('#bgShare').onclick = () => { closeSheet(); setTimeout(() => shareBadge(id), 250); }; });
 }
 
 // The big moment: goal weight reached
@@ -6063,7 +6089,13 @@ async function mealShareImage(m) {
 async function openMealShare(m) {
   busyStart(); let out;
   try { out = await mealShareImage(m); } catch (e) { busyEnd(); return toast(T('Something went wrong. Please try again.')); }
-  busyEnd();
+  busyEnd(); openImageShare(out);
+}
+/* ================= Share cards & recaps =================
+   People share what makes them look good (Wordle, Strava, Spotify Wrapped). Badges and streaks, a weekly recap and a
+   monthly / yearly "Wrapped" become story-sized pictures (1080 × 1920) with the app's name on them.
+   Weight and photos are never on them. */
+function openImageShare(out) {
   const canShare = navigator.canShare && navigator.canShare({ files: [out.file] });
   sheet(`<h3 style="text-align:center">${T('Share')}</h3>
     <img src="${out.url}" alt="" style="-webkit-touch-callout:default;display:block;max-width:100%;max-height:58vh;margin:12px auto 0;border-radius:20px;box-shadow:var(--shadow)">
@@ -6079,6 +6111,174 @@ async function openMealShare(m) {
     };
   });
 }
+const loadImg = src => new Promise(res => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+const svgImg = svg => loadImg('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ')));
+const TIER_HEX = { ok: '#34c759', warn: '#f5b83d', over: '#ff3b30', under: '#3aa0ff' };
+function canvasFile(c, name) {
+  const url = c.toDataURL('image/jpeg', 0.9), bin = atob(url.split(',')[1]), bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return { url, file: new File([bytes], name.replace(/[^a-z0-9-]+/gi, '-') + '.jpg', { type: 'image/jpeg' }) };
+}
+async function storyCanvas(draw, name) {
+  const W = 1080, H = 1920, c = document.createElement('canvas'); c.width = W; c.height = H;
+  const x = c.getContext('2d'), F = 'system-ui,-apple-system,Segoe UI,Roboto,sans-serif';
+  const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#1d1f29'); g.addColorStop(1, '#07080b'); x.fillStyle = g; x.fillRect(0, 0, W, H);
+  const r = x.createRadialGradient(W / 2, 620, 0, W / 2, 620, 780); r.addColorStop(0, 'rgba(255,149,0,.30)'); r.addColorStop(1, 'rgba(255,149,0,0)'); x.fillStyle = r; x.fillRect(0, 0, W, H);
+  const k = { x, W, H,
+    text: (s, X, Y, size, w = 700, col = '#fff', al = 'center') => { x.font = `${w} ${size}px ${F}`; x.fillStyle = col; x.textAlign = al; x.fillText(String(s), X, Y); },
+    fit: (s, size, maxW, w = 800) => { let z = size; x.font = `${w} ${z}px ${F}`; while (x.measureText(String(s)).width > maxW && z > 22) { z -= 2; x.font = `${w} ${z}px ${F}`; } return z; },
+    cut: (s, maxW, size, w = 600) => { x.font = `${w} ${size}px ${F}`; s = String(s); while (x.measureText(s).width > maxW && s.length > 3) s = s.slice(0, -2) + '…'; return s; },
+    rr: (X, Y, w, h, rad) => { x.beginPath(); x.roundRect(X, Y, w, h, rad); },
+    ring: (cx, cy, rad, lw, col, dashed) => { x.lineWidth = lw; x.setLineDash(dashed ? [9, 9] : []); x.strokeStyle = col; x.beginPath(); x.arc(cx, cy, rad, 0, Math.PI * 2); x.stroke(); x.setLineDash([]); },
+    tile: (X, Y, w, h, val, label) => { x.fillStyle = 'rgba(255,255,255,.08)'; k.rr(X, Y, w, h, 40); x.fill();
+      k.text(val, X + w / 2, Y + h * 0.56, k.fit(val, 104, w - 40, 900), 900); k.text(k.cut(label, w - 40, 34, 600), X + w / 2, Y + h * 0.82, 34, 600, 'rgba(255,255,255,.65)'); } };
+  await draw(k);
+  const logo = await loadImg('icon-180.png'), lx = W / 2 - 200;
+  if (logo) { x.save(); k.rr(lx, H - 190, 80, 80, 20); x.clip(); x.drawImage(logo, lx, H - 190, 80, 80); x.restore(); }
+  k.text('Food Tracker', lx + 104, H - 146, 42, 800, '#fff', 'left'); k.text('foodtrackerapp.pages.dev', lx + 104, H - 104, 28, 500, 'rgba(255,255,255,.55)', 'left');
+  return canvasFile(c, name);
+}
+async function shareStory(draw, name) {
+  busyStart(); let out;
+  try { out = await storyCanvas(draw, name); } catch (e) { busyEnd(); return toast(T('Something went wrong. Please try again.')); }
+  busyEnd(); openImageShare(out);
+}
+// Wordle: a badge or a streak to show off
+function shareBadge(id) {
+  const b = BADGES.find(x => x.id === id); if (!b) return;
+  shareStory(async k => {
+    const m = await svgImg(medalSVG(id, true)); if (m) k.x.drawImage(m, k.W / 2 - 270, 330, 540, 540);
+    k.text(T('New badge'), k.W / 2, 1000, 42, 700, '#ff9f1c');
+    k.text(T(b.name), k.W / 2, 1110, k.fit(T(b.name), 96, 960), 900);
+    k.text(k.cut(T(b.desc), 960, 42, 500), k.W / 2, 1190, 42, 500, 'rgba(255,255,255,.75)');
+    const when = earned()[id]; if (when) k.text(fmtLong(dt(when)), k.W / 2, 1260, 34, 500, 'rgba(255,255,255,.5)');
+  }, 'badge-' + id);
+}
+function shareStreak() {
+  const n = streak();
+  shareStory(async k => {
+    const f = await loadImg('emoji/flame.webp'); if (f) k.x.drawImage(f, k.W / 2 - 210, 340, 420, 420);
+    k.text(String(n), k.W / 2, 1090, 280, 900);
+    k.text(T('day streak'), k.W / 2, 1190, 68, 800, '#ff9f1c');
+    k.text(k.cut(T('Logged my food {n} days in a row.', { n }), 960, 40, 500), k.W / 2, 1270, 40, 500, 'rgba(255,255,255,.75)');
+  }, 'streak-' + n);
+}
+// Strava: the week, made visible
+function weekRecap(mon) {
+  const days = [...Array(7)].map((_, i) => addDays(mon, i)), info = days.map(d => ({ d, t: dayTotals(d), g: dayGoals(d), tier: d <= iso() ? ringTier(d) : '' }));
+  const L = info.filter(x => x.t.count), avg = k => L.length ? r0(L.reduce((a, x) => a + x.t[k], 0) / L.length) : 0;
+  return { mon, days: info, logged: L.length, ok: L.filter(x => x.tier === 'ok').length, kcal: avg('kcal'), protein: avg('protein'),
+    proteinHit: L.filter(x => x.t.protein >= x.g.protein * 0.9).length };
+}
+const recapWeekStart = () => { const t = iso(), dow = (dt(t).getDay() + 6) % 7; return dow === 0 ? addDays(t, -7) : addDays(t, -dow); };   // on Monday: the week that just ended
+function shareWeek(mon = recapWeekStart()) {
+  const r = weekRecap(mon);
+  shareStory(async k => {
+    k.text(T('My week'), k.W / 2, 400, 104, 900);
+    k.text(`${fmtDate(mon, { day: 'numeric', month: 'short' })} – ${fmtDate(addDays(mon, 6), { day: 'numeric', month: 'short' })}`, k.W / 2, 475, 42, 500, 'rgba(255,255,255,.6)');
+    r.days.forEach((dd, i) => { const cx = 150 + i * 130; k.ring(cx, 640, 46, 13, TIER_HEX[dd.tier] || '#4a4d57', !TIER_HEX[dd.tier]);
+      k.text(dt(dd.d).toLocaleDateString(LOC, { weekday: 'narrow' }), cx, 740, 34, 700, 'rgba(255,255,255,.6)'); });
+    k.tile(90, 830, 430, 300, `${r.logged}/7`, T('Days logged')); k.tile(560, 830, 430, 300, String(r.ok), T('Days within goal'));
+    k.tile(90, 1170, 430, 300, r.protein + ' g', T('Protein a day')); k.tile(560, 1170, 430, 300, String(streak()), T('Day streak'));
+  }, 'my-week-' + mon);
+}
+function weeklyRecapCard() {
+  if (!db.profile) return '';
+  const dow = (dt(iso()).getDay() + 6) % 7; if (dow !== 6 && dow !== 0) return '';   // Sunday and Monday
+  const mon = recapWeekStart(); if (LS.get('ft_recap_x', '') === mon) return '';
+  const r = weekRecap(mon); if (r.logged < 2) return '';
+  return `<div class="card recapcard"><div class="spread"><b>${ic('chart')} ${T('Your week')}</b><button class="muted" id="rcX" aria-label="${T('Close')}" style="padding:4px 6px">✕</button></div>
+    <div class="rc-rings">${r.days.map(x => `<i class="${x.tier}"></i>`).join('')}</div>
+    <p class="small muted" style="margin:10px 0 12px">${T('{a} of 7 days logged · {b} within goal', { a: r.logged, b: r.ok })}</p>
+    <button class="btn sm" id="rcShare">${ic('share')} ${T('Share my week')}</button></div>`;
+}
+// Spotify Wrapped: a month or a year as a little story, ending in a picture to share
+function periodStats(from, to) {
+  if (to > iso()) to = iso();
+  const days = []; for (let d = from; d <= to; d = addDays(d, 1)) days.push(d);
+  const meals = db.meals.filter(m => m.date >= from && m.date <= to), info = days.map(d => ({ d, t: dayTotals(d), g: dayGoals(d), tier: ringTier(d) }));
+  const L = info.filter(x => x.t.count), avg = k => L.length ? r0(L.reduce((a, x) => a + x.t[k], 0) / L.length) : 0;
+  let best = 0, run = 0; for (const x of info) { run = x.t.count ? run + 1 : 0; best = Math.max(best, run); }
+  const counts = {}; for (const m of meals) { const nm = String(m.name || '').trim(); if (nm) (counts[nm.toLowerCase()] ||= { name: nm, n: 0 }).n++; }
+  const hs = meals.map(m => m.health).filter(Boolean), times = meals.map(m => m.time || '').filter(Boolean);
+  return { from, to, days: info, logged: L.length, meals: meals.length, ok: L.filter(x => x.tier === 'ok').length, best,
+    top: Object.values(counts).sort((a, b) => b.n - a.n).slice(0, 5), kcal: avg('kcal'), protein: avg('protein'),
+    pGoal: L.length ? r0(L.reduce((a, x) => a + x.g.protein, 0) / L.length) : 0, proteinHit: L.filter(x => x.t.protein >= x.g.protein * 0.9).length,
+    health: hs.length ? r1(hs.reduce((a, b) => a + b, 0) / hs.length) : 0,
+    early: times.length ? times.filter(t => t < '09:00').length / times.length : 0, late: times.length ? times.filter(t => t >= '21:00').length / times.length : 0,
+    variety: meals.length ? Object.keys(counts).length / meals.length : 0 };
+}
+const PERSONAS = [
+  [N('The Unstoppable'), N('Day after day, you kept going. Nothing breaks your streak.'), s => s.best >= 21],
+  [N('The Protein Pro'), N('You hit your protein like an athlete.'), s => s.pGoal > 0 && s.protein >= s.pGoal * 0.9],
+  [N('The Steady One'), N('Day after day, right on target.'), s => s.logged >= 5 && s.ok / s.logged >= 0.7],
+  [N('The Clean Eater'), N('Whole foods and high health scores. Your plate looks great.'), s => s.health >= 7],
+  [N('The Food Explorer'), N('Always something new on your plate.'), s => s.meals >= 10 && s.variety >= 0.7],
+  [N('The Early Bird'), N('Breakfast is your thing. You start the day strong.'), s => s.early >= 0.3],
+  [N('The Night Owl'), N('Your kitchen comes alive at night.'), s => s.late >= 0.2],
+  [N('The Balanced Eater'), N('A bit of everything, and it works for you.'), () => true]];
+const personaOf = s => PERSONAS.find(p => p[2](s));
+function wrappedOptions() {
+  const t = iso(), y = t.slice(0, 4), thisMo = t.slice(0, 7) + '-01', lastMo = iso(new Date(+y, +t.slice(5, 7) - 2, 1)).slice(0, 8) + '01';
+  const monthEnd = d => iso(new Date(+d.slice(0, 4), +d.slice(5, 7), 0));
+  const label = d => dt(d).toLocaleDateString(LOC, { month: 'long', year: 'numeric' });
+  return [[lastMo, monthEnd(lastMo), label(lastMo), 3], [thisMo, t, label(thisMo), 3], [y + '-01-01', t, y, 7]]
+    .filter(([f, to, , min]) => periodStats(f, to).logged >= min);
+}
+function openWrappedPicker() {
+  const ops = wrappedOptions();
+  if (!ops.length) return toast(T('Log a few more days to get your recap.'));
+  sheet(`<h3>${T('Your Wrapped')}</h3><p class="muted" style="margin-top:4px">${T('Your food story, made to share.')}</p>
+    <div class="list" style="margin-top:12px">${ops.map(([f, to, l], i) => `<button class="li" data-wr="${i}"><span class="ic">${ic('sparkles')}</span><span class="grow"><b>${esc(l)}</b></span><span class="chev">›</span></button>`).join('')}</div>`, sh => {
+    sh.querySelectorAll('[data-wr]').forEach(b => b.onclick = () => { const [f, to, l] = ops[+b.dataset.wr]; closeSheet(); setTimeout(() => openWrapped(f, to, l), 250); });
+  });
+}
+function openWrapped(from, to, label) {
+  const s = periodStats(from, to), p = personaOf(s), many = s.days.length > 62;
+  const slides = [
+    `<div class="wr-logo">${ic('sparkles')}</div><div class="wr-big">${esc(label)}</div><div class="wr-sub">${T('Your food story')}</div><div class="wr-small">${T('Tap to continue')}</div>`,
+    `<div class="wr-num">${s.meals}</div><div class="wr-sub">${T('meals logged')}</div><div class="wr-small">${T('on {n} days', { n: s.logged })}</div>`,
+    ...(s.top.length ? [`<div class="wr-h">${T('Your top foods')}</div><ol class="wr-list">${s.top.map((f, i) => `<li><b>${i + 1}</b><span>${esc(f.name)}</span><em>${f.n}×</em></li>`).join('')}</ol>`] : []),
+    `<div class="wr-h">${T('{n} days within your goal', { n: s.ok })}</div><div class="wr-dots ${many ? 'small' : 'cal'}">${many ? '' : '<i class="pad"></i>'.repeat((dt(from).getDay() + 6) % 7)}${s.days.map(x => `<i class="${x.tier || ''}"></i>`).join('')}</div>`,
+    `<div class="wr-num">${s.protein}<small>g</small></div><div class="wr-sub">${T('protein a day on average')}</div><div class="wr-small">${T('Protein goal hit on {n} days', { n: s.proteinHit })}</div>`,
+    `<div class="wr-num">${s.best}</div><div class="wr-sub">${T('days in a row')}</div><div class="wr-small">${T('Your longest streak')}</div>`,
+    `<div class="wr-sub">${T('Your food type')}</div><div class="wr-big">${T(p[0])}</div><div class="wr-small">${T(p[1])}</div>`,
+    `<div class="wr-sub">${esc(label)}</div><div class="wr-big" style="font-size:34px">${T(p[0])}</div>
+      <div class="wr-tiles"><div><b>${s.meals}</b><span>${T('Meals logged')}</span></div><div><b>${s.logged}</b><span>${T('Days logged')}</span></div>
+      <div><b>${s.best}</b><span>${T('Longest streak')}</span></div><div><b>${s.ok}</b><span>${T('Days within goal')}</span></div></div>
+      <button class="btn" id="wrShare" style="max-width:340px;margin-top:10px">${ic('share')} ${T('Share my Wrapped')}</button>`];
+  const ov = document.createElement('div'); ov.className = 'wr';
+  let i = 0;
+  const draw = () => {
+    ov.innerHTML = `<div class="wr-bars">${slides.map((_, k) => `<i class="${k <= i ? 'on' : ''}"></i>`).join('')}</div>
+      <button class="wr-x" aria-label="${T('Close')}">✕</button><div class="wr-slide">${slides[i]}</div>`;
+    ov.querySelector('.wr-x').onclick = e => { e.stopPropagation(); ov.remove(); };
+    const sb = ov.querySelector('#wrShare'); if (sb) sb.onclick = e => { e.stopPropagation(); shareWrapped(s, label, p); };
+  };
+  ov.onclick = e => { if (e.target.closest('button')) return; const back = e.clientX < innerWidth * 0.3; if (back && i > 0) i--; else if (!back && i < slides.length - 1) i++; else return; draw(); };
+  document.body.appendChild(ov); draw();
+}
+function shareWrapped(s, label, p) {
+  shareStory(async k => {
+    k.text(T('My Wrapped'), k.W / 2, 250, 52, 700, '#ff9f1c');
+    k.text(label, k.W / 2, 350, k.fit(label, 96, 960, 900), 900);
+    k.text(T('My food type'), k.W / 2, 470, 38, 600, 'rgba(255,255,255,.6)');
+    k.text(T(p[0]), k.W / 2, 560, k.fit(T(p[0]), 84, 960, 900), 900, '#ffb54d');
+    k.tile(90, 640, 430, 280, String(s.meals), T('Meals logged')); k.tile(560, 640, 430, 280, String(s.logged), T('Days logged'));
+    k.tile(90, 950, 430, 280, String(s.best), T('Longest streak')); k.tile(560, 950, 430, 280, String(s.ok), T('Days within goal'));
+    if (s.top.length) {
+      k.text(T('Your top foods'), 120, 1340, 40, 800, '#fff', 'left');
+      s.top.slice(0, 3).forEach((f, i) => { k.text(`${i + 1}`, 120, 1420 + i * 76, 44, 900, '#ff9f1c', 'left');
+        k.text(k.cut(f.name, 760, 42, 600), 180, 1420 + i * 76, 42, 600, '#fff', 'left'); k.text(f.n + '×', 960, 1420 + i * 76, 38, 600, 'rgba(255,255,255,.6)', 'right'); });
+    }
+  }, 'wrapped-' + label);
+}
+function recapsCard() {
+  if (!db.profile || !db.meals.length) return '';
+  return `<div class="card"><b style="font-size:17px">${ic('sparkles')} ${T('Recaps to share')}</b>
+    <div class="row pp-btns" style="gap:8px;margin-top:12px"><button class="btn sm outline grow" id="rcpWeek">${T('My week')}</button><button class="btn sm grow" id="rcpWrap">${T('Your Wrapped')}</button></div></div>`;
+}
+
 function closeDetail(commit) {
   if (commit) {
     const m = det.m;
@@ -6156,10 +6356,11 @@ function renderProgress() {
       <div class="card"><div class="small muted">${T('Current weight')}</div><div style="font-size:30px;font-weight:800;letter-spacing:-.03em;margin:4px 0">${cur ? showW(cur) : '–'}<small style="font-size:16px"> ${wUnit()}</small></div>
         <div class="small muted">${p && p.goal !== 'maintain' ? T('Goal <b>{w} kg</b>', { w: p.targetWeight }) : T('Goal: maintain')}</div>
         <button class="btn sm" id="logW" style="margin-top:12px;width:100%">${T('Log weight')}</button></div>
-      <div class="card" style="text-align:center"><div style="font-size:40px">🔥</div><div style="font-size:30px;font-weight:800;color:var(--flame)">${st}</div><div class="small muted" style="font-weight:600">${T('Day streak')}</div><div class="wdots">${dots}</div>
+      <div class="card" style="text-align:center"><div style="font-size:40px">🔥</div><div style="font-size:30px;font-weight:800;color:var(--flame)">${st}</div><div class="small muted" style="font-weight:600">${T('Day streak')}</div><div class="wdots">${dots}</div>${st >= 2 ? `<button class="chipbtn" id="stShare" style="margin-top:8px;padding:6px 12px">${ic('share')} ${T('Share')}</button>` : ''}
         <div class="small muted" style="margin-top:6px;font-size:11px">${T('1 rest day a week is fine')}</div></div>
     </div>
     ${badgesCard()}
+    ${recapsCard()}
     <div class="card" id="goalCard"><div class="spread"><b style="font-size:17px">${T('Goal progress')}</b>${p && p.goal !== 'maintain' ? `<span class="etime">🚩 ${T('{n}% of goal', { n: r0(pct) })}</span>` : ''}</div>
       ${p && p.goal !== 'maintain' ? `<div class="hbar" style="margin:12px 0 8px"><i style="width:${pct}%;background:var(--ink)"></i></div>` : '<div style="height:12px"></div>'}
       ${gpr ? `<div class="small" style="margin:0 0 14px;line-height:1.5"><b>${goalLine(gpr)}</b><br><span class="muted">${T('Trend {w} kg', { w: r1(gpr.cur) })}${gpr.status !== 'new' && !gpr.reached ? ' · ' + T('on plan today: {w} kg', { w: gpr.shouldBe }) : ''}</span></div>` : ''}
@@ -6184,6 +6385,9 @@ function renderProgress() {
   document.querySelectorAll('[data-badge]').forEach(b => b.onclick = () => openBadge(b.dataset.badge));
   if ($('#badgeMore')) $('#badgeMore').onclick = () => { LS.set('ft_badges_open', LS.get('ft_badges_open', '') === '1' ? '' : '1'); const y = $('#scroller').scrollTop; renderProgress(); $('#scroller').scrollTop = y; };
   $('#logW').onclick = openWeightSheet;
+  if ($('#stShare')) $('#stShare').onclick = shareStreak;
+  if ($('#rcpWeek')) $('#rcpWeek').onclick = () => shareWeek();
+  if ($('#rcpWrap')) $('#rcpWrap').onclick = openWrappedPicker;
   bindBodyCard(); hydratePhotos($('#view'));
   document.querySelectorAll('[data-r]').forEach(b => b.onclick = () => { progRange = +b.dataset.r; renderProgress(); });
   document.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { nutWeek = +b.dataset.w; const y = $('#scroller').scrollTop; renderProgress(); $('#scroller').scrollTop = y; });
@@ -6758,6 +6962,7 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Groups, Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
+- Sharing (people share what makes them look good): a new badge's celebration and the badge page have a Share button (story picture with the medal); the streak card on Progress shares "{n} day streak"; on Sunday and Monday a "Your week" card on Home (7 rings, days logged, within goal) shares a weekly recap; "Recaps to share" on Progress has "My week" and "Your Wrapped" (last month, this month, this year: a tap-through story with meals logged, top foods, days within goal, protein, longest streak and a "food type" like The Protein Pro, ending in a picture to share). Weight and photos are never on shared pictures.
 - Progress photos (Progress tab): any number, also several a day; after framing they choose the day it was taken. "All photos" shows them by month, ▶ Play shows them as a time-lapse from first to last, "Before & after" compares any two with the measurements.
 - Diet & food needs (Settings → Preferences, also in the meal plan preferences): diet plus food needs that can be combined: gluten-free, celiac (no traces), lactose-free, little dairy, no dairy, no nuts, no eggs, no fish or seafood. The meal plan and you always respect them, and a scanned meal that probably breaks one shows a warning at the top of the meal.
 - Ingredient amounts can be typed in grams, ounces, the kitchen measure (cup, tbsp, piece…) or pieces (unit menu next to the amount); the app remembers the last unit.
