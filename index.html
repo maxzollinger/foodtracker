@@ -919,6 +919,16 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .bd-ph img,.bd-ph .ph-miss{width:72px;height:96px;object-fit:cover;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--chip);font-size:24px}
 .bd-ph>span:last-child{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:4px}
 .pp-empty{text-align:center;padding:6px 0 2px}.pp-empty p{margin:6px 0 12px}.pp-empty .btn{margin:0 auto;display:flex;justify-content:center;width:auto;padding-inline:22px}.pp-art{width:120px;height:90px}
+.cropper{position:fixed;inset:0;z-index:2000;background:#000;color:#fff;display:flex;flex-direction:column;touch-action:none;user-select:none;-webkit-user-select:none}
+.cr-head{display:flex;align-items:center;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top)) 12px 10px}
+.cr-txt{color:#fff;font-size:16px;padding:8px 6px;min-width:70px}.cr-head .cr-txt:last-child{text-align:end}
+.cr-stage{position:relative;flex:1;overflow:hidden;touch-action:none}
+.cr-stage img{position:absolute;left:50%;top:50%;max-width:none;transform-origin:center;pointer-events:none}
+.cr-frame{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 9999px rgba(0,0,0,.6);outline:1.5px solid rgba(255,255,255,.9);pointer-events:none;border-radius:6px}
+.cr-frame.round{border-radius:50%}
+.cr-foot{display:flex;align-items:center;gap:14px;padding:14px 28px calc(18px + env(safe-area-inset-bottom));font-size:22px}
+.cr-foot input{flex:1;-webkit-appearance:none;appearance:none;height:4px;border-radius:2px;background:rgba(255,255,255,.3);padding:0;border:0}
+.cr-foot input::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
 .bd-pick{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:150px;height:200px;margin:4px auto 0;border-radius:18px;background:var(--chip);overflow:hidden;font-weight:600;color:var(--muted);font-size:14px}
 .bd-pick img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .bd-pick-x{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:700;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
@@ -1113,6 +1123,7 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 
 <input type="file" accept="image/*" capture="environment" id="fileCam" class="hiddenfile">
 <input type="file" accept="image/*" id="fileLib" class="hiddenfile">
+<input type="file" accept="image/*" id="filePick" class="hiddenfile">
 <input type="file" accept="image/*" capture="environment" id="fileBar" class="hiddenfile">
 <input type="file" accept="application/json,.json" id="fileImport" class="hiddenfile">
 <input type="file" accept="image/*" id="fileChat" class="hiddenfile" multiple>
@@ -1203,7 +1214,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v205';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v206';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2980,9 +2991,7 @@ function renderGroups() {
   updateGroupDot();
 }
 function pickGroupPic(cb) {
-  const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
-  inp.onchange = async () => { const f = inp.files && inp.files[0]; if (!f) return; try { cb(await squareImage(f, 160)); } catch (e) { toast(e.message); } };
-  inp.click();
+  pickImage(async f => { const u = await cropImage(f, { w: 160, h: 160, round: true }); if (u) cb(u); });
 }
 function openCreateGroup(edit) {
   const g = edit ? gCache[edit.gid] : null; let pic = g ? g.pic || '' : '';
@@ -6091,11 +6100,9 @@ function photoCard() {
 }
 // Pick a photo and save it as today's progress photo (keeps today's measurements)
 function addProgressPhoto() {
-  const inp = Object.assign(document.createElement('input'), { type: 'file', accept: 'image/*', className: 'hiddenfile' });
-  document.body.appendChild(inp);
-  inp.onchange = async () => { const f = inp.files && inp.files[0]; inp.remove(); if (!f) return;
+  pickImage(async f => {
     try {
-      const data = await scaleImage(f, 1400, 0.85), date = iso();
+      const data = await cropImage(f, { w: 1050, h: 1400 }), date = iso(); if (!data) return;
       const e = (db.body = db.body || []).find(x => x.date === date);
       if (e && e.photo && !confirm(T('Replace today\'s photo?'))) return;
       const id = 'pp-' + date + '-' + Math.random().toString(36).slice(2, 7);
@@ -6105,8 +6112,7 @@ function addProgressPhoto() {
       save(); toast('✓ ' + T('Saved')); if (tab === 'progress') renderProgress();
       if (acct()) setTimeout(() => photoSync(true), 1500);
     } catch (err) { toast(err.message); }
-  };
-  inp.click();
+  });
 }
 function bindBodyCard() {
   if ($('#bdAdd')) $('#bdAdd').onclick = () => openBodySheet();
@@ -6131,11 +6137,7 @@ function openBodySheet(date = iso()) {
     ${db.body.includes(e) ? `<button class="btn outline" id="bdDel" style="margin-top:10px;color:var(--bad)">${T('Delete this entry')}</button>` : ''}`, async sh => {
     if (e.photo && !(e.photo in photoCache)) { photoCache[e.photo] = await idb.get(e.photo); sh.querySelector('#bdPick').innerHTML = pick(); }
     sh.querySelector('#bdPick').onclick = () => {
-      const inp = Object.assign(document.createElement('input'), { type: 'file', accept: 'image/*', className: 'hiddenfile' });
-      document.body.appendChild(inp);
-      inp.onchange = async () => { const f = inp.files && inp.files[0]; inp.remove(); if (!f) return;
-        try { newPhoto = await scaleImage(f, 1400, 0.85); dropPhoto = false; sh.querySelector('#bdPick').innerHTML = pick(); } catch (err) { toast(err.message); } };
-      inp.click();
+      pickImage(async f => { const u = await cropImage(f, { w: 1050, h: 1400 }); if (!u) return; newPhoto = u; dropPhoto = false; sh.querySelector('#bdPick').innerHTML = pick(); });
     };
     if (sh.querySelector('#bdNoPh')) sh.querySelector('#bdNoPh').onclick = () => { dropPhoto = true; newPhoto = null; sh.querySelector('#bdPick').innerHTML = pick(); sh.querySelector('#bdNoPh').remove(); };
     sh.querySelector('#bdSave').onclick = async () => {
@@ -7858,6 +7860,82 @@ function openPicker(sel, anchor) {
   if (anchor) { const r = anchor.getBoundingClientRect(); input.style.left = Math.max(0, r.left + 16) + 'px'; input.style.top = Math.max(0, r.top) + 'px'; }
   input.click();
 }
+/* Picking a photo: one file field that stays on the page. iPhone can lose a field made on the fly while its photo
+   picker is open, then the first pick did nothing. It also checks again when the app comes back, in case the
+   change event never arrives. */
+let pickCb = null;
+function pickImage(cb) {
+  const inp = $('#filePick'); pickCb = cb; inp.value = '';
+  inp.click();
+}
+function pickDone() {
+  const inp = $('#filePick'), f = inp.files && inp.files[0];
+  if (!f || !pickCb) return;
+  const cb = pickCb; pickCb = null; inp.value = ''; cb(f);
+}
+['change', 'input'].forEach(ev => $('#filePick').addEventListener(ev, pickDone));
+window.addEventListener('focus', () => setTimeout(pickDone, 400));
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') setTimeout(pickDone, 400); });
+
+/* Move and scale: drag the photo and pinch (or use the slider) to zoom, like on iPhone. Gives a JPEG data URL of
+   exactly the framed part, or null when cancelled. round = circle frame (profile and group pictures). */
+async function cropImage(file, { w = 256, h = 256, round = false } = {}) {
+  let src; try { src = await scaleImage(file, 2400, 0.92); } catch (e) { toast(e.message); return null; }
+  const img = await new Promise(res => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+  if (!img) { toast(T('Could not open this image.')); return null; }
+  return new Promise(resolve => {
+    const pg = document.createElement('div'); pg.className = 'cropper';
+    pg.innerHTML = `<div class="cr-head"><button class="cr-txt" id="crNo">${T('Cancel')}</button><b>${T('Move and scale')}</b><button class="cr-txt" id="crOk" style="font-weight:800">${T('Use photo')}</button></div>
+      <div class="cr-stage"><img alt=""><div class="cr-frame ${round ? 'round' : ''}"></div></div>
+      <div class="cr-foot"><span>−</span><input type="range" min="0" max="1000" value="0" aria-label="${T('Zoom')}"><span>+</span></div>`;
+    document.body.appendChild(pg);
+    const st = pg.querySelector('.cr-stage'), im = pg.querySelector('img'), fr = pg.querySelector('.cr-frame'), sl = pg.querySelector('input');
+    im.src = src;
+    const iw = img.width, ih = img.height;
+    let fw, fh, min, s, tx = 0, ty = 0;
+    const layout = () => {
+      const W = st.clientWidth - 40, H = st.clientHeight - 40, k = Math.min(W / w, H / h);
+      fw = w * k; fh = h * k; fr.style.width = fw + 'px'; fr.style.height = fh + 'px';
+      min = Math.max(fw / iw, fh / ih); if (!s || s < min) s = min;
+      draw();
+    };
+    const clampAll = () => {
+      s = Math.min(Math.max(s, min), min * 5);
+      const mx = (iw * s - fw) / 2, my = (ih * s - fh) / 2;
+      tx = Math.min(mx, Math.max(-mx, tx)); ty = Math.min(my, Math.max(-my, ty));
+    };
+    const draw = () => { clampAll(); im.style.transform = `translate(-50%,-50%) translate(${tx}px,${ty}px) scale(${s})`; sl.value = Math.round(Math.log(s / min) / Math.log(5) * 1000); };
+    im.style.width = iw + 'px'; im.style.height = ih + 'px';
+    // Zoom around a point (the fingers' middle), so the spot under the fingers stays put
+    const zoomAt = (ns, px, py) => { const r = st.getBoundingClientRect(), cx = px - r.left - r.width / 2, cy = py - r.top - r.height / 2;
+      ns = Math.min(Math.max(ns, min), min * 5); tx = cx - (cx - tx) * ns / s; ty = cy - (cy - ty) * ns / s; s = ns; draw(); };
+    const pts = new Map(); let last = null;
+    const gesture = () => { const a = [...pts.values()]; if (a.length === 1) return { x: a[0].x, y: a[0].y, d: 0 };
+      return { x: (a[0].x + a[1].x) / 2, y: (a[0].y + a[1].y) / 2, d: Math.hypot(a[0].x - a[1].x, a[0].y - a[1].y) }; };
+    st.addEventListener('pointerdown', e => { st.setPointerCapture(e.pointerId); pts.set(e.pointerId, { x: e.clientX, y: e.clientY }); last = gesture(); });
+    st.addEventListener('pointermove', e => {
+      if (!pts.has(e.pointerId)) return; pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      const g = gesture(); if (!last) { last = g; return; }
+      if (g.d && last.d) zoomAt(s * g.d / last.d, g.x, g.y);
+      tx += g.x - last.x; ty += g.y - last.y; draw(); last = g;
+    });
+    const up = e => { pts.delete(e.pointerId); last = pts.size ? gesture() : null; };
+    st.addEventListener('pointerup', up); st.addEventListener('pointercancel', up);
+    st.addEventListener('wheel', e => { e.preventDefault(); zoomAt(s * Math.exp(-e.deltaY / 400), e.clientX, e.clientY); }, { passive: false });
+    st.addEventListener('dblclick', e => zoomAt(s > min * 1.5 ? min : s * 2, e.clientX, e.clientY));
+    sl.oninput = () => { const r = st.getBoundingClientRect(); zoomAt(min * Math.pow(5, sl.value / 1000), r.left + r.width / 2, r.top + r.height / 2); };
+    const close = v => { window.removeEventListener('resize', layout); pg.remove(); resolve(v); };
+    pg.querySelector('#crNo').onclick = () => close(null);
+    pg.querySelector('#crOk').onclick = () => {
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      const sw = fw / s, sh = fh / s, sx = iw / 2 - tx / s - sw / 2, sy = ih / 2 - ty / s - sh / 2;
+      const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
+      close(c.toDataURL('image/jpeg', 0.88));
+    };
+    window.addEventListener('resize', layout);
+    requestAnimationFrame(layout);
+  });
+}
 // Profile picture: a centred square, 256 px (small, saved with the data and the encrypted backup)
 const CAM_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.3l1.4-2h5.6l1.4 2h1.3A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
 function avatarHTML() {
@@ -7866,18 +7944,6 @@ function avatarHTML() {
   if (p.name) return `<span class="ava-ini">${esc(p.name.trim().slice(0, 1).toUpperCase())}</span>`;
   return '<svg viewBox="0 0 24 24" aria-hidden="true" class="ava-none"><circle cx="12" cy="9" r="4" fill="currentColor"/><path d="M4 20.5c1.4-3.6 4.4-5.5 8-5.5s6.6 1.9 8 5.5" fill="currentColor"/></svg>';
 }
-function squareImage(file, size = 256) {
-  return new Promise((res, rej) => {
-    const img = new Image(), url = URL.createObjectURL(file);
-    img.onload = () => {
-      const s = Math.min(img.width, img.height), c = document.createElement('canvas'); c.width = c.height = size;
-      c.getContext('2d').drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, size, size);
-      URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg', 0.85));
-    };
-    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error(T('Could not open this image.'))); };
-    img.src = url;
-  });
-}
 function openAvatarSheet() {
   const p = db.profile; if (!p) return;
   sheet(`<div style="text-align:center"><div class="avatar huge">${avatarHTML()}</div><h3 style="margin:14px 0 4px">${T('Profile picture')}</h3>
@@ -7885,12 +7951,10 @@ function openAvatarSheet() {
     <button class="btn" id="avPick" style="margin-top:16px">${T('Choose a photo')}</button>
     ${p.avatar ? `<button class="btn outline" id="avDel" style="margin-top:10px">${T('Remove photo')}</button>` : ''}`, s => {
     s.querySelector('#avPick').onclick = () => {
-      const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
-      inp.onchange = async () => {
-        const f = inp.files && inp.files[0]; if (!f) return;
-        try { p.avatar = await squareImage(f); save(); closeSheet(); toast('✓ ' + T('Saved')); refreshAvatar(); } catch (e) { toast(e.message); }
-      };
-      inp.click();
+      pickImage(async f => {
+        const u = await cropImage(f, { w: 256, h: 256, round: true }); if (!u) return;
+        p.avatar = u; save(); closeSheet(); toast('✓ ' + T('Saved')); refreshAvatar();
+      });
     };
     if (s.querySelector('#avDel')) s.querySelector('#avDel').onclick = () => { delete p.avatar; save(); closeSheet(); refreshAvatar(); };
   });

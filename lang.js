@@ -1675,7 +1675,10 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"Im Ziel (bis 100 kcal darüber)",
 "vs. week before":"ggü. Vorwoche",
 "Save image":"Bild speichern",
-"Share":"Teilen"
+"Share":"Teilen",
+"Move and scale":"Bewegen und skalieren",
+"Use photo":"Foto verwenden",
+"Zoom":"Zoom"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3352,7 +3355,10 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"Dentro de tu objetivo (hasta 100 kcal más)",
 "vs. week before":"vs. semana anterior",
 "Save image":"Guardar imagen",
-"Share":"Compartir"
+"Share":"Compartir",
+"Move and scale":"Mover y escalar",
+"Use photo":"Usar foto",
+"Zoom":"Zoom"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5029,7 +5035,10 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"Dans ton objectif (jusqu'à 100 kcal de plus)",
 "vs. week before":"vs semaine précédente",
 "Save image":"Enregistrer l'image",
-"Share":"Partager"
+"Share":"Partager",
+"Move and scale":"Déplacer et redimensionner",
+"Use photo":"Utiliser la photo",
+"Zoom":"Zoom"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6706,7 +6715,10 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"Nel tuo obiettivo (fino a 100 kcal in più)",
 "vs. week before":"vs settimana prima",
 "Save image":"Salva immagine",
-"Share":"Condividi"
+"Share":"Condividi",
+"Move and scale":"Sposta e ridimensiona",
+"Use photo":"Usa foto",
+"Zoom":"Zoom"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8383,7 +8395,10 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"目標内（100 kcal超過まで）",
 "vs. week before":"前週比",
 "Save image":"画像を保存",
-"Share":"共有"
+"Share":"共有",
+"Move and scale":"移動と拡大縮小",
+"Use photo":"写真を使用",
+"Zoom":"ズーム"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10060,7 +10075,10 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"Binnen je doel (tot 100 kcal erboven)",
 "vs. week before":"t.o.v. week ervoor",
 "Save image":"Afbeelding opslaan",
-"Share":"Delen"
+"Share":"Delen",
+"Move and scale":"Verplaats en schaal",
+"Use photo":"Foto gebruiken",
+"Zoom":"Zoom"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -11737,7 +11755,10 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"W ramach celu (do 100 kcal ponad)",
 "vs. week before":"vs poprzedni tydzień",
 "Save image":"Zapisz obraz",
-"Share":"Udostępnij"
+"Share":"Udostępnij",
+"Move and scale":"Przesuń i skaluj",
+"Use photo":"Użyj zdjęcia",
+"Zoom":"Powiększenie"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -13414,7 +13435,10 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"Dentro da meta (até 100 kcal acima)",
 "vs. week before":"vs. semana anterior",
 "Save image":"Salvar imagem",
-"Share":"Compartilhar"
+"Share":"Compartilhar",
+"Move and scale":"Mover e redimensionar",
+"Use photo":"Usar foto",
+"Zoom":"Zoom"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -15091,7 +15115,10 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"В пределах цели (до +100 ккал)",
 "vs. week before":"к прошлой неделе",
 "Save image":"Сохранить изображение",
-"Share":"Поделиться"
+"Share":"Поделиться",
+"Move and scale":"Переместить и масштабировать",
+"Use photo":"Использовать фото",
+"Zoom":"Масштаб"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -16768,7 +16795,10 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"Hedef içinde (100 kcal üstüne kadar)",
 "vs. week before":"önceki haftaya göre",
 "Save image":"Görseli kaydet",
-"Share":"Paylaş"
+"Share":"Paylaş",
+"Move and scale":"Taşı ve ölçekle",
+"Use photo":"Fotoğrafı kullan",
+"Zoom":"Yakınlaştır"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -18445,7 +18475,10 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"在目标内（最多超出 100 千卡）",
 "vs. week before":"较前一周",
 "Save image":"保存图片",
-"Share":"分享"
+"Share":"分享",
+"Move and scale":"移动和缩放",
+"Use photo":"使用照片",
+"Zoom":"缩放"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -19841,7 +19874,10 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"목표 이내 (100 kcal 초과까지)",
 "vs. week before":"지난주 대비",
 "Save image":"이미지 저장",
-"Share":"공유"
+"Share":"공유",
+"Move and scale":"이동 및 크기 조절",
+"Use photo":"사진 사용",
+"Zoom":"확대/축소"
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -21237,7 +21273,10 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"लक्ष्य के भीतर (100 kcal ज़्यादा तक)",
 "vs. week before":"पिछले हफ़्ते से",
 "Save image":"इमेज सेव करें",
-"Share":"शेयर करें"
+"Share":"शेयर करें",
+"Move and scale":"खिसकाएँ और आकार बदलें",
+"Use photo":"फ़ोटो इस्तेमाल करें",
+"Zoom":"ज़ूम"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -22633,7 +22672,10 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"Dalam target (hingga 100 kcal di atas)",
 "vs. week before":"vs. minggu sebelumnya",
 "Save image":"Simpan gambar",
-"Share":"Bagikan"
+"Share":"Bagikan",
+"Move and scale":"Geser dan ubah ukuran",
+"Use photo":"Pakai foto",
+"Zoom":"Zoom"
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -24029,6 +24071,9 @@ window.I18N = {
 "Within your goal (up to 100 kcal over)":"ضمن هدفك (حتى 100 سعرة زيادة)",
 "vs. week before":"مقارنة بالأسبوع السابق",
 "Save image":"حفظ الصورة",
-"Share":"مشاركة"
+"Share":"مشاركة",
+"Move and scale":"تحريك وتغيير الحجم",
+"Use photo":"استخدام الصورة",
+"Zoom":"تكبير"
 }
 };
