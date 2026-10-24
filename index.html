@@ -115,7 +115,7 @@ html[data-bg] body::after{content:'';position:fixed;left:0;right:0;top:100%;heig
 :root[data-bg] #chatScreen{background:transparent}
 :root[data-bg] .chatbar,:root[data-bg] .dfoot{background:transparent}
 :root[data-bg] .sheet,:root[data-bg] .sheethead,:root[data-bg] .celcard,:root[data-bg] .ttip,:root[data-bg] .pmenu{background:var(--solid)}
-:root[data-bg] .seg button.on{background:var(--solid)}
+:root[data-bg] .seg button.on{background:var(--ink)}
 .bgrow{display:flex;align-items:center;gap:12px;width:100%;margin-top:14px;padding:10px 12px 10px 10px;border-radius:16px;background:var(--chip);text-align:left}
 .bgthumb{width:34px;height:44px;border-radius:9px;flex:none;box-shadow:inset 0 0 0 1px var(--line)}
 .bggrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
@@ -709,7 +709,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .stats3 b{display:block;font-size:20px}
 .seg{display:flex;gap:6px;background:var(--chip);border-radius:14px;padding:4px;margin-top:10px}
 .seg button{flex:1;padding:9px 6px;border-radius:10px;font-size:14px;font-weight:600;color:var(--muted)}
-.seg button.on{background:var(--card);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.seg button{transition:background .2s,color .2s}
+.seg button.on{background:var(--ink);color:var(--on-ink);font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.18)}
 
 /* Chat */
 body.chatting{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
@@ -1247,7 +1248,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v217';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v218';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
