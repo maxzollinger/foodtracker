@@ -1215,6 +1215,22 @@ const getKey = () => LS.get('ft_key', '');
 /* Sharing with friends & family: a small free server (Cloudflare Worker, see server/worker.js) holds the
    owner's Google AI key, so everyone gets AI without setup. It also keeps each phone's notification address. */
 const SERVER_URL = 'https://foodtracker.max-zollinger.workers.dev';   // e.g. https://foodtracker.<name>.workers.dev  (empty = everyone needs their own key)
+// Crash reports: when something breaks on a phone, only the error text, the screen and the app version go to the
+// server (quoted parts are cut out, so no food names or other personal text), at most 5 per visit. The owner sees
+// them in Settings → Users. Network hiccups are not errors.
+let errSent = 0; const errSeen = new Set();
+function reportError(m, where) {
+  try {
+    if (!SERVER_URL || errSent >= 5) return;
+    m = String(m || '').replace(/(["'`«“]).*?(\1|»|”)/g, '"…"').slice(0, 200); where = String(where || '').slice(0, 120);
+    if (!m || errSeen.has(m + where) || /^Script error|ResizeObserver|Failed to fetch|Load failed|NetworkError|AbortError|aborted|cancel/i.test(m)) return;
+    errSeen.add(m + where); errSent++;
+    fetch(SERVER_URL + '/err', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ v: APP_VERSION, m, s: where, w: (() => { try { return String(tab); } catch { return ''; } })() }) }).catch(() => {});
+  } catch {}
+}
+window.addEventListener('error', e => reportError(e.message, (e.filename || '').split('/').pop() + ':' + e.lineno + ':' + e.colno));
+window.addEventListener('unhandledrejection', e => { const r = e.reason; reportError(r && r.message || r, r && r.stack ? String(r.stack).split('\n').find(l => /\d+:\d+/.test(l)) || '' : ''); });
 const SHARED = 'shared';
 const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // The owner's phone is the "admin" app (AI keys, Claude, technical settings). Friends get the simple app.
@@ -1222,7 +1238,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v212';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v213';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -4498,6 +4514,10 @@ async function loadUsersNow() {
         <div class="list" style="box-shadow:none;background:var(--chip);margin-top:8px">${st.perUser.map(u => `<div class="li" style="align-items:flex-start"><span class="grow" style="min-width:0">
           <b style="overflow-wrap:anywhere;font-size:14px">${u.who ? esc(u.who) : u.acct ? '👤 ' + T('Account') : '📱 ' + T('Phone without account')}</b><br>
           <span class="small muted">${T('{n} today', { n: u.today })} · ${T('{n} in 7 days', { n: u.week })}</span></span></div>`).join('')}</div></details>` : ''}
+      ${(st.errors || []).length ? `<details style="margin-top:12px;text-align:left"><summary class="small" style="font-weight:700;cursor:pointer;color:var(--bad)">⚠️ ${T('App errors')} (${st.errors.length})</summary>
+        <div class="list" style="box-shadow:none;background:var(--chip);margin-top:8px">${st.errors.map(e => `<div class="li" style="align-items:flex-start"><span class="grow small" style="min-width:0;overflow-wrap:anywhere">
+          <b>${esc(e.m)}</b><br><span class="muted">${esc(String(e.v).replace('foodtracker-', ''))} · ${esc(e.w || '–')} · ${esc(e.s || '')} · ${e.n}× · ${fmtDate(iso(new Date(e.l)), { day: 'numeric', month: 'short' })}</span></span></div>`).join('')}</div></details>`
+      : st.errors ? `<p class="small" style="margin:12px 0 0;text-align:left;color:var(--good);font-weight:600">✓ ${T('No app errors in the last 14 days.')}</p>` : ''}
       <p class="small muted" id="usWhen" style="margin:12px 0 0;text-align:center">${T('Updated {t} · refreshes by itself every minute', { t: new Date().toLocaleTimeString(LOC, { hour: '2-digit', minute: '2-digit', second: '2-digit' }) })}</p>`;
     box.animate([{ opacity: .35 }, { opacity: 1 }], { duration: 350, easing: 'ease-out' });   // you can see that it refreshed
     if ($('#usAcc')) $('#usAcc').onclick = openAccountsList;
@@ -4749,7 +4769,7 @@ function openPrivacy() {
     ${sec('👥', T('Groups'), T('If you join a group, its members see your name, small profile picture, logging streak and how many days you logged this week, plus your messages. Messages stay on the Food Tracker server for 60 days. Your meals and weight are never shared. Leaving a group removes you from it.'))}
     ${sec('📍', T('Supermarkets near you'), T('Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.'))}
     ${sec('🔗', T('Extra tools'), T('Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.'))}
-    ${sec('📊', T('Usage count'), T('To know how many people use Food Tracker, the app sends a random number, the first and last day it was used and how many AI requests it made. With an account, this is stored together with your account. It never contains your food or photos.'))}
+    ${sec('📊', T('Usage count'), T('To know how many people use Food Tracker, the app sends a random number, the first and last day it was used and how many AI requests it made. With an account, this is stored together with your account. It never contains your food or photos.') + ' ' + T('If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.'))}
     ${sec('🍪', T('Cookies'), T('Food Tracker uses no cookies and no tracking. It only stores on your phone what it needs to work, like your settings, so no cookie banner is needed.'))}
     ${sec('🌍', T('Where data is stored'), T('The app and the server run on Cloudflare, AI answers come from Google. Their computers can be outside Switzerland and the EU.') + ' ' + T('For security, Cloudflare keeps technical request logs (like your IP address) for a few days.'))}
     ${sec('✋', T('Your rights'), T('You can get a copy of your data any time (Settings → Backup data), delete it (Settings → Delete all data) and ask what is stored about you.'))}
