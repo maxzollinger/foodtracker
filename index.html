@@ -53,7 +53,7 @@
   color-scheme:light;
   --bg:#f7f7f9;--card:#fff;--text:#111113;--muted:#636368;--line:#ececf0;--track:#efeff3;
   --ink:#111113;--on-ink:#fff;--chip:#f2f2f5;
-  --protein:#e3605b;--carbs:#ef9f45;--fat:#4b8cf5;--flame:#ff9500;--good:#34c759;--bad:#ff3b30;--water:#3aa0ff;
+  --protein:#e3605b;--carbs:#ef9f45;--fat:#4b8cf5;--flame:#ff9500;--good:#34c759;--warn:#f5b83d;--bad:#ff3b30;--water:#3aa0ff;
   --shadow:0 2px 14px rgba(0,0,0,.05);
 }
 :root[data-theme="dark"]{
@@ -177,8 +177,12 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 .day .dl{font-size:12px;color:var(--muted);font-weight:600}
 .day .dn{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;
   border:2px dashed var(--line)}
-.day .dn.logged{border:2px solid var(--text)}
+.day .dn.ok{border:2px solid var(--good)}
+.day .dn.warn{border:2px solid var(--warn)}
 .day .dn.over{border:2px solid var(--bad)}
+.rhelp{display:grid;gap:14px;margin-top:16px}.rhelp>div{display:flex;align-items:center;gap:14px}
+.rhelp .ring{flex:none}.rhelp .dashring{width:40px;height:40px;border-radius:50%;border:3px dashed var(--muted);flex:none}
+.mhelp{width:22px;height:22px;border-radius:50%;background:var(--chip);font-weight:800;font-size:12px;color:var(--muted)}
 .ico{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em;flex:none}
 /* Icons that stand in for emojis keep a quiet accent colour where the colour means something */
 .e-flame,.e-zap{color:var(--flame)}.e-drop,.e-waves{color:var(--water)}.e-protein{color:var(--protein)}.e-wheat{color:var(--carbs)}.e-avocado{color:var(--fat)}
@@ -679,6 +683,7 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .nbars .col{flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:6px}
 .nbars .stack{width:100%;max-width:26px;display:flex;flex-direction:column-reverse;border-radius:7px;overflow:hidden;background:var(--track);min-height:4px}
 .nbars .col span{font-size:11px;color:var(--muted);font-weight:600}
+.pills [data-w]{font-size:12px;padding-inline:4px}
 .nbars .goal{position:absolute;left:0;right:0;border-top:1.5px dashed var(--muted);opacity:.6}
 .chart{width:100%;height:auto;display:block}
 
@@ -913,6 +918,7 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .bd-ph{flex:none;width:72px;text-align:center}
 .bd-ph img,.bd-ph .ph-miss{width:72px;height:96px;object-fit:cover;border-radius:14px;display:flex;align-items:center;justify-content:center;background:var(--chip);font-size:24px}
 .bd-ph>span:last-child{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:4px}
+.pp-empty{text-align:center;padding:6px 0 2px}.pp-empty p{margin:6px 0 12px}.pp-empty .btn{margin:0 auto;display:flex;justify-content:center;width:auto;padding-inline:22px}.pp-art{width:120px;height:90px}
 .bd-pick{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:150px;height:200px;margin:4px auto 0;border-radius:18px;background:var(--chip);overflow:hidden;font-weight:600;color:var(--muted);font-size:14px}
 .bd-pick img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .bd-pick-x{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:700;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
@@ -1197,7 +1203,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v202';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v203';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1998,7 +2004,7 @@ function renderHome() {
   const dow = (new Date().getDay() + 6) % 7, mon = addDays(today, -dow + weekOff * 7);
   const days = [...Array(7)].map((_, i) => addDays(mon, i));
   const week = days.map(d => {
-    const dtot = dayTotals(d), cls = dtot.count ? (dtot.kcal > dayGoals(d).kcal * 1.1 ? 'over' : 'logged') : '';
+    const cls = ringTier(d);
     return `<button class="day ${d === sel ? 'sel' : ''} ${d > today ? 'future' : ''}" data-d="${d}">
       <span class="dl">${LANG === 'ar' ? dt(d).toLocaleDateString(LOC, { weekday: 'narrow' }) : dt(d).toLocaleDateString(LOC, { weekday: 'short' }).replace('.', '').slice(0, 3)}</span><span class="dn ${cls}">${dt(d).getDate()}</span></button>`;
   }).join('');
@@ -2082,6 +2088,20 @@ function renderHome() {
   hydratePhotos($('#view'));
 }
 
+// Ring colour for a day, like Cal AI: green up to 100 kcal over the goal, yellow 100-200 over, red more; '' = nothing logged
+const TIER_COL = { ok: 'var(--good)', warn: 'var(--warn)', over: 'var(--bad)' };
+function ringTier(d) {
+  const tot = dayTotals(d); if (!tot.count) return '';
+  const o = tot.kcal - dayGoals(d).kcal;
+  return o <= 100 ? 'ok' : o <= 200 ? 'warn' : 'over';
+}
+function openRingHelp() {
+  const row = (col, pct, txt) => `<div>${ring(40, 4, pct, col)}<span>${txt}</span></div>`;
+  sheet(`<h3>${T('Ring colors explained')}</h3><p class="muted" style="margin-top:4px">${T('The ring fills up as you eat.')}</p>
+    <div class="rhelp">${row(TIER_COL.ok, .8, T('Within your goal (up to 100 kcal over)'))}${row(TIER_COL.warn, 1, T('100–200 kcal over your goal'))}${row(TIER_COL.over, 1, T('More than 200 kcal over'))}
+    <div><i class="dashring"></i><span>${T('Nothing logged that day')}</span></div></div>
+    <button class="btn" style="margin-top:20px" onclick="closeSheet()">${T('Got it')}</button>`);
+}
 // Month view: every day as a small ring (calories eaten against that day's goal). Tap a day to open it on Home.
 function openMonth(ym) {
   const today = iso(), [y, m] = ym.split('-').map(Number), first = `${ym}-01`, n = new Date(y, m, 0).getDate();
@@ -2091,8 +2111,8 @@ function openMonth(ym) {
   let logged = 0, onGoal = 0;
   const cells = [...Array(lead)].map(() => '<span></span>').concat([...Array(n)].map((_, i) => {
     const d = `${ym}-${String(i + 1).padStart(2, '0')}`, tot = dayTotals(d), g = dayGoals(d).kcal, fut = d > today;
-    if (tot.count) { logged++; if (tot.kcal <= g * 1.1) onGoal++; }
-    const over = tot.count && tot.kcal > g * 1.1, col = over ? 'var(--bad)' : 'var(--ink)';
+    const tier = ringTier(d), col = TIER_COL[tier] || 'var(--ink)';
+    if (tot.count) { logged++; if (tier === 'ok') onGoal++; }
     return `<button class="mday ${d === sel ? 'sel' : ''} ${d === today ? 'today' : ''} ${fut ? 'future' : ''} ${tot.count ? '' : 'nolog'}" data-md="${d}" ${fut ? 'disabled' : ''}>
       ${ring(36, 3.5, tot.count ? tot.kcal / g : 0, col, `<span>${i + 1}</span>`)}</button>`;
   })).join('');
@@ -2101,9 +2121,10 @@ function openMonth(ym) {
       <button class="nav mnav" id="mNext" aria-label="›" ${ym >= curYM ? 'style="visibility:hidden"' : ''}>›</button></div>
     <div class="mgrid mhead">${wd.map(x => `<span>${x}</span>`).join('')}</div>
     <div class="mgrid">${cells}</div>
-    <div class="mlegend small muted"><span><i style="border-color:var(--ink)"></i>${T('Within goal')}</span><span><i style="border-color:var(--bad)"></i>${T('Over goal')}</span><span><i class="dash"></i>${T('Nothing logged')}</span></div>
+    <div class="mlegend small muted"><span><i style="border-color:var(--good)"></i>${T('Within goal')}</span><span><i style="border-color:var(--warn)"></i>+100</span><span><i style="border-color:var(--bad)"></i>+200</span><span><i class="dash"></i>${T('Nothing logged')}</span><button class="mhelp" id="mHelp" aria-label="${T('Ring colors explained')}">?</button></div>
     <p class="small" style="text-align:center;margin:10px 0 0"><b>${T('{n} days logged', { n: logged })}</b> <span class="muted">· ${T('{n} within goal', { n: onGoal })}</span></p>`, s => {
     s.querySelector('#mPrev').onclick = () => openMonth(prevYM);
+    s.querySelector('#mHelp').onclick = openRingHelp;
     s.querySelector('#mNext').onclick = () => openMonth(nextYM);
     s.querySelectorAll('[data-md]').forEach(b => b.onclick = () => {
       sel = b.dataset.md;
@@ -5882,7 +5903,9 @@ function renderProgress() {
   // Nutrition week
   const nMon = addDays(mon, nutWeek * 7), nDays = [...Array(7)].map((_, i) => addDays(nMon, i)), nTot = nDays.map(dayTotals);
   const maxK = Math.max(t.kcal * 1.2, ...nTot.map(x => x.kcal)), H = 120;
-  const logged = nTot.filter(x => x.count), avg = logged.length ? r0(logged.reduce((a, x) => a + x.kcal, 0) / logged.length) : 0;
+  const wkAvg = tots => { const l = tots.filter(x => x.count); return l.length ? r0(l.reduce((a, x) => a + x.kcal, 0) / l.length) : 0; };
+  const avg = wkAvg(nTot), pAvg = wkAvg([...Array(7)].map((_, i) => dayTotals(addDays(nMon, i - 7))));
+  const chg = avg && pAvg ? Math.round((avg - pAvg) / pAvg * 100) : null;
   const bars = nTot.map((x, i) => `<div class="col"><div class="stack" style="height:${Math.max(4, x.kcal / maxK * H)}px">
       ${x.kcal ? `<i style="height:${x.protein * 4 / x.kcal * 100}%;background:var(--protein)"></i><i style="height:${x.carbs * 4 / x.kcal * 100}%;background:var(--carbs)"></i><i style="height:${x.fat * 9 / x.kcal * 100}%;background:var(--fat)"></i>` : ''}
     </div><span>${dt(nDays[i]).toLocaleDateString(LOC, { weekday: 'narrow' })}</span></div>`).join('');
@@ -5909,10 +5932,12 @@ function renderProgress() {
       ${expectedText(p, gpr ? gpr.cur : cur)}
     </div>
     ${bodyCard()}
+    ${photoCard()}
     ${habitProgCard()}
-    <div class="card"><div class="spread"><b style="font-size:17px">${T('Nutrition')}</b>
-      <div class="pills" style="width:200px"><button data-w="0" class="${nutWeek === 0 ? 'on' : ''}">${T('This week')}</button><button data-w="-1" class="${nutWeek === -1 ? 'on' : ''}">${T('Last week')}</button></div></div>
-      <div style="margin-top:12px"><span style="font-size:26px;font-weight:800">${avg}</span> <span class="muted small">${T('avg. calories / day')}</span></div>
+    <div class="card"><b style="font-size:17px">${T('Nutrition')}</b>
+      <div class="pills" style="margin-top:10px">${[[0, N('This week')], [-1, N('Last week')], [-2, N('2 wks ago')], [-3, N('3 wks ago')]].map(([v, l]) => `<button data-w="${v}" class="${nutWeek === v ? 'on' : ''}">${T(l)}</button>`).join('')}</div>
+      <div style="margin-top:12px"><span style="font-size:26px;font-weight:800">${avg}</span> <span class="muted small">${T('avg. calories / day')}</span>
+        ${chg !== null ? `<span class="small" style="font-weight:700;margin-inline-start:6px;color:var(--muted)">${chg > 0 ? '↑' : chg < 0 ? '↓' : '±'} ${Math.abs(chg)}% <span style="font-weight:400">${T('vs. week before')}</span></span>` : ''}</div>
       <div class="nbars"><div class="goal" style="bottom:${t.kcal / maxK * H + 22}px"></div>${bars}</div>
       <div class="legend" style="margin-top:12px"><span style="--c:var(--protein)">${T('Protein')}</span><span style="--c:var(--carbs)">${T('Carbs')}</span><span style="--c:var(--fat)">${T('Fats')}</span><span class="muted">- - ${T('goal')} ${t.kcal}</span></div></div>
     ${p ? `<div class="card"><div class="spread"><b style="font-size:17px">${T('Your BMI')}</b><span class="etime" style="color:${bcat[1]};font-weight:700">${T(bcat[0])}</span></div>
@@ -5925,7 +5950,7 @@ function renderProgress() {
   $('#logW').onclick = openWeightSheet;
   bindBodyCard(); hydratePhotos($('#view'));
   document.querySelectorAll('[data-r]').forEach(b => b.onclick = () => { progRange = +b.dataset.r; renderProgress(); });
-  document.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { nutWeek = +b.dataset.w; renderProgress(); });
+  document.querySelectorAll('[data-w]').forEach(b => b.onclick = () => { nutWeek = +b.dataset.w; const y = $('#scroller').scrollTop; renderProgress(); $('#scroller').scrollTop = y; });
 }
 function expectedText(p, cur) {
   if (!p || !cur) return '';
@@ -5975,14 +6000,44 @@ function bodyCard() {
   return `<div class="card" id="bodyCard"><div class="spread"><b style="font-size:17px">📏 ${T('Body')}</b><button class="chipbtn" id="bdAdd">＋ ${T('Add')}</button></div>
     ${measured.length ? `<div class="bd-grid">${tiles}</div>${measured.length > 1 ? `<p class="small muted" style="margin:8px 0 0">${T('Change since {d}', { d: fmtDate(measured[0].date, { day: 'numeric', month: 'short' }) })}</p>` : ''}`
       : `<p class="small muted" style="margin:8px 0 0;line-height:1.45">${T('Measure your waist, hips and arms every 1–2 weeks and take a progress photo. When you build muscle, they show progress the scale can not.')}</p>`}
-    ${photos.length ? `<div class="bd-photos">${photos.slice(-12).reverse().map(e => `<button class="bd-ph" data-bph="${e.date}"><img data-photo="${e.photo}" data-ph="📷" alt=""><span>${fmtDate(e.date, { day: 'numeric', month: 'short' })}</span></button>`).join('')}</div>` : ''}
-    ${photos.length >= 2 ? `<button class="btn sm outline" id="bdCmp" style="width:100%;margin-top:12px">↔️ ${T('Compare before & after')}</button>` : ''}
-    <div class="spread" style="margin-top:10px"><span class="small muted">🔒 ${T('Photos stay private: only on your phone and in your encrypted backup.')}</span>${L.length ? `<button class="chipbtn" id="bdHist" style="flex:none">${T('History')}</button>` : ''}</div></div>`;
+    ${L.length ? `<div style="text-align:end;margin-top:10px"><button class="chipbtn" id="bdHist">${T('History')}</button></div>` : ''}</div>`;
+}
+const PHOTO_ART = `<svg class="pp-art" viewBox="0 0 120 90" aria-hidden="true"><rect x="8" y="12" width="46" height="66" rx="10" fill="var(--chip)" stroke="var(--line)" stroke-width="2" transform="rotate(-8 31 45)"/>
+  <rect x="62" y="10" width="48" height="70" rx="10" fill="var(--card)" stroke="var(--text)" stroke-width="2"/><circle cx="86" cy="32" r="8" fill="none" stroke="var(--text)" stroke-width="2"/>
+  <path d="M72 70c2-12 8-18 14-18s12 6 14 18" fill="none" stroke="var(--text)" stroke-width="2" stroke-linecap="round"/><circle cx="31" cy="36" r="6" fill="var(--line)" transform="rotate(-8 31 45)"/></svg>`;
+function photoCard() {
+  if (!db.profile) return '';
+  const photos = bodyList().filter(e => e.photo);
+  return `<div class="card" id="photoCard"><div class="spread"><b style="font-size:17px">${T('Progress photos')}</b>${photos.length ? `<button class="chipbtn" id="ppAdd">＋ ${T('Upload photo')}</button>` : ''}</div>
+    ${photos.length ? `<div class="bd-photos">${photos.slice(-12).reverse().map(e => `<button class="bd-ph" data-bph="${e.date}"><img data-photo="${e.photo}" data-ph="📷" alt=""><span>${fmtDate(e.date, { day: 'numeric', month: 'short' })}</span></button>`).join('')}</div>
+      ${photos.length >= 2 ? `<button class="btn sm outline" id="bdCmp" style="width:100%;margin-top:12px">↔️ ${T('Compare before & after')}</button>` : ''}`
+    : `<div class="pp-empty">${PHOTO_ART}<p class="small muted">${T('See how your body changes, not just the scale.')}</p><button class="btn sm outline" id="ppAdd">＋ ${T('Upload photo')}</button></div>`}
+    <p class="small muted" style="margin:10px 0 0">🔒 ${T('Photos stay private: only on your phone and in your encrypted backup.')}</p></div>`;
+}
+// Pick a photo and save it as today's progress photo (keeps today's measurements)
+function addProgressPhoto() {
+  const inp = Object.assign(document.createElement('input'), { type: 'file', accept: 'image/*', className: 'hiddenfile' });
+  document.body.appendChild(inp);
+  inp.onchange = async () => { const f = inp.files && inp.files[0]; inp.remove(); if (!f) return;
+    try {
+      const data = await scaleImage(f, 1400, 0.85), date = iso();
+      const e = (db.body = db.body || []).find(x => x.date === date);
+      if (e && e.photo && !confirm(T('Replace today\'s photo?'))) return;
+      const id = 'pp-' + date + '-' + Math.random().toString(36).slice(2, 7);
+      await idb.set(id, data); photoCache[id] = data;
+      if (e && e.photo) { idb.del(e.photo); delete photoCache[e.photo]; }
+      if (e) e.photo = id; else db.body.push({ date, photo: id });
+      save(); toast('✓ ' + T('Saved')); if (tab === 'progress') renderProgress();
+      if (acct()) setTimeout(() => photoSync(true), 1500);
+    } catch (err) { toast(err.message); }
+  };
+  inp.click();
 }
 function bindBodyCard() {
   if ($('#bdAdd')) $('#bdAdd').onclick = () => openBodySheet();
   if ($('#bdCmp')) $('#bdCmp').onclick = () => openBodyCompare();
   if ($('#bdHist')) $('#bdHist').onclick = openBodyHistory;
+  if ($('#ppAdd')) $('#ppAdd').onclick = addProgressPhoto;
   document.querySelectorAll('[data-bph]').forEach(b => b.onclick = () => openBodySheet(b.dataset.bph));
 }
 function openBodySheet(date = iso()) {
@@ -6369,7 +6424,7 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Groups, Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
-- Home: the profile picture top right (tap: Settings), the month name above the week strip (tap it for the month view: every day as a small ring, white within the goal, red over it, dashed when nothing was logged; tap a day to open it), the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped; in Preferences an optional weekly food budget with currency; the grocery list shows AI price estimates per item and an estimated total against the budget, and "Supermarkets near you": with their OK it uses their location once (not saved) to show the shops within about 3 km on a map (OpenStreetMap), sorted by how well each suits them (1-10, AI estimate from budget, diet and the list), with price level, estimated cost of the list there and a Route button to Google Maps). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). The first time they tap Scan food or Barcode a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. Ingredients of a meal show as tiles with a kitchen measure next to the grams (e.g. "½ medium · 60 g", "2 tbsp · 20 g"; with the kg setting European measures like tbsp, tsp, glass, slice, handful, never cups; with the lb setting US measures like cup, tbsp, tsp, oz); tap a tile to change it with − / + (½ → ¾) or to type exact grams. The meal plan shows each meal's ingredients per person with these measures (tap "Ingredients"), and the grocery list shows next to the total amount what to take from the shelf (e.g. "1 pack of 500 g"). For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. "Earn your treat" (Home, only when today is over the calorie goal; adults only, not in pregnancy or on fast days; can be turned off in Settings → Preferences): a card offers a brisk walk, cycling or jogging with the minutes that make up for the extra calories (calculated from their weight); after picking one it fills up by itself with a watch, or they tap Done. Above 400 kcal over it doesn't suggest sport, just "back on track tomorrow". Food is never blocked. When they ate a treat and are over, you may mention this gently, never as punishment. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
+- Home: the profile picture top right (tap: Settings), the month name above the week strip (tap it for the month view: every day as a small ring, green within the goal or up to 100 kcal over, yellow 100-200 kcal over, red more than 200 over, dashed when nothing was logged; the ? there and Settings → Support → Ring colors explained show this; tap a day to open it), the week strip (its day circles use the same colours) (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped; in Preferences an optional weekly food budget with currency; the grocery list shows AI price estimates per item and an estimated total against the budget, and "Supermarkets near you": with their OK it uses their location once (not saved) to show the shops within about 3 km on a map (OpenStreetMap), sorted by how well each suits them (1-10, AI estimate from budget, diet and the list), with price level, estimated cost of the list there and a Route button to Google Maps). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). The first time they tap Scan food or Barcode a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. Ingredients of a meal show as tiles with a kitchen measure next to the grams (e.g. "½ medium · 60 g", "2 tbsp · 20 g"; with the kg setting European measures like tbsp, tsp, glass, slice, handful, never cups; with the lb setting US measures like cup, tbsp, tsp, oz); tap a tile to change it with − / + (½ → ¾) or to type exact grams. The meal plan shows each meal's ingredients per person with these measures (tap "Ingredients"), and the grocery list shows next to the total amount what to take from the shelf (e.g. "1 pack of 500 g"). For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. "Earn your treat" (Home, only when today is over the calorie goal; adults only, not in pregnancy or on fast days; can be turned off in Settings → Preferences): a card offers a brisk walk, cycling or jogging with the minutes that make up for the extra calories (calculated from their weight); after picking one it fills up by itself with a watch, or they tap Done. Above 400 kcal over it doesn't suggest sport, just "back on track tomorrow". Food is never blocked. When they ate a treat and are over, you may mention this gently, never as punishment. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros; if the Shortcut sends the same number on several days, 0 every evening or over 4000 kcal a day, Home shows a warning: in Find Health Samples only one date filter may stay, Start Date · is today) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (medals in 3 columns with their number and what they are for, silver until earned; tap one to see more). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Home shows a slim "Habits · Choose a habit" line (can be hidden with ✕; it's always on Progress), and the habit card once they chose one.
@@ -7198,6 +7253,7 @@ function renderSettings() {
       <p class="small" id="kMsg" style="margin:10px 0 0;text-align:center">${hasAI() ? '✓ ' + T('AI is on') : T('No key yet')}</p></div>` : ''}
     <div class="h2">${T('Support')}</div>
     <div class="list">
+      <button class="li" id="sRings"><span class="ic">${ic('target')}</span><span class="grow">${T('Ring colors explained')}</span><span class="chev">›</span></button>
       <button class="li" id="sFaq"><span class="ic">${ic('info')}</span><span class="grow">${T('FAQ')}</span><span class="chev">›</span></button>
       <button class="li" id="sIdea"><span class="ic">${ic('bulb')}</span><span class="grow">${T('Request a feature')}</span><span class="chev">›</span></button>
       <button class="li" id="sMail"><span class="ic">${ic('mail')}</span><span class="grow">${T('Contact support')}</span><span class="chev">›</span></button>
@@ -7235,6 +7291,7 @@ function renderSettings() {
   bindUsersCard();
   $('#sPriv').onclick = openPrivacy;
   $('#sFaq').onclick = openFaq;
+  $('#sRings').onclick = openRingHelp;
   $('#sIdea').onclick = () => mailOwner('Food Tracker: ' + T('Request a feature'));
   $('#sMail').onclick = () => mailOwner('Food Tracker: ' + T('Contact support'));
   if ($('#sPdf')) $('#sPdf').onclick = makeReport;
