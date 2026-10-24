@@ -1673,7 +1673,9 @@ window.I18N = {
 "See how your body changes, not just the scale.":"Sieh, wie sich dein Körper verändert, nicht nur die Waage.",
 "The ring fills up as you eat.":"Der Ring füllt sich, während du isst.",
 "Within your goal (up to 100 kcal over)":"Im Ziel (bis 100 kcal darüber)",
-"vs. week before":"ggü. Vorwoche"
+"vs. week before":"ggü. Vorwoche",
+"Save image":"Bild speichern",
+"Share":"Teilen"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3348,7 +3350,9 @@ window.I18N = {
 "See how your body changes, not just the scale.":"Mira cómo cambia tu cuerpo, no solo la báscula.",
 "The ring fills up as you eat.":"El anillo se llena a medida que comes.",
 "Within your goal (up to 100 kcal over)":"Dentro de tu objetivo (hasta 100 kcal más)",
-"vs. week before":"vs. semana anterior"
+"vs. week before":"vs. semana anterior",
+"Save image":"Guardar imagen",
+"Share":"Compartir"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5023,7 +5027,9 @@ window.I18N = {
 "See how your body changes, not just the scale.":"Vois comment ton corps change, pas seulement la balance.",
 "The ring fills up as you eat.":"L'anneau se remplit au fil de tes repas.",
 "Within your goal (up to 100 kcal over)":"Dans ton objectif (jusqu'à 100 kcal de plus)",
-"vs. week before":"vs semaine précédente"
+"vs. week before":"vs semaine précédente",
+"Save image":"Enregistrer l'image",
+"Share":"Partager"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6698,7 +6704,9 @@ window.I18N = {
 "See how your body changes, not just the scale.":"Guarda come cambia il tuo corpo, non solo la bilancia.",
 "The ring fills up as you eat.":"L'anello si riempie mentre mangi.",
 "Within your goal (up to 100 kcal over)":"Nel tuo obiettivo (fino a 100 kcal in più)",
-"vs. week before":"vs settimana prima"
+"vs. week before":"vs settimana prima",
+"Save image":"Salva immagine",
+"Share":"Condividi"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8373,7 +8381,9 @@ window.I18N = {
 "See how your body changes, not just the scale.":"体重計だけでなく、体の変化を見てみましょう。",
 "The ring fills up as you eat.":"食べるとリングが埋まっていきます。",
 "Within your goal (up to 100 kcal over)":"目標内（100 kcal超過まで）",
-"vs. week before":"前週比"
+"vs. week before":"前週比",
+"Save image":"画像を保存",
+"Share":"共有"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10048,7 +10058,9 @@ window.I18N = {
 "See how your body changes, not just the scale.":"Zie hoe je lichaam verandert, niet alleen de weegschaal.",
 "The ring fills up as you eat.":"De ring vult zich terwijl je eet.",
 "Within your goal (up to 100 kcal over)":"Binnen je doel (tot 100 kcal erboven)",
-"vs. week before":"t.o.v. week ervoor"
+"vs. week before":"t.o.v. week ervoor",
+"Save image":"Afbeelding opslaan",
+"Share":"Delen"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -11723,7 +11735,9 @@ window.I18N = {
 "See how your body changes, not just the scale.":"Zobacz, jak zmienia się Twoje ciało, nie tylko waga.",
 "The ring fills up as you eat.":"Pierścień wypełnia się, gdy jesz.",
 "Within your goal (up to 100 kcal over)":"W ramach celu (do 100 kcal ponad)",
-"vs. week before":"vs poprzedni tydzień"
+"vs. week before":"vs poprzedni tydzień",
+"Save image":"Zapisz obraz",
+"Share":"Udostępnij"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -13398,7 +13412,9 @@ window.I18N = {
 "See how your body changes, not just the scale.":"Veja como seu corpo muda, não só a balança.",
 "The ring fills up as you eat.":"O anel enche conforme você come.",
 "Within your goal (up to 100 kcal over)":"Dentro da meta (até 100 kcal acima)",
-"vs. week before":"vs. semana anterior"
+"vs. week before":"vs. semana anterior",
+"Save image":"Salvar imagem",
+"Share":"Compartilhar"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -15073,7 +15089,9 @@ window.I18N = {
 "See how your body changes, not just the scale.":"Смотри, как меняется тело, а не только вес.",
 "The ring fills up as you eat.":"Кольцо заполняется, когда ты ешь.",
 "Within your goal (up to 100 kcal over)":"В пределах цели (до +100 ккал)",
-"vs. week before":"к прошлой неделе"
+"vs. week before":"к прошлой неделе",
+"Save image":"Сохранить изображение",
+"Share":"Поделиться"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -16748,7 +16766,9 @@ window.I18N = {
 "See how your body changes, not just the scale.":"Sadece tartıyı değil, vücudunun değişimini gör.",
 "The ring fills up as you eat.":"Halka sen yedikçe dolar.",
 "Within your goal (up to 100 kcal over)":"Hedef içinde (100 kcal üstüne kadar)",
-"vs. week before":"önceki haftaya göre"
+"vs. week before":"önceki haftaya göre",
+"Save image":"Görseli kaydet",
+"Share":"Paylaş"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -18423,7 +18443,9 @@ window.I18N = {
 "See how your body changes, not just the scale.":"看看身体的变化，而不只是体重秤。",
 "The ring fills up as you eat.":"你吃东西时圆环会逐渐填满。",
 "Within your goal (up to 100 kcal over)":"在目标内（最多超出 100 千卡）",
-"vs. week before":"较前一周"
+"vs. week before":"较前一周",
+"Save image":"保存图片",
+"Share":"分享"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -19817,7 +19839,9 @@ window.I18N = {
 "See how your body changes, not just the scale.":"체중계만이 아니라 몸의 변화를 확인해요.",
 "The ring fills up as you eat.":"먹을수록 링이 채워져요.",
 "Within your goal (up to 100 kcal over)":"목표 이내 (100 kcal 초과까지)",
-"vs. week before":"지난주 대비"
+"vs. week before":"지난주 대비",
+"Save image":"이미지 저장",
+"Share":"공유"
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -21211,7 +21235,9 @@ window.I18N = {
 "See how your body changes, not just the scale.":"सिर्फ़ वज़न नहीं, देखिए आपका शरीर कैसे बदलता है।",
 "The ring fills up as you eat.":"आप जैसे-जैसे खाते हैं, रिंग भरती जाती है।",
 "Within your goal (up to 100 kcal over)":"लक्ष्य के भीतर (100 kcal ज़्यादा तक)",
-"vs. week before":"पिछले हफ़्ते से"
+"vs. week before":"पिछले हफ़्ते से",
+"Save image":"इमेज सेव करें",
+"Share":"शेयर करें"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -22605,7 +22631,9 @@ window.I18N = {
 "See how your body changes, not just the scale.":"Lihat perubahan tubuhmu, bukan cuma timbangan.",
 "The ring fills up as you eat.":"Cincin terisi saat kamu makan.",
 "Within your goal (up to 100 kcal over)":"Dalam target (hingga 100 kcal di atas)",
-"vs. week before":"vs. minggu sebelumnya"
+"vs. week before":"vs. minggu sebelumnya",
+"Save image":"Simpan gambar",
+"Share":"Bagikan"
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -23999,6 +24027,8 @@ window.I18N = {
 "See how your body changes, not just the scale.":"شاهد كيف يتغير جسمك، وليس الميزان فقط.",
 "The ring fills up as you eat.":"تمتلئ الحلقة كلما أكلت.",
 "Within your goal (up to 100 kcal over)":"ضمن هدفك (حتى 100 سعرة زيادة)",
-"vs. week before":"مقارنة بالأسبوع السابق"
+"vs. week before":"مقارنة بالأسبوع السابق",
+"Save image":"حفظ الصورة",
+"Share":"مشاركة"
 }
 };
