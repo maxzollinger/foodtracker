@@ -1265,7 +1265,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v223';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v224';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2189,8 +2189,8 @@ function ringTier(d) {
 function openRingHelp() {
   const row = (col, pct, txt) => `<div>${ring(40, 4, pct, col)}<span>${txt}</span></div>`;
   sheet(`<h3>${T('Ring colors explained')}</h3><p class="muted" style="margin-top:4px">${T('The ring fills up as you eat.')}</p>
-    <div class="rhelp">${row(TIER_COL.ok, .8, T('Within your goal (up to 100 kcal over)'))}${row(TIER_COL.warn, 1, T('100–200 kcal over your goal'))}${row(TIER_COL.over, 1, T('More than 200 kcal over'))}${row(TIER_COL.under, .6, T('Past day more than 25% under your goal: too little eaten, or not everything logged'))}
-    <div><i class="dashring"></i><span>${T('Nothing logged that day')}</span></div></div>
+    <div class="rhelp"><div><i class="dashring"></i><span>${T('Nothing logged that day')}</span></div>
+    ${row(TIER_COL.under, .6, T('Past day more than 25% under your goal: too little eaten, or not everything logged'))}${row(TIER_COL.ok, .8, T('Within your goal (up to 100 kcal over)'))}${row(TIER_COL.warn, 1, T('100–200 kcal over your goal'))}${row(TIER_COL.over, 1, T('More than 200 kcal over'))}</div>
     <button class="btn" style="margin-top:20px" onclick="closeSheet()">${T('Got it')}</button>`);
 }
 // Month view: every day as a small ring (calories eaten against that day's goal). Tap a day to open it on Home.
@@ -2212,7 +2212,7 @@ function openMonth(ym) {
       <button class="nav mnav" id="mNext" aria-label="›" ${ym >= curYM ? 'style="visibility:hidden"' : ''}>›</button></div>
     <div class="mgrid mhead">${wd.map(x => `<span>${x}</span>`).join('')}</div>
     <div class="mgrid">${cells}</div>
-    <div class="mlegend small muted"><span><i style="border-color:var(--good)"></i>${T('Within goal')}</span><span><i style="border-color:var(--warn)"></i>+100</span><span><i style="border-color:var(--bad)"></i>+200</span><span><i style="border-color:var(--water)"></i>−25%</span><span><i class="dash"></i>${T('Nothing logged')}</span><button class="mhelp" id="mHelp" aria-label="${T('Ring colors explained')}">?</button></div>
+    <div class="mlegend small muted"><span><i class="dash"></i>${T('Nothing logged')}</span><span><i style="border-color:var(--water)"></i>−25%</span><span><i style="border-color:var(--good)"></i>${T('Within goal')}</span><span><i style="border-color:var(--warn)"></i>+100</span><span><i style="border-color:var(--bad)"></i>+200</span><button class="mhelp" id="mHelp" aria-label="${T('Ring colors explained')}">?</button></div>
     <p class="small" style="text-align:center;margin:10px 0 0"><b>${T('{n} days logged', { n: logged })}</b> <span class="muted">· ${T('{n} within goal', { n: onGoal })}</span></p>`, s => {
     s.querySelector('#mPrev').onclick = () => openMonth(prevYM);
     s.querySelector('#mHelp').onclick = openRingHelp;
