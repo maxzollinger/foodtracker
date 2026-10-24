@@ -224,13 +224,13 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 .gbar textarea{flex:1;resize:none;min-height:42px;max-height:110px;border-radius:21px;padding:10px 14px;font-size:16px;background:var(--card);box-shadow:var(--shadow)}
 .gbar .send{width:42px;height:42px;flex:none;border-radius:50%;background:var(--ink);background-image:var(--btnimg);color:var(--on-ink);font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center}
 .chathead .memchip{padding:7px 11px;font-size:14px;gap:5px}.chathead .brand{font-size:22px;white-space:nowrap}
-@media (max-width:360px){.chathead .chip-t{display:none}}
-.chathead .top.tight .chip-t{display:none}
 /* Right-to-left (Arabic): arrows and "back" buttons point the other way, left-aligned text goes right */
 [dir=rtl] .chev,[dir=rtl] .mp-back,[dir=rtl] .week .nav,[dir=rtl] .mnav,[dir=rtl] .onb-back{transform:scaleX(-1)}
 [dir=rtl] [style*="text-align:left"]{text-align:right!important}
 [dir=rtl] .gmsg.mine .gbub{border-radius:18px 18px 18px 6px}[dir=rtl] .gbub{border-radius:18px 18px 6px 18px}
 [dir=rtl] .chips{-webkit-mask-image:linear-gradient(270deg,#000 82%,transparent);mask-image:linear-gradient(270deg,#000 82%,transparent)}
+.tab{position:relative}.tab.dot::after{content:'';position:absolute;top:2px;left:calc(50% + 9px);width:9px;height:9px;border-radius:50%;background:var(--bad);border:2px solid var(--card)}
+.gcard.unread b{font-weight:800}.gdot{width:10px;height:10px;border-radius:50%;background:var(--bad);flex:none}
 .acts{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .actcard{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--card);border-radius:14px;padding:10px 10px 10px 12px;box-shadow:var(--shadow);font-size:14px}
 .actcard>.ico{font-size:20px;color:var(--good)}
@@ -325,7 +325,10 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 .tab svg{width:25px;height:25px}
 .tab.on{color:var(--text)}
 .fab{width:60px;height:60px;border-radius:50%;background:var(--ink);color:var(--on-ink);display:flex;align-items:center;justify-content:center;
-  box-shadow:0 6px 18px rgba(0,0,0,.25);margin:-26px 0 0 18px;flex:none}
+  box-shadow:0 6px 18px rgba(0,0,0,.25);flex:none;position:absolute;right:2px;bottom:calc(100% + 16px)}
+/* The + floats just above the bar (bottom right), so all five tabs share the full width */
+.tabbar .in{position:relative}
+body:not(.nofab):not(.chatting) #scroller #view{padding-bottom:110px}
 .fab svg{width:28px;height:28px}
 /* Smooth page switches: the new page fades and glides in; tab icons react to taps */
 .tab{transition:color .25s ease}
@@ -1094,6 +1097,7 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 <nav class="tabbar"><div class="in">
   <button class="tab on" data-tab="home"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3.2 2.8 11h2.7v9h5v-6h3v6h5v-9h2.7z"/></svg><span data-i18n="Home">Home</span></button>
   <button class="tab" data-tab="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 20V12M12 20V5M19 20v-9"/></svg><span data-i18n="Progress">Progress</span></button>
+  <button class="tab" data-tab="groups"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span data-i18n="Groups">Groups</span></button>
   <button class="tab" data-tab="chat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/><path d="M8.5 10.5h.01M12 10.5h.01M15.5 10.5h.01" stroke-width="2.6" stroke-linecap="round"/></svg><span data-i18n="Coach">Coach</span></button>
   <button class="tab" data-tab="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg><span data-i18n="Settings">Settings</span></button>
   <button class="fab" id="fab" aria-label="Add"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
@@ -1191,7 +1195,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v194';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v195';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1269,7 +1273,16 @@ function i18nStatic() {
   document.documentElement.lang = LANG;
   document.documentElement.dir = langInfo().rtl ? 'rtl' : 'ltr';   // Arabic reads right to left: the layout mirrors
   document.querySelectorAll('[data-i18n]').forEach(e => e.textContent = T(e.dataset.i18n));
+  fitTabLabels();
 }
+// Five tabs plus the + button: a long word (e.g. "Einstellungen") gets a slightly smaller font instead of being cut off
+function fitTabLabels() {
+  document.querySelectorAll('.tab span').forEach(s => {
+    s.style.fontSize = '';
+    for (let f = 11; s.scrollWidth > s.clientWidth + 0.5 && f > 8.5; f -= 0.5) s.style.fontSize = f + 'px';
+  });
+}
+window.addEventListener('resize', () => fitTabLabels());
 function setLang(c) {
   LANG = c; LOC = langInfo().loc; LS.set('ft_lang', c);
   i18nStatic(); saveReminderTexts();
@@ -1948,6 +1961,7 @@ function go(t) {
   document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b.dataset.tab === t));
   document.body.classList.toggle('chatting', t === 'chat');
   document.body.classList.toggle('nofab', t !== 'home');   // food is added from Home only
+  requestAnimationFrame(fitTabLabels);
   document.body.classList.remove('typing');
   $('#chatScreen')?.remove();
   document.body.style.paddingBottom = '';
@@ -1957,7 +1971,7 @@ function go(t) {
   const v = t === 'chat' ? $('#chatScreen') : $('#view');
   if (v) { v.classList.remove('pagein'); void v.offsetWidth; v.classList.add('pagein'); }
 }
-function render() { ({ home: renderHome, progress: renderProgress, chat: renderChat, settings: renderSettings })[tab](); }
+function render() { ({ home: renderHome, progress: renderProgress, groups: renderGroupsTab, chat: renderChat, settings: renderSettings })[tab](); }
 // Tapping a tab: the tab lights up right away, the current page fades out, then the new one glides in
 let goT;
 function switchTab(t) {
@@ -2884,42 +2898,42 @@ function needName(then) {
   });
 }
 
-function openGroups() {
-  if (!db.profile) return;
-  $('#groupsPage')?.remove();
-  const pg = document.createElement('div'); pg.id = 'groupsPage'; pg.className = 'page';
-  document.body.appendChild(pg);
-  renderGroups();
-  refreshGroupList();
-}
-function closeGroups() { $('#groupsPage')?.remove(); }
+// Groups has its own tab. The list refreshes when the tab opens (at most every 15 s) and once after the app starts,
+// so a dot on the tab can show new messages from others.
+let gListT = 0;
+function openGroups() { if (db.profile) switchTab('groups'); }
+const gUnread = g => { const l = (gCache[g.gid] || {}).last; return !!(l && l.mid !== g.mid && l.id > (g.seen || 0)); };
+function updateGroupDot() { const t = document.querySelector('.tab[data-tab="groups"]'); if (t) t.classList.toggle('dot', myGroups().some(gUnread)); }
 async function refreshGroupList() {
+  gListT = Date.now();
   const me = await meCard();
   await Promise.all(myGroups().map(async g => {
-    try { const r = await gApi('sync', { ...gAuth(g), me, lite: true }); if (r.group) { gCache[g.gid] = { ...(gCache[g.gid] || {}), ...r.group }; g.name = r.group.name; } }
+    try { const r = await gApi('sync', { ...gAuth(g), me, lite: true }); if (r.group) { gCache[g.gid] = { ...(gCache[g.gid] || {}), ...r.group }; g.name = r.group.name; if (g.seen == null) g.seen = r.group.last ? r.group.last.id : 0; } }
     catch (e) { if (e.gone) dropGroup(g.gid); }
   }));
-  save(); if ($('#groupsPage')) renderGroups();
+  save(); updateGroupDot(); if (tab === 'groups') renderGroups();
 }
+function renderGroupsTab() { renderGroups(); if (Date.now() - gListT > 15e3) refreshGroupList(); }
 function renderGroups() {
-  const pg = $('#groupsPage'); if (!pg) return;
+  if (tab !== 'groups') return;
+  const pg = $('#view');
   const list = myGroups().map(g => {
     const c = gCache[g.gid] || {}, ms = c.members || [], rank = ms.findIndex(m => m.mid === g.mid) + 1, last = c.last;
-    const who = last && ms.find(m => m.mid === last.mid);
-    return `<button class="card gcard" data-g="${g.gid}">${gPic(g, 52)}<span class="grow" style="min-width:0"><b>${esc(c.name || g.name || '')}</b>
+    const who = last && ms.find(m => m.mid === last.mid), unread = gUnread(g);
+    return `<button class="card gcard ${unread ? 'unread' : ''}" data-g="${g.gid}">${gPic(g, 52)}<span class="grow" style="min-width:0"><b>${esc(c.name || g.name || '')}</b>
       <span class="small muted gline">${last ? `${who ? esc(who.mid === g.mid ? T('You') : who.name) + ': ' : ''}${esc(last.text)}` : T('{n} members', { n: ms.length || 1 })}</span></span>
-      ${rank ? `<span class="grank">#${rank}</span>` : ''}<span class="chev">›</span></button>`;
+      ${unread ? '<span class="gdot"></span>' : rank ? `<span class="grank">#${rank}</span>` : ''}<span class="chev">›</span></button>`;
   }).join('');
-  pg.innerHTML = `<div class="mp-head"><button class="mp-back" id="gBack" aria-label="${T('Close')}">‹</button><div class="grow"><div class="mp-title">${T('Groups')}</div></div>
-      <button class="chipbtn" id="gJoin">${T('Join')}</button><button class="mp-back" id="gNew" aria-label="${T('Create a group')}">＋</button></div>
-    <div class="wrap mp-body">${list || `<div class="card mp-empty"><div class="mp-emoji">${ic('users')}</div><h3>${T('Stay on track together')}</h3>
+  pg.innerHTML = `<div class="top"><div class="brand">${T('Groups')}</div>
+      <div class="row" style="gap:8px"><button class="memchip" id="gJoin">${T('Join')}</button><button class="themebtn" id="gNew" aria-label="${T('Create a group')}">${ic('plus')}</button></div></div>
+    <div style="margin-top:14px">${list || `<div class="card mp-empty"><div class="mp-emoji">${ic('users')}</div><h3>${T('Stay on track together')}</h3>
       <p class="muted">${T('Make a private group with friends or family: a ranking, a group chat, and everyone keeps each other going.')}</p>
-      <button class="btn" id="gNew2">${T('Create a group')}</button><button class="btn outline" id="gJoin2" style="margin-top:10px">${T('Join with a code')}</button></div>`}
-      <p class="small muted" style="text-align:center;margin:16px 8px 0">${T('Groups are private: only people with the code can join. Members see your name, picture, streak and days logged this week, never your meals or weight.')}</p></div>`;
-  pg.querySelector('#gBack').onclick = closeGroups;
+      <button class="btn" id="gNew2">${T('Create a group')}</button><button class="btn outline" id="gJoin2" style="margin-top:10px">${T('Join with a code')}</button></div>`}</div>
+      <p class="small muted" style="text-align:center;margin:16px 8px 0">${T('Groups are private: only people with the code can join. Members see your name, picture, streak and days logged this week, never your meals or weight.')}</p>`;
   [pg.querySelector('#gNew'), pg.querySelector('#gNew2')].forEach(b => b && (b.onclick = () => needName(openCreateGroup)));
   [pg.querySelector('#gJoin'), pg.querySelector('#gJoin2')].forEach(b => b && (b.onclick = () => openJoinGroup()));
   pg.querySelectorAll('[data-g]').forEach(b => b.onclick = () => openGroup(b.dataset.g));
+  updateGroupDot();
 }
 function pickGroupPic(cb) {
   const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
@@ -3018,7 +3032,8 @@ async function syncGroup(full) {
     }
     const fresh = (r.msgs || []).filter(m => !gMsgs.some(x => x.id === m.id));
     if (fresh.length || full || r.group) { gMsgs.push(...fresh); renderGroup(fresh.length > 0); }
-  } catch (e) { if (e.gone) { dropGroup(g.gid); closeGroupPage(); toast(e.message); if ($('#groupsPage')) renderGroups(); } }
+    if (gMsgs.length && gMsgs[gMsgs.length - 1].id > (g.seen || 0)) { g.seen = gMsgs[gMsgs.length - 1].id; save(); updateGroupDot(); }
+  } catch (e) { if (e.gone) { dropGroup(g.gid); closeGroupPage(); toast(e.message); renderGroups(); } }
 }
 function renderGroup(newMsgs) {
   const pg = $('#groupPage'), g = myGroups().find(x => x.gid === gOpen); if (!pg || !g) return;
@@ -3055,7 +3070,7 @@ function renderGroup(newMsgs) {
         ${ms.length < 2 ? `<button class="btn" id="ggInv2" style="margin-top:16px">${ic('share')} ${T('Invite friends')}</button>` : ''}</div>`
       : `<div class="gmsgs">${msgs || `<div class="empty" style="margin-top:20px"><b>${T('No messages yet')}</b><span class="muted">${T('Say hi to your group!')}</span></div>`}</div>
         <div class="gbar"><textarea id="ggIn" rows="1" maxlength="500" placeholder="${T('Message')}"></textarea><button class="cbtn send" id="ggSend" aria-label="${T('Send')}">↑</button></div>`}`;
-  pg.querySelector('#ggBack').onclick = () => { closeGroupPage(); if ($('#groupsPage')) renderGroups(); };
+  pg.querySelector('#ggBack').onclick = () => { closeGroupPage(); renderGroups(); };
   pg.querySelector('#ggInv').onclick = () => openInvite(g.gid);
   if (pg.querySelector('#ggInv2')) pg.querySelector('#ggInv2').onclick = () => openInvite(g.gid);
   pg.querySelector('#ggMenu').onclick = () => openGroupMenu(g, owner);
@@ -3099,12 +3114,12 @@ function openGroupMenu(g, owner) {
     s.querySelector('#gmLeave').onclick = async () => {
       if (!confirm(owner && others.length ? T('Leave this group? The longest member becomes the new owner.') : T('Leave this group?'))) return;
       try { await gApi('leave', gAuth(g)); } catch (e) { if (!e.gone) return toast(e.message); }
-      dropGroup(g.gid); closeSheet(); closeGroupPage(); if ($('#groupsPage')) renderGroups();
+      dropGroup(g.gid); closeSheet(); closeGroupPage(); renderGroups();
     };
     if (s.querySelector('#gmDel')) s.querySelector('#gmDel').onclick = async () => {
       if (!confirm(T('Delete this group and all its messages for everyone? This cannot be undone.'))) return;
       try { await gApi('delete', gAuth(g)); } catch (e) { if (!e.gone) return toast(e.message); }
-      dropGroup(g.gid); closeSheet(); closeGroupPage(); if ($('#groupsPage')) renderGroups();
+      dropGroup(g.gid); closeSheet(); closeGroupPage(); renderGroups();
     };
   });
 }
@@ -4516,6 +4531,7 @@ const TOUR_STEPS = [
   { tab: 'home', open: 'add', sel: '.backdrop .addgrid', title: N('Everything you can add'), text: N('Photo, barcode, typing, favorites or manual entry.') },
   // The other pages: the tour goes there and points at their button
   { tab: 'progress', sel: '.tab[data-tab="progress"]', title: N('Progress'), text: N('Your weight, streak, badges and body.') },
+  { tab: 'groups', sel: '.tab[data-tab="groups"]', title: N('Groups'), text: N('Ranking and chat with friends') },
   { tab: 'chat', sel: '.tab[data-tab="chat"]', title: N('Coach'), text: N('Your personal AI coach. Ask it anything.') },
   { tab: 'settings', sel: '.tab[data-tab="settings"]', title: N('Settings'), text: N('Goals, watch, reminders and your account.') },
   { tab: 'home', title: N("You're all set"), text: N('Log your first meal with the + button.') }
@@ -6128,7 +6144,7 @@ const actDate = d => { if (!d || d === 'today') return iso(); if (d === 'yesterd
   return /^\d{4}-\d{2}-\d{2}$/.test(d) && d <= iso() && d >= addDays(iso(), -30) ? d : iso(); };
 const OPEN_TARGETS = { goals: () => openMainGoalSheet(), meal_plan: () => openMealPlan(), habit: () => openHabitPage(), habits: () => openHabitChooser(),
   month: () => openMonth(iso().slice(0, 7)), tracker: () => openTracker(), notifications: () => go('settings'), profile: () => openAvatarSheet(),
-  badges: () => go('progress'), weight: () => go('progress') };
+  badges: () => go('progress'), weight: () => go('progress'), groups: () => openGroups() };
 function applyActionTags(text) {
   const acts = [];
   for (const [, raw] of text.matchAll(/<action>([\s\S]*?)<\/action>/gi)) {
@@ -6202,7 +6218,7 @@ function refreshActs() { if (tab === 'chat') renderChat(); if (tab === 'home') r
 const ACT_IC = { food: 'utensils', water: 'drop', weight: 'scale', burn: 'activity', watergoal: 'drop', habit: 'target', open: 'share' };
 const ACT_TITLE = { food: N('Added to your food log'), water: N('Water added'), weight: N('Weight saved'), burn: N('Activity added'), watergoal: N('Water goal changed'), habit: N('Habit started') };
 const OPEN_TITLE = { goals: N('Your goals'), meal_plan: N('Meal plan'), habit: N('Your habit'), habits: N('Choose a habit'), month: N('Month view'), tracker: N('Watch & tracker'),
-  notifications: N('Notifications'), profile: N('Profile picture'), badges: N('Badges'), weight: N('Progress') };
+  notifications: N('Notifications'), profile: N('Profile picture'), badges: N('Badges'), weight: N('Progress'), groups: N('Groups') };
 function actCards(m) {
   return (m.acts || []).map(x => {
     if (x.k === 'open') return `<button class="actcard" data-actopen="${x.what}">${ic('share')}<span class="grow"><b>${T(OPEN_TITLE[x.what] || 'Open')}</b></span><span class="chev">›</span></button>`;
@@ -6341,14 +6357,14 @@ const FAST_COACH = {
 };
 const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` Right now: ${{ t1: 'pregnant, months 1-3', t2: 'pregnant, months 4-6', t3: 'pregnant, months 7-9', bf: 'breastfeeding' }[p.preg] || 'pregnant'}.` : ''), ...lifeOf(p).map(x => LIFE_COACH[x.id]), FAST_COACH[fastType(p)] || ''].filter(Boolean).join(' ');
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
-const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
+const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Groups, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
 - Home: the profile picture top right (tap: Settings), the month name above the week strip (tap it for the month view: every day as a small ring, white within the goal, red over it, dashed when nothing was logged; tap a day to open it), the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped; in Preferences an optional weekly food budget with currency; the grocery list shows AI price estimates per item and an estimated total against the budget, and "Supermarkets near you": with their OK it uses their location once (not saved) to show the shops within about 3 km on a map (OpenStreetMap), sorted by how well each suits them (1-10, AI estimate from budget, diet and the list), with price level, estimated cost of the list there and a Route button to Google Maps). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). The first time they tap Scan food or Barcode a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. Ingredients of a meal show as tiles with a kitchen measure next to the grams (e.g. "½ medium · 60 g", "2 tbsp · 20 g"; with the kg setting European measures like tbsp, tsp, glass, slice, handful, never cups; with the lb setting US measures like cup, tbsp, tsp, oz); tap a tile to change it with − / + (½ → ¾) or to type exact grams. The meal plan shows each meal's ingredients per person with these measures (tap "Ingredients"), and the grocery list shows next to the total amount what to take from the shelf (e.g. "1 pack of 500 g"). For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. "Earn your treat" (Home, only when today is over the calorie goal; adults only, not in pregnancy or on fast days; can be turned off in Settings → Preferences): a card offers a brisk walk, cycling or jogging with the minutes that make up for the extra calories (calculated from their weight); after picking one it fills up by itself with a watch, or they tap Done. Above 400 kcal over it doesn't suggest sport, just "back on track tomorrow". Food is never blocked. When they ate a treat and are over, you may mention this gently, never as punishment. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros; if the Shortcut sends the same number on several days, 0 every evening or over 4000 kcal a day, Home shows a warning: in Find Health Samples only one date filter may stay, Start Date · is today) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (medals in 3 columns with their number and what they are for, silver until earned; tap one to see more). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Home shows a slim "Habits · Choose a habit" line (can be hidden with ✕; it's always on Progress), and the habit card once they chose one.
 - Coach: the Memory button (top right) opens My memory: what you remember about them (they can add or delete facts), My memory snapshot (a short summary you write about them with one question and 3 quick answers) and Chat history (earlier conversations are kept when they start a new one; they can open, continue or delete them). The suggestion buttons above the text field can be swiped sideways for more questions; the first one follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them. You can also do things for them from the chat (see ACTIONS): log food they tell you they ate, water, weight and activity, start a habit (it then shows on Home), change the water goal or open a page; each shows as a small card under your answer with Undo.
-- Groups (Coach page top "Groups" button, or Settings → Groups): private groups with friends or family. Create one (name, optional description and picture) and share the invite link or 6-letter code; others join with the code. Each group has a Ranking (days logged this week Monday-Sunday, then the logging streak; top 3 get gold/silver/bronze) and a Chat (tap your own message to delete it; the owner can delete any message, edit the group, remove members or delete the group). Members only see each other's name, small profile picture, streak and days logged this week, never meals or weight. Messages are kept 60 days. No public groups.
+- Groups (its own tab in the bottom bar, between Progress and Coach; a red dot on the tab and on a group means new messages from others): private groups with friends or family. Create one (name, optional description and picture) and share the invite link or 6-letter code; others join with the code. Each group has a Ranking (days logged this week Monday-Sunday, then the logging streak; top 3 get gold/silver/bronze) and a Chat (tap your own message to delete it; the owner can delete any message, edit the group, remove members or delete the group). Members only see each other's name, small profile picture, streak and days logged this week, never meals or weight. Messages are kept 60 days. No public groups.
 - Settings: at the top their profile picture and name (tap the picture to add or change a photo, tap the name to set it); Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, daily life: mostly sitting / on their feet a lot / physical work, training 0 / 1-2 / 3-5 / 6+ per week; daily life and workouts together set the activity level, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (16 languages: English, German, French, Spanish, Italian, Portuguese, Dutch, Polish, Turkish, Russian, Chinese, Japanese, Korean, Hindi, Indonesian, Arabic; Arabic mirrors the layout right to left), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (water: up to 3 a day at 11:00, 14:00 and 17:00, only when they are behind their water goal (25 / 50 / 75 % by then), none once it is reached; calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy (what happens with the data, no cookies, their rights); Terms of use (free, estimates not medical advice, 16+, fair use); Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
@@ -6382,7 +6398,7 @@ Add an action tag at the very END of your reply (after any memory tags) with one
 - Activity with calories burned: <action>{"type":"log_burn","name":"Running","kcal":300,"minutes":30}</action>. Only when they tell you the calories or you can estimate them reasonably; if a watch/tracker is connected (see LIVE APP DATA), tell them it is counted automatically instead.
 - Water goal: <action>{"type":"set_water_goal","ml":3000}</action>.
 - A habit they want to build or change (e.g. stretch more, a stretch routine, drink more water, no snacking at night): <action>{"type":"set_habit","name":"Stretch 10 minutes","if":"I finish dinner","then":"I stretch for 10 minutes","remind":20}</action>. Use their language for name/if/then, keep each under 60 characters, make it small and concrete. "remind" is an hour 6-23 or -1 for none. If it matches a ready habit, add "kind": late (no food late in the evening, also "cut":"21:00"), drinks (no sugary drinks), sweets (fewer sweets), weekend (calm weekends), breakfast (protein breakfast), water (drink enough water); otherwise leave "kind" out. The app has ONE habit at a time: if they already have one (see LIVE APP DATA), the card asks them before replacing it, so mention that. The habit then shows on Home.
-- To show a page: <action>{"type":"open","what":"goals"}</action>, "what" is one of goals, meal_plan, habit, habits, month, tracker, notifications, profile, badges, weight.
+- To show a page: <action>{"type":"open","what":"goals"}</action>, "what" is one of goals, meal_plan, habit, habits, month, tracker, notifications, profile, badges, weight, groups.
 - You can't change calorie or macro goals, delete or edit logged entries: explain where they do it in the app (and offer the open action).
 
 THE APP
@@ -6420,7 +6436,7 @@ function renderChat(animLast) {
   let scr = $('#chatScreen');
   if (!scr) {
     scr = document.createElement('div'); scr.id = 'chatScreen';
-    scr.innerHTML = `<div class="wrap chathead"><div class="top"><div class="brand">${T('AI Coach')}</div><div class="row" style="gap:8px"><button class="memchip" id="cGroups" aria-label="${T('Groups')}">${ic('users')}<span class="chip-t">${T('Groups')}</span></button><button class="memchip" id="cMem" aria-label="${T('Memory')}"></button></div></div></div>
+    scr.innerHTML = `<div class="wrap chathead"><div class="top"><div class="brand">${T('AI Coach')}</div><button class="memchip" id="cMem" aria-label="${T('Memory')}"></button></div></div>
       <div class="msgscroll" id="msgScroll"><div class="wrap" id="chatBody"></div></div>`;
     document.body.appendChild(scr);
     chatEl().addEventListener('scroll', updateDown, { passive: true });
@@ -6433,8 +6449,6 @@ function renderChat(animLast) {
     <div class="msgs" id="msgs">${chat.map((m, i) => chatBubble(m, animLast && i === chat.length - 1)).join('')}${chatBusy ? '<div class="msg ai new" id="live"><span class="dots"><span></span><span></span><span></span></span></div>' : ''}</div>`;
   renderAttach();
   $('#cMem').onclick = openMemoryPage;
-  $('#cGroups').onclick = openGroups;
-  { const top = $('.chathead .top'); top.classList.remove('tight'); if (top.scrollWidth > top.clientWidth + 1) top.classList.add('tight'); }   // long titles: Groups shows as an icon only
   fitChat(); chatToBottom(); requestAnimationFrame(() => { chatToBottom(); updateDown(); });
 }
 function buildChatbar(scr) {
@@ -7047,7 +7061,6 @@ function renderSettings() {
       <button class="li" id="sPers"><span class="ic">👤</span><span class="grow">${T('Personal details')}</span><span class="chev">›</span></button>
       <button class="li" id="sTrk"><span class="ic">⌚</span><span class="grow">${T('Watch & tracker')}</span><span class="val">${setupLeft() ? T('Step {n} of {of}', { n: setupLeft().n, of: setupLeft().of }) : linkInfo() ? esc(linkName(linkInfo().p)) : T('Not connected')}</span><span class="chev">›</span></button>
       <button class="li" id="sGoals"><span class="ic">🎯</span><span class="grow">${T('Adjust macronutrients')}<br><span class="small muted">${t.kcal} kcal · ${t.protein}g P · ${t.carbs}g C · ${t.fat}g F</span></span><span class="chev">›</span></button>
-      <button class="li" id="sGroups"><span class="ic">${ic('users')}</span><span class="grow">${T('Groups')}<br><span class="small muted">${myGroups().length ? T('{n} groups', { n: myGroups().length }) : T('Ranking and chat with friends')}</span></span><span class="chev">›</span></button>
       <button class="li" id="sRedo"><span class="ic">🔁</span><span class="grow">${T('Redo setup questions')}</span><span class="chev">›</span></button>
     </div>
     <div class="h2">${T('Preferences')}</div>
@@ -7101,7 +7114,6 @@ function renderSettings() {
   if ($('#sShare')) $('#sShare').onclick = shareApp;
   $('#sPers').onclick = openPersonalSheet;
   if ($('#sAva')) { $('#sAva').onclick = openAvatarSheet; $('#sName').onclick = openNameSheet; }
-  if ($('#sGroups')) $('#sGroups').onclick = openGroups;
   $('#sTrk').onclick = () => setupLeft() ? openSetupPage() : openTrackerSheet();
   if ($('#sGoal')) $('#sGoal').onclick = openMainGoalSheet;
   $('#sGoals').onclick = openGoalsSheet;
@@ -7703,6 +7715,8 @@ setTimeout(askAccount, 11000);
 setTimeout(emailNote, 7000);
 setInterval(() => { if (document.visibilityState === 'visible') emailNote(); }, 3 * 60e3);   // tried again until it has been seen (another window may have been open)
 setTimeout(weeklyCheckin, 6500);
+setTimeout(() => { if (myGroups().length && db.profile) refreshGroupList(); }, 8000);   // dot on the Groups tab for new messages
+setInterval(() => { if (myGroups().length && db.profile && document.visibilityState === 'visible' && tab !== 'groups' && !gOpen) refreshGroupList(); }, 5 * 60e3);
 setInterval(weeklyCheckin, 30 * 60e3);
 idb.kvGet('ft_pending').then(q => {
   if (!Array.isArray(q) || !q.length) return;
