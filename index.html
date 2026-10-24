@@ -1191,7 +1191,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v193';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v194';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2023,7 +2023,7 @@ function renderHome() {
         <div class="ecal">🔥 ${T('{n} calories burned', { n: r0(e.kcal) })}</div>${e.minutes ? `<div class="emac"><span>⏱ ${e.minutes} min</span></div>` : ''}</div></button>`;
     }
     const m = en.m, mt = mealTotals(m);
-    return `<button class="entry" onclick="openMeal('${m.id}')"><div class="thumb">${m.photo ? `<img data-photo="${m.id}" alt="">` : (m.source === 'barcode' ? '🏷️' : '🍽️')}</div>
+    return `<button class="entry" onclick="openMeal('${m.id}')"><div class="thumb">${m.photo ? `<img data-photo="${m.id}" alt="${esc(m.name)}">` : (m.source === 'barcode' ? '🏷️' : '🍽️')}</div>
       <div class="einfo"><div class="spread"><span class="ename">${esc(m.name)}${(m.servings || 1) !== 1 ? `<span class="ptag">${fmtPortion(m.servings)}</span>` : ''}</span><span class="etime">${esc(fmtHM(m.time || ''))}</span></div>
       <div class="ecal">🔥 ${T('{n} calories', { n: r0(mt.kcal) })}</div>
       <div class="emac"><span>🍗 ${r0(mt.protein)}g</span><span>🌾 ${r0(mt.carbs)}g</span><span>🥑 ${r0(mt.fat)}g</span>${mealHealth(m) ? `<span style="color:${healthColor(mealHealth(m))}">💚 ${mealHealth(m)}</span>` : ''}</div></div></button>`;
@@ -3066,10 +3066,11 @@ function renderGroup(newMsgs) {
     const ta = pg.querySelector('#ggIn');
     ta.oninput = () => { ta.style.height = 'auto'; ta.style.height = Math.min(ta.scrollHeight, 110) + 'px'; };
     pg.querySelector('#ggSend').onclick = async () => {
-      const text = ta.value.trim(); if (!text) return;
-      ta.value = ''; ta.oninput();
+      const text = ta.value.trim(), btn = pg.querySelector('#ggSend'); if (!text || btn.disabled) return;
+      btn.disabled = true; ta.value = ''; ta.oninput();   // one tap = one message, even on a slow connection
       try { const r = await gApi('send', { ...gAuth(g), text }); gMsgs.push({ id: r.id, mid: g.mid, t: r.t, text }); renderGroup(true); }
       catch (e) { toast(e.message); ta.value = text; }
+      finally { btn.disabled = false; }
     };
     bindMsgs(sc, g, owner);
   }
@@ -4659,6 +4660,7 @@ function openTerms() {
     ${sec('🩺', T('Not medical advice'), T('Calories and nutrition are estimates by AI and food databases and can be wrong. Talk to a doctor before big changes, especially if you are pregnant, ill or have had an eating disorder.'))}
     ${sec('🔞', T('Age'), T('You need to be at least 16, or have a parent’s permission.'))}
     ${sec('🤝', T('Fair use'), T('Do not use the app or its AI for anything illegal or harmful, and do not try to break or overload it.'))}
+    ${sec('👥', T('Groups'), T('Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.'))}
     ${sec('🔄', T('Changes'), T('The app can change, pause or stop at any time. Keep your own copy: Settings → Backup data.'))}
     ${sec('🧾', T('Your content'), T('Your meals, photos and chats stay yours. The app only uses them to work for you.'))}
     ${sec('⚖️', T('Liability'), T('The app is provided as it is. As far as the law allows, there is no liability for wrong numbers or lost data.'))}
@@ -5615,7 +5617,7 @@ function renderDetail() {
   let pg = $('#detail');
   if (!pg) { pg = document.createElement('div'); pg.id = 'detail'; pg.className = 'page'; document.body.appendChild(pg); document.body.style.overflow = 'hidden'; }
   pg.innerHTML = `
-    <div class="hero ${m.photo ? '' : 'short'}">${m.photo ? `<img data-photo="${m.id}" alt="">` : ''}
+    <div class="hero ${m.photo ? '' : 'short'}">${m.photo ? `<img data-photo="${m.id}" alt="${esc(m.name)}">` : ''}
       <div class="herobar"><button class="circ" id="dBack">‹</button><span class="row" style="gap:10px"><button class="circ" id="dFav" aria-label="${T('Save to favorites')}">${isFav(m) ? '★' : '☆'}</button>${det.isNew ? '' : '<button class="circ" id="dDel">🗑</button>'}</span></div></div>
     <div class="dbody">
       <div class="spread"><span class="etime">${esc(fmtDate(m.date, { weekday: 'short', day: 'numeric', month: 'short' }))} · ${esc(fmtHM(m.time || ''))}</span></div>

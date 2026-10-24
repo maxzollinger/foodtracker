@@ -1632,7 +1632,8 @@ window.I18N = {
 "e.g. We log every meal and walk 8000 steps":"z. B. Wir erfassen jede Mahlzeit und gehen 8000 Schritte",
 "{n} groups":"{n} Gruppen",
 "{n} members":"{n} Mitglieder",
-"{n} of 7 days logged this week":"{n} von 7 Tagen erfasst diese Woche"
+"{n} of 7 days logged this week":"{n} von 7 Tagen erfasst diese Woche",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sei freundlich in Gruppen und teile nur Bilder und Texte, die du teilen darfst. Der Gruppenbesitzer kann Nachrichten und Mitglieder entfernen. Um etwas zu melden, schreib dem App-Besitzer."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3266,7 +3267,8 @@ window.I18N = {
 "e.g. We log every meal and walk 8000 steps":"p. ej. Registramos cada comida y caminamos 8000 pasos",
 "{n} groups":"{n} grupos",
 "{n} members":"{n} miembros",
-"{n} of 7 days logged this week":"{n} de 7 días registrados esta semana"
+"{n} of 7 days logged this week":"{n} de 7 días registrados esta semana",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sé amable en los grupos y publica solo fotos y textos que puedas compartir. El propietario del grupo puede eliminar mensajes y miembros. Para denunciar algo, escribe al propietario de la app."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4900,7 +4902,8 @@ window.I18N = {
 "e.g. We log every meal and walk 8000 steps":"p. ex. On note chaque repas et on fait 8000 pas",
 "{n} groups":"{n} groupes",
 "{n} members":"{n} membres",
-"{n} of 7 days logged this week":"{n} jours sur 7 notés cette semaine"
+"{n} of 7 days logged this week":"{n} jours sur 7 notés cette semaine",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sois bienveillant dans les groupes et ne publie que des images et des textes que tu as le droit de partager. Le propriétaire du groupe peut retirer des messages et des membres. Pour signaler quelque chose, écris au propriétaire de l'app."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6534,7 +6537,8 @@ window.I18N = {
 "e.g. We log every meal and walk 8000 steps":"ad es. Registriamo ogni pasto e facciamo 8000 passi",
 "{n} groups":"{n} gruppi",
 "{n} members":"{n} membri",
-"{n} of 7 days logged this week":"{n} giorni su 7 registrati questa settimana"
+"{n} of 7 days logged this week":"{n} giorni su 7 registrati questa settimana",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sii gentile nei gruppi e pubblica solo immagini e testi che puoi condividere. Il proprietario del gruppo può rimuovere messaggi e membri. Per segnalare qualcosa, scrivi al proprietario dell'app."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8168,7 +8172,8 @@ window.I18N = {
 "e.g. We log every meal and walk 8000 steps":"例：毎食記録して8000歩歩く",
 "{n} groups":"{n}グループ",
 "{n} members":"{n}人",
-"{n} of 7 days logged this week":"今週 {n}/7 日記録"
+"{n} of 7 days logged this week":"今週 {n}/7 日記録",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"グループでは思いやりを持ち、共有してよい画像と文章だけを投稿してください。グループのオーナーはメッセージやメンバーを削除できます。報告はアプリのオーナーに連絡してください。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -9802,7 +9807,8 @@ window.I18N = {
 "e.g. We log every meal and walk 8000 steps":"bijv. We voeren elke maaltijd in en lopen 8000 stappen",
 "{n} groups":"{n} groepen",
 "{n} members":"{n} leden",
-"{n} of 7 days logged this week":"{n} van de 7 dagen ingevoerd deze week"
+"{n} of 7 days logged this week":"{n} van de 7 dagen ingevoerd deze week",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Wees aardig in groepen en plaats alleen foto's en teksten die je mag delen. De eigenaar van de groep kan berichten en leden verwijderen. Wil je iets melden, schrijf dan naar de eigenaar van de app."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -11436,7 +11442,8 @@ window.I18N = {
 "e.g. We log every meal and walk 8000 steps":"np. Wpisujemy każdy posiłek i robimy 8000 kroków",
 "{n} groups":"Grupy: {n}",
 "{n} members":"Członkowie: {n}",
-"{n} of 7 days logged this week":"{n} z 7 dni z wpisami w tym tygodniu"
+"{n} of 7 days logged this week":"{n} z 7 dni z wpisami w tym tygodniu",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Bądź życzliwy w grupach i publikuj tylko zdjęcia i teksty, które możesz udostępniać. Właściciel grupy może usuwać wiadomości i członków. Aby coś zgłosić, napisz do właściciela aplikacji."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -13070,7 +13077,8 @@ window.I18N = {
 "e.g. We log every meal and walk 8000 steps":"p. ex. Registamos todas as refeições e andamos 8000 passos",
 "{n} groups":"{n} grupos",
 "{n} members":"{n} membros",
-"{n} of 7 days logged this week":"{n} de 7 dias registados esta semana"
+"{n} of 7 days logged this week":"{n} de 7 dias registados esta semana",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sê simpático nos grupos e publica apenas imagens e textos que podes partilhar. O dono do grupo pode remover mensagens e membros. Para denunciar algo, escreve ao dono da app."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -14704,7 +14712,8 @@ window.I18N = {
 "e.g. We log every meal and walk 8000 steps":"напр. Записываем каждый приём пищи и проходим 8000 шагов",
 "{n} groups":"Групп: {n}",
 "{n} members":"Участников: {n}",
-"{n} of 7 days logged this week":"{n} из 7 дней с записями на этой неделе"
+"{n} of 7 days logged this week":"{n} из 7 дней с записями на этой неделе",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Будь вежлив(а) в группах и публикуй только те фото и тексты, которыми можно делиться. Владелец группы может удалять сообщения и участников. Чтобы на что-то пожаловаться, напиши владельцу приложения."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -16338,7 +16347,8 @@ window.I18N = {
 "e.g. We log every meal and walk 8000 steps":"ör. Her öğünü kaydedip 8000 adım atıyoruz",
 "{n} groups":"{n} grup",
 "{n} members":"{n} üye",
-"{n} of 7 days logged this week":"Bu hafta 7 günün {n} gününde kayıt"
+"{n} of 7 days logged this week":"Bu hafta 7 günün {n} gününde kayıt",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Gruplarda nazik ol ve yalnızca paylaşma hakkın olan fotoğraf ve metinleri paylaş. Grup sahibi mesajları ve üyeleri kaldırabilir. Bir şeyi bildirmek için uygulama sahibine yaz."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -17972,7 +17982,8 @@ window.I18N = {
 "e.g. We log every meal and walk 8000 steps":"例如：每餐都记录，每天走 8000 步",
 "{n} groups":"{n} 个群组",
 "{n} members":"{n} 名成员",
-"{n} of 7 days logged this week":"本周已记录 {n}/7 天"
+"{n} of 7 days logged this week":"本周已记录 {n}/7 天",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"在群组中请友善相待，只发布你有权分享的图片和文字。群主可以删除消息和成员。如需举报，请联系 App 所有者。"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -19324,7 +19335,8 @@ window.I18N = {
 "Food label":"영양 라벨",
 "Gallery":"갤러리",
 "Whole meal inside the frame":"식사 전체를 틀 안에",
-"Nutrition label inside the frame":"영양성분표를 틀 안에"
+"Nutrition label inside the frame":"영양성분표를 틀 안에",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"그룹에서는 친절하게 대하고, 공유해도 되는 사진과 글만 올리세요. 그룹 주인은 메시지와 멤버를 삭제할 수 있어요. 신고하려면 앱 운영자에게 연락하세요."
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -20676,7 +20688,8 @@ window.I18N = {
 "Food label":"फ़ूड लेबल",
 "Gallery":"गैलरी",
 "Whole meal inside the frame":"पूरा भोजन फ़्रेम के अंदर",
-"Nutrition label inside the frame":"पोषण लेबल फ़्रेम के अंदर"
+"Nutrition label inside the frame":"पोषण लेबल फ़्रेम के अंदर",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"ग्रुप में अच्छा व्यवहार करें और सिर्फ़ वही फ़ोटो और टेक्स्ट पोस्ट करें जिन्हें शेयर करने की आपको अनुमति है। ग्रुप का मालिक मैसेज और सदस्य हटा सकता है। किसी चीज़ की शिकायत के लिए ऐप के मालिक को लिखें।"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -22028,7 +22041,8 @@ window.I18N = {
 "Food label":"Label gizi",
 "Gallery":"Galeri",
 "Whole meal inside the frame":"Seluruh makanan di dalam bingkai",
-"Nutrition label inside the frame":"Label gizi di dalam bingkai"
+"Nutrition label inside the frame":"Label gizi di dalam bingkai",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Bersikaplah baik di grup dan hanya unggah foto serta teks yang boleh kamu bagikan. Pemilik grup bisa menghapus pesan dan anggota. Untuk melaporkan sesuatu, hubungi pemilik app."
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -23380,6 +23394,7 @@ window.I18N = {
 "Food label":"ملصق غذائي",
 "Gallery":"المعرض",
 "Whole meal inside the frame":"الوجبة كاملة داخل الإطار",
-"Nutrition label inside the frame":"الملصق الغذائي داخل الإطار"
+"Nutrition label inside the frame":"الملصق الغذائي داخل الإطار",
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"كن لطيفًا في المجموعات ولا تنشر إلا الصور والنصوص التي يحق لك مشاركتها. يستطيع مالك المجموعة حذف الرسائل والأعضاء. للإبلاغ عن شيء ما، راسل مالك التطبيق."
 }
 };
