@@ -269,6 +269,7 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 .prof-name{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;font-size:17px}
 .monthbtn{display:flex;align-items:center;gap:6px;margin:10px 0 -4px 2px;font-weight:700;font-size:15px;color:var(--text)}
 .monthbtn svg{width:11px;height:8px;color:var(--muted)}
+.mrow{align-items:flex-end}.wkshare{margin:10px 4px -4px 0;padding:4px 6px;font-size:16px}.wkshare .ico{color:var(--muted)!important}
 .mnav{width:40px;height:40px;font-size:24px;color:var(--muted)}
 .mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px 2px;margin-top:8px;justify-items:center}
 .mhead span{font-size:12px;font-weight:700;color:var(--muted)}
@@ -1289,7 +1290,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v230';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v231';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2187,7 +2188,7 @@ function renderHome() {
   $('#view').innerHTML = `
     <div class="top"><div class="brand"><img src="icon-180.png" alt="">Food Tracker</div>
       <div class="row" style="gap:8px"><button class="themebtn" id="themeBtn" aria-label="${T('Light / dark mode')}">${isDark() ? '☀️' : '🌙'}</button><div class="streak">🔥 ${st}</div>${db.profile ? `<button class="avatar sm" id="homeAva" aria-label="${T('Profile picture')}">${avatarHTML()}</button>` : ''}</div></div>
-    <button class="monthbtn" id="mBtn" aria-label="${T('Month view')}">${dt(days[3]).toLocaleDateString(LOC, { month: 'long', year: 'numeric' })}<svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1.5 1.75 6 6.25l4.5-4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="spread mrow"><button class="monthbtn" id="mBtn" aria-label="${T('Month view')}">${dt(days[3]).toLocaleDateString(LOC, { month: 'long', year: 'numeric' })}<svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1.5 1.75 6 6.25l4.5-4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button><button class="wkshare" id="wkShare" aria-label="${T('Share my week')}">${ic('share')}</button></div>
     <div class="week"><button class="nav" id="wPrev">‹</button><div class="days">${week}</div><button class="nav" id="wNext" ${weekOff >= 0 ? 'style="visibility:hidden"' : ''}>›</button></div>
     ${planChip()}
     ${!hasAI() ? `<button class="card" style="width:100%;text-align:left;display:flex;gap:12px;align-items:center" onclick="go('settings')"><span style="font-size:26px">✨</span><span class="grow"><b>${T('Turn on AI food scanning')}</b><br><span class="small muted">${T('Add your free Google AI key in Settings')}</span></span><span class="muted">›</span></button>` : ''}
@@ -2199,7 +2200,7 @@ function renderHome() {
     <div class="minirow">${waterCard(sel)}
       <div class="card mini burncard"><div class="spread"><div class="mini-ic">🏃</div><button class="mini-plus" id="burnAdd" aria-label="${T('Add')}">＋</button></div>
         ${burnTileHTML(sel, burned)}</div></div>
-    ${habitHomeCard()}${setupBanner()}${shortcutWarnCard()}${mealPlanCard()}${weeklyRecapCard()}
+    ${habitHomeCard()}${setupBanner()}${shortcutWarnCard()}${mealPlanCard()}
     <div class="h2">${sel === today ? T('Recently uploaded') : fmtDate(sel, { weekday: 'long', day: 'numeric', month: 'long' })}</div>
     ${list}`;
   document.querySelectorAll('.day').forEach(b => b.onclick = () => { sel = b.dataset.d; renderHome(); });
@@ -2211,6 +2212,7 @@ function renderHome() {
   bindWater(); bindTreat(sel);
   if ($('#planChip')) $('#planChip').onclick = openMainGoalSheet;
   $('#mBtn').onclick = () => openMonth(days[3].slice(0, 7));
+  $('#wkShare').onclick = () => shareWeek(days[0]);   // the week that is shown
   if ($('#homeAva')) $('#homeAva').onclick = () => db.profile.avatar ? go('settings') : openAvatarSheet();
   $('#wPrev').onclick = () => { weekOff--; renderHome(); };
   if ($('#rcShare')) $('#rcShare').onclick = () => shareWeek();
@@ -6335,7 +6337,7 @@ function shareWrapped(s, label, p) {
 function recapsCard() {
   if (!db.profile || !db.meals.length) return '';
   return `<div class="card"><b style="font-size:17px">${ic('sparkles')} ${T('Recaps to share')}</b>
-    <div class="row pp-btns" style="gap:8px;margin-top:12px"><button class="btn sm outline grow" id="rcpWeek">${T('My week')}</button><button class="btn sm grow" id="rcpWrap">${T('Your Wrapped')}</button></div></div>`;
+    <div class="row pp-btns" style="gap:8px;margin-top:12px"><button class="btn sm grow" id="rcpWrap">${ic('sparkles')} ${T('Your Wrapped')}</button></div></div>`;
 }
 
 function closeDetail(commit) {
@@ -7021,7 +7023,7 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Groups, Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
-- Sharing (people share what makes them look good): a new badge's celebration and the badge page have a Share button (story picture with the medal); the streak card on Progress shares "{n} day streak"; on Sunday and Monday a "Your week" card on Home (7 rings, days logged, within goal) shares a weekly recap; "Recaps to share" on Progress has "My week" and "Your Wrapped" (last month, this month, this year: a tap-through story with meals logged, top foods, days within goal, protein, longest streak and a "food type" like The Protein Pro, ending in a picture to share). Weight and photos are never on shared pictures.
+- Sharing (people share what makes them look good): a new badge's celebration and the badge page have a Share button (story picture with the medal); the streak card on Progress shares "{n} day streak"; the share icon next to the month name above the week strip on Home shares that week as a picture; "Recaps to share" on Progress has "Your Wrapped" (last month, this month, this year: a tap-through story with meals logged, top foods, days within goal, protein, longest streak and a "food type" like The Protein Pro, ending in a picture to share). Weight and photos are never on shared pictures.
 - Progress photos (Progress tab): any number, also several a day; after framing they choose the day it was taken. "All photos" shows them by month, ▶ Play shows them as a time-lapse from first to last, "Before & after" compares any two with the measurements.
 - Diet & food needs (Settings → Preferences, also in the meal plan preferences): diet plus food needs that can be combined: gluten-free, celiac (no traces), lactose-free, little dairy, no dairy, no nuts, no eggs, no fish or seafood. The meal plan and you always respect them, and a scanned meal that probably breaks one shows a warning at the top of the meal.
 - Ingredient amounts can be typed in grams, ounces, the kitchen measure (cup, tbsp, piece…) or pieces (unit menu next to the amount); the app remembers the last unit.
