@@ -1241,7 +1241,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v214';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v215';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -4481,6 +4481,24 @@ function usersCard() {
   return `<div class="card" id="usersCard"><div class="spread"><b>👥 ${T('Users')}</b><button class="chipbtn" id="usRef" aria-label="${T('Refresh')}">↻</button></div>
     <div id="usBody" style="margin-top:10px;text-align:center"><span class="spin"></span></div></div>`;
 }
+// Blocked IP addresses (admin): the server blocks addresses that flood it for a day; here they can be seen,
+// unblocked, or an address can be blocked by hand
+async function loadBans(body) {
+  const box = $('#banBody'); if (!box) return;
+  try {
+    const r = await fetch(SERVER_URL + '/bans', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + LS.get('ft_admin_token', '') }, body: JSON.stringify(body || {}) });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok) { toast(j.error === 'own ip' ? T('That is your own address.') : j.error === 'bad ip' ? T('Please check the address.') : 'HTTP ' + r.status); if (body) return; }
+    const list = j.bans || [];
+    box.innerHTML = `${list.length ? `<div class="list" style="box-shadow:none;background:var(--chip)">${list.map(x => `<div class="li"><span class="grow small" style="min-width:0;overflow-wrap:anywhere"><b>${esc(x.ip)}</b><br>
+        <span class="muted">${x.why === 'auto' ? T('Blocked automatically') : T('Blocked by you')} · ${T('until {d}', { d: fmtDate(iso(new Date(x.until)), { day: 'numeric', month: 'short' }) })}</span></span>
+        <button class="chipbtn" data-unban="${esc(x.ip)}">${T('Unblock')}</button></div>`).join('')}</div>` : `<p class="small muted" style="margin:0">✓ ${T('No blocked addresses.')}</p>`}
+      <div class="row" style="gap:8px;margin-top:10px"><input id="banIp" placeholder="${T('IP address')}" autocomplete="off" autocapitalize="off" spellcheck="false" style="flex:1;min-width:0"><button class="chipbtn" id="banAdd">${T('Block')}</button></div>
+      <p class="small muted" style="margin:6px 0 0">${T('Your address: {ip}', { ip: esc(j.you || '?') })}</p>`;
+    box.querySelectorAll('[data-unban]').forEach(b => b.onclick = () => loadBans({ action: 'unban', ip: b.dataset.unban }));
+    box.querySelector('#banAdd').onclick = () => { const v = box.querySelector('#banIp').value.trim(); if (v && confirm(T('Block {ip} for 30 days?', { ip: v }))) loadBans({ action: 'ban', ip: v, hours: 720 }); };
+  } catch { box.innerHTML = `<p class="small muted" style="margin:0">${T('No internet connection?')}</p>`; }
+}
 let usersP = null;
 function loadUsers() { return usersP || (usersP = loadUsersNow().finally(() => { usersP = null; })); }   // one load at a time
 async function loadUsersNow() {
@@ -4521,8 +4539,10 @@ async function loadUsersNow() {
         <div class="list" style="box-shadow:none;background:var(--chip);margin-top:8px">${st.errors.map(e => `<div class="li" style="align-items:flex-start"><span class="grow small" style="min-width:0;overflow-wrap:anywhere">
           <b>${esc(e.m)}</b><br><span class="muted">${esc(String(e.v).replace('foodtracker-', ''))} · ${esc(e.w || '–')} · ${esc(e.s || '')} · ${e.n}× · ${fmtDate(iso(new Date(e.l)), { day: 'numeric', month: 'short' })}</span></span></div>`).join('')}</div></details>`
       : st.errors ? `<p class="small" style="margin:12px 0 0;text-align:left;color:var(--good);font-weight:600">✓ ${T('No app errors in the last 14 days.')}</p>` : ''}
+      <details id="banBox" style="margin-top:12px;text-align:left"><summary class="small" style="font-weight:700;cursor:pointer">🛡 ${T('Blocked addresses')}</summary><div id="banBody" style="margin-top:8px"><span class="spin"></span></div></details>
       <p class="small muted" id="usWhen" style="margin:12px 0 0;text-align:center">${T('Updated {t} · refreshes by itself every minute', { t: new Date().toLocaleTimeString(LOC, { hour: '2-digit', minute: '2-digit', second: '2-digit' }) })}</p>`;
     box.animate([{ opacity: .35 }, { opacity: 1 }], { duration: 350, easing: 'ease-out' });   // you can see that it refreshed
+    if ($('#banBox')) $('#banBox').ontoggle = () => { if ($('#banBox').open) loadBans(); };
     if ($('#usAcc')) $('#usAcc').onclick = openAccountsList;
   } catch { box.innerHTML = `<p class="small muted" style="margin:0">${T('No connection')}</p>`; }
 }
@@ -4774,7 +4794,7 @@ function openPrivacy() {
     ${sec('🔗', T('Extra tools'), T('Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.'))}
     ${sec('📊', T('Usage count'), T('To know how many people use Food Tracker, the app sends a random number, the first and last day it was used and how many AI requests it made. With an account, this is stored together with your account. It never contains your food or photos.') + ' ' + T('If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.'))}
     ${sec('🍪', T('Cookies'), T('Food Tracker uses no cookies and no tracking. It only stores on your phone what it needs to work, like your settings, so no cookie banner is needed.'))}
-    ${sec('🌍', T('Where data is stored'), T('The app and the server run on Cloudflare, AI answers come from Google. Their computers can be outside Switzerland and the EU.') + ' ' + T('For security, Cloudflare keeps technical request logs (like your IP address) for a few days.'))}
+    ${sec('🌍', T('Where data is stored'), T('The app and the server run on Cloudflare, AI answers come from Google. Their computers can be outside Switzerland and the EU.') + ' ' + T('For security, Cloudflare keeps technical request logs (like your IP address) for a few days.') + ' ' + T('An address that floods the server is blocked for a day and kept on a block list until then.'))}
     ${sec('✋', T('Your rights'), T('You can get a copy of your data any time (Settings → Backup data), delete it (Settings → Delete all data) and ask what is stored about you.'))}
     ${sec('🚫', T('What never happens'), T('No ads, no tracking and no selling of data. No emails are sent to you.'))}
     ${sec('🗑️', T('Deleting'), T('Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.') + (OWNER.email ? ' ' + T('Lost your phone? Email {email} and your account is deleted.', { email: esc(OWNER.email) }) : ''))}
