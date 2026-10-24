@@ -1286,7 +1286,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v226';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v227';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -4868,10 +4868,9 @@ function openPrivacy() {
     ${sec('🔔', T('Notifications'), T("If you turn on reminders, the server keeps your phone's notification address, your reminder times and your time zone. Nothing else."))}
     ${sec('⌚', T('Watch & tracker'), T('If you connect Apple Health or a tracker, only your calories burned per day are read. For WHOOP, Oura, Polar and Withings the sign-in key is kept on the Food Tracker server, encrypted with a secret that only your phone has. Numbers from the Apple Health Shortcut wait on the server for up to 30 days until your app picks them up.'))}
     ${sec('🔑', T('Password check'), T('When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.'))}
-    ${sec('🏷️', T('Barcodes'), T('When you scan a barcode, only its number is sent to Open Food Facts, a free food database. On some phones the scanner first loads a free reading tool from jsdelivr.net.'))}
+    ${sec('🏷️', T('Barcodes'), T('When you scan a barcode, only its number is sent to Open Food Facts, a free food database.'))}
     ${sec('👥', T('Groups'), T('If you join a group, its members see your name, small profile picture, logging streak and how many days you logged this week, plus your messages. Messages stay on the Food Tracker server for 60 days. Your meals and weight are never shared. Leaving a group removes you from it.'))}
     ${sec('📍', T('Supermarkets near you'), T('Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.'))}
-    ${sec('🔗', T('Extra tools'), T('Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.'))}
     ${sec('📊', T('Usage count'), T('To know how many people use Food Tracker, the app sends a random number, the first and last day it was used and how many AI requests it made. With an account, this is stored together with your account. It never contains your food or photos.') + ' ' + T('If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.'))}
     ${sec('🍪', T('Cookies'), T('Food Tracker uses no cookies and no tracking. It only stores on your phone what it needs to work, like your settings, so no cookie banner is needed.'))}
     ${sec('🌍', T('Where data is stored'), T('The app and the server run on Cloudflare, AI answers come from Google. Their computers can be outside Switzerland and the EU.') + ' ' + T('For security, Cloudflare keeps technical request logs (like your IP address) for a few days.') + ' ' + T('An address that floods the server is blocked for a day and kept on a block list until then.'))}
@@ -4908,7 +4907,9 @@ function getDetector() {
     if ('BarcodeDetector' in window) {
       try { if ((await BarcodeDetector.getSupportedFormats()).includes('ean_13')) return new BarcodeDetector({ formats }); } catch {}
     }
-    const m = await import('https://cdn.jsdelivr.net/npm/barcode-detector@3.2.2/dist/es/ponyfill.js');
+    // The reader and its WebAssembly part come with the app (vendor/barcode), so nothing is loaded from outside
+    const m = await import('./vendor/barcode/ponyfill.js');
+    m.setZXingModuleOverrides({ locateFile: (path, prefix) => path.endsWith('.wasm') ? new URL('vendor/barcode/zxing_reader.wasm', location.href).href : prefix + path });
     return new m.BarcodeDetector({ formats });
   })().catch(e => { bdPromise = null; throw e; }));
 }
@@ -5632,8 +5633,8 @@ let storeCache = null;
 function loadLeaflet() {
   if (window.L) return Promise.resolve();
   return new Promise((res, rej) => {
-    const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css'; document.head.appendChild(css);
-    const js = document.createElement('script'); js.src = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js'; js.onload = res; js.onerror = () => rej(new Error(T('No internet connection?'))); document.head.appendChild(js);
+    const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = 'vendor/leaflet/leaflet.css'; document.head.appendChild(css);
+    const js = document.createElement('script'); js.src = 'vendor/leaflet/leaflet.js'; js.onload = res; js.onerror = () => rej(new Error(T('No internet connection?'))); document.head.appendChild(js);
   });
 }
 const kmBetween = (a, b, c, d) => { const R = 6371, x = (c - a) * Math.PI / 180, y = (d - b) * Math.PI / 180, h = Math.sin(x / 2) ** 2 + Math.cos(a * Math.PI / 180) * Math.cos(c * Math.PI / 180) * Math.sin(y / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); };
@@ -7745,7 +7746,7 @@ function openFaq() {
    with jsPDF (loaded only when needed) and shared or saved. */
 function loadJsPdf() {
   if (window.jspdf) return Promise.resolve();
-  return new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'https://cdn.jsdelivr.net/npm/jspdf@4.2.1/dist/jspdf.umd.min.js'; sc.onload = res; sc.onerror = () => rej(new Error(T('No internet connection?'))); document.head.appendChild(sc); });
+  return new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'vendor/jspdf.umd.min.js'; sc.onload = res; sc.onerror = () => rej(new Error(T('No internet connection?'))); document.head.appendChild(sc); });
 }
 async function makeReport() {
   const p = db.profile; if (!p) return;

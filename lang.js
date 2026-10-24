@@ -1787,7 +1787,8 @@ window.I18N = {
 "Group":"Gruppe",
 "Member":"Mitglied",
 "Report message":"Nachricht melden",
-"Reports go to the app owner, who can remove the message or the member.":"Meldungen gehen an den App-Besitzer, der die Nachricht oder das Mitglied entfernen kann."
+"Reports go to the app owner, who can remove the message or the member.":"Meldungen gehen an den App-Besitzer, der die Nachricht oder das Mitglied entfernen kann.",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Wenn du einen Barcode scannst, wird nur seine Nummer an Open Food Facts geschickt, eine freie Lebensmittel-Datenbank."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3576,7 +3577,8 @@ window.I18N = {
 "Group":"Grupo",
 "Member":"Miembro",
 "Report message":"Denunciar mensaje",
-"Reports go to the app owner, who can remove the message or the member.":"Las denuncias van al dueño de la app, que puede quitar el mensaje o al miembro."
+"Reports go to the app owner, who can remove the message or the member.":"Las denuncias van al dueño de la app, que puede quitar el mensaje o al miembro.",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Al escanear un código de barras, solo se envía su número a Open Food Facts, una base de datos de alimentos libre."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5365,7 +5367,8 @@ window.I18N = {
 "Group":"Groupe",
 "Member":"Membre",
 "Report message":"Signaler le message",
-"Reports go to the app owner, who can remove the message or the member.":"Les signalements vont au propriétaire de l’app, qui peut retirer le message ou le membre."
+"Reports go to the app owner, who can remove the message or the member.":"Les signalements vont au propriétaire de l’app, qui peut retirer le message ou le membre.",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Quand tu scannes un code-barres, seul son numéro est envoyé à Open Food Facts, une base de données alimentaire libre."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -7154,7 +7157,8 @@ window.I18N = {
 "Group":"Gruppo",
 "Member":"Membro",
 "Report message":"Segnala messaggio",
-"Reports go to the app owner, who can remove the message or the member.":"Le segnalazioni vanno al proprietario dell’app, che può rimuovere il messaggio o il membro."
+"Reports go to the app owner, who can remove the message or the member.":"Le segnalazioni vanno al proprietario dell’app, che può rimuovere il messaggio o il membro.",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Quando scansioni un codice a barre, viene inviato solo il suo numero a Open Food Facts, una banca dati alimentare libera."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8943,7 +8947,8 @@ window.I18N = {
 "Group":"グループ",
 "Member":"メンバー",
 "Report message":"メッセージを報告",
-"Reports go to the app owner, who can remove the message or the member.":"報告はアプリのオーナーに届き、メッセージやメンバーを削除できます。"
+"Reports go to the app owner, who can remove the message or the member.":"報告はアプリのオーナーに届き、メッセージやメンバーを削除できます。",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"バーコードを読み取ると、その番号だけが無料の食品データベース Open Food Facts に送信されます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10732,7 +10737,8 @@ window.I18N = {
 "Group":"Groep",
 "Member":"Lid",
 "Report message":"Bericht melden",
-"Reports go to the app owner, who can remove the message or the member.":"Meldingen gaan naar de eigenaar van de app, die het bericht of het lid kan verwijderen."
+"Reports go to the app owner, who can remove the message or the member.":"Meldingen gaan naar de eigenaar van de app, die het bericht of het lid kan verwijderen.",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Als je een barcode scant, wordt alleen het nummer naar Open Food Facts gestuurd, een vrije voedingsdatabase."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -12521,7 +12527,8 @@ window.I18N = {
 "Group":"Grupa",
 "Member":"Członek",
 "Report message":"Zgłoś wiadomość",
-"Reports go to the app owner, who can remove the message or the member.":"Zgłoszenia trafiają do właściciela aplikacji, który może usunąć wiadomość lub członka."
+"Reports go to the app owner, who can remove the message or the member.":"Zgłoszenia trafiają do właściciela aplikacji, który może usunąć wiadomość lub członka.",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Gdy skanujesz kod kreskowy, do Open Food Facts, wolnej bazy danych żywności, wysyłany jest tylko jego numer."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -14310,7 +14317,8 @@ window.I18N = {
 "Group":"Grupo",
 "Member":"Membro",
 "Report message":"Denunciar mensagem",
-"Reports go to the app owner, who can remove the message or the member.":"As denúncias vão para o dono do app, que pode remover a mensagem ou o membro."
+"Reports go to the app owner, who can remove the message or the member.":"As denúncias vão para o dono do app, que pode remover a mensagem ou o membro.",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Ao ler um código de barras, só o número é enviado ao Open Food Facts, uma base de dados de alimentos livre."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -16099,7 +16107,8 @@ window.I18N = {
 "Group":"Группа",
 "Member":"Участник",
 "Report message":"Пожаловаться на сообщение",
-"Reports go to the app owner, who can remove the message or the member.":"Жалобы получает владелец приложения — он может удалить сообщение или участника."
+"Reports go to the app owner, who can remove the message or the member.":"Жалобы получает владелец приложения — он может удалить сообщение или участника.",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"При сканировании штрихкода в Open Food Facts, свободную базу данных продуктов, отправляется только его номер."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -17888,7 +17897,8 @@ window.I18N = {
 "Group":"Grup",
 "Member":"Üye",
 "Report message":"Mesajı bildir",
-"Reports go to the app owner, who can remove the message or the member.":"Bildirimler uygulama sahibine gider; mesajı veya üyeyi kaldırabilir."
+"Reports go to the app owner, who can remove the message or the member.":"Bildirimler uygulama sahibine gider; mesajı veya üyeyi kaldırabilir.",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Barkod taradığında yalnızca numarası ücretsiz bir gıda veritabanı olan Open Food Facts’e gönderilir."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -19677,7 +19687,8 @@ window.I18N = {
 "Group":"群组",
 "Member":"成员",
 "Report message":"举报消息",
-"Reports go to the app owner, who can remove the message or the member.":"举报会发给应用所有者，他可以删除消息或移除成员。"
+"Reports go to the app owner, who can remove the message or the member.":"举报会发给应用所有者，他可以删除消息或移除成员。",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"扫描条形码时，只有条码号会发送到免费的食品数据库 Open Food Facts。"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -21185,7 +21196,8 @@ window.I18N = {
 "Group":"그룹",
 "Member":"멤버",
 "Report message":"메시지 신고",
-"Reports go to the app owner, who can remove the message or the member.":"신고는 앱 운영자에게 전달되며, 메시지나 멤버를 삭제할 수 있어요."
+"Reports go to the app owner, who can remove the message or the member.":"신고는 앱 운영자에게 전달되며, 메시지나 멤버를 삭제할 수 있어요.",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"바코드를 스캔하면 번호만 무료 음식 데이터베이스인 Open Food Facts로 보내요."
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -22693,7 +22705,8 @@ window.I18N = {
 "Group":"ग्रुप",
 "Member":"सदस्य",
 "Report message":"मैसेज की रिपोर्ट करें",
-"Reports go to the app owner, who can remove the message or the member.":"रिपोर्ट ऐप के मालिक को जाती है, जो मैसेज या सदस्य को हटा सकता है।"
+"Reports go to the app owner, who can remove the message or the member.":"रिपोर्ट ऐप के मालिक को जाती है, जो मैसेज या सदस्य को हटा सकता है।",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"बारकोड स्कैन करने पर सिर्फ़ उसका नंबर Open Food Facts को भेजा जाता है, जो एक मुफ़्त खाद्य डेटाबेस है।"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -24201,7 +24214,8 @@ window.I18N = {
 "Group":"Grup",
 "Member":"Anggota",
 "Report message":"Laporkan pesan",
-"Reports go to the app owner, who can remove the message or the member.":"Laporan dikirim ke pemilik aplikasi, yang bisa menghapus pesan atau anggota."
+"Reports go to the app owner, who can remove the message or the member.":"Laporan dikirim ke pemilik aplikasi, yang bisa menghapus pesan atau anggota.",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Saat kamu memindai barcode, hanya nomornya yang dikirim ke Open Food Facts, database makanan gratis."
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -25709,6 +25723,7 @@ window.I18N = {
 "Group":"المجموعة",
 "Member":"عضو",
 "Report message":"الإبلاغ عن الرسالة",
-"Reports go to the app owner, who can remove the message or the member.":"تصل البلاغات إلى مالك التطبيق، الذي يمكنه حذف الرسالة أو العضو."
+"Reports go to the app owner, who can remove the message or the member.":"تصل البلاغات إلى مالك التطبيق، الذي يمكنه حذف الرسالة أو العضو.",
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"عند مسح باركود يُرسل رقمه فقط إلى Open Food Facts، وهي قاعدة بيانات أطعمة مجانية."
 }
 };
