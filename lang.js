@@ -1802,7 +1802,10 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"Noch nicht erlaubt. Tippe, um zu sehen, was geteilt wird.",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Beim kostenlosen Gemini-Angebot darf Google das Gesendete nutzen, um seine Dienste zu verbessern. Bitte schick keine medizinischen Dokumente.",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Um deine Essensfotos zu lesen, als Coach zu antworten und Mahlzeiten zu planen, geht das Gesendete (Foto, Text oder Sprache) über den Food-Tracker-Server an Google Gemini oder, wenn Google ausgelastet ist, an Cloudflare AI. Der Server speichert es nicht.",
-"Turn AI off":"KI ausschalten"
+"Turn AI off":"KI ausschalten",
+"Describe it instead":"Lieber beschreiben",
+"Take a photo of what you eat next. The AI counts the calories for you.":"Fotografiere, was du als Nächstes isst. Die KI zählt die Kalorien für dich.",
+"You're all set! Log your first meal":"Alles bereit! Erfasse deine erste Mahlzeit"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3606,7 +3609,10 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"Aún no permitida. Toca para ver qué se comparte.",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Con el plan gratuito de Gemini, Google puede usar lo que se envía para mejorar sus servicios. No envíes documentos médicos.",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Para leer tus fotos de comida, responder como tu coach y planear comidas, lo que envías (foto, texto o voz) pasa por el servidor de Food Tracker a Google Gemini, o a Cloudflare AI cuando Google está ocupado. El servidor no lo guarda.",
-"Turn AI off":"Desactivar IA"
+"Turn AI off":"Desactivar IA",
+"Describe it instead":"Mejor descríbelo",
+"Take a photo of what you eat next. The AI counts the calories for you.":"Hazle una foto a lo próximo que comas. La IA cuenta las calorías por ti.",
+"You're all set! Log your first meal":"¡Todo listo! Registra tu primera comida"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5410,7 +5416,10 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"Pas encore autorisée. Touche pour voir ce qui est partagé.",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Avec l’offre gratuite de Gemini, Google peut utiliser ce qui est envoyé pour améliorer ses services. N’envoie pas de documents médicaux.",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Pour lire tes photos de repas, répondre comme coach et planifier tes repas, ce que tu envoies (photo, texte ou voix) passe par le serveur de Food Tracker vers Google Gemini, ou vers Cloudflare AI quand Google est saturé. Le serveur ne le garde pas.",
-"Turn AI off":"Désactiver l’IA"
+"Turn AI off":"Désactiver l’IA",
+"Describe it instead":"Plutôt le décrire",
+"Take a photo of what you eat next. The AI counts the calories for you.":"Prends en photo ce que tu vas manger. L’IA compte les calories pour toi.",
+"You're all set! Log your first meal":"Tout est prêt ! Enregistre ton premier repas"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -7214,7 +7223,10 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"Non ancora consentita. Tocca per vedere cosa viene condiviso.",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Con il piano gratuito di Gemini, Google può usare ciò che viene inviato per migliorare i suoi servizi. Non inviare documenti medici.",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Per leggere le foto dei tuoi pasti, rispondere come coach e pianificare i pasti, ciò che invii (foto, testo o voce) passa dal server di Food Tracker a Google Gemini, o a Cloudflare AI quando Google è occupato. Il server non lo conserva.",
-"Turn AI off":"Disattiva IA"
+"Turn AI off":"Disattiva IA",
+"Describe it instead":"Descrivilo invece",
+"Take a photo of what you eat next. The AI counts the calories for you.":"Fotografa quello che mangi adesso. L’IA conta le calorie per te.",
+"You're all set! Log your first meal":"Tutto pronto! Registra il tuo primo pasto"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -9018,7 +9030,10 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"まだ許可されていません。タップして共有内容を確認。",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Gemini の無料プランでは、送信内容が Google のサービス改善に使われる場合があります。医療書類は送らないでください。",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"食事の写真を読み取り、コーチとして答え、食事を計画するために、送信した内容（写真・テキスト・音声）は Food Tracker のサーバーを通って Google Gemini に、Google が混雑しているときは Cloudflare AI に送られます。サーバーには保存されません。",
-"Turn AI off":"AIをオフにする"
+"Turn AI off":"AIをオフにする",
+"Describe it instead":"文章で入力する",
+"Take a photo of what you eat next. The AI counts the calories for you.":"次に食べるものを撮影してください。AIがカロリーを数えます。",
+"You're all set! Log your first meal":"準備完了！最初の食事を記録しましょう"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10822,7 +10837,10 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"Nog niet toegestaan. Tik om te zien wat er gedeeld wordt.",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Bij het gratis Gemini-abonnement mag Google wat er wordt verstuurd gebruiken om zijn diensten te verbeteren. Stuur geen medische documenten.",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Om je maaltijdfoto’s te lezen, als coach te antwoorden en maaltijden te plannen, gaat wat je stuurt (foto, tekst of spraak) via de Food Tracker-server naar Google Gemini, of naar Cloudflare AI als Google druk is. De server bewaart het niet.",
-"Turn AI off":"AI uitzetten"
+"Turn AI off":"AI uitzetten",
+"Describe it instead":"Liever beschrijven",
+"Take a photo of what you eat next. The AI counts the calories for you.":"Maak een foto van wat je zo gaat eten. De AI telt de calorieën voor je.",
+"You're all set! Log your first meal":"Alles klaar! Log je eerste maaltijd"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -12626,7 +12644,10 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"Jeszcze nie dozwolona. Dotknij, aby zobaczyć, co jest udostępniane.",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"W darmowym planie Gemini Google może wykorzystywać przesłane treści do ulepszania swoich usług. Nie wysyłaj dokumentów medycznych.",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Aby odczytywać zdjęcia posiłków, odpowiadać jako trener i planować posiłki, to, co wysyłasz (zdjęcie, tekst lub głos), trafia przez serwer Food Tracker do Google Gemini, a gdy Google jest zajęty – do Cloudflare AI. Serwer tego nie przechowuje.",
-"Turn AI off":"Wyłącz AI"
+"Turn AI off":"Wyłącz AI",
+"Describe it instead":"Opisz zamiast tego",
+"Take a photo of what you eat next. The AI counts the calories for you.":"Zrób zdjęcie tego, co zaraz zjesz. AI policzy za Ciebie kalorie.",
+"You're all set! Log your first meal":"Wszystko gotowe! Zapisz swój pierwszy posiłek"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -14430,7 +14451,10 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"Ainda não permitida. Toque para ver o que é compartilhado.",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"No plano gratuito do Gemini, o Google pode usar o que é enviado para melhorar seus serviços. Não envie documentos médicos.",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Para ler suas fotos de comida, responder como seu coach e planejar refeições, o que você envia (foto, texto ou voz) passa pelo servidor do Food Tracker até o Google Gemini, ou até o Cloudflare AI quando o Google está ocupado. O servidor não guarda nada.",
-"Turn AI off":"Desligar IA"
+"Turn AI off":"Desligar IA",
+"Describe it instead":"Prefiro descrever",
+"Take a photo of what you eat next. The AI counts the calories for you.":"Tire uma foto do que você vai comer. A IA conta as calorias para você.",
+"You're all set! Log your first meal":"Tudo pronto! Registre sua primeira refeição"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -16234,7 +16258,10 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"Ещё не разрешено. Нажми, чтобы увидеть, что передаётся.",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"В бесплатном тарифе Gemini Google может использовать отправленное для улучшения своих сервисов. Не отправляй медицинские документы.",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Чтобы читать фото еды, отвечать как коуч и планировать питание, то, что ты отправляешь (фото, текст или голос), идёт через сервер Food Tracker в Google Gemini, а если Google занят — в Cloudflare AI. Сервер это не хранит.",
-"Turn AI off":"Выключить ИИ"
+"Turn AI off":"Выключить ИИ",
+"Describe it instead":"Лучше описать",
+"Take a photo of what you eat next. The AI counts the calories for you.":"Сфотографируй то, что будешь есть. ИИ посчитает калории за тебя.",
+"You're all set! Log your first meal":"Всё готово! Запиши свой первый приём пищи"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -18038,7 +18065,10 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"Henüz izin verilmedi. Neyin paylaşıldığını görmek için dokun.",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Ücretsiz Gemini planında Google, gönderilenleri hizmetlerini geliştirmek için kullanabilir. Lütfen tıbbi belge gönderme.",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Yemek fotoğraflarını okumak, koç olarak yanıt vermek ve öğün planlamak için gönderdiklerin (fotoğraf, metin veya ses) Food Tracker sunucusu üzerinden Google Gemini’ye, Google yoğunsa Cloudflare AI’a gider. Sunucu bunu saklamaz.",
-"Turn AI off":"Yapay zekâyı kapat"
+"Turn AI off":"Yapay zekâyı kapat",
+"Describe it instead":"Bunun yerine anlat",
+"Take a photo of what you eat next. The AI counts the calories for you.":"Sıradaki yiyeceğinin fotoğrafını çek. Yapay zekâ kalorileri senin için sayar.",
+"You're all set! Log your first meal":"Her şey hazır! İlk öğününü kaydet"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -19842,7 +19872,10 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"尚未允许。轻点查看会分享哪些内容。",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"在 Gemini 免费方案下，Google 可能会使用发送的内容来改进服务。请不要发送医疗文件。",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"为了识别你的食物照片、以教练身份回答并规划餐食，你发送的内容（照片、文字或语音）会经由 Food Tracker 服务器发送给 Google Gemini，Google 繁忙时则发送给 Cloudflare AI。服务器不会保存。",
-"Turn AI off":"关闭 AI"
+"Turn AI off":"关闭 AI",
+"Describe it instead":"改为文字描述",
+"Take a photo of what you eat next. The AI counts the calories for you.":"拍下你接下来要吃的东西，AI 会帮你计算卡路里。",
+"You're all set! Log your first meal":"一切就绪！记录你的第一餐"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -21365,7 +21398,10 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"아직 허용하지 않았어요. 탭해서 무엇이 공유되는지 확인하세요.",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Gemini 무료 플랜에서는 Google이 보낸 내용을 서비스 개선에 사용할 수 있어요. 의료 서류는 보내지 마세요.",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"음식 사진을 읽고, 코치로 답하고, 식단을 짜기 위해 보내는 내용(사진, 글, 음성)은 Food Tracker 서버를 거쳐 Google Gemini로, Google이 바쁠 때는 Cloudflare AI로 보내져요. 서버는 이를 저장하지 않아요.",
-"Turn AI off":"AI 끄기"
+"Turn AI off":"AI 끄기",
+"Describe it instead":"대신 설명하기",
+"Take a photo of what you eat next. The AI counts the calories for you.":"다음에 먹을 음식을 찍어 보세요. AI가 칼로리를 계산해 줘요.",
+"You're all set! Log your first meal":"준비 완료! 첫 식사를 기록해요"
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -22888,7 +22924,10 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"अभी अनुमति नहीं दी। क्या शेयर होता है, देखने के लिए टैप करें।",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Gemini के मुफ़्त प्लान में Google भेजी गई चीज़ों का इस्तेमाल अपनी सेवाएँ बेहतर करने में कर सकता है। कृपया मेडिकल दस्तावेज़ न भेजें।",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"आपकी खाने की फ़ोटो पढ़ने, कोच की तरह जवाब देने और मील प्लान बनाने के लिए, आप जो भेजते हैं (फ़ोटो, टेक्स्ट या आवाज़) वह Food Tracker सर्वर से होकर Google Gemini को जाता है, और Google व्यस्त हो तो Cloudflare AI को। सर्वर इसे नहीं रखता।",
-"Turn AI off":"AI बंद करें"
+"Turn AI off":"AI बंद करें",
+"Describe it instead":"इसके बजाय लिखकर बताएँ",
+"Take a photo of what you eat next. The AI counts the calories for you.":"अगली बार जो खाएँ उसकी फ़ोटो लें। AI आपके लिए कैलोरी गिनेगा।",
+"You're all set! Log your first meal":"सब तैयार है! अपना पहला खाना दर्ज करें"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -24411,7 +24450,10 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"Belum diizinkan. Ketuk untuk melihat apa yang dibagikan.",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Pada paket gratis Gemini, Google boleh memakai yang dikirim untuk meningkatkan layanannya. Jangan kirim dokumen medis.",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Untuk membaca foto makananmu, menjawab sebagai coach, dan merencanakan makanan, yang kamu kirim (foto, teks, atau suara) lewat server Food Tracker ke Google Gemini, atau ke Cloudflare AI saat Google sibuk. Server tidak menyimpannya.",
-"Turn AI off":"Matikan AI"
+"Turn AI off":"Matikan AI",
+"Describe it instead":"Jelaskan saja",
+"Take a photo of what you eat next. The AI counts the calories for you.":"Foto makanan yang akan kamu makan. AI menghitung kalorinya untukmu.",
+"You're all set! Log your first meal":"Semua siap! Catat makan pertamamu"
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -25934,6 +25976,9 @@ window.I18N = {
 "Not allowed yet. Tap to see what is shared.":"غير مسموح بعد. اضغط لترى ما الذي تتم مشاركته.",
 "On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"في خطة Gemini المجانية قد تستخدم Google ما يُرسل لتحسين خدماتها. لا ترسل مستندات طبية.",
 "To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"لقراءة صور طعامك والرد كمدربك وتخطيط الوجبات، يمر ما ترسله (صورة أو نص أو صوت) عبر خادم Food Tracker إلى Google Gemini، أو إلى Cloudflare AI عندما تكون Google مشغولة. الخادم لا يحتفظ به.",
-"Turn AI off":"إيقاف الذكاء الاصطناعي"
+"Turn AI off":"إيقاف الذكاء الاصطناعي",
+"Describe it instead":"صِفها بدلًا من ذلك",
+"Take a photo of what you eat next. The AI counts the calories for you.":"صوّر ما ستأكله الآن، وسيحسب الذكاء الاصطناعي السعرات لك.",
+"You're all set! Log your first meal":"كل شيء جاهز! سجّل وجبتك الأولى"
 }
 };

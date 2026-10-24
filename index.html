@@ -1290,7 +1290,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v231';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v232';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3513,6 +3513,23 @@ function openAccountSheet(mode = 'signup') {
 // Once, after someone has started using the app: invite them to create an account
 // First setup: offered right after the tour (then the reminders question follows). "Later" asks once more
 // after 3 days; Settings → Account & backup always has it. Older users: once, after their first meal.
+// After setup, tour, reminders and the account question: no silent moment, but straight to the first win (log a meal).
+// Shown once, only while nothing is logged; it waits until no other window is open.
+function firstMealNudge(tries = 0) {
+  if (db.meals.length || LS.get('ft_first_nudge', '') || !db.profile) return;
+  if ($('.backdrop') || $('.page') || $('#onb') || $('#tourLayer') || $('#camPg')) { if (tries < 120) setTimeout(() => firstMealNudge(tries + 1), 700); return; }
+  LS.set('ft_first_nudge', '1');
+  sheet(`<div style="text-align:center;padding:6px 4px 0"><div class="askbell">📷</div>
+      <h3 style="margin:14px 0 6px">${T("You're all set! Log your first meal")}</h3>
+      <p class="muted" style="margin:0 0 18px">${T('Take a photo of what you eat next. The AI counts the calories for you.')}</p>
+      <button class="btn" id="fmScan">${ic('camera')} ${T('Scan food')}</button>
+      <button class="btn outline" id="fmDesc" style="margin-top:10px">${ic('pencil')} ${T('Describe it instead')}</button>
+      <button class="small muted" id="fmLater" style="display:block;margin:12px auto 0;padding:6px">${T('Later')}</button></div>`, sh => {
+    sh.querySelector('#fmScan').onclick = () => { closeSheet(); setTimeout(() => LS.get('ft_scanTips', '') ? openCamera('food') : openScanTips('food'), 250); };
+    sh.querySelector('#fmDesc').onclick = () => { closeSheet(); setTimeout(openDescribeSheet, 250); };
+    sh.querySelector('#fmLater').onclick = closeSheet;
+  });
+}
 function askAccount(first, then) {
   const next = () => { if (then) { const t = then; then = null; setTimeout(t, 500); } };
   const st = LS.get('ft_acct_ask', '');
@@ -8405,7 +8422,7 @@ function finishOnboarding() {
   if (!db.weights.length || currentWeight() !== p.weight) { db.weights = db.weights.filter(w => w.date !== iso()); db.weights.push({ date: iso(), kg: p.weight }); }
   LS.set('ft_lang', LANG);
   save(); ob = null; $('#onb')?.remove(); go('home'); toast('🎉 ' + T('Your plan is ready'));
-  if (!LS.get('ft_tour', '')) setTimeout(() => openTour(() => setTimeout(() => askReminders(true, () => askAccount(true)), 600)), 700);
+  if (!LS.get('ft_tour', '')) setTimeout(() => openTour(() => setTimeout(() => askReminders(true, () => askAccount(true, firstMealNudge)), 600)), 700);
   else setTimeout(() => askReminders(true), 1800);
 }
 
