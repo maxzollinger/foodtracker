@@ -1637,7 +1637,8 @@ window.I18N = {
 "Account actions":"Kontoaktionen",
 "Delete account":"Konto löschen",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Dein Konto löschen? Die Sicherung und die gespeicherten Mahlzeitenfotos werden vom Server gelöscht. Die Daten auf diesem Handy bleiben.",
-"Account deleted":"Konto gelöscht"
+"Account deleted":"Konto gelöscht",
+"Legal":"Rechtliches"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3276,7 +3277,8 @@ window.I18N = {
 "Account actions":"Acciones de la cuenta",
 "Delete account":"Eliminar cuenta",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"¿Eliminar tu cuenta? Su copia de seguridad y las fotos de comidas guardadas se borran del servidor. Los datos de este móvil se mantienen.",
-"Account deleted":"Cuenta eliminada"
+"Account deleted":"Cuenta eliminada",
+"Legal":"Legal"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4915,7 +4917,8 @@ window.I18N = {
 "Account actions":"Actions du compte",
 "Delete account":"Supprimer le compte",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Supprimer ton compte ? Sa sauvegarde et les photos de repas enregistrées sont supprimées du serveur. Les données de ce téléphone restent.",
-"Account deleted":"Compte supprimé"
+"Account deleted":"Compte supprimé",
+"Legal":"Mentions légales"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6554,7 +6557,8 @@ window.I18N = {
 "Account actions":"Azioni account",
 "Delete account":"Elimina account",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Eliminare il tuo account? Il backup e le foto dei pasti salvate vengono cancellati dal server. I dati su questo telefono restano.",
-"Account deleted":"Account eliminato"
+"Account deleted":"Account eliminato",
+"Legal":"Note legali"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8193,7 +8197,8 @@ window.I18N = {
 "Account actions":"アカウント操作",
 "Delete account":"アカウントを削除",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"アカウントを削除しますか？バックアップと保存した食事写真はサーバーから削除されます。このスマホのデータは残ります。",
-"Account deleted":"アカウントを削除しました"
+"Account deleted":"アカウントを削除しました",
+"Legal":"法的情報"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -9832,7 +9837,8 @@ window.I18N = {
 "Account actions":"Accountacties",
 "Delete account":"Account verwijderen",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Je account verwijderen? De back-up en opgeslagen maaltijdfoto's worden van de server verwijderd. De gegevens op deze telefoon blijven.",
-"Account deleted":"Account verwijderd"
+"Account deleted":"Account verwijderd",
+"Legal":"Juridisch"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -11471,7 +11477,8 @@ window.I18N = {
 "Account actions":"Działania na koncie",
 "Delete account":"Usuń konto",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Usunąć Twoje konto? Kopia zapasowa i zapisane zdjęcia posiłków zostaną usunięte z serwera. Dane na tym telefonie zostaną.",
-"Account deleted":"Konto usunięte"
+"Account deleted":"Konto usunięte",
+"Legal":"Informacje prawne"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -13110,7 +13117,8 @@ window.I18N = {
 "Account actions":"Ações da conta",
 "Delete account":"Apagar conta",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Apagar a tua conta? A cópia de segurança e as fotos de refeições guardadas são apagadas do servidor. Os dados neste telemóvel ficam.",
-"Account deleted":"Conta apagada"
+"Account deleted":"Conta apagada",
+"Legal":"Informação legal"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -14749,7 +14757,8 @@ window.I18N = {
 "Account actions":"Действия с аккаунтом",
 "Delete account":"Удалить аккаунт",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Удалить твой аккаунт? Резервная копия и сохранённые фото блюд будут удалены с сервера. Данные на этом телефоне останутся.",
-"Account deleted":"Аккаунт удалён"
+"Account deleted":"Аккаунт удалён",
+"Legal":"Правовая информация"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -16388,7 +16397,8 @@ window.I18N = {
 "Account actions":"Hesap işlemleri",
 "Delete account":"Hesabı sil",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Hesabın silinsin mi? Yedeği ve kayıtlı yemek fotoğrafları sunucudan silinir. Bu telefondaki veriler kalır.",
-"Account deleted":"Hesap silindi"
+"Account deleted":"Hesap silindi",
+"Legal":"Yasal"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -18027,7 +18037,8 @@ window.I18N = {
 "Account actions":"账户操作",
 "Delete account":"删除账户",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"要删除你的账户吗？其备份和已保存的餐食照片将从服务器删除。这部手机上的数据会保留。",
-"Account deleted":"账户已删除"
+"Account deleted":"账户已删除",
+"Legal":"法律信息"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -19384,7 +19395,8 @@ window.I18N = {
 "Account actions":"계정 관리",
 "Delete account":"계정 삭제",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"계정을 삭제할까요? 백업과 저장된 식사 사진이 서버에서 삭제돼요. 이 폰의 데이터는 남아요.",
-"Account deleted":"계정이 삭제됐어요"
+"Account deleted":"계정이 삭제됐어요",
+"Legal":"법적 고지"
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -20741,7 +20753,8 @@ window.I18N = {
 "Account actions":"खाते की कार्रवाइयाँ",
 "Delete account":"खाता हटाएँ",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"अपना खाता हटाएँ? इसका बैकअप और सेव की गई भोजन की फ़ोटो सर्वर से हट जाएँगी। इस फ़ोन का डेटा रहेगा।",
-"Account deleted":"खाता हटा दिया गया"
+"Account deleted":"खाता हटा दिया गया",
+"Legal":"कानूनी"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -22098,7 +22111,8 @@ window.I18N = {
 "Account actions":"Tindakan akun",
 "Delete account":"Hapus akun",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Hapus akunmu? Cadangan dan foto makanan yang tersimpan akan dihapus dari server. Data di ponsel ini tetap ada.",
-"Account deleted":"Akun dihapus"
+"Account deleted":"Akun dihapus",
+"Legal":"Legal"
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -23455,6 +23469,7 @@ window.I18N = {
 "Account actions":"إجراءات الحساب",
 "Delete account":"حذف الحساب",
 "Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"حذف حسابك؟ ستُحذف نسخته الاحتياطية وصور الوجبات المحفوظة من الخادم. تبقى البيانات على هذا الهاتف.",
-"Account deleted":"تم حذف الحساب"
+"Account deleted":"تم حذف الحساب",
+"Legal":"المعلومات القانونية"
 }
 };
