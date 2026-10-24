@@ -1678,7 +1678,18 @@ window.I18N = {
 "Share":"Teilen",
 "Move and scale":"Bewegen und skalieren",
 "Use photo":"Foto verwenden",
-"Zoom":"Zoom"
+"Zoom":"Zoom",
+"Extra tools":"Zusatz-Tools",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"Aus Sicherheitsgründen speichert Cloudflare technische Anfrage-Protokolle (z. B. deine IP-Adresse) für ein paar Tage.",
+"Helplines in every country: findahelpline.com":"Hilfe in jedem Land: findahelpline.com",
+"In danger right now? Call {n}.":"In akuter Gefahr? Ruf {n} an.",
+"No connection. Nothing was deleted. Please try again when you are online.":"Keine Verbindung. Es wurde nichts gelöscht. Bitte versuch es nochmals, wenn du online bist.",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"Beim kostenlosen Gemini-Angebot darf Google das Gesendete nutzen, um seine Dienste zu verbessern, und Mitarbeitende von Google können es ansehen.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"Einstellungen → Alle Daten löschen entfernt alles auf diesem Handy und alles dazu auf dem Server: Konto, Fotos, deine Gruppennachrichten, Erinnerungen, Apple-Health-Werte und die Tracker-Verbindung.",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Einige Zusatz-Tools (Barcode-Leser, Karte, PDF-Bericht) werden beim ersten Gebrauch von jsdelivr.net geladen. Wie jede Website sieht es dabei deine IP-Adresse.",
+"Talk to someone now, free and confidential:":"Sprich jetzt mit jemandem, kostenlos und vertraulich:",
+"You are not alone":"Du bist nicht allein",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Nur wenn du darauf tippst: Dein Standort, auf etwa 100 m gerundet, wird an OpenStreetMap gesendet, um Geschäfte zu finden, und die Kartenbilder werden von OpenStreetMap geladen. Die KI bekommt die Namen der Geschäfte, deine Einkaufsliste, dein Budget und deine Ernährungsweise, nie deinen Standort."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3358,7 +3369,18 @@ window.I18N = {
 "Share":"Compartir",
 "Move and scale":"Mover y escalar",
 "Use photo":"Usar foto",
-"Zoom":"Zoom"
+"Zoom":"Zoom",
+"Extra tools":"Herramientas extra",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"Por seguridad, Cloudflare guarda registros técnicos de las solicitudes (como tu dirección IP) durante unos días.",
+"Helplines in every country: findahelpline.com":"Líneas de ayuda en todos los países: findahelpline.com",
+"In danger right now? Call {n}.":"¿Estás en peligro ahora? Llama al {n}.",
+"No connection. Nothing was deleted. Please try again when you are online.":"Sin conexión. No se ha borrado nada. Inténtalo de nuevo cuando tengas internet.",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"Con el plan gratuito de Gemini, Google puede usar lo que se envía para mejorar sus servicios, y personas de Google pueden revisarlo.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"Ajustes → Borrar todos los datos elimina todo lo que hay en este teléfono y todo lo relacionado en el servidor: cuenta, fotos, tus mensajes de grupo, recordatorios, datos de Apple Health y la conexión del tracker.",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Algunas herramientas extra (lector de códigos de barras, mapa, informe PDF) se cargan desde jsdelivr.net la primera vez que las usas. Como cualquier web, ve tu dirección IP.",
+"Talk to someone now, free and confidential:":"Habla ahora con alguien, gratis y de forma confidencial:",
+"You are not alone":"No estás solo/a",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Solo cuando lo tocas: tu ubicación, redondeada a unos 100 m, se envía a OpenStreetMap para buscar tiendas, y las imágenes del mapa se cargan desde OpenStreetMap. La IA recibe los nombres de las tiendas, tu lista de la compra, tu presupuesto y tu dieta, nunca tu ubicación."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5038,7 +5060,18 @@ window.I18N = {
 "Share":"Partager",
 "Move and scale":"Déplacer et redimensionner",
 "Use photo":"Utiliser la photo",
-"Zoom":"Zoom"
+"Zoom":"Zoom",
+"Extra tools":"Outils supplémentaires",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"Pour la sécurité, Cloudflare garde des journaux techniques des requêtes (comme ton adresse IP) pendant quelques jours.",
+"Helplines in every country: findahelpline.com":"Lignes d'écoute dans tous les pays : findahelpline.com",
+"In danger right now? Call {n}.":"En danger maintenant ? Appelle le {n}.",
+"No connection. Nothing was deleted. Please try again when you are online.":"Pas de connexion. Rien n'a été supprimé. Réessaie quand tu es en ligne.",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"Avec l'offre gratuite de Gemini, Google peut utiliser ce qui est envoyé pour améliorer ses services, et des personnes chez Google peuvent le relire.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"Réglages → Supprimer toutes les données efface tout sur ce téléphone et tout ce qui le concerne sur le serveur : compte, photos, tes messages de groupe, rappels, données Apple Santé et connexion au tracker.",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Certains outils supplémentaires (lecteur de code-barres, carte, rapport PDF) sont chargés depuis jsdelivr.net la première fois que tu les utilises. Comme tout site web, il voit ton adresse IP.",
+"Talk to someone now, free and confidential:":"Parle à quelqu'un maintenant, gratuitement et en toute confidentialité :",
+"You are not alone":"Tu n'es pas seul·e",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Seulement quand tu touches le bouton : ta position, arrondie à environ 100 m, est envoyée à OpenStreetMap pour trouver des magasins, et les images de la carte viennent d'OpenStreetMap. L'IA reçoit le nom des magasins, ta liste de courses, ton budget et ton régime, jamais ta position."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6718,7 +6751,18 @@ window.I18N = {
 "Share":"Condividi",
 "Move and scale":"Sposta e ridimensiona",
 "Use photo":"Usa foto",
-"Zoom":"Zoom"
+"Zoom":"Zoom",
+"Extra tools":"Strumenti extra",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"Per sicurezza, Cloudflare conserva per qualche giorno i log tecnici delle richieste (come il tuo indirizzo IP).",
+"Helplines in every country: findahelpline.com":"Linee di aiuto in ogni paese: findahelpline.com",
+"In danger right now? Call {n}.":"Sei in pericolo adesso? Chiama il {n}.",
+"No connection. Nothing was deleted. Please try again when you are online.":"Nessuna connessione. Non è stato eliminato nulla. Riprova quando sei online.",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"Con il piano gratuito di Gemini, Google può usare ciò che viene inviato per migliorare i suoi servizi, e alcune persone di Google possono esaminarlo.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"Impostazioni → Elimina tutti i dati cancella tutto su questo telefono e tutto ciò che lo riguarda sul server: account, foto, i tuoi messaggi nei gruppi, promemoria, dati di Apple Salute e collegamento al tracker.",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Alcuni strumenti extra (lettore di codici a barre, mappa, report PDF) vengono caricati da jsdelivr.net la prima volta che li usi. Come ogni sito web, vede il tuo indirizzo IP.",
+"Talk to someone now, free and confidential:":"Parla subito con qualcuno, gratis e in modo riservato:",
+"You are not alone":"Non sei solo/a",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Solo quando lo tocchi: la tua posizione, arrotondata a circa 100 m, viene inviata a OpenStreetMap per trovare i negozi, e le immagini della mappa arrivano da OpenStreetMap. L'IA riceve i nomi dei negozi, la tua lista della spesa, il budget e la dieta, mai la tua posizione."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8398,7 +8442,18 @@ window.I18N = {
 "Share":"共有",
 "Move and scale":"移動と拡大縮小",
 "Use photo":"写真を使用",
-"Zoom":"ズーム"
+"Zoom":"ズーム",
+"Extra tools":"追加ツール",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"セキュリティのため、Cloudflareは技術的なリクエストログ（IPアドレスなど）を数日間保存します。",
+"Helplines in every country: findahelpline.com":"世界各国の相談窓口：findahelpline.com",
+"In danger right now? Call {n}.":"今すぐ危険な状態なら、{n} に電話してください。",
+"No connection. Nothing was deleted. Please try again when you are online.":"接続がありません。何も削除されていません。オンラインのときにもう一度お試しください。",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"Geminiの無料プランでは、送信された内容がGoogleのサービス改善に使われ、Googleのスタッフが確認する場合があります。",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"設定 → すべてのデータを削除 で、このスマホ上のすべてと、サーバー上の関連データ（アカウント、写真、グループのメッセージ、リマインダー、Apple Healthの数値、トラッカー連携）が削除されます。",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"一部の追加ツール（バーコードリーダー、地図、PDFレポート）は、初めて使うときにjsdelivr.netから読み込まれます。一般的なウェブサイトと同じく、IPアドレスが相手に見えます。",
+"Talk to someone now, free and confidential:":"今すぐ誰かに話してください。無料で秘密は守られます：",
+"You are not alone":"あなたはひとりではありません",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"タップしたときだけ：約100 mに丸めた位置情報がお店を探すためにOpenStreetMapに送られ、地図画像もOpenStreetMapから読み込まれます。AIが受け取るのはお店の名前、買い物リスト、予算、食事スタイルだけで、位置情報は送られません。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10078,7 +10133,18 @@ window.I18N = {
 "Share":"Delen",
 "Move and scale":"Verplaats en schaal",
 "Use photo":"Foto gebruiken",
-"Zoom":"Zoom"
+"Zoom":"Zoom",
+"Extra tools":"Extra tools",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"Voor de veiligheid bewaart Cloudflare een paar dagen technische logboeken van verzoeken (zoals je IP-adres).",
+"Helplines in every country: findahelpline.com":"Hulplijnen in elk land: findahelpline.com",
+"In danger right now? Call {n}.":"Nu in gevaar? Bel {n}.",
+"No connection. Nothing was deleted. Please try again when you are online.":"Geen verbinding. Er is niets verwijderd. Probeer het opnieuw als je online bent.",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"Bij het gratis Gemini-abonnement mag Google wat er wordt verstuurd gebruiken om zijn diensten te verbeteren, en mensen bij Google kunnen het bekijken.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"Instellingen → Alle gegevens wissen verwijdert alles op deze telefoon en alles wat erbij hoort op de server: account, foto’s, je groepsberichten, herinneringen, Apple Gezondheid-gegevens en de trackerkoppeling.",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Sommige extra tools (barcodelezer, kaart, pdf-rapport) worden bij het eerste gebruik geladen van jsdelivr.net. Zoals elke website ziet het je IP-adres.",
+"Talk to someone now, free and confidential:":"Praat nu met iemand, gratis en vertrouwelijk:",
+"You are not alone":"Je bent niet alleen",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Alleen als je erop tikt: je locatie, afgerond op ongeveer 100 m, wordt naar OpenStreetMap gestuurd om winkels te vinden, en de kaartafbeeldingen komen van OpenStreetMap. De AI krijgt de namen van de winkels, je boodschappenlijst, budget en dieet, nooit je locatie."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -11758,7 +11824,18 @@ window.I18N = {
 "Share":"Udostępnij",
 "Move and scale":"Przesuń i skaluj",
 "Use photo":"Użyj zdjęcia",
-"Zoom":"Powiększenie"
+"Zoom":"Powiększenie",
+"Extra tools":"Dodatkowe narzędzia",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"Ze względów bezpieczeństwa Cloudflare przechowuje przez kilka dni techniczne logi zapytań (np. Twój adres IP).",
+"Helplines in every country: findahelpline.com":"Telefony zaufania w każdym kraju: findahelpline.com",
+"In danger right now? Call {n}.":"Jesteś teraz w niebezpieczeństwie? Zadzwoń pod {n}.",
+"No connection. Nothing was deleted. Please try again when you are online.":"Brak połączenia. Nic nie zostało usunięte. Spróbuj ponownie, gdy będziesz online.",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"W darmowym planie Gemini Google może wykorzystywać przesłane treści do ulepszania swoich usług, a pracownicy Google mogą je przeglądać.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"Ustawienia → Usuń wszystkie dane usuwa wszystko z tego telefonu i wszystko, co go dotyczy na serwerze: konto, zdjęcia, Twoje wiadomości w grupach, przypomnienia, dane z Apple Zdrowie i połączenie z trackerem.",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Niektóre dodatkowe narzędzia (czytnik kodów kreskowych, mapa, raport PDF) są ładowane z jsdelivr.net przy pierwszym użyciu. Jak każda strona internetowa widzi on Twój adres IP.",
+"Talk to someone now, free and confidential:":"Porozmawiaj teraz z kimś, bezpłatnie i poufnie:",
+"You are not alone":"Nie jesteś sam/sama",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Tylko po stuknięciu: Twoja lokalizacja, zaokrąglona do ok. 100 m, jest wysyłana do OpenStreetMap, aby znaleźć sklepy, a obrazy mapy są ładowane z OpenStreetMap. AI dostaje nazwy sklepów, Twoją listę zakupów, budżet i dietę, nigdy Twoją lokalizację."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -13438,7 +13515,18 @@ window.I18N = {
 "Share":"Compartilhar",
 "Move and scale":"Mover e redimensionar",
 "Use photo":"Usar foto",
-"Zoom":"Zoom"
+"Zoom":"Zoom",
+"Extra tools":"Ferramentas extras",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"Por segurança, a Cloudflare guarda registros técnicos das solicitações (como seu endereço IP) por alguns dias.",
+"Helplines in every country: findahelpline.com":"Linhas de apoio em todos os países: findahelpline.com",
+"In danger right now? Call {n}.":"Em perigo agora? Ligue para {n}.",
+"No connection. Nothing was deleted. Please try again when you are online.":"Sem conexão. Nada foi apagado. Tente de novo quando estiver online.",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"No plano gratuito do Gemini, o Google pode usar o que é enviado para melhorar seus serviços, e pessoas do Google podem revisar.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"Ajustes → Apagar todos os dados remove tudo deste celular e tudo relacionado a ele no servidor: conta, fotos, suas mensagens nos grupos, lembretes, dados do Apple Saúde e a conexão com o tracker.",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Algumas ferramentas extras (leitor de código de barras, mapa, relatório em PDF) são carregadas do jsdelivr.net na primeira vez que você as usa. Como qualquer site, ele vê seu endereço IP.",
+"Talk to someone now, free and confidential:":"Fale com alguém agora, de graça e com sigilo:",
+"You are not alone":"Você não está sozinho(a)",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Só quando tocas: a tua localização, arredondada a cerca de 100 m, é enviada para o OpenStreetMap para encontrar lojas, e as imagens do mapa vêm do OpenStreetMap. A IA recebe os nomes das lojas, sua lista de compras, orçamento e dieta, nunca sua localização."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -15118,7 +15206,18 @@ window.I18N = {
 "Share":"Поделиться",
 "Move and scale":"Переместить и масштабировать",
 "Use photo":"Использовать фото",
-"Zoom":"Масштаб"
+"Zoom":"Масштаб",
+"Extra tools":"Доп. инструменты",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"В целях безопасности Cloudflare несколько дней хранит технические журналы запросов (например, твой IP-адрес).",
+"Helplines in every country: findahelpline.com":"Телефоны доверия в любой стране: findahelpline.com",
+"In danger right now? Call {n}.":"Тебе сейчас угрожает опасность? Звони {n}.",
+"No connection. Nothing was deleted. Please try again when you are online.":"Нет подключения. Ничего не удалено. Попробуй ещё раз, когда будешь онлайн.",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"В бесплатном тарифе Gemini Google может использовать отправленные данные для улучшения своих сервисов, а сотрудники Google могут их просматривать.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"Настройки → Удалить все данные стирает всё на этом телефоне и всё, что с ним связано на сервере: аккаунт, фото, твои сообщения в группах, напоминания, данные Apple Health и подключение трекера.",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Некоторые доп. инструменты (сканер штрихкодов, карта, PDF-отчёт) загружаются с jsdelivr.net при первом использовании. Как и любой сайт, он видит твой IP-адрес.",
+"Talk to someone now, free and confidential:":"Поговори с кем-нибудь прямо сейчас, бесплатно и анонимно:",
+"You are not alone":"Ты не один / не одна",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Только когда ты нажимаешь кнопку: твоя геопозиция, округлённая примерно до 100 м, отправляется в OpenStreetMap для поиска магазинов, а изображения карты загружаются из OpenStreetMap. ИИ получает названия магазинов, твой список покупок, бюджет и тип питания, но никогда не твоё местоположение."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -16798,7 +16897,18 @@ window.I18N = {
 "Share":"Paylaş",
 "Move and scale":"Taşı ve ölçekle",
 "Use photo":"Fotoğrafı kullan",
-"Zoom":"Yakınlaştır"
+"Zoom":"Yakınlaştır",
+"Extra tools":"Ek araçlar",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"Güvenlik için Cloudflare teknik istek kayıtlarını (IP adresin gibi) birkaç gün saklar.",
+"Helplines in every country: findahelpline.com":"Her ülkede destek hatları: findahelpline.com",
+"In danger right now? Call {n}.":"Şu anda tehlikede misin? {n} numarasını ara.",
+"No connection. Nothing was deleted. Please try again when you are online.":"Bağlantı yok. Hiçbir şey silinmedi. İnternete bağlıyken tekrar dene.",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"Ücretsiz Gemini planında Google, gönderilenleri hizmetlerini geliştirmek için kullanabilir ve Google çalışanları bunları inceleyebilir.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"Ayarlar → Tüm verileri sil, bu telefondaki her şeyi ve sunucudaki ilgili her şeyi siler: hesap, fotoğraflar, grup mesajların, hatırlatıcılar, Apple Sağlık verileri ve takip cihazı bağlantısı.",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Bazı ek araçlar (barkod okuyucu, harita, PDF raporu) ilk kullandığında jsdelivr.net üzerinden yüklenir. Her web sitesi gibi IP adresini görür.",
+"Talk to someone now, free and confidential:":"Şimdi biriyle konuş, ücretsiz ve gizli:",
+"You are not alone":"Yalnız değilsin",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Yalnızca dokunduğunda: yaklaşık 100 m'ye yuvarlanmış konumun, marketleri bulmak için OpenStreetMap'e gönderilir ve harita görüntüleri OpenStreetMap'ten yüklenir. Yapay zekâ mağaza adlarını, alışveriş listeni, bütçeni ve beslenme şeklini alır, konumunu asla almaz."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -18478,7 +18588,18 @@ window.I18N = {
 "Share":"分享",
 "Move and scale":"移动和缩放",
 "Use photo":"使用照片",
-"Zoom":"缩放"
+"Zoom":"缩放",
+"Extra tools":"额外工具",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"出于安全原因，Cloudflare 会将技术请求日志（例如你的 IP 地址）保存几天。",
+"Helplines in every country: findahelpline.com":"各国求助热线：findahelpline.com",
+"In danger right now? Call {n}.":"现在有危险？请拨打 {n}。",
+"No connection. Nothing was deleted. Please try again when you are online.":"没有网络连接，什么都没有删除。请在联网后再试一次。",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"在 Gemini 免费方案下，Google 可能会使用发送的内容来改进其服务，Google 的工作人员也可能会查看。",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"设置 → 删除所有数据 会删除这部手机上的所有内容，以及服务器上与之相关的一切：账户、照片、你的群组消息、提醒、Apple 健康数据和手环连接。",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"部分额外工具（条形码扫描、地图、PDF 报告）会在你第一次使用时从 jsdelivr.net 加载。和任何网站一样，它能看到你的 IP 地址。",
+"Talk to someone now, free and confidential:":"现在就找人聊聊，免费且保密：",
+"You are not alone":"你并不孤单",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"仅在你点按时：你的位置（约精确到 100 米）会发送给 OpenStreetMap 用于查找商店，地图图片也从 OpenStreetMap 加载。AI 只会收到商店名称、你的购物清单、预算和饮食偏好，绝不会收到你的位置。"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -19877,7 +19998,18 @@ window.I18N = {
 "Share":"공유",
 "Move and scale":"이동 및 크기 조절",
 "Use photo":"사진 사용",
-"Zoom":"확대/축소"
+"Zoom":"확대/축소",
+"Extra tools":"추가 도구",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"보안을 위해 Cloudflare는 기술적인 요청 기록(예: IP 주소)을 며칠 동안 보관해요.",
+"Helplines in every country: findahelpline.com":"모든 나라의 상담 전화: findahelpline.com",
+"In danger right now? Call {n}.":"지금 위험한 상황인가요? {n}에 전화하세요.",
+"No connection. Nothing was deleted. Please try again when you are online.":"연결이 없어요. 아무것도 삭제되지 않았어요. 온라인일 때 다시 시도해 주세요.",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"Gemini 무료 플랜에서는 Google이 보낸 내용을 서비스 개선에 사용할 수 있고, Google 직원이 검토할 수도 있어요.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"설정 → 모든 데이터 삭제를 누르면 이 휴대폰의 모든 데이터와 서버에 있는 관련 데이터(계정, 사진, 그룹 메시지, 알림, Apple 건강 수치, 트래커 연결)가 삭제돼요.",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"일부 추가 도구(바코드 리더, 지도, PDF 보고서)는 처음 사용할 때 jsdelivr.net에서 불러와요. 다른 웹사이트처럼 IP 주소를 볼 수 있어요.",
+"Talk to someone now, free and confidential:":"지금 누군가와 이야기해요. 무료이고 비밀이 보장돼요:",
+"You are not alone":"당신은 혼자가 아니에요",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"탭할 때만: 약 100 m 단위로 반올림한 위치가 가게를 찾기 위해 OpenStreetMap으로 보내지고, 지도 이미지는 OpenStreetMap에서 불러와요. AI는 매장 이름, 장보기 목록, 예산과 식단만 받고, 위치는 절대 받지 않아요."
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -21276,7 +21408,18 @@ window.I18N = {
 "Share":"शेयर करें",
 "Move and scale":"खिसकाएँ और आकार बदलें",
 "Use photo":"फ़ोटो इस्तेमाल करें",
-"Zoom":"ज़ूम"
+"Zoom":"ज़ूम",
+"Extra tools":"अतिरिक्त टूल",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"सुरक्षा के लिए Cloudflare तकनीकी अनुरोध लॉग (जैसे आपका IP पता) कुछ दिनों तक रखता है।",
+"Helplines in every country: findahelpline.com":"हर देश की हेल्पलाइन: findahelpline.com",
+"In danger right now? Call {n}.":"अभी ख़तरे में हैं? {n} पर कॉल करें।",
+"No connection. Nothing was deleted. Please try again when you are online.":"कनेक्शन नहीं है। कुछ भी डिलीट नहीं हुआ। ऑनलाइन होने पर फिर से कोशिश करें।",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"Gemini के मुफ़्त प्लान में Google भेजी गई चीज़ों का इस्तेमाल अपनी सेवाएँ बेहतर करने के लिए कर सकता है, और Google के लोग उन्हें देख सकते हैं।",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"सेटिंग्स → सारा डेटा डिलीट करें इस फ़ोन की हर चीज़ और सर्वर पर उससे जुड़ी हर चीज़ हटा देता है: अकाउंट, फ़ोटो, आपके ग्रुप मैसेज, रिमाइंडर, Apple Health के आँकड़े और ट्रैकर कनेक्शन।",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"कुछ अतिरिक्त टूल (बारकोड रीडर, मैप, PDF रिपोर्ट) पहली बार इस्तेमाल करने पर jsdelivr.net से लोड होते हैं। किसी भी वेबसाइट की तरह यह आपका IP पता देखता है।",
+"Talk to someone now, free and confidential:":"अभी किसी से बात करें, मुफ़्त और गोपनीय:",
+"You are not alone":"आप अकेले नहीं हैं",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"सिर्फ़ जब आप टैप करें: आपकी लोकेशन, लगभग 100 m तक गोल की गई, दुकानें ढूँढने के लिए OpenStreetMap को भेजी जाती है, और नक्शे की तस्वीरें OpenStreetMap से लोड होती हैं। AI को दुकानों के नाम, आपकी ख़रीदारी सूची, बजट और डाइट मिलते हैं, आपकी लोकेशन कभी नहीं।"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -22675,7 +22818,18 @@ window.I18N = {
 "Share":"Bagikan",
 "Move and scale":"Geser dan ubah ukuran",
 "Use photo":"Pakai foto",
-"Zoom":"Zoom"
+"Zoom":"Zoom",
+"Extra tools":"Alat tambahan",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"Demi keamanan, Cloudflare menyimpan log teknis permintaan (seperti alamat IP-mu) selama beberapa hari.",
+"Helplines in every country: findahelpline.com":"Layanan bantuan di setiap negara: findahelpline.com",
+"In danger right now? Call {n}.":"Sedang dalam bahaya? Hubungi {n}.",
+"No connection. Nothing was deleted. Please try again when you are online.":"Tidak ada koneksi. Tidak ada yang dihapus. Coba lagi saat kamu online.",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"Pada paket gratis Gemini, Google boleh memakai apa yang dikirim untuk meningkatkan layanannya, dan orang di Google bisa meninjaunya.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"Pengaturan → Hapus semua data menghapus semua yang ada di HP ini dan semua yang terkait di server: akun, foto, pesan grupmu, pengingat, data Apple Health, dan koneksi tracker.",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Beberapa alat tambahan (pemindai barcode, peta, laporan PDF) dimuat dari jsdelivr.net saat pertama kali kamu memakainya. Seperti situs web lain, ia melihat alamat IP-mu.",
+"Talk to someone now, free and confidential:":"Bicaralah dengan seseorang sekarang, gratis dan rahasia:",
+"You are not alone":"Kamu tidak sendirian",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Hanya saat kamu mengetuknya: lokasimu, dibulatkan sekitar 100 m, dikirim ke OpenStreetMap untuk mencari toko, dan gambar peta dimuat dari OpenStreetMap. AI hanya mendapat nama toko, daftar belanjamu, anggaran, dan pola makanmu, tidak pernah lokasimu."
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -24074,6 +24228,17 @@ window.I18N = {
 "Share":"مشاركة",
 "Move and scale":"تحريك وتغيير الحجم",
 "Use photo":"استخدام الصورة",
-"Zoom":"تكبير"
+"Zoom":"تكبير",
+"Extra tools":"أدوات إضافية",
+"For security, Cloudflare keeps technical request logs (like your IP address) for a few days.":"لأسباب أمنية، تحتفظ Cloudflare بسجلات تقنية للطلبات (مثل عنوان IP الخاص بك) لبضعة أيام.",
+"Helplines in every country: findahelpline.com":"خطوط المساعدة في كل البلدان: findahelpline.com",
+"In danger right now? Call {n}.":"هل أنت في خطر الآن؟ اتصل بالرقم {n}.",
+"No connection. Nothing was deleted. Please try again when you are online.":"لا يوجد اتصال. لم يُحذف أي شيء. حاول مرة أخرى عندما تكون متصلًا بالإنترنت.",
+"On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.":"في خطة Gemini المجانية، قد تستخدم Google ما يُرسل لتحسين خدماتها، وقد يراجعه أشخاص في Google.",
+"Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.":"الإعدادات ← حذف كل البيانات يحذف كل ما على هذا الهاتف وكل ما يتعلق به على الخادم: الحساب والصور ورسائلك في المجموعات والتذكيرات وأرقام Apple Health واتصال جهاز التتبع.",
+"Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"يتم تحميل بعض الأدوات الإضافية (قارئ الباركود والخريطة وتقرير PDF) من jsdelivr.net عند أول استخدام. ومثل أي موقع، يرى عنوان IP الخاص بك.",
+"Talk to someone now, free and confidential:":"تحدّث مع أحد الآن، مجانًا وبسرية:",
+"You are not alone":"لست وحدك",
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"فقط عندما تضغط عليه: يُرسل موقعك، مقرّبًا إلى نحو 100 m، إلى OpenStreetMap للعثور على المتاجر، وتُحمَّل صور الخريطة من OpenStreetMap. يحصل الذكاء الاصطناعي على أسماء المتاجر وقائمة مشترياتك وميزانيتك ونظامك الغذائي، ولا يحصل أبدًا على موقعك."
 }
 };

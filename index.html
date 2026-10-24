@@ -247,6 +247,7 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 .actcard>.ico{font-size:20px;color:var(--good)}
 .actcard .grow{display:flex;flex-direction:column;min-width:0}
 .actcard .grow .small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.actcard.crisis{align-items:flex-start;box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--bad) 45%,transparent)}.actcard.crisis a{color:inherit;text-decoration:underline}.actcard.crisis span{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;line-height:1.5}.actcard.crisis .grow>span{display:block;margin-top:2px}
 .actcard.off{opacity:.55}.actcard.off>.ico{color:var(--muted)}
 .avatar{border-radius:50%;overflow:hidden;background:var(--chip);display:flex;align-items:center;justify-content:center;flex:none;position:relative;color:var(--muted)}
 .avatar img{width:100%;height:100%;object-fit:cover}
@@ -1221,7 +1222,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v209';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v210';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3197,28 +3198,41 @@ if (joinParam) { history.replaceState(null, '', location.pathname); LS.set('ft_j
 setInterval(() => { const c = LS.get('ft_join', ''); if (c && db.profile && !$('#onb') && !$('.backdrop')) { LS.set('ft_join', ''); openGroups(); setTimeout(() => openJoinGroup(c), 400); } }, 2000);
 
 // "Delete all data": everything on this phone and everything about it on the server. Only language and look stay.
+// Everything on the server first. If the server can't be reached, nothing on the phone is deleted and the person is
+// told, so "deleted" is never shown while a copy is still on the server.
 async function wipeEverything() {
-  for (const g of myGroups()) { try { await gApi('leave', gAuth(g)); } catch {} }   // groups: leave them all
-  await deleteBackup();   // account backup and meal photos
+  const off = new Error(T('No connection. Nothing was deleted. Please try again when you are online.'));
+  const needsServer = SERVER_URL && (acct() || myGroups().length || linkInfo() || LS.get('ft_hcode', ''));
+  if (needsServer && !navigator.onLine) throw off;
+  let failed = false;
+  const net = async f => { try { const r = await f(); if (r && r.status >= 500) failed = true; } catch (e) { if (e instanceof TypeError || e.message === T('No internet connection?')) failed = true; } };
+  for (const g of myGroups()) await net(() => gApi('leave', { ...gAuth(g), wipe: 1 }));   // groups: leave them all, own messages go too
+  if (!(await deleteBackup())) failed = true;   // account backup and meal photos
   const L = linkInfo();
-  if (L && L.vid && SERVER_URL) { try { await post('/link/vault/delete', { vid: L.vid, vs: L.vs }); } catch {} }   // tracker sign-in
+  if (L && L.vid && SERVER_URL) await net(() => post('/link/vault/delete', { vid: L.vid, vs: L.vs }));   // tracker sign-in
+  if (SERVER_URL && LS.get('ft_hcode', '')) await net(() => post('/health/forget', { code: healthCode() }));   // Apple Health numbers waiting on the server
   try {   // reminders
     const reg = await navigator.serviceWorker?.getRegistration(), sub = await reg?.pushManager.getSubscription();
-    if (sub) { if (SERVER_URL) { try { await post('/unsubscribe', { endpoint: sub.endpoint }); } catch {} } await sub.unsubscribe(); }
+    if (sub) { if (SERVER_URL) await net(() => post('/unsubscribe', { endpoint: sub.endpoint })); if (!failed) await sub.unsubscribe(); }
   } catch {}
+  if (failed) throw off;
   const keep = ['ft_lang', 'ft_theme', 'ft_bg'];
   try { for (const k of Object.keys(localStorage)) if (k.startsWith('ft_') && !keep.includes(k)) localStorage.removeItem(k); } catch {}
   for (const k of Object.keys(window.__kv || {})) delete window.__kv[k];
   chat = []; db = EMPTY();
   await idb.clear(); save();
 }
-async function deleteBackup() {   // used by "Delete all data": the account and its saved data are removed too
+async function deleteBackup() {   // used by "Delete all data": the account and its saved data are removed too. false = server not reached
   const a = acct();
   if (a && SERVER_URL) {
-    try { await fetch(SERVER_URL + '/photos/delete', { method: 'POST', headers: { 'Content-Type': 'text/plain', 'X-Id': a.id, 'X-Auth': a.auth } }); } catch {}
-    try { await post('/backup/delete', { id: a.id, auth: a.auth }); } catch {}
+    try {
+      const r1 = await fetch(SERVER_URL + '/photos/delete', { method: 'POST', headers: { 'Content-Type': 'text/plain', 'X-Id': a.id, 'X-Auth': a.auth } });
+      const r2 = await post('/backup/delete', { id: a.id, auth: a.auth });
+      if (r1.status >= 500 || r2.status >= 500 || r2.status === 429) return false;
+    } catch { return false; }
   }
   ['ft_acct', 'ft_bk_last', 'ft_acct_ask'].forEach(x => LS.del(x));
+  return true;
 }
 // Backup codes from the first version: the old copy is removed once an account exists
 async function dropOldCode() {
@@ -3428,7 +3442,8 @@ function bindBackupCard() {
   };
   if ($('#acDel')) $('#acDel').onclick = async () => {
     if (!confirm(T('Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.'))) return;
-    busyStart(); try { await deleteBackup(); } finally { busyEnd(); }
+    busyStart(); let ok; try { ok = await deleteBackup(); } finally { busyEnd(); }
+    if (!ok) return toast(T('No connection. Nothing was deleted. Please try again when you are online.'));
     toast(T('Account deleted')); renderSettings();
   };
 }
@@ -4726,19 +4741,20 @@ function openPrivacy() {
     ${sec('📱', T('On your phone'), T('Your meals, photos, weights, goals, meal plans and coach chats are stored on your phone.'))}
     ${sec('☁️', T('Account & backup'), T("If you create an account, a copy of your data and meal photos is saved once a day on the Food Tracker server. It is encrypted with your password before it leaves your phone, so nobody else can read it, not even the app owner."))}
     ${sec('👤', T('Your account email'), T('The app owner can see the email address of each account, for example to help if you forget your login. Your meals, photos and everything else stay encrypted.'))}
-    ${sec('✨', T('AI'), T('When you scan food, chat with the coach, use voice input or create a meal plan, that photo, text or recording is sent through the Food Tracker server to Google Gemini to get an answer. The server does not keep it. Google handles it under the Gemini API terms, so please don\'t send very sensitive things like medical documents.') + ' ' + T('When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.'))}
+    ${sec('✨', T('AI'), T('When you scan food, chat with the coach, use voice input or create a meal plan, that photo, text or recording is sent through the Food Tracker server to Google Gemini to get an answer. The server does not keep it. Google handles it under the Gemini API terms, so please don\'t send very sensitive things like medical documents.') + ' ' + T('On the free Gemini plan, Google may use what is sent to improve its services, and people at Google may review it.') + ' ' + T('When Google is slow, a coach message can be answered by Cloudflare Workers AI instead; it does not keep it either.'))}
     ${sec('🔔', T('Notifications'), T("If you turn on reminders, the server keeps your phone's notification address, your reminder times and your time zone. Nothing else."))}
     ${sec('⌚', T('Watch & tracker'), T('If you connect Apple Health or a tracker, only your calories burned per day are read. For WHOOP, Oura, Polar and Withings the sign-in key is kept on the Food Tracker server, encrypted with a secret that only your phone has. Numbers from the Apple Health Shortcut wait on the server for up to 30 days until your app picks them up.'))}
     ${sec('🔑', T('Password check'), T('When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.'))}
     ${sec('🏷️', T('Barcodes'), T('When you scan a barcode, only its number is sent to Open Food Facts, a free food database. On some phones the scanner first loads a free reading tool from jsdelivr.net.'))}
     ${sec('👥', T('Groups'), T('If you join a group, its members see your name, small profile picture, logging streak and how many days you logged this week, plus your messages. Messages stay on the Food Tracker server for 60 days. Your meals and weight are never shared. Leaving a group removes you from it.'))}
-    ${sec('📍', T('Supermarkets near you'), T('Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI only gets the shop names, never your location.'))}
+    ${sec('📍', T('Supermarkets near you'), T('Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.'))}
+    ${sec('🔗', T('Extra tools'), T('Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.'))}
     ${sec('📊', T('Usage count'), T('To know how many people use Food Tracker, the app sends a random number, the first and last day it was used and how many AI requests it made. With an account, this is stored together with your account. It never contains your food or photos.'))}
     ${sec('🍪', T('Cookies'), T('Food Tracker uses no cookies and no tracking. It only stores on your phone what it needs to work, like your settings, so no cookie banner is needed.'))}
-    ${sec('🌍', T('Where data is stored'), T('The app and the server run on Cloudflare, AI answers come from Google. Their computers can be outside Switzerland and the EU.'))}
+    ${sec('🌍', T('Where data is stored'), T('The app and the server run on Cloudflare, AI answers come from Google. Their computers can be outside Switzerland and the EU.') + ' ' + T('For security, Cloudflare keeps technical request logs (like your IP address) for a few days.'))}
     ${sec('✋', T('Your rights'), T('You can get a copy of your data any time (Settings → Backup data), delete it (Settings → Delete all data) and ask what is stored about you.'))}
     ${sec('🚫', T('What never happens'), T('No ads, no tracking and no selling of data. No emails are sent to you.'))}
-    ${sec('🗑️', T('Deleting'), T('Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, reminders and tracker connection.') + (OWNER.email ? ' ' + T('Lost your phone? Email {email} and your account is deleted.', { email: esc(OWNER.email) }) : ''))}
+    ${sec('🗑️', T('Deleting'), T('Settings → Delete all data removes everything on this phone and everything about it on the server: account, photos, your group messages, reminders, Apple Health numbers and tracker connection.') + (OWNER.email ? ' ' + T('Lost your phone? Email {email} and your account is deleted.', { email: esc(OWNER.email) }) : ''))}
     <p class="small muted" style="text-align:center;margin:16px 0 0">${ownerLine()}</p>
     <button class="chipbtn" style="display:block;margin:12px auto 0" onclick="closeSheet();setTimeout(openTerms,250)">📄 ${T('Terms of use')}</button>`);
 }
@@ -6312,6 +6328,7 @@ function applyActionTags(text) {
   return acts;
 }
 function doAction(a) {
+  if (a.type === 'crisis') return { k: 'crisis', label: '' };
   const date = actDate(a.date);
   if (a.type === 'log_food') {
     const t = String(a.text || '').trim().slice(0, 300); if (!t) return null;
@@ -6376,8 +6393,35 @@ const ACT_IC = { food: 'utensils', water: 'drop', weight: 'scale', burn: 'activi
 const ACT_TITLE = { food: N('Added to your food log'), water: N('Water added'), weight: N('Weight saved'), burn: N('Activity added'), watergoal: N('Water goal changed'), habit: N('Habit started') };
 const OPEN_TITLE = { goals: N('Your goals'), meal_plan: N('Meal plan'), habit: N('Your habit'), habits: N('Choose a habit'), month: N('Month view'), tracker: N('Watch & tracker'),
   notifications: N('Notifications'), profile: N('Profile picture'), badges: N('Badges'), weight: N('Progress'), groups: N('Groups') };
+/* Crisis help: shown under a coach answer when someone talks about suicide, self-harm or dangerous eating-disorder
+   behaviour (the AI adds it, and the app adds it itself from a few words in many languages, in case the AI does not).
+   Numbers for the country of the phone's time zone; findahelpline.com covers every other country. */
+const CRISIS_RE = /suicid|kill myself|end my life|want to die|self[- ]?harm|hurt myself|cut myself|make myself (throw up|vomit|puke|sick)|suizid|selbstmord|mich umbringen|nicht mehr leben|sterben will|mich ritzen|mich selbst verletzen|me tuer|envie de mourir|matarme|quiero morir|uccidermi|voglio morire|zelfmoord|dood wil|me matar|quero morrer|intihar|samobój|самоубий|суицид|покончить с собой|убить себя|自殺|死にたい|自杀|想死|자살|죽고 싶|आत्महत्या|bunuh diri|انتحار/i;
+const HELPLINES = {
+  CH: ['Die Dargebotene Hand / La Main Tendue', '143', '112'], DE: ['TelefonSeelsorge', '0800 111 0 111', '112'], AT: ['Telefonseelsorge', '142', '112'],
+  GB: ['Samaritans', '116 123', '999'], IE: ['Samaritans', '116 123', '112'], US: ['988 Suicide & Crisis Lifeline', '988', '911'], CA: ['9-8-8', '988', '911'],
+  FR: ['3114', '3114', '112'], ES: ['Línea 024', '024', '112'], IT: ['Telefono Amico', '02 2327 2327', '112'], NL: ['113 Zelfmoordpreventie', '0800 0113', '112'],
+  AU: ['Lifeline', '13 11 14', '000'], JP: ['いのちの電話', '0570-783-556', '119'], KR: ['자살예방상담전화', '109', '119'], IN: ['Tele-MANAS', '14416', '112']
+};
+function crisisCountry() {
+  const z = (() => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || ''; } catch { return ''; } })();
+  const map = { 'Europe/Zurich': 'CH', 'Europe/Berlin': 'DE', 'Europe/Busingen': 'DE', 'Europe/Vienna': 'AT', 'Europe/London': 'GB', 'Europe/Dublin': 'IE', 'Europe/Paris': 'FR',
+    'Europe/Madrid': 'ES', 'Europe/Rome': 'IT', 'Europe/Amsterdam': 'NL', 'Asia/Tokyo': 'JP', 'Asia/Seoul': 'KR', 'Asia/Kolkata': 'IN', 'Asia/Calcutta': 'IN' };
+  if (map[z]) return map[z];
+  if (/^Australia\//.test(z)) return 'AU';
+  if (/^America\/(Toronto|Vancouver|Edmonton|Winnipeg|Halifax|Regina|St_Johns|Moncton|Whitehorse)$/.test(z)) return 'CA';
+  if (/^(America\/(New_York|Chicago|Denver|Los_Angeles|Phoenix|Anchorage|Detroit|Boise|Indiana\/.+|Kentucky\/.+)|Pacific\/Honolulu)$/.test(z)) return 'US';
+  return '';
+}
+function crisisCard() {
+  const h = HELPLINES[crisisCountry()], tel = n => `<a href="tel:${n.replace(/[^\d+]/g, '')}" style="font-weight:800;white-space:nowrap">${esc(n)}</a>`;
+  return `<div class="actcard crisis">${ic('heart')}<span class="grow"><b>${T('You are not alone')}</b>
+    <span class="small">${h ? `${T('Talk to someone now, free and confidential:')}<br>${esc(h[0])}: ${tel(h[1])}<br>${T('In danger right now? Call {n}.', { n: tel(h[2]) })}`
+      : T('In danger right now? Call {n}.', { n: tel('112') })}<br><a href="https://findahelpline.com" target="_blank" rel="noopener">${T('Helplines in every country: findahelpline.com')}</a></span></span></div>`;
+}
 function actCards(m) {
   return (m.acts || []).map(x => {
+    if (x.k === 'crisis') return crisisCard();
     if (x.k === 'open') return `<button class="actcard" data-actopen="${x.what}">${ic('share')}<span class="grow"><b>${T(OPEN_TITLE[x.what] || 'Open')}</b></span><span class="chev">›</span></button>`;
     const title = x.k === 'habit' && x.ask ? T('Replace your current habit?') : T(ACT_TITLE[x.k]);
     const btn = x.undone ? `<span class="small muted">${T('Undone')}</span>`
@@ -6516,6 +6560,7 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Groups, Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
+- Safety: if someone talks about suicide, self-harm or dangerous eating-disorder behaviour, the app shows a card under your answer with a helpline for their country, the emergency number and findahelpline.com.
 - Home: the profile picture top right (tap: Settings), the month name above the week strip (tap it for the month view: every day as a small ring, green within the goal or up to 100 kcal over, yellow 100-200 kcal over, red more than 200 over, dashed when nothing was logged; the ? there and Settings → Support → Ring colors explained show this; tap a day to open it), the week strip (its day circles use the same colours) (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped; in Preferences an optional weekly food budget with currency; the grocery list shows AI price estimates per item and an estimated total against the budget, and "Supermarkets near you": with their OK it uses their location once (not saved) to show the shops within about 3 km on a map (OpenStreetMap), sorted by how well each suits them (1-10, AI estimate from budget, diet and the list), with price level, estimated cost of the list there and a Route button to Google Maps). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). The first time they tap Scan food or Barcode a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. Ingredients of a meal show as tiles with a kitchen measure next to the grams (e.g. "½ medium · 60 g", "2 tbsp · 20 g"; with the kg setting European measures like tbsp, tsp, glass, slice, handful, never cups; with the lb setting US measures like cup, tbsp, tsp, oz); tap a tile to change it with − / + (½ → ¾) or to type exact grams. The meal plan shows each meal's ingredients per person with these measures (tap "Ingredients"), and the grocery list shows next to the total amount what to take from the shelf (e.g. "1 pack of 500 g"). For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. "Earn your treat" (Home, only when today is over the calorie goal; adults only, not in pregnancy or on fast days; can be turned off in Settings → Preferences): a card offers a brisk walk, cycling or jogging with the minutes that make up for the extra calories (calculated from their weight); after picking one it fills up by itself with a watch, or they tap Done. Above 400 kcal over it doesn't suggest sport, just "back on track tomorrow". Food is never blocked. When they ate a treat and are over, you may mention this gently, never as punishment. Tap a logged meal to see, edit, delete, share it (share button at the top: the photo with a small nutrition card, sent with the phone's share menu to Instagram, Snapchat, Messages or saved), save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros; if the Shortcut sends the same number on several days, 0 every evening or over 4000 kcal a day, Home shows a warning: in Find Health Samples only one date filter may stay, Start Date · is today) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (medals in 3 columns with their number and what they are for, silver until earned; tap one to see more). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
@@ -6538,6 +6583,7 @@ RULES
 - Write clock times as ${use12h() ? '12-hour times with AM/PM (e.g. 7:30 PM)' : '24-hour times (e.g. 19:30)'}.
 - Use metric units. The app is set to ${langInfo().ai}: answer in ${langInfo().ai} unless the user writes in another language, then answer in theirs.
 - You are not a doctor. For medical conditions, medication, pregnancy or signs of an eating disorder, recommend a professional.
+- SAFETY FIRST: if the user mentions suicide, wanting to die, hurting themselves, or dangerous eating-disorder behaviour (making themselves vomit, not eating for days, punishing themselves with food or exercise), stop all coaching. Answer warmly and briefly, take them seriously, tell them they are not alone, encourage them to talk to someone they trust and to contact a crisis line now, or emergency services if they are in danger. Add <action>{"type":"crisis"}</action>: the app then shows helpline numbers for their country. In that answer give no calorie, diet, weight or exercise advice.
 ${isLb() || isIn() || isOz() ? `- UNITS: the user uses ${isLb() ? 'pounds (lb) for body weight' : 'kg for body weight'}, ${isIn() ? 'feet/inches for height' : 'cm for height'} and ${isOz() ? 'fluid ounces (fl oz) for drinks' : 'litres/ml for drinks'}. The data below is in metric: convert when you talk about these. Food amounts and macros stay in grams.\n` : ''}- PHOTOS AND FILES: when the user sends photos (e.g. a restaurant menu, a food label, a fridge, a receipt) or files, first read them carefully, every page and every photo. Only mention dishes, products and numbers that are really visible or written in them, using their exact names (and prices if shown). Never invent items that are not there. If something is too small, blurry or cut off to read, say so and ask for a closer photo instead of guessing. For a menu: recommend the best concrete options from THAT menu for their goal and what is left today, with estimated calories and protein, and say how to order them (e.g. sauce on the side).
 - The app has a weekly meal plan and grocery list (see WEEKLY MEAL PLAN below). For cooking, meal prep or planning questions, base your help on that plan: a concrete prep schedule (which day, what to cook ahead, how to store it and for how long), simple cooking steps, and swaps that keep them on target. Refer to today's planned meals when it fits. If they change something, tell them they can also swap meals or change the plan on the meal plan page.
 ${db.profile ? '- ' + planCoach(db.profile) + '\n' : ''}
@@ -6928,6 +6974,7 @@ async function sendChat(text) {
     const answer = await askAI(parts, { json: false, system: coachSystem(), history, strong: att.length > 0 || usesKept, timeout: att.length || usesKept ? 90000 : undefined, onText: t => { target = t; } });
     target = answer; done = true;
     const mem = applyMemoryTags(answer), acts = applyActionTags(answer);
+    if (CRISIS_RE.test(q) && !acts.some(x => x.k === 'crisis')) acts.unshift({ uid: uid(), k: 'crisis', label: '' });
     entry = { role: 'assistant', text: stripTags(answer), mem: mem > 0, t: Date.now(), ...(acts.length ? { acts } : {}) };
   } catch (e) {
     entry = { role: 'assistant', err: true, text: aiMsg(e), t: Date.now() };
@@ -7410,7 +7457,7 @@ function renderSettings() {
   $('#dImp').onclick = () => $('#fileImport').click();
   $('#dDel').onclick = async () => {
     if (!confirm(T('Delete ALL meals, weights and goals? This cannot be undone.'))) return;
-    busyStart(); try { await wipeEverything(); } finally { busyEnd(); }
+    busyStart(); try { await wipeEverything(); } catch (e) { busyEnd(); return toast(e.message); } busyEnd();
     toast(T('All data deleted')); startOnboarding();
   };
 }
