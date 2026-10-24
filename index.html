@@ -179,6 +179,36 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
   border:2px dashed var(--line)}
 .day .dn.logged{border:2px solid var(--text)}
 .day .dn.over{border:2px solid var(--bad)}
+.ico{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em;flex:none}
+.avatar{border-radius:50%;overflow:hidden;background:var(--chip);display:flex;align-items:center;justify-content:center;flex:none;position:relative;color:var(--muted)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar .ava-none{width:62%;height:62%;opacity:.55}
+.avatar .ava-ini{font-weight:800;color:var(--text)}
+.avatar.sm{width:36px;height:36px;box-shadow:var(--shadow)}.avatar.sm .ava-ini{font-size:15px}
+.avatar.big{width:64px;height:64px;overflow:visible}.avatar.big img,.avatar.big .ava-none{border-radius:50%}.avatar.big .ava-ini{font-size:26px}
+.avatar.huge{width:120px;height:120px;margin:4px auto 0}.avatar.huge .ava-ini{font-size:46px}
+.ava-cam{position:absolute;right:-2px;bottom:-2px;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--on-ink);display:flex;align-items:center;justify-content:center;border:2px solid var(--card)}
+.ava-cam svg{width:14px;height:14px}
+.profhead{display:flex;align-items:center;gap:14px;margin-top:12px}
+.prof-name{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;font-size:17px}
+.monthbtn{display:flex;align-items:center;gap:6px;margin:10px 0 -4px 2px;font-weight:700;font-size:15px;color:var(--text)}
+.monthbtn svg{width:11px;height:8px;color:var(--muted)}
+.mnav{width:40px;height:40px;font-size:24px;color:var(--muted)}
+.mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px 2px;margin-top:8px;justify-items:center}
+.mhead span{font-size:12px;font-weight:700;color:var(--muted)}
+.mday{display:flex;padding:3px;border-radius:50%}
+.mday .ring-in span{font-size:12.5px;font-weight:700}
+.mday.nolog .ring svg circle:first-child{stroke-dasharray:3 3}
+.mday.today .ring-in span{color:var(--good)}
+.mday.sel{background:var(--chip)}
+.mday.future{opacity:.35}
+.mlegend{display:flex;justify-content:center;gap:14px;margin-top:14px;flex-wrap:wrap}
+.mlegend span{display:flex;align-items:center;gap:5px}
+.mlegend i{width:12px;height:12px;border-radius:50%;border:2.5px solid}
+.mlegend i.dash{border:2px dashed var(--muted)}
+.slimrow{display:flex;align-items:center;gap:10px;background:var(--card);border-radius:16px;padding:10px 8px 10px 14px;margin-bottom:14px;box-shadow:var(--shadow);font-size:14px;cursor:pointer}
+.slimrow .slim-ic{font-size:18px}
+.slimrow .slim-x{width:28px;height:28px;border-radius:50%;color:var(--muted);font-size:13px}
 
 /* Home cards */
 .calcard{display:flex;justify-content:space-between;align-items:center;padding:24px 22px}
@@ -508,22 +538,24 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;heigh
 .celpop.out{opacity:0;transition:opacity .3s}
 .celcard{background:var(--card);border-radius:28px;padding:26px 28px 24px;text-align:center;max-width:300px;box-shadow:0 20px 60px rgba(0,0,0,.4);animation:celIn .5s cubic-bezier(.2,1.4,.4,1)}
 .celic{font-size:58px;line-height:1.1;margin-bottom:10px;animation:celBounce .9s ease .25s}
+.celmedal{display:block;width:96px;height:96px;margin:0 auto}.celmedal .medal{width:100%;height:100%}
 .celcard b{display:block;font-size:20px;margin-bottom:4px}
 @keyframes celIn{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
 @keyframes celBounce{40%{transform:scale(1.25) rotate(-8deg)}70%{transform:scale(.95) rotate(4deg)}}
-.badges{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
-.badge{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px 8px;border-radius:16px;background:var(--chip);min-width:0}
-.badge .bic{font-size:28px;line-height:1.1;filter:grayscale(1);opacity:.35}
-.badge.on .bic{filter:none;opacity:1}
-.badge .bname{font-size:10.5px;font-weight:700;text-align:center;line-height:1.2;color:var(--muted);overflow:hidden;text-overflow:ellipsis;max-width:100%}
-.badge.on .bname{color:var(--text)}
+.badges{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 8px;margin-top:14px}
+.badge{display:flex;flex-direction:column;align-items:center;gap:3px;padding:2px 2px 4px;border-radius:16px;background:none;min-width:0}
+.medal{width:78px;height:78px;margin-bottom:4px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.12))}
+.medal.on{filter:drop-shadow(0 4px 10px rgba(0,0,0,.22))}
+.badge .bname{font-size:13px;font-weight:700;text-align:center;line-height:1.2;color:var(--text);max-width:100%}
+.badge .bdesc{font-size:11px;line-height:1.25;color:var(--muted);text-align:center;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.badge:not(.on) .bname{color:var(--muted)}
 .bmore{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;margin-top:12px;padding:10px;border-radius:14px;background:var(--chip);font-size:14px;font-weight:700;color:var(--text)}
 .bmore svg{width:12px;height:8px;flex:none;transition:transform .2s}
 .bmore.open svg{transform:rotate(180deg)}
 .bbar{width:70%;height:4px;border-radius:2px;background:var(--track);overflow:hidden}
 .bbar i{display:block;height:100%;background:var(--flame);border-radius:2px}
-.bigbadge{width:96px;height:96px;margin:0 auto;border-radius:30px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:54px;filter:grayscale(1);opacity:.45}
-.bigbadge.on{filter:none;opacity:1;animation:celIn .5s cubic-bezier(.2,1.4,.4,1)}
+.bigmedal{width:132px;height:132px;margin:0 auto}.bigmedal .medal{width:100%;height:100%}
+.bigmedal.on{animation:celIn .5s cubic-bezier(.2,1.4,.4,1)}
 .chipprog{display:block;flex:1;min-width:60px;height:6px;border-radius:3px;background:var(--track);overflow:hidden;margin-left:4px;vertical-align:middle}
 .chipprog i{display:block;height:100%;background:var(--flame)}
 .chippct{font-size:12px}
@@ -644,9 +676,12 @@ body.typing .chatbar{bottom:0;padding-bottom:6px}
 .chatbar{position:fixed;left:0;right:0;bottom:calc(66px + env(safe-area-inset-bottom));z-index:19;background:color-mix(in srgb,var(--bg) 92%,transparent);
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:8px 14px}
 .chatbar .in{max-width:560px;margin:0 auto}
-.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;scroll-snap-type:x proximity;
+  -webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}
 .chips::-webkit-scrollbar{display:none}
-.chips button{flex:none;background:var(--ink);color:var(--on-ink);border-radius:999px;padding:10px 16px;font-size:14px;font-weight:600}
+/* Each question is at most ~2/3 of the width, so the next one always peeks in: it is clear you can swipe */
+.chips button{flex:none;max-width:66%;background:var(--ink);color:var(--on-ink);border-radius:18px;padding:9px 14px;font-size:14px;font-weight:600;
+  text-align:left;line-height:1.25;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;scroll-snap-align:start}
 .chatbar .in{position:relative}
 .chatbar .mic{color:var(--muted)}
 .chatbar .mic svg{width:22px;height:22px}
@@ -756,7 +791,7 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .onb select,.onb input:not([type=range]){background-color:var(--card);box-shadow:var(--shadow)}
 .onb .tip{background:var(--card);box-shadow:var(--shadow)}
 /* Badge names may wrap onto two lines instead of being cut off */
-.badge .bname{font-size:10px;letter-spacing:-.01em;white-space:normal;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.badge .bname{white-space:normal;overflow-wrap:anywhere;-webkit-hyphens:auto;hyphens:auto;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 /* App icon with a warm glow (welcome + install screens) */
 .appglow{position:relative;display:inline-block;margin:0 auto}
 .appglow::before{content:'';position:absolute;left:50%;top:50%;width:280px;height:280px;margin:-140px 0 0 -140px;border-radius:50%;pointer-events:none;z-index:-1;
@@ -1099,7 +1134,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v187';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v188';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1315,6 +1350,96 @@ function openUnitsSheet() {
 
 function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
 
+/* Icons: one consistent line-icon set (24×24, round strokes) used instead of emojis, so the app looks calm and premium */
+const _p = (...d) => d.map(x => x[0] === '<' ? x : `<path d="${x}"/>`).join('');
+const ICONS = {
+  flame: _p('M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z'),
+  drop: _p('M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z'),
+  waves: _p('M2 6c.6.5 1.2 1 2.5 1C7 7 7 5 9.5 5c2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1', 'M2 12c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1', 'M2 18c.6.5 1.2 1 2.5 1 2.5 0 2.5-2 5-2 2.6 0 2.4 2 5 2 2.5 0 2.5-2 5-2 1.3 0 1.9.5 2.5 1'),
+  utensils: _p('M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2', 'M7 2v20', 'M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7'),
+  calendar: _p('<rect x="3" y="4" width="18" height="18" rx="2"/>', 'M16 2v4', 'M8 2v4', 'M3 10h18'),
+  zap: _p('M13 2 3 14h9l-1 8 10-12h-9l1-8z'),
+  star: _p('M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z'),
+  crown: _p('M2 7l4 10h12l4-10-6 4-4-7-4 7z', 'M6 21h12'),
+  salad: _p('M7 21h10', 'M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9z', 'M11.38 12a2.4 2.4 0 0 1-.4-4.77 2.4 2.4 0 0 1 3.2-2.77 2.4 2.4 0 0 1 3.47-.63 2.4 2.4 0 0 1 3.37 3.37 2.4 2.4 0 0 1-1.1 3.7 2.5 2.5 0 0 1 .03 1.1', 'M10.9 7.25A4 4 0 0 0 4 10c0 .73.2 1.41.54 2'),
+  grid: _p('<rect x="3" y="3" width="18" height="18" rx="3"/>', 'M3 12h18', 'M12 3v18'),
+  dumbbell: _p('M6.5 6.5l11 11', 'M21 21l-1-1', 'M3 3l1 1', 'M18 22l4-4', 'M2 6l4-4', 'M3 10l7-7', 'M14 21l7-7'),
+  scale: _p('<rect x="3" y="3" width="18" height="18" rx="5"/>', 'M8 10a4 4 0 0 1 8 0', 'M12 10l1.8-2.2'),
+  cart: _p('<circle cx="8" cy="21" r="1"/>', '<circle cx="19" cy="21" r="1"/>', 'M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12'),
+  target: _p('<circle cx="12" cy="12" r="10"/>', '<circle cx="12" cy="12" r="6"/>', '<circle cx="12" cy="12" r="2"/>'),
+  flag: _p('M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z', 'M4 22v-7'),
+  trophy: _p('M6 9H4.5a2.5 2.5 0 0 1 0-5H6', 'M18 9h1.5a2.5 2.5 0 0 0 0-5H18', 'M4 22h16', 'M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22', 'M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22', 'M18 2H6v7a6 6 0 0 0 12 0V2z'),
+  shield: _p('M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'),
+  medal: _p('M7.21 15 2.66 7.14a2 2 0 0 1 .13-2.2L4.4 2.8A2 2 0 0 1 6 2h12a2 2 0 0 1 1.6.8l1.6 2.14a2 2 0 0 1 .14 2.2L16.79 15', 'M11 12 5.12 2.2', 'M13 12l5.88-9.8', '<circle cx="12" cy="17" r="5"/>', 'M12 18v-2h-.5'),
+  gem: _p('M6 3h12l4 6-10 13L2 9z', 'M11 3 8 9l4 13 4-13-3-6', 'M2 9h20'),
+  sprout: _p('M7 20h10', 'M10 20c5.5-2.5.8-6.4 3-10', 'M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z', 'M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z'),
+  leaf: _p('M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z', 'M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12'),
+  tree: _p('M8 19a4 4 0 0 1-2.24-7.32A3.5 3.5 0 0 1 9 6.03V6a3 3 0 1 1 6 0v.04a3.5 3.5 0 0 1 3.24 5.65A4 4 0 0 1 16 19z', 'M12 19v3'),
+  camera: _p('M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z', '<circle cx="12" cy="13" r="3"/>'),
+  barcode: _p('M3 5v14', 'M7 5v14', 'M11 5v14', 'M14 5v14', 'M18 5v14', 'M21 5v14'),
+  image: _p('<rect x="3" y="3" width="18" height="18" rx="2"/>', '<circle cx="9" cy="9" r="2"/>', 'M21 15l-3.09-3.09a2 2 0 0 0-2.82 0L6 21'),
+  message: _p('M7.9 20A9 9 0 1 0 4 16.1L2 22z'),
+  pencil: _p('M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z'),
+  sparkles: _p('M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0l1.58 6.14a2 2 0 0 0 1.44 1.44l6.14 1.58a.5.5 0 0 1 0 .96l-6.14 1.58a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0z'),
+  moon: _p('M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z'),
+  sun: _p('<circle cx="12" cy="12" r="4"/>', 'M12 2v2', 'M12 20v2', 'M4.93 4.93l1.41 1.41', 'M17.66 17.66l1.41 1.41', 'M2 12h2', 'M20 12h2', 'M6.34 17.66l-1.41 1.41', 'M19.07 4.93l-1.41 1.41'),
+  bell: _p('M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9', 'M10.3 21a1.94 1.94 0 0 0 3.4 0'),
+  lock: _p('<rect x="3" y="11" width="18" height="11" rx="2"/>', 'M7 11V7a5 5 0 0 1 10 0v4'),
+  user: _p('M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2', '<circle cx="12" cy="7" r="4"/>'),
+  users: _p('M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2', '<circle cx="9" cy="7" r="4"/>', 'M22 21v-2a4 4 0 0 0-3-3.87', 'M16 3.13a4 4 0 0 1 0 7.75'),
+  watch: _p('<circle cx="12" cy="12" r="6"/>', 'M12 10v2l1 1', 'M16.13 7.66l-.81-4.05a2 2 0 0 0-2-1.61h-2.68a2 2 0 0 0-2 1.61l-.78 4.05', 'M7.88 16.36l.8 4a2 2 0 0 0 2 1.61h2.72a2 2 0 0 0 2-1.61l.81-4.05'),
+  ruler: _p('M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0z', 'M14.5 12.5l2-2', 'M11.5 9.5l2-2', 'M8.5 6.5l2-2', 'M17.5 15.5l2-2'),
+  refresh: _p('M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8', 'M21 3v5h-5', 'M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16', 'M8 16H3v5'),
+  alert: _p('M21.73 18l-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3', 'M12 9v4', 'M12 17h.01'),
+  clock: _p('<circle cx="12" cy="12" r="10"/>', 'M12 6v6l4 2'),
+  hourglass: _p('M5 22h14', 'M5 2h14', 'M17 22v-4.17a2 2 0 0 0-.59-1.42L12 12l-4.41 4.41A2 2 0 0 0 7 17.83V22', 'M7 2v4.17a2 2 0 0 0 .59 1.42L12 12l4.41-4.41A2 2 0 0 0 17 6.17V2'),
+  globe: _p('<circle cx="12" cy="12" r="10"/>', 'M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20', 'M2 12h20'),
+  book: _p('M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20'),
+  chart: _p('M3 3v18h18', 'M19 9l-5 5-4-4-3 3'),
+  trend: _p('M22 7l-8.5 8.5-5-5L2 17', 'M16 7h6v6'),
+  file: _p('M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z', 'M14 2v4a2 2 0 0 0 2 2h4'),
+  share: _p('M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8', 'M16 6l-4-4-4 4', 'M12 2v13'),
+  heart: _p('M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7z'),
+  activity: _p('M22 12h-4l-3 9L9 3l-3 9H2'),
+  run: _p('<circle cx="14" cy="4" r="2"/>', 'M7 21l3-5 3 2v4', 'M13 18l-1-5 3-3 2 3h3', 'M15 10l-4-2-4 3'),
+  walk: _p('<circle cx="13" cy="4" r="2"/>', 'M9 22l2-6 2 2v4', 'M11 16l1-6 3 3h3', 'M12 10l-3 2-1 4'),
+  bike: _p('<circle cx="5.5" cy="17.5" r="3.5"/>', '<circle cx="18.5" cy="17.5" r="3.5"/>', '<circle cx="15" cy="5" r="1"/>', 'M12 17.5V14l-3-3 4-3 2 3h2'),
+  cake: _p('M20 21v-8a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8', 'M4 16s.5-1 2-1 2.5 2 4 2 2.5-2 4-2 2.5 2 4 2 2-1 2-1', 'M2 21h20', 'M7 8v3', 'M12 8v3', 'M17 8v3', 'M7 4h.01', 'M12 4h.01', 'M17 4h.01'),
+  protein: _p('M15.4 15.63a7.88 6 135 1 1 6.23-6.23 4.3 3.43 135 0 0-6.23 6.23', 'M8.29 12.71l-2.6 2.6a2.5 2.5 0 1 0-1.65 4.65A2.5 2.5 0 1 0 8.7 18.3l2.59-2.59'),
+  wheat: _p('M2 22 16 8', 'M3.47 12.53 5 11l1.53 1.53a3.5 3.5 0 0 1 0 4.94L5 19l-1.53-1.53a3.5 3.5 0 0 1 0-4.94z', 'M7.47 8.53 9 7l1.53 1.53a3.5 3.5 0 0 1 0 4.94L9 15l-1.53-1.53a3.5 3.5 0 0 1 0-4.94z', 'M11.47 4.53 13 3l1.53 1.53a3.5 3.5 0 0 1 0 4.94L13 11l-1.53-1.53a3.5 3.5 0 0 1 0-4.94z', 'M20 2h2v2a4 4 0 0 1-4 4h-2V6a4 4 0 0 1 4-4z'),
+  avocado: _p('M12 2c-3.3 0-4.6 3.4-5.2 6.6C6.2 12 4 13.6 4 16.5A5.5 5.5 0 0 0 9.5 22h5a5.5 5.5 0 0 0 5.5-5.5c0-2.9-2.2-4.5-2.8-7.9C16.6 5.4 15.3 2 12 2z', '<circle cx="12" cy="15.5" r="2.6"/>'),
+  apple: _p('M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06z', 'M10 2c1 .5 2 2 2 5'),
+  baby: _p('M9 12h.01', 'M15 12h.01', 'M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5', 'M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3c2 0 3.5 1.1 3.5 2.5s-.9 2.5-2 2.5c-.8 0-1.5-.4-1.5-1'),
+  trash: _p('M3 6h18', 'M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6', 'M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2'),
+  cloud: _p('M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z'),
+  link: _p('M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71', 'M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'),
+  mail: _p('<rect x="2" y="4" width="20" height="16" rx="2"/>', 'M22 7l-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7'),
+  pin: _p('M20 10c0 5-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 15 4 10a8 8 0 0 1 16 0', '<circle cx="12" cy="10" r="3"/>'),
+  bulb: _p('M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5', 'M9 18h6', 'M10 22h4'),
+  party: _p('M5.8 11.3 2 22l10.7-3.79', 'M4 3h.01', 'M22 8h.01', 'M15 2h.01', 'M22 20h.01', 'M22 2l-2.24.75a2.9 2.9 0 0 0-1.96 3.12c.1.86-.57 1.63-1.45 1.63h-.38c-.86 0-1.6.6-1.76 1.44L14 10', 'M11 13c1.93 1.93 2.83 4.17 2 5-.83.83-3.07-.07-5-2-1.93-1.93-2.83-4.17-2-5 .83-.83 3.07.07 5 2z'),
+  check: _p('<circle cx="12" cy="12" r="10"/>', 'M9 12l2 2 4-4'),
+  phone: _p('<rect x="5" y="2" width="14" height="20" rx="2"/>', 'M12 18h.01'),
+  tag: _p('M12.59 2.59A2 2 0 0 0 11.17 2H4a2 2 0 0 0-2 2v7.17a2 2 0 0 0 .59 1.42l8.7 8.7a2.43 2.43 0 0 0 3.42 0l6.58-6.58a2.43 2.43 0 0 0 0-3.42z', '<circle cx="7.5" cy="7.5" r="1.5"/>'),
+  key: _p('<circle cx="7.5" cy="15.5" r="5.5"/>', 'M21 2l-9.6 9.6', 'M15.5 7.5l3 3L22 7l-3-3'),
+  gift: _p('<rect x="3" y="8" width="18" height="4" rx="1"/>', 'M12 8v13', 'M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7', 'M7.5 8a2.5 2.5 0 0 1 0-5C9 3 12 8 12 8s3-5 4.5-5a2.5 2.5 0 0 1 0 5'),
+  store: _p('M3 9l1.5-5h15L21 9', 'M3 9h18v2a3 3 0 0 1-6 0 3 3 0 0 1-6 0 3 3 0 0 1-6 0z', 'M5 13v8h14v-8', 'M10 21v-5h4v5'),
+  wallet: _p('M19 7V4a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v4h-3a2 2 0 0 0 0 4h3a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1', 'M3 5v14a2 2 0 0 0 2 2h15a1 1 0 0 0 1-1v-4'),
+  chef: _p('M17 21a1 1 0 0 0 1-1v-5.35c0-.46.32-.86.75-1.04a4 4 0 0 0-2.13-7.6 5 5 0 0 0-9.24 0 4 4 0 0 0-2.13 7.6c.43.18.75.58.75 1.04V20a1 1 0 0 0 1 1z', 'M6 17h12'),
+  body: _p('<circle cx="12" cy="4.5" r="2.5"/>', 'M5 9.5l7 1 7-1', 'M12 10.5V15', 'M9 22l3-7 3 7'),
+  chair: _p('M7 18v3', 'M17 18v3', 'M5 11V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v6', 'M3 11h18v4a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3z'),
+  helmet: _p('M2 18a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1v-2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1z', 'M10 10V5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v5', 'M4 15v-3a6 6 0 0 1 6-6', 'M14 6a6 6 0 0 1 6 6v3'),
+  timer: _p('M10 2h4', 'M12 14l3-3', '<circle cx="12" cy="14" r="8"/>'),
+  coffee: _p('M10 2v2', 'M14 2v2', 'M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1'),
+  cup: _p('M5 8h14l-1.5 12.5a2 2 0 0 1-2 1.5h-7a2 2 0 0 1-2-1.5z', 'M5 8l-1-3h16l-1 3', 'M6 13h12'),
+  candy: _p('<circle cx="12" cy="12" r="4.5"/>', 'M8.5 8.5 4 6l-2 2 2.5 4.5', 'M15.5 15.5 20 18l2-2-2.5-4.5'),
+  burger: _p('M4 11a8 8 0 0 1 16 0z', 'M3 15h18', 'M4 19a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-1H4z'),
+  nofork: _p('<circle cx="12" cy="12" r="10"/>', 'M4.93 4.93l14.14 14.14'),
+  info: _p('<circle cx="12" cy="12" r="10"/>', 'M12 16v-4', 'M12 8h.01'),
+  plus: _p('M12 5v14', 'M5 12h14'),
+  steps: _p('M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0z', 'M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0z', 'M16 17h4', 'M4 13h4'),
+  sliders: _p('M4 21v-7', 'M4 10V3', 'M12 21v-9', 'M12 8V3', 'M20 21v-5', 'M20 12V3', 'M2 14h4', 'M10 8h4', 'M18 16h4')
+};
+const ic = (name, cls = '') => `<svg class="ico ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.star}</svg>`;
 function ring(size, stroke, pct, color, inner = '') {
   const r = (size - stroke) / 2, C = 2 * Math.PI * r;
   return `<div class="ring" style="width:${size}px;height:${size}px"><svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
@@ -1804,7 +1929,8 @@ function renderHome() {
 
   $('#view').innerHTML = `
     <div class="top"><div class="brand"><img src="icon-180.png" alt="">Food Tracker</div>
-      <div class="row" style="gap:8px"><button class="themebtn" id="themeBtn" aria-label="${T('Light / dark mode')}">${isDark() ? '☀️' : '🌙'}</button><div class="streak">🔥 ${st}</div></div></div>
+      <div class="row" style="gap:8px"><button class="themebtn" id="themeBtn" aria-label="${T('Light / dark mode')}">${isDark() ? '☀️' : '🌙'}</button><div class="streak">🔥 ${st}</div>${db.profile ? `<button class="avatar sm" id="homeAva" aria-label="${T('Profile picture')}">${avatarHTML()}</button>` : ''}</div></div>
+    <button class="monthbtn" id="mBtn" aria-label="${T('Month view')}">${dt(days[3]).toLocaleDateString(LOC, { month: 'long', year: 'numeric' })}<svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1.5 1.75 6 6.25l4.5-4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     <div class="week"><button class="nav" id="wPrev">‹</button><div class="days">${week}</div><button class="nav" id="wNext" ${weekOff >= 0 ? 'style="visibility:hidden"' : ''}>›</button></div>
     ${planChip()}
     ${!hasAI() ? `<button class="card" style="width:100%;text-align:left;display:flex;gap:12px;align-items:center" onclick="go('settings')"><span style="font-size:26px">✨</span><span class="grow"><b>${T('Turn on AI food scanning')}</b><br><span class="small muted">${T('Add your free Google AI key in Settings')}</span></span><span class="muted">›</span></button>` : ''}
@@ -1827,9 +1953,43 @@ function renderHome() {
   $('#mpCard').onclick = openMealPlan;
   bindWater(); bindTreat(sel);
   if ($('#planChip')) $('#planChip').onclick = openMainGoalSheet;
+  $('#mBtn').onclick = () => openMonth(days[3].slice(0, 7));
+  if ($('#homeAva')) $('#homeAva').onclick = () => db.profile.avatar ? go('settings') : openAvatarSheet();
   $('#wPrev').onclick = () => { weekOff--; renderHome(); };
   $('#wNext').onclick = () => { if (weekOff < 0) { weekOff++; renderHome(); } };
   hydratePhotos($('#view'));
+}
+
+// Month view: every day as a small ring (calories eaten against that day's goal). Tap a day to open it on Home.
+function openMonth(ym) {
+  const today = iso(), [y, m] = ym.split('-').map(Number), first = `${ym}-01`, n = new Date(y, m, 0).getDate();
+  const lead = (dt(first).getDay() + 6) % 7, curYM = today.slice(0, 7);
+  const prevYM = iso(new Date(y, m - 2, 15)).slice(0, 7), nextYM = iso(new Date(y, m, 15)).slice(0, 7);
+  const wd = [...Array(7)].map((_, i) => dt(addDays('2024-01-01', i)).toLocaleDateString(LOC, { weekday: 'narrow' }));
+  let logged = 0, onGoal = 0;
+  const cells = [...Array(lead)].map(() => '<span></span>').concat([...Array(n)].map((_, i) => {
+    const d = `${ym}-${String(i + 1).padStart(2, '0')}`, tot = dayTotals(d), g = dayGoals(d).kcal, fut = d > today;
+    if (tot.count) { logged++; if (tot.kcal <= g * 1.1) onGoal++; }
+    const over = tot.count && tot.kcal > g * 1.1, col = over ? 'var(--bad)' : 'var(--ink)';
+    return `<button class="mday ${d === sel ? 'sel' : ''} ${d === today ? 'today' : ''} ${fut ? 'future' : ''} ${tot.count ? '' : 'nolog'}" data-md="${d}" ${fut ? 'disabled' : ''}>
+      ${ring(36, 3.5, tot.count ? tot.kcal / g : 0, col, `<span>${i + 1}</span>`)}</button>`;
+  })).join('');
+  sheet(`<div class="spread"><button class="nav mnav" id="mPrev" aria-label="‹">‹</button>
+      <h3 style="margin:0">${dt(first).toLocaleDateString(LOC, { month: 'long', year: 'numeric' })}</h3>
+      <button class="nav mnav" id="mNext" aria-label="›" ${ym >= curYM ? 'style="visibility:hidden"' : ''}>›</button></div>
+    <div class="mgrid mhead">${wd.map(x => `<span>${x}</span>`).join('')}</div>
+    <div class="mgrid">${cells}</div>
+    <div class="mlegend small muted"><span><i style="border-color:var(--ink)"></i>${T('Within goal')}</span><span><i style="border-color:var(--bad)"></i>${T('Over goal')}</span><span><i class="dash"></i>${T('Nothing logged')}</span></div>
+    <p class="small" style="text-align:center;margin:10px 0 0"><b>${T('{n} days logged', { n: logged })}</b> <span class="muted">· ${T('{n} within goal', { n: onGoal })}</span></p>`, s => {
+    s.querySelector('#mPrev').onclick = () => openMonth(prevYM);
+    s.querySelector('#mNext').onclick = () => openMonth(nextYM);
+    s.querySelectorAll('[data-md]').forEach(b => b.onclick = () => {
+      sel = b.dataset.md;
+      const mon = d => addDays(d, -((dt(d).getDay() + 6) % 7));
+      weekOff = Math.round(daysBetween(mon(today), mon(sel)) / 7);
+      closeSheet(); renderHome();
+    });
+  });
 }
 
 // Calories burned on Home. With a tracker that counts the total (WHOOP, Oura, Polar, Withings) the big number is that
@@ -2957,8 +3117,45 @@ function checkRewards() {
   if (fresh.length || reached) LS.set('ft_data', JSON.stringify(db));
   if (reached) return setTimeout(openGoalReached, 400);
   for (const [ic, a, b] of wins) celebrate(ic, a, b);
-  for (const b of fresh) celebrate(b.ic, T('New badge: {n}', { n: T(b.name) }), T(b.desc));
+  for (const b of fresh) celebrate(`<span class="celmedal">${medalSVG(b.id, true)}</span>`, T('New badge: {n}', { n: T(b.name) }), T(b.desc));
   if (fresh.length && tab === 'progress') renderProgress();
+}
+
+/* Medals: each badge is a small metallic medal (shape and colour by kind, a line icon and its number).
+   Not earned yet = silver and calm, earned = full colour. */
+const MEDAL = {
+  first_meal: ['circle', 'violet', 'utensils', 1], full_day: ['circle', 'violet', 'calendar', 3],
+  streak3: ['hex', 'fire', 'flame', 3], streak7: ['hex', 'fire', 'zap', 7], streak30: ['hex', 'fire', 'star', 30], streak100: ['hex', 'fire', 'crown', 100],
+  meals50: ['circle', 'violet', 'salad', 50], meals250: ['circle', 'violet', 'grid', 250],
+  protein1: ['shield', 'rose', 'protein', 1], protein10: ['shield', 'rose', 'dumbbell', 10],
+  water1: ['drop', 'sea', 'drop', 1], water7: ['drop', 'sea', 'waves', 7],
+  weigh5: ['oct', 'mint', 'scale', 5], plan: ['oct', 'mint', 'cart', 1],
+  kg1: ['oct', 'gold', 'target', 1], half: ['oct', 'gold', 'flag', 50], goal: ['star', 'gold', 'trophy', ''],
+  keep30: ['shield', 'steel', 'heart', 30], keep90: ['shield', 'steel', 'medal', 90], keep365: ['shield', 'steel', 'gem', 365],
+  habit7: ['hept', 'leaf', 'sprout', 7], habit21: ['hept', 'leaf', 'leaf', 21], habit66: ['hept', 'leaf', 'tree', 66]
+};
+const MEDAL_COL = { violet: ['#b9a2ff', '#6b46e5'], fire: ['#ffb36b', '#e8452c'], rose: ['#ff9db0', '#d6336c'], sea: ['#7fd8ff', '#1f7fe0'],
+  mint: ['#7ee8c0', '#139c74'], gold: ['#ffe08a', '#d39a14'], steel: ['#b8cbe6', '#4f6a93'], leaf: ['#b5ec7f', '#3f9b2b'] };
+function medalShape(s) {
+  const poly = (n, r, rot = -90) => [...Array(n)].map((_, i) => { const a = (rot + i * 360 / n) * Math.PI / 180; return `${50 + r * Math.cos(a)},${50 + r * Math.sin(a)}`; }).join(' ');
+  if (s === 'circle') return '<circle cx="50" cy="50" r="45"/>';
+  if (s === 'hex') return `<polygon points="${poly(6, 47)}" stroke-linejoin="round"/>`;
+  if (s === 'hept') return `<polygon points="${poly(7, 47)}" stroke-linejoin="round"/>`;
+  if (s === 'oct') return `<polygon points="${poly(8, 47, -67.5)}" stroke-linejoin="round"/>`;
+  if (s === 'shield') return '<path d="M50 4 88 17v28c0 25-17 42-38 51C29 87 12 70 12 45V17z"/>';
+  if (s === 'drop') return '<path d="M50 3C62 22 88 40 88 62a38 38 0 0 1-76 0C12 40 38 22 50 3z"/>';
+  return `<polygon points="${[...Array(10)].map((_, i) => { const a = (-90 + i * 36) * Math.PI / 180, r = i % 2 ? 31 : 48; return `${50 + r * Math.cos(a)},${53 + r * Math.sin(a)}`; }).join(' ')}"/>`;
+}
+function medalSVG(id, on) {
+  const [shape, col, icon, n] = MEDAL[id] || ['circle', 'gold', 'star', ''], g = 'mg' + id + (on ? 1 : 0);
+  const [c1, c2] = on ? MEDAL_COL[col] : (isDark() ? ['#5d616b', '#33363d'] : ['#d3d7de', '#959ba7']);
+  const sh = medalShape(shape), num = n !== '' && n !== 1 ? `<text x="50" y="${shape === 'drop' ? 84 : 82}" text-anchor="middle" font-size="15" font-weight="800" fill="#fff" fill-opacity="${on ? .95 : .9}" style="font-family:inherit">${n}</text>` : '';
+  return `<svg class="medal ${on ? 'on' : ''}" viewBox="0 0 100 100" aria-hidden="true"><defs>
+    <linearGradient id="${g}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient>
+    <linearGradient id="${g}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>
+    <g fill="url(#${g})" stroke="${on ? 'rgba(255,255,255,.55)' : 'rgba(255,255,255,.7)'}" stroke-width="3">${sh}</g>
+    <g fill="url(#${g}s)" transform="translate(50 50) scale(.86) translate(-50 -50)">${sh}</g>
+    <svg x="30" y="${num ? 22 : 29}" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" opacity="${on ? 1 : .95}">${ICONS[icon]}</svg>${num}</svg>`;
 }
 
 // Badges on the Progress page
@@ -2967,16 +3164,16 @@ function badgesCard() {
   const s = badgeStats(), got = earned(), n = BADGES.filter(b => got[b.id]).length, open = LS.get('ft_badges_open', '') === '1';
   // Closed: 8 badges (newest earned first, then the ones you're closest to). Open: all of them.
   const prog = b => { const [have, need] = b.need(s); return have / need; };
-  const shown = open ? BADGES : [...BADGES].sort((a, b) => (got[b.id] || '').localeCompare(got[a.id] || '') || (!!got[b.id] - !!got[a.id]) || prog(b) - prog(a)).slice(0, 8);
+  const shown = open ? BADGES : [...BADGES].sort((a, b) => (got[b.id] || '').localeCompare(got[a.id] || '') || (!!got[b.id] - !!got[a.id]) || prog(b) - prog(a)).slice(0, 9);
   return `<div class="card" id="badgeCard"><div class="spread"><b style="font-size:17px">🏅 ${T('Badges')}</b><span class="etime">${n} / ${BADGES.length}</span></div>
     <div class="badges">${shown.map(b => { const [have, need] = b.need(s), on = !!got[b.id];
-      return `<button class="badge ${on ? 'on' : ''}" data-badge="${b.id}"><span class="bic">${b.ic}</span><span class="bname">${T(b.name)}</span>
+      return `<button class="badge ${on ? 'on' : ''}" data-badge="${b.id}">${medalSVG(b.id, on)}<span class="bname">${T(b.name)}</span><span class="bdesc">${T(b.desc)}</span>
         ${on ? '' : `<span class="bbar"><i style="width:${clamp(have / need * 100, 0, 100)}%"></i></span>`}</button>`; }).join('')}</div>
     <button class="bmore ${open ? 'open' : ''}" id="badgeMore">${open ? T('Show less') : T('Show all {n}', { n: BADGES.length })}<svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1.5 1.75 6 6.25l4.5-4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>`;
 }
 function openBadge(id) {
   const b = BADGES.find(x => x.id === id), [have, need] = b.need(badgeStats()), when = earned()[id];
-  sheet(`<div style="text-align:center;padding:4px 0 6px"><div class="bigbadge ${when ? 'on' : ''}">${b.ic}</div>
+  sheet(`<div style="text-align:center;padding:4px 0 6px"><div class="bigmedal ${when ? 'on' : ''}">${medalSVG(b.id, !!when)}</div>
     <h3 style="margin:14px 0 4px">${T(b.name)}</h3><p class="muted" style="margin:0">${T(b.desc)}</p>
     <p style="margin:14px 0 0;font-weight:700;${when ? 'color:var(--good)' : ''}">${when ? '✓ ' + T('Earned on {d}', { d: fmtLong(dt(when)) }) : T('{a} of {b}', { a: r1(Math.min(have, need)), b: need })}</p></div>`);
 }
@@ -3129,7 +3326,11 @@ const habitDots = h => [...Array(14)].map((_, i) => addDays(iso(), i - 13)).map(
 }).join('');
 // Home: only when a habit was chosen
 function habitHomeCard() {
-  const h = db.habit; if (!h) return '';
+  const h = db.habit;
+  // No habit yet: one slim line on Home (most people only use Home), can be hidden with ✕
+  if (!h) return db.settings.habitHome === false ? '' : `<div class="slimrow" role="button" tabindex="0" onclick="openHabitChooser()">
+    <span class="slim-ic">🎯</span><span class="grow"><b>${T('Habits')}</b> <span class="muted">· ${T('Choose a habit')}</span></span>
+    <button class="slim-x" aria-label="${T('Close')}" onclick="event.stopPropagation();db.settings.habitHome=false;save();renderHome()">✕</button></div>`;
   const st = habitStats(h), td = habitDay(h, iso()), manual = h.type === 'custom', ans = h.log && h.log[iso()];
   const notToday = h.type === 'weekend' && ![0, 6].includes(dt(iso()).getDay());
   const right = manual && ans === undefined
@@ -5541,12 +5742,12 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
-- Home: the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). The first time they tap Scan food or Barcode a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. Ingredients of a meal show as tiles with a kitchen measure next to the grams (e.g. "½ medium · 60 g", "2 tbsp · 20 g"; with the kg setting European measures like tbsp, tsp, glass, slice, handful, never cups; with the lb setting US measures like cup, tbsp, tsp, oz); tap a tile to change it with − / + (½ → ¾) or to type exact grams. The meal plan shows each meal's ingredients per person with these measures (tap "Ingredients"), and the grocery list shows next to the total amount what to take from the shelf (e.g. "1 pack of 500 g"). For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. "Earn your treat" (Home, only when today is over the calorie goal; adults only, not in pregnancy or on fast days; can be turned off in Settings → Preferences): a card offers a brisk walk, cycling or jogging with the minutes that make up for the extra calories (calculated from their weight); after picking one it fills up by itself with a watch, or they tap Done. Above 400 kcal over it doesn't suggest sport, just "back on track tomorrow". Food is never blocked. When they ate a treat and are over, you may mention this gently, never as punishment. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
+- Home: the profile picture top right (tap: Settings), the month name above the week strip (tap it for the month view: every day as a small ring, white within the goal, red over it, dashed when nothing was logged; tap a day to open it), the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). The first time they tap Scan food or Barcode a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. Ingredients of a meal show as tiles with a kitchen measure next to the grams (e.g. "½ medium · 60 g", "2 tbsp · 20 g"; with the kg setting European measures like tbsp, tsp, glass, slice, handful, never cups; with the lb setting US measures like cup, tbsp, tsp, oz); tap a tile to change it with − / + (½ → ¾) or to type exact grams. The meal plan shows each meal's ingredients per person with these measures (tap "Ingredients"), and the grocery list shows next to the total amount what to take from the shelf (e.g. "1 pack of 500 g"). For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. "Earn your treat" (Home, only when today is over the calorie goal; adults only, not in pregnancy or on fast days; can be turned off in Settings → Preferences): a card offers a brisk walk, cycling or jogging with the minutes that make up for the extra calories (calculated from their weight); after picking one it fills up by itself with a watch, or they tap Done. Above 400 kcal over it doesn't suggest sport, just "back on track tomorrow". Food is never blocked. When they ate a treat and are over, you may mention this gently, never as punishment. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros; if the Shortcut sends the same number on several days, 0 every evening or over 4000 kcal a day, Home shows a warning: in Find Health Samples only one date filter may stay, Start Date · is today) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
-- Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (tap one to see what it is for). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
-- Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Nothing appears on Home unless they choose a habit.
-- Coach: the Memory button (top right) opens My memory: what you remember about them (they can add or delete facts), My memory snapshot (a short summary you write about them with one question and 3 quick answers) and Chat history (earlier conversations are kept when they start a new one; they can open, continue or delete them). The first suggestion button follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
-- Settings: Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, daily life: mostly sitting / on their feet a lot / physical work, training 0 / 1-2 / 3-5 / 6+ per week; daily life and workouts together set the activity level, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (water: up to 3 a day at 11:00, 14:00 and 17:00, only when they are behind their water goal (25 / 50 / 75 % by then), none once it is reached; calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy (what happens with the data, no cookies, their rights); Terms of use (free, estimates not medical advice, 16+, fair use); Delete all data.
+- Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (medals in 3 columns with their number and what they are for, silver until earned; tap one to see more). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
+- Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Home shows a slim "Habits · Choose a habit" line (can be hidden with ✕; it's always on Progress), and the habit card once they chose one.
+- Coach: the Memory button (top right) opens My memory: what you remember about them (they can add or delete facts), My memory snapshot (a short summary you write about them with one question and 3 quick answers) and Chat history (earlier conversations are kept when they start a new one; they can open, continue or delete them). The suggestion buttons above the text field can be swiped sideways for more questions; the first one follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
+- Settings: at the top their profile picture and name (tap the picture to add or change a photo, tap the name to set it); Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, daily life: mostly sitting / on their feet a lot / physical work, training 0 / 1-2 / 3-5 / 6+ per week; daily life and workouts together set the activity level, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (water: up to 3 a day at 11:00, 14:00 and 17:00, only when they are behind their water goal (25 / 50 / 75 % by then), none once it is reached; calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy (what happens with the data, no cookies, their rights); Terms of use (free, estimates not medical advice, 16+, fair use); Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
   const mem = memList();
@@ -5654,6 +5855,9 @@ function buildChatbar(scr) {
   // Tapping send keeps the keyboard open (no layout jump under your finger)
   bar.querySelector('#cSend').addEventListener('pointerdown', e => { if (document.activeElement === ta) e.preventDefault(); });
   bar.querySelectorAll('.chips button').forEach(b => b.onclick = () => sendChat(b.textContent));
+  // The first few times, the questions slide a little to the side and back: a hint that you can swipe
+  const pk = +LS.get('ft_chipPeek', 0), chs = bar.querySelector('.chips');
+  if (pk < 3) { LS.set('ft_chipPeek', String(pk + 1)); setTimeout(() => { chs.scrollTo({ left: 70, behavior: 'smooth' }); setTimeout(() => chs.scrollTo({ left: 0, behavior: 'smooth' }), 700); }, 900); }
   bar.querySelector('#cSend').onclick = () => { const v = ta.value.trim(); if (v || chatAtt.length) { ta.value = ''; ta.oninput(); sendChat(v); } };
   bar.querySelector('#cPlus').onclick = e => { e.stopPropagation(); bar.classList.contains('menuOpen') ? closeChatMenu() : (bar.classList.add('menuOpen'), bar.querySelector('#cPlus').textContent = '✕'); };
   bar.querySelectorAll('[data-act]').forEach(b => b.onclick = () => {
@@ -6216,6 +6420,8 @@ function renderSettings() {
   const p = db.profile, t = targets(), th = getTheme();
   $('#view').innerHTML = `
     <div class="top"><div class="brand">${T('Settings')}</div></div>
+    ${p ? `<div class="card profhead"><button class="avatar big" id="sAva" aria-label="${T('Profile picture')}">${avatarHTML()}<span class="ava-cam">${CAM_SVG}</span></button>
+      <button class="grow prof-name" id="sName"><b>${p.name ? esc(p.name) : T('Add your name')}</b><span class="small muted">${p.avatar ? T('Tap the picture to change it') : T('Add a profile picture')}</span></button></div>` : ''}
     ${p ? `<div class="card" style="margin-top:12px"><div class="stats3">
       <div><b>${age(p)}</b><span class="small muted">${T('Age')}</span></div><div><b>${p.height} cm</b><span class="small muted">${T('Height')}</span></div><div><b>${currentWeight()} kg</b><span class="small muted">${T('Weight')}</span></div></div></div>` : ''}
     <div class="h2">${T('Customization')}</div>
@@ -6276,6 +6482,7 @@ function renderSettings() {
     if (++taps >= 7) { taps = 0; LS.set('ft_admin', isAdmin() ? '0' : '1'); toast(isAdmin() ? 'Admin mode on' : 'Admin mode off'); renderSettings(); } };
   if ($('#sShare')) $('#sShare').onclick = shareApp;
   $('#sPers').onclick = openPersonalSheet;
+  if ($('#sAva')) { $('#sAva').onclick = openAvatarSheet; $('#sName').onclick = openNameSheet; }
   $('#sTrk').onclick = () => setupLeft() ? openSetupPage() : openTrackerSheet();
   if ($('#sGoal')) $('#sGoal').onclick = openMainGoalSheet;
   $('#sGoals').onclick = openGoalsSheet;
@@ -6778,6 +6985,53 @@ function openPicker(sel, anchor) {
   if (anchor) { const r = anchor.getBoundingClientRect(); input.style.left = Math.max(0, r.left + 16) + 'px'; input.style.top = Math.max(0, r.top) + 'px'; }
   input.click();
 }
+// Profile picture: a centred square, 256 px (small, saved with the data and the encrypted backup)
+const CAM_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5A2.5 2.5 0 0 1 6.5 6h1.3l1.4-2h5.6l1.4 2h1.3A2.5 2.5 0 0 1 20 8.5v8A2.5 2.5 0 0 1 17.5 19h-11A2.5 2.5 0 0 1 4 16.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="12.5" r="3.3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>';
+function avatarHTML() {
+  const p = db.profile || {};
+  if (p.avatar) return `<img src="${p.avatar}" alt="">`;
+  if (p.name) return `<span class="ava-ini">${esc(p.name.trim().slice(0, 1).toUpperCase())}</span>`;
+  return '<svg viewBox="0 0 24 24" aria-hidden="true" class="ava-none"><circle cx="12" cy="9" r="4" fill="currentColor"/><path d="M4 20.5c1.4-3.6 4.4-5.5 8-5.5s6.6 1.9 8 5.5" fill="currentColor"/></svg>';
+}
+function squareImage(file, size = 256) {
+  return new Promise((res, rej) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const s = Math.min(img.width, img.height), c = document.createElement('canvas'); c.width = c.height = size;
+      c.getContext('2d').drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, size, size);
+      URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg', 0.85));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); rej(new Error(T('Could not open this image.'))); };
+    img.src = url;
+  });
+}
+function openAvatarSheet() {
+  const p = db.profile; if (!p) return;
+  sheet(`<div style="text-align:center"><div class="avatar huge">${avatarHTML()}</div><h3 style="margin:14px 0 4px">${T('Profile picture')}</h3>
+    <p class="small muted" style="margin:0">${T('Saved on this phone and in your backup.')}</p></div>
+    <button class="btn" id="avPick" style="margin-top:16px">${T('Choose a photo')}</button>
+    ${p.avatar ? `<button class="btn outline" id="avDel" style="margin-top:10px">${T('Remove photo')}</button>` : ''}`, s => {
+    s.querySelector('#avPick').onclick = () => {
+      const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
+      inp.onchange = async () => {
+        const f = inp.files && inp.files[0]; if (!f) return;
+        try { p.avatar = await squareImage(f); save(); closeSheet(); toast('✓ ' + T('Saved')); refreshAvatar(); } catch (e) { toast(e.message); }
+      };
+      inp.click();
+    };
+    if (s.querySelector('#avDel')) s.querySelector('#avDel').onclick = () => { delete p.avatar; save(); closeSheet(); refreshAvatar(); };
+  });
+}
+function openNameSheet() {
+  const p = db.profile; if (!p) return;
+  sheet(`<h3>${T('Your name')}</h3><p class="small muted" style="margin-top:4px">${T('Shown on your profile.')}</p>
+    <input id="nmIn" maxlength="30" value="${esc(p.name || '')}" placeholder="${T('First name or nickname')}" style="margin-top:10px">
+    <button class="btn" id="nmSave" style="margin-top:14px">${T('Save')}</button>`, s => {
+    const i = s.querySelector('#nmIn'); setTimeout(() => i.focus(), 250);
+    s.querySelector('#nmSave').onclick = () => { p.name = i.value.trim().slice(0, 30); save(); closeSheet(); refreshAvatar(); };
+  });
+}
+function refreshAvatar() { if (tab === 'settings') renderSettings(); if (tab === 'home') renderHome(); }
 function scaleImage(src, max, q = 0.82) {
   return new Promise((res, rej) => {
     const img = new Image(), isFile = src instanceof Blob, url = isFile ? URL.createObjectURL(src) : src;
