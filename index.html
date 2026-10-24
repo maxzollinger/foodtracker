@@ -1056,8 +1056,8 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
     #splash .sp-glow{position:absolute;left:50%;top:62px;width:360px;height:360px;margin:-180px 0 0 -180px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,149,0,.20) 0%,rgba(255,149,0,.08) 35%,rgba(255,149,0,0) 68%);opacity:0;animation:spGlow 1.2s ease .3s forwards}
     @keyframes spGlow{to{opacity:1}}
     #splash .sp-sq{transform-origin:60px 60px;animation:spSq 0.9s cubic-bezier(.2,1.5,.4,1) both}
-    #splash .sp-ring{stroke-dasharray:83.33 100;stroke-dashoffset:83.33;animation:spRing 1.575s cubic-bezier(.65,0,.25,1) 0.375s forwards}
-    #splash .sp-dot{transform-origin:76.8px 30.9px;transform:scale(0);animation:spDot 0.75s cubic-bezier(.2,1.7,.4,1) 1.875s forwards}
+    #splash .sp-ring{filter:drop-shadow(0 2.5px 2.5px rgba(0,0,0,.55));stroke-dasharray:83.33 100;stroke-dashoffset:83.33;animation:spRing 1.575s cubic-bezier(.65,0,.25,1) 0.375s forwards}
+    #splash .sp-dot{filter:drop-shadow(0 2.5px 2px rgba(0,0,0,.5));transform-origin:76.8px 30.9px;transform:scale(0);animation:spDot 0.75s cubic-bezier(.2,1.7,.4,1) 1.875s forwards}
     #splash .sp-pulse{fill:none;stroke:#ff9500;stroke-width:2.5;opacity:0;transform-origin:76.8px 30.9px;animation:spPulse 1.275s ease-out 1.95s}
     #splash .sp-food{position:absolute;left:50%;top:62px;width:36px;height:36px;margin:-18px 0 0 -18px;font-size:30px;line-height:36px;text-align:center;
       opacity:0;animation:spFly 1.125s cubic-bezier(.55,0,.8,.2) var(--d) both}
@@ -1090,10 +1090,16 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
     <span class="sp-food" style="--x:0px;--y:-240px;--r:20deg;--d:1.08s">🍣</span>
     <div class="sp-glow"></div>
     <svg class="sp-logo" viewBox="0 0 120 120">
-      <rect class="sp-sq" width="120" height="120" rx="28" fill="#141416" stroke="rgba(255,255,255,.08)"/>
-      <circle class="sp-ring" cx="60" cy="60" r="33.6" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round" pathLength="100" transform="rotate(-60 60 60)"/>
+      <defs>
+        <linearGradient id="spBg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d303b"/><stop offset=".55" stop-color="#16171d"/><stop offset="1" stop-color="#0a0b0f"/></linearGradient>
+        <radialGradient id="spSheen" cx=".5" cy=".08" r=".75"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+        <linearGradient id="spRingG" gradientUnits="userSpaceOnUse" x1="44" y1="26" x2="76" y2="94"><stop offset="0" stop-color="#fff"/><stop offset=".5" stop-color="#eceef3"/><stop offset="1" stop-color="#a3a8b6"/></linearGradient>
+        <radialGradient id="spDotG" cx=".36" cy=".3" r=".78"><stop offset="0" stop-color="#ffe7b3"/><stop offset=".28" stop-color="#ffb23e"/><stop offset=".68" stop-color="#ff7f16"/><stop offset="1" stop-color="#cf4c08"/></radialGradient>
+      </defs>
+      <g class="sp-sq"><rect width="120" height="120" rx="28" fill="url(#spBg)" stroke="rgba(255,255,255,.08)"/><rect width="120" height="120" rx="28" fill="url(#spSheen)"/></g>
+      <circle class="sp-ring" cx="60" cy="60" r="33.6" fill="none" stroke="url(#spRingG)" stroke-width="9" stroke-linecap="round" pathLength="100" transform="rotate(-60 60 60)"/>
       <circle class="sp-pulse" cx="76.8" cy="30.9" r="9"/>
-      <circle class="sp-dot" cx="76.8" cy="30.9" r="9" fill="#ff9500"/>
+      <g class="sp-dot"><circle cx="76.8" cy="30.9" r="9" fill="url(#spDotG)"/><ellipse cx="73.9" cy="27.4" rx="3.4" ry="2.3" fill="#fff" fill-opacity=".85" transform="rotate(-28 73.9 27.4)"/></g>
     </svg>
     <span class="sp-spark" style="--x:46px;--y:-30px"></span><span class="sp-spark" style="--x:52px;--y:10px"></span>
     <span class="sp-spark" style="--x:18px;--y:-52px"></span><span class="sp-spark" style="--x:-14px;--y:-48px"></span>
@@ -1241,7 +1247,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v216';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v217';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -5962,7 +5968,9 @@ async function mealShareImage(m) {
   const txt = (str, X, Y, size, w = 400, col = '#111', al = 'left') => { x.font = `${w} ${size}px ${F}`; x.fillStyle = col; x.textAlign = al; x.fillText(String(str), X, Y); };
   x.direction = rtl ? 'rtl' : 'ltr';
   const L = rtl ? cx + cw - 36 : cx + 36, R = rtl ? cx + 36 : cx + cw - 36;
-  txt('● Food Tracker', L, cy + 52, 26, 700, '#111', rtl ? 'right' : 'left');
+  const logo = await new Promise(res => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = 'icon-180.png'; });
+  if (logo) { const lx = rtl ? L - 34 : L; x.save(); rr(lx, cy + 28, 34, 34, 9); x.clip(); x.drawImage(logo, lx, cy + 28, 34, 34); x.restore(); }
+  txt('Food Tracker', logo ? (rtl ? L - 44 : L + 44) : L, cy + 54, 26, 700, '#111', rtl ? 'right' : 'left');
   if (s !== 1) txt(fmtPortion(s), R, cy + 52, 26, 600, '#777', rtl ? 'left' : 'right');
   let name = m.name || T('Meal'); x.font = `800 40px ${F}`;
   while (x.measureText(name).width > cw - 72 && name.length > 4) name = name.slice(0, -2).trim() + '…';
@@ -7223,7 +7231,7 @@ document.addEventListener('visibilitychange', () => {
 /* ---------- Loading: when something takes longer than a moment, the app logo turns big in the middle of the screen ----------
    Only shown after about half a second, so quick actions never flicker. */
 let busyN = 0, busyT = null;
-const LOGO_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="12" cy="12" r="6.9" stroke-width="2.3" pathLength="100" stroke-dasharray="83.33 100" transform="rotate(-60 12 12)"/><circle cx="15.5" cy="5.95" r="1.95" fill="#ff9500" stroke="none"/></svg>';
+const LOGO_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="12" cy="12" r="6.9" stroke-width="2.3" pathLength="100" stroke-dasharray="83.33 100" transform="rotate(-60 12 12)"/><defs><radialGradient id="bzDot" cx=".36" cy=".3" r=".78"><stop offset="0" stop-color="#ffe7b3"/><stop offset=".28" stop-color="#ffb23e"/><stop offset=".68" stop-color="#ff7f16"/><stop offset="1" stop-color="#cf4c08"/></radialGradient></defs><circle cx="15.5" cy="5.95" r="1.95" fill="url(#bzDot)" stroke="none"/><ellipse cx="14.9" cy="5.2" rx=".7" ry=".48" fill="#fff" fill-opacity=".85" stroke="none"/></svg>';
 function busyStart(text = '') {
   if (busyN++ > 0) return;
   clearTimeout(busyT);
