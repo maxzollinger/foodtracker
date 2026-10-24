@@ -1633,7 +1633,11 @@ window.I18N = {
 "{n} groups":"{n} Gruppen",
 "{n} members":"{n} Mitglieder",
 "{n} of 7 days logged this week":"{n} von 7 Tagen erfasst diese Woche",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sei freundlich in Gruppen und teile nur Bilder und Texte, die du teilen darfst. Der Gruppenbesitzer kann Nachrichten und Mitglieder entfernen. Um etwas zu melden, schreib dem App-Besitzer."
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sei freundlich in Gruppen und teile nur Bilder und Texte, die du teilen darfst. Der Gruppenbesitzer kann Nachrichten und Mitglieder entfernen. Um etwas zu melden, schreib dem App-Besitzer.",
+"Account actions":"Kontoaktionen",
+"Delete account":"Konto löschen",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Dein Konto löschen? Die Sicherung und die gespeicherten Mahlzeitenfotos werden vom Server gelöscht. Die Daten auf diesem Handy bleiben.",
+"Account deleted":"Konto gelöscht"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3268,7 +3272,11 @@ window.I18N = {
 "{n} groups":"{n} grupos",
 "{n} members":"{n} miembros",
 "{n} of 7 days logged this week":"{n} de 7 días registrados esta semana",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sé amable en los grupos y publica solo fotos y textos que puedas compartir. El propietario del grupo puede eliminar mensajes y miembros. Para denunciar algo, escribe al propietario de la app."
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sé amable en los grupos y publica solo fotos y textos que puedas compartir. El propietario del grupo puede eliminar mensajes y miembros. Para denunciar algo, escribe al propietario de la app.",
+"Account actions":"Acciones de la cuenta",
+"Delete account":"Eliminar cuenta",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"¿Eliminar tu cuenta? Su copia de seguridad y las fotos de comidas guardadas se borran del servidor. Los datos de este móvil se mantienen.",
+"Account deleted":"Cuenta eliminada"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4903,7 +4911,11 @@ window.I18N = {
 "{n} groups":"{n} groupes",
 "{n} members":"{n} membres",
 "{n} of 7 days logged this week":"{n} jours sur 7 notés cette semaine",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sois bienveillant dans les groupes et ne publie que des images et des textes que tu as le droit de partager. Le propriétaire du groupe peut retirer des messages et des membres. Pour signaler quelque chose, écris au propriétaire de l'app."
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sois bienveillant dans les groupes et ne publie que des images et des textes que tu as le droit de partager. Le propriétaire du groupe peut retirer des messages et des membres. Pour signaler quelque chose, écris au propriétaire de l'app.",
+"Account actions":"Actions du compte",
+"Delete account":"Supprimer le compte",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Supprimer ton compte ? Sa sauvegarde et les photos de repas enregistrées sont supprimées du serveur. Les données de ce téléphone restent.",
+"Account deleted":"Compte supprimé"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6538,7 +6550,11 @@ window.I18N = {
 "{n} groups":"{n} gruppi",
 "{n} members":"{n} membri",
 "{n} of 7 days logged this week":"{n} giorni su 7 registrati questa settimana",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sii gentile nei gruppi e pubblica solo immagini e testi che puoi condividere. Il proprietario del gruppo può rimuovere messaggi e membri. Per segnalare qualcosa, scrivi al proprietario dell'app."
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sii gentile nei gruppi e pubblica solo immagini e testi che puoi condividere. Il proprietario del gruppo può rimuovere messaggi e membri. Per segnalare qualcosa, scrivi al proprietario dell'app.",
+"Account actions":"Azioni account",
+"Delete account":"Elimina account",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Eliminare il tuo account? Il backup e le foto dei pasti salvate vengono cancellati dal server. I dati su questo telefono restano.",
+"Account deleted":"Account eliminato"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8173,7 +8189,11 @@ window.I18N = {
 "{n} groups":"{n}グループ",
 "{n} members":"{n}人",
 "{n} of 7 days logged this week":"今週 {n}/7 日記録",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"グループでは思いやりを持ち、共有してよい画像と文章だけを投稿してください。グループのオーナーはメッセージやメンバーを削除できます。報告はアプリのオーナーに連絡してください。"
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"グループでは思いやりを持ち、共有してよい画像と文章だけを投稿してください。グループのオーナーはメッセージやメンバーを削除できます。報告はアプリのオーナーに連絡してください。",
+"Account actions":"アカウント操作",
+"Delete account":"アカウントを削除",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"アカウントを削除しますか？バックアップと保存した食事写真はサーバーから削除されます。このスマホのデータは残ります。",
+"Account deleted":"アカウントを削除しました"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -9808,7 +9828,11 @@ window.I18N = {
 "{n} groups":"{n} groepen",
 "{n} members":"{n} leden",
 "{n} of 7 days logged this week":"{n} van de 7 dagen ingevoerd deze week",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Wees aardig in groepen en plaats alleen foto's en teksten die je mag delen. De eigenaar van de groep kan berichten en leden verwijderen. Wil je iets melden, schrijf dan naar de eigenaar van de app."
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Wees aardig in groepen en plaats alleen foto's en teksten die je mag delen. De eigenaar van de groep kan berichten en leden verwijderen. Wil je iets melden, schrijf dan naar de eigenaar van de app.",
+"Account actions":"Accountacties",
+"Delete account":"Account verwijderen",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Je account verwijderen? De back-up en opgeslagen maaltijdfoto's worden van de server verwijderd. De gegevens op deze telefoon blijven.",
+"Account deleted":"Account verwijderd"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -11443,7 +11467,11 @@ window.I18N = {
 "{n} groups":"Grupy: {n}",
 "{n} members":"Członkowie: {n}",
 "{n} of 7 days logged this week":"{n} z 7 dni z wpisami w tym tygodniu",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Bądź życzliwy w grupach i publikuj tylko zdjęcia i teksty, które możesz udostępniać. Właściciel grupy może usuwać wiadomości i członków. Aby coś zgłosić, napisz do właściciela aplikacji."
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Bądź życzliwy w grupach i publikuj tylko zdjęcia i teksty, które możesz udostępniać. Właściciel grupy może usuwać wiadomości i członków. Aby coś zgłosić, napisz do właściciela aplikacji.",
+"Account actions":"Działania na koncie",
+"Delete account":"Usuń konto",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Usunąć Twoje konto? Kopia zapasowa i zapisane zdjęcia posiłków zostaną usunięte z serwera. Dane na tym telefonie zostaną.",
+"Account deleted":"Konto usunięte"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -13078,7 +13106,11 @@ window.I18N = {
 "{n} groups":"{n} grupos",
 "{n} members":"{n} membros",
 "{n} of 7 days logged this week":"{n} de 7 dias registados esta semana",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sê simpático nos grupos e publica apenas imagens e textos que podes partilhar. O dono do grupo pode remover mensagens e membros. Para denunciar algo, escreve ao dono da app."
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Sê simpático nos grupos e publica apenas imagens e textos que podes partilhar. O dono do grupo pode remover mensagens e membros. Para denunciar algo, escreve ao dono da app.",
+"Account actions":"Ações da conta",
+"Delete account":"Apagar conta",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Apagar a tua conta? A cópia de segurança e as fotos de refeições guardadas são apagadas do servidor. Os dados neste telemóvel ficam.",
+"Account deleted":"Conta apagada"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -14713,7 +14745,11 @@ window.I18N = {
 "{n} groups":"Групп: {n}",
 "{n} members":"Участников: {n}",
 "{n} of 7 days logged this week":"{n} из 7 дней с записями на этой неделе",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Будь вежлив(а) в группах и публикуй только те фото и тексты, которыми можно делиться. Владелец группы может удалять сообщения и участников. Чтобы на что-то пожаловаться, напиши владельцу приложения."
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Будь вежлив(а) в группах и публикуй только те фото и тексты, которыми можно делиться. Владелец группы может удалять сообщения и участников. Чтобы на что-то пожаловаться, напиши владельцу приложения.",
+"Account actions":"Действия с аккаунтом",
+"Delete account":"Удалить аккаунт",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Удалить твой аккаунт? Резервная копия и сохранённые фото блюд будут удалены с сервера. Данные на этом телефоне останутся.",
+"Account deleted":"Аккаунт удалён"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -16348,7 +16384,11 @@ window.I18N = {
 "{n} groups":"{n} grup",
 "{n} members":"{n} üye",
 "{n} of 7 days logged this week":"Bu hafta 7 günün {n} gününde kayıt",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Gruplarda nazik ol ve yalnızca paylaşma hakkın olan fotoğraf ve metinleri paylaş. Grup sahibi mesajları ve üyeleri kaldırabilir. Bir şeyi bildirmek için uygulama sahibine yaz."
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Gruplarda nazik ol ve yalnızca paylaşma hakkın olan fotoğraf ve metinleri paylaş. Grup sahibi mesajları ve üyeleri kaldırabilir. Bir şeyi bildirmek için uygulama sahibine yaz.",
+"Account actions":"Hesap işlemleri",
+"Delete account":"Hesabı sil",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Hesabın silinsin mi? Yedeği ve kayıtlı yemek fotoğrafları sunucudan silinir. Bu telefondaki veriler kalır.",
+"Account deleted":"Hesap silindi"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -17983,7 +18023,11 @@ window.I18N = {
 "{n} groups":"{n} 个群组",
 "{n} members":"{n} 名成员",
 "{n} of 7 days logged this week":"本周已记录 {n}/7 天",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"在群组中请友善相待，只发布你有权分享的图片和文字。群主可以删除消息和成员。如需举报，请联系 App 所有者。"
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"在群组中请友善相待，只发布你有权分享的图片和文字。群主可以删除消息和成员。如需举报，请联系 App 所有者。",
+"Account actions":"账户操作",
+"Delete account":"删除账户",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"要删除你的账户吗？其备份和已保存的餐食照片将从服务器删除。这部手机上的数据会保留。",
+"Account deleted":"账户已删除"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -19336,7 +19380,11 @@ window.I18N = {
 "Gallery":"갤러리",
 "Whole meal inside the frame":"식사 전체를 틀 안에",
 "Nutrition label inside the frame":"영양성분표를 틀 안에",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"그룹에서는 친절하게 대하고, 공유해도 되는 사진과 글만 올리세요. 그룹 주인은 메시지와 멤버를 삭제할 수 있어요. 신고하려면 앱 운영자에게 연락하세요."
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"그룹에서는 친절하게 대하고, 공유해도 되는 사진과 글만 올리세요. 그룹 주인은 메시지와 멤버를 삭제할 수 있어요. 신고하려면 앱 운영자에게 연락하세요.",
+"Account actions":"계정 관리",
+"Delete account":"계정 삭제",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"계정을 삭제할까요? 백업과 저장된 식사 사진이 서버에서 삭제돼요. 이 폰의 데이터는 남아요.",
+"Account deleted":"계정이 삭제됐어요"
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -20689,7 +20737,11 @@ window.I18N = {
 "Gallery":"गैलरी",
 "Whole meal inside the frame":"पूरा भोजन फ़्रेम के अंदर",
 "Nutrition label inside the frame":"पोषण लेबल फ़्रेम के अंदर",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"ग्रुप में अच्छा व्यवहार करें और सिर्फ़ वही फ़ोटो और टेक्स्ट पोस्ट करें जिन्हें शेयर करने की आपको अनुमति है। ग्रुप का मालिक मैसेज और सदस्य हटा सकता है। किसी चीज़ की शिकायत के लिए ऐप के मालिक को लिखें।"
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"ग्रुप में अच्छा व्यवहार करें और सिर्फ़ वही फ़ोटो और टेक्स्ट पोस्ट करें जिन्हें शेयर करने की आपको अनुमति है। ग्रुप का मालिक मैसेज और सदस्य हटा सकता है। किसी चीज़ की शिकायत के लिए ऐप के मालिक को लिखें।",
+"Account actions":"खाते की कार्रवाइयाँ",
+"Delete account":"खाता हटाएँ",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"अपना खाता हटाएँ? इसका बैकअप और सेव की गई भोजन की फ़ोटो सर्वर से हट जाएँगी। इस फ़ोन का डेटा रहेगा।",
+"Account deleted":"खाता हटा दिया गया"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -22042,7 +22094,11 @@ window.I18N = {
 "Gallery":"Galeri",
 "Whole meal inside the frame":"Seluruh makanan di dalam bingkai",
 "Nutrition label inside the frame":"Label gizi di dalam bingkai",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Bersikaplah baik di grup dan hanya unggah foto serta teks yang boleh kamu bagikan. Pemilik grup bisa menghapus pesan dan anggota. Untuk melaporkan sesuatu, hubungi pemilik app."
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"Bersikaplah baik di grup dan hanya unggah foto serta teks yang boleh kamu bagikan. Pemilik grup bisa menghapus pesan dan anggota. Untuk melaporkan sesuatu, hubungi pemilik app.",
+"Account actions":"Tindakan akun",
+"Delete account":"Hapus akun",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"Hapus akunmu? Cadangan dan foto makanan yang tersimpan akan dihapus dari server. Data di ponsel ini tetap ada.",
+"Account deleted":"Akun dihapus"
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -23395,6 +23451,10 @@ window.I18N = {
 "Gallery":"المعرض",
 "Whole meal inside the frame":"الوجبة كاملة داخل الإطار",
 "Nutrition label inside the frame":"الملصق الغذائي داخل الإطار",
-"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"كن لطيفًا في المجموعات ولا تنشر إلا الصور والنصوص التي يحق لك مشاركتها. يستطيع مالك المجموعة حذف الرسائل والأعضاء. للإبلاغ عن شيء ما، راسل مالك التطبيق."
+"Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.":"كن لطيفًا في المجموعات ولا تنشر إلا الصور والنصوص التي يحق لك مشاركتها. يستطيع مالك المجموعة حذف الرسائل والأعضاء. للإبلاغ عن شيء ما، راسل مالك التطبيق.",
+"Account actions":"إجراءات الحساب",
+"Delete account":"حذف الحساب",
+"Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.":"حذف حسابك؟ ستُحذف نسخته الاحتياطية وصور الوجبات المحفوظة من الخادم. تبقى البيانات على هذا الهاتف.",
+"Account deleted":"تم حذف الحساب"
 }
 };

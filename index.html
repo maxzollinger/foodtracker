@@ -1195,7 +1195,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v196';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v197';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1520,6 +1520,8 @@ const ICONS = {
   trenddown: _p('M22 17l-8.5-8.5-5 5L2 7', 'M16 17h6v-6'),
   download: _p('M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4', 'M7 10l5 5 5-5', 'M12 15V3'),
   upload: _p('M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4', 'M17 8l-5-5-5 5', 'M12 3v12'),
+  logout: _p('M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4', 'M16 17l5-5-5-5', 'M21 12H9'),
+  userminus: _p('M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2', '<circle cx="9" cy="7" r="4"/>', 'M16 11h6'),
   egg: _p('M12 22c4.2 0 7-3.1 7-7.5C19 9.5 15.9 2 12 2S5 9.5 5 14.5C5 18.9 7.8 22 12 22z')
 };
 const ic = (name, cls = '') => `<svg class="ico ${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[name] || ICONS.star}</svg>`;
@@ -3346,16 +3348,21 @@ function backupCard() {
     <p class="small" style="margin:6px 0 2px">👤 <b>${esc(a.email)}</b></p>
     <div class="spread" style="margin-top:6px"><span class="small" style="${last ? 'color:var(--good);font-weight:600' : ''}">${last ? '✓ ' + T('Last backup: {d}', { d: when }) : T('No backup yet')}</span>
       <button class="chipbtn" id="bkNow">${T('Back up now')}</button></div>
-    <p class="small muted" style="margin:8px 0 10px">${T('Backed up every day, encrypted. Sign in on a new phone to get it back.')}</p>
-    <button class="btn sm outline" id="acOut">${T('Sign out')}</button></div>`;
+    <p class="small muted" style="margin:8px 0 0">${T('Backed up every day, encrypted. Sign in on a new phone to get it back.')}</p></div>`;
 }
 function bindBackupCard() {
   if ($('#acUp')) $('#acUp').onclick = () => openAccountSheet('signup');
   if ($('#acIn')) $('#acIn').onclick = () => openAccountSheet('login');
   if ($('#bkNow')) $('#bkNow').onclick = () => { $('#bkNow').innerHTML = '<span class="spin"></span>'; runBackup(true).then(() => photoSync(true)).then(() => { if (tab === 'settings') renderSettings(); }); };
+  // Account actions (own section at the end of Settings): sign out, or delete the account on the server (the phone keeps its data)
   if ($('#acOut')) $('#acOut').onclick = () => {
     if (!confirm(T('Sign out? Your data stays on this phone, but it is no longer backed up.'))) return;
     ['ft_acct', 'ft_bk_last'].forEach(x => LS.del(x)); toast(T('Signed out')); renderSettings();
+  };
+  if ($('#acDel')) $('#acDel').onclick = async () => {
+    if (!confirm(T('Delete your account? Its backup and saved meal photos are deleted from the server. The data on this phone stays.'))) return;
+    busyStart(); try { await deleteBackup(); } finally { busyEnd(); }
+    toast(T('Account deleted')); renderSettings();
   };
 }
 
@@ -6365,7 +6372,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Groups, Se
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Home shows a slim "Habits · Choose a habit" line (can be hidden with ✕; it's always on Progress), and the habit card once they chose one.
 - Coach: the Memory button (top right) opens My memory: what you remember about them (they can add or delete facts), My memory snapshot (a short summary you write about them with one question and 3 quick answers) and Chat history (earlier conversations are kept when they start a new one; they can open, continue or delete them). The suggestion buttons above the text field can be swiped sideways for more questions; the first one follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them. You can also do things for them from the chat (see ACTIONS): log food they tell you they ate, water, weight and activity, start a habit (it then shows on Home), change the water goal or open a page; each shows as a small card under your answer with Undo.
 - Groups (its own tab in the bottom bar, between Coach and Settings; a red dot on the tab and on a group means new messages from others): private groups with friends or family. Create one (name, optional description and picture) and share the invite link or 6-letter code; others join with the code. Each group has a Ranking (days logged this week Monday-Sunday, then the logging streak; top 3 get gold/silver/bronze) and a Chat (tap your own message to delete it; the owner can delete any message, edit the group, remove members or delete the group). Members only see each other's name, small profile picture, streak and days logged this week, never meals or weight. Messages are kept 60 days. No public groups.
-- Settings: at the top their profile picture and name (tap the picture to add or change a photo, tap the name to set it); Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, daily life: mostly sitting / on their feet a lot / physical work, training 0 / 1-2 / 3-5 / 6+ per week; daily life and workouts together set the activity level, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (16 languages: English, German, French, Spanish, Italian, Portuguese, Dutch, Polish, Turkish, Russian, Chinese, Japanese, Korean, Hindi, Indonesian, Arabic; Arabic mirrors the layout right to left), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (water: up to 3 a day at 11:00, 14:00 and 17:00, only when they are behind their water goal (25 / 50 / 75 % by then), none once it is reached; calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy (what happens with the data, no cookies, their rights); Terms of use (free, estimates not medical advice, 16+, fair use); Delete all data.
+- Settings: at the top their profile picture and name (tap the picture to add or change a photo, tap the name to set it); Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, daily life: mostly sitting / on their feet a lot / physical work, training 0 / 1-2 / 3-5 / 6+ per week; daily life and workouts together set the activity level, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (16 languages: English, German, French, Spanish, Italian, Portuguese, Dutch, Polish, Turkish, Russian, Chinese, Japanese, Korean, Hindi, Indonesian, Arabic; Arabic mirrors the layout right to left), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (water: up to 3 a day at 11:00, 14:00 and 17:00, only when they are behind their water goal (25 / 50 / 75 % by then), none once it is reached; calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); at the very end "Account actions" (only with an account): Sign out, and Delete account (removes the account, its backup and saved photos from the server; the data on the phone stays); Privacy (what happens with the data, no cookies, their rights); Terms of use (free, estimates not medical advice, 16+, fair use); Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
   const mem = memList();
@@ -7106,6 +7113,9 @@ function renderSettings() {
       <button class="li" id="dImp"><span class="ic">⬆️</span><span class="grow">${T('Restore backup')}</span><span class="chev">›</span></button>
       <button class="li" id="dDel" style="color:var(--bad)"><span class="ic">🗑</span><span class="grow">${T('Delete all data')}</span></button>
     </div>
+    ${acct() ? `<div class="h2">${T('Account actions')}</div><div class="list">
+      <button class="li" id="acOut"><span class="ic">${ic('logout')}</span><span class="grow">${T('Sign out')}</span><span class="chev">›</span></button>
+      <button class="li" id="acDel"><span class="ic">${ic('userminus')}</span><span class="grow">${T('Delete account')}</span><span class="chev">›</span></button></div>` : ''}
     <p class="small muted" id="sNote" style="text-align:center;margin:20px 10px 10px">${T('Nutrition values are estimates, not medical advice.')}${isAdmin() ? '<br>Admin' : ''}</p>`;
   // Hidden switch: tap the note 7 times to turn admin mode on/off
   let taps = 0, tapT;
