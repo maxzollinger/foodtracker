@@ -1241,7 +1241,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v215';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v216';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -6478,7 +6478,7 @@ document.addEventListener('click', e => {
   if (u) undoAct(u.dataset.actundo); if (ok) confirmHabitAct(ok.dataset.actok); if (op && OPEN_TARGETS[op.dataset.actopen]) OPEN_TARGETS[op.dataset.actopen]();
 });
 // Hide memory and action tags, including a half-written one at the end while the answer is still streaming in
-const stripTags = t => t.replace(/<(memory|forget|action)>[\s\S]*?(<\/\1>|$)/gi, '').replace(/<\/?[a-z]{0,6}$/i, '').trim();
+const stripTags = t => t.replace(/<(memory|forget|action|next)>[\s\S]*?(<\/\1>|$)/gi, '').replace(/<\/?[a-z]{0,6}$/i, '').trim();
 
 // Short version of the Home screen numbers, attached to every message the user sends
 function liveNumbers() {
@@ -6603,6 +6603,7 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Groups, Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
+- Coach chat: after each answer, the buttons above the text box show 2 short follow-up questions to tap (otherwise the usual questions for the time of day).
 - Safety: if someone talks about suicide, self-harm or dangerous eating-disorder behaviour, the app shows a card under your answer with a helpline for their country, the emergency number and findahelpline.com.
 - Home: the profile picture top right (tap: Settings), the month name above the week strip (tap it for the month view: every day as a small ring, green within the goal or up to 100 kcal over, yellow 100-200 kcal over, red more than 200 over, dashed when nothing was logged; the ? there and Settings → Support → Ring colors explained show this; tap a day to open it), the week strip (its day circles use the same colours) (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped; in Preferences an optional weekly food budget with currency; the grocery list shows AI price estimates per item and an estimated total against the budget, and "Supermarkets near you": with their OK it uses their location once (not saved) to show the shops within about 3 km on a map (OpenStreetMap), sorted by how well each suits them (1-10, AI estimate from budget, diet and the list), with price level, estimated cost of the list there and a Route button to Google Maps). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). The first time they tap Scan food or Barcode a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. Ingredients of a meal show as tiles with a kitchen measure next to the grams (e.g. "½ medium · 60 g", "2 tbsp · 20 g"; with the kg setting European measures like tbsp, tsp, glass, slice, handful, never cups; with the lb setting US measures like cup, tbsp, tsp, oz); tap a tile to change it with − / + (½ → ¾) or to type exact grams. The meal plan shows each meal's ingredients per person with these measures (tap "Ingredients"), and the grocery list shows next to the total amount what to take from the shelf (e.g. "1 pack of 500 g"). For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. "Earn your treat" (Home, only when today is over the calorie goal; adults only, not in pregnancy or on fast days; can be turned off in Settings → Preferences): a card offers a brisk walk, cycling or jogging with the minutes that make up for the extra calories (calculated from their weight); after picking one it fills up by itself with a watch, or they tap Done. Above 400 kcal over it doesn't suggest sport, just "back on track tomorrow". Food is never blocked. When they ate a treat and are over, you may mention this gently, never as punishment. Tap a logged meal to see, edit, delete, share it (share button at the top: the photo with a small nutrition card, sent with the phone's share menu to Instagram, Snapchat, Messages or saved), save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros; if the Shortcut sends the same number on several days, 0 every evening or over 4000 kcal a day, Home shows a warning: in Find Health Samples only one date filter may stay, Start Date · is today) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
@@ -6619,10 +6620,18 @@ function coachSystem() {
 RULES
 - Always base answers on the live data below. NEVER say you can't see their data and NEVER ask for a screenshot: you already have everything the app shows, and more.
 - Earlier messages in this chat may mention older numbers or an older time. They are out of date: the user may have logged, edited or deleted things since. Always use ONLY the live data below for numbers, meals and the time of day.
-- Use the current time (see RIGHT NOW): when they ask what to eat without saying which meal, answer for the meal that is due now. Plan the rest of the day around the main meals still to come and split what is left over them. Breakfast foods in the morning, no big meal late at night: after dinner time suggest something light or nothing. If they usually eat at other times (their usual meal times), follow their rhythm.
+- Use the current time (see RIGHT NOW): when they ask what to eat without saying which meal, answer for the meal that is due now and keep enough for the meals still to come (don't plan those unless they ask). Breakfast foods in the morning, no big meal late at night: after dinner time suggest something light or nothing. If they usually eat at other times (their usual meal times), follow their rhythm.
 - When they ask how to do something in the app, explain it step by step using THE APP below.
-- Be practical, specific and encouraging. Keep answers short and easy to read on a phone: short paragraphs or bullet points, no tables, no emojis (the app has its own icons).
-- When suggesting food, give concrete foods with grams plus calories and protein, and make them fit exactly what is left today. Vary suggestions; look at what they ate recently.
+- When suggesting food, give concrete foods with grams plus calories and protein that fit what is left today. Vary suggestions; look at what they ate recently.
+
+ANSWER STYLE (like the best coaching apps, e.g. WHOOP Coach)
+- The first sentence is the answer. Don't explain your reasoning or these rules. No greeting, no "great question", no repeating the question, no summary or sign-off at the end.
+- Match the length to the question. A quick question: 1-3 short sentences (under 50 words): the answer plus, if useful, one practical tip. Food ideas: at most 3 options, one line each with calories and protein. A plan, recipe, prep schedule or longer explanation only when they ask for it, and still compact (under 150 words, short bullets).
+- Mention only the 1-2 numbers that matter for this question (e.g. what is left today). Don't recite their whole day.
+- Calories do not carry over to another day: never tell them to save calories for tomorrow.
+- Give one clear next step, not a list of tips. No extras they didn't ask for (water reminders, their habit or streak, general health advice, disclaimers), unless safety needs it.
+- Friendly and direct, like a good coach texting. Short paragraphs or bullets, no tables, no headings, no emojis (the app has its own icons).
+- At the very end add <next>…|…</next> with 2 short follow-ups the user might want to tap next, written the way the user would say them, in the user's language, at most 5 words each, e.g. <next>Give me a recipe|Plan my whole day</next>. Leave it out in a crisis answer.
 - Write clock times as ${use12h() ? '12-hour times with AM/PM (e.g. 7:30 PM)' : '24-hour times (e.g. 19:30)'}.
 - Use metric units. The app is set to ${langInfo().ai}: answer in ${langInfo().ai} unless the user writes in another language, then answer in theirs.
 - You are not a doctor. For medical conditions, medication, pregnancy or signs of an eating disorder, recommend a professional.
@@ -6695,13 +6704,23 @@ function renderChat(animLast) {
     <div class="msgs" id="msgs">${chat.map((m, i) => chatBubble(m, animLast && i === chat.length - 1)).join('')}${chatBusy ? '<div class="msg ai new" id="live"><span class="dots"><span></span><span></span><span></span></span></div>' : ''}</div>`;
   renderAttach();
   $('#cMem').onclick = openMemoryPage;
-  fitChat(); chatToBottom(); requestAnimationFrame(() => { chatToBottom(); updateDown(); });
+  setChips(); fitChat(); chatToBottom(); requestAnimationFrame(() => { chatToBottom(); updateDown(); });
+}
+// The buttons above the text box: after an answer, the coach's own follow-ups ("Give me a recipe"); otherwise the
+// usual questions for this time of day
+function setChips() {
+  const box = document.querySelector('.chatbar .chips'); if (!box) return;
+  const last = chat[chat.length - 1], next = last && last.role === 'assistant' && !last.err && last.next && last.next.length ? last.next : null;
+  const list = next || chipsFor().map(c => T(c)), sig = list.join('|');
+  if (box.dataset.sig === sig) return;
+  box.dataset.sig = sig; box.innerHTML = list.map(c => `<button>${esc(c)}</button>`).join(''); box.scrollLeft = 0;
+  box.querySelectorAll('button').forEach(b => b.onclick = () => sendChat(b.textContent));
 }
 function buildChatbar(scr) {
   const bar = document.createElement('div'); bar.className = 'chatbar';
   bar.innerHTML = `<div class="in">
     <button class="downbtn" id="cDown" aria-label="${T('Jump to the latest message')}">↓</button>
-    <div class="chips">${chipsFor().map(c => `<button>${esc(T(c))}</button>`).join('')}</div><div id="cAttach"></div>
+    <div class="chips"></div><div id="cAttach"></div>
     <div class="pmenu" id="cMenu">
       <button data-act="new">${CICON.newchat}<span>${T('New conversation')}</span></button>
       <button data-act="image">${CICON.image}<span>${T('Upload image')}</span></button>
@@ -6729,7 +6748,7 @@ function buildChatbar(scr) {
   ta.addEventListener('blur', () => { blurT = setTimeout(() => { document.body.classList.remove('typing'); fitChat(); }, 120); });
   // Tapping send keeps the keyboard open (no layout jump under your finger)
   bar.querySelector('#cSend').addEventListener('pointerdown', e => { if (document.activeElement === ta) e.preventDefault(); });
-  bar.querySelectorAll('.chips button').forEach(b => b.onclick = () => sendChat(b.textContent));
+  setChips();
   // The first few times, the questions slide a little to the side and back: a hint that you can swipe
   const pk = +LS.get('ft_chipPeek', 0), chs = bar.querySelector('.chips');
   if (pk < 3) { LS.set('ft_chipPeek', String(pk + 1)); setTimeout(() => { chs.scrollTo({ left: 70, behavior: 'smooth' }); setTimeout(() => chs.scrollTo({ left: 0, behavior: 'smooth' }), 700); }, 900); }
@@ -7018,7 +7037,8 @@ async function sendChat(text) {
     target = answer; done = true;
     const mem = applyMemoryTags(answer), acts = applyActionTags(answer);
     if (CRISIS_RE.test(q) && !acts.some(x => x.k === 'crisis')) acts.unshift({ uid: uid(), k: 'crisis', label: '' });
-    entry = { role: 'assistant', text: stripTags(answer), mem: mem > 0, t: Date.now(), ...(acts.length ? { acts } : {}) };
+    const nx = [...answer.matchAll(/<next>([\s\S]*?)<\/next>/gi)].map(x => x[1]).join('|'), next = nx ? nx.split('|').map(x => x.replace(/<[^>]*>/g, '').trim()).filter(x => x.length > 1 && x.length <= 60).slice(0, 3) : [];
+    entry = { role: 'assistant', text: stripTags(answer), mem: mem > 0, t: Date.now(), ...(acts.length ? { acts } : {}), ...(next.length && !acts.some(x => x.k === 'crisis') ? { next } : {}) };
   } catch (e) {
     entry = { role: 'assistant', err: true, text: aiMsg(e), t: Date.now() };
   }
@@ -7028,6 +7048,7 @@ async function sendChat(text) {
   clearInterval(typer);
   chat.push(entry); chatBusy = false; saveChat();
   if (tab === 'chat') {
+    setChips();
     const live = $('#live');
     if (live) { const stick = near(); live.outerHTML = chatBubble(entry); if (stick) chatToBottom(true); }
     else renderChat(true);
