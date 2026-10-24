@@ -1531,7 +1531,8 @@ window.I18N = {
 "Halfway through the day: a glass of water? 💧":"Halber Tag geschafft: ein Glas Wasser? 💧",
 "A few more glasses to reach your water goal 💧":"Noch ein paar Gläser bis zu deinem Wasserziel 💧",
 "Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Kurze Erinnerungen: Wasser trinken, verbrannte Kalorien eintragen, einmal pro Woche wiegen und dein Wochen-Check-in.",
-"Test sent. It arrives in a few seconds.":"Test gesendet. Er kommt in ein paar Sekunden an."
+"Test sent. It arrives in a few seconds.":"Test gesendet. Er kommt in ein paar Sekunden an.",
+"If you live in another country, you keep the consumer rights that the law of your country gives you.":"Wenn du in einem anderen Land wohnst, behältst du die Verbraucherrechte, die dir das Recht deines Landes gibt."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3064,7 +3065,8 @@ window.I18N = {
 "Halfway through the day: a glass of water? 💧":"Mitad del día: ¿un vaso de agua? 💧",
 "A few more glasses to reach your water goal 💧":"Unos vasos más para tu objetivo de agua 💧",
 "Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Recordatorios cortos para beber agua, anotar las calorías quemadas, pesarte una vez por semana y ver tu resumen semanal.",
-"Test sent. It arrives in a few seconds.":"Prueba enviada. Llegará en unos segundos."
+"Test sent. It arrives in a few seconds.":"Prueba enviada. Llegará en unos segundos.",
+"If you live in another country, you keep the consumer rights that the law of your country gives you.":"Si vives en otro país, conservas los derechos de consumidor que te da la ley de tu país."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4597,7 +4599,8 @@ window.I18N = {
 "Halfway through the day: a glass of water? 💧":"Mi-journée : un verre d’eau ? 💧",
 "A few more glasses to reach your water goal 💧":"Encore quelques verres pour ton objectif d’eau 💧",
 "Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"De courts rappels pour boire de l’eau, noter les calories brûlées, te peser une fois par semaine et voir ton bilan hebdo.",
-"Test sent. It arrives in a few seconds.":"Test envoyé. Il arrive dans quelques secondes."
+"Test sent. It arrives in a few seconds.":"Test envoyé. Il arrive dans quelques secondes.",
+"If you live in another country, you keep the consumer rights that the law of your country gives you.":"Si tu vis dans un autre pays, tu conserves les droits de consommateur que te donne la loi de ton pays."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6130,7 +6133,8 @@ window.I18N = {
 "Halfway through the day: a glass of water? 💧":"Metà giornata: un bicchiere d’acqua? 💧",
 "A few more glasses to reach your water goal 💧":"Ancora qualche bicchiere per il tuo obiettivo d’acqua 💧",
 "Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Brevi promemoria per bere acqua, registrare le calorie bruciate, pesarti una volta a settimana e vedere il check-in settimanale.",
-"Test sent. It arrives in a few seconds.":"Test inviato. Arriva tra pochi secondi."
+"Test sent. It arrives in a few seconds.":"Test inviato. Arriva tra pochi secondi.",
+"If you live in another country, you keep the consumer rights that the law of your country gives you.":"Se vivi in un altro paese, mantieni i diritti dei consumatori che ti dà la legge del tuo paese."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7663,7 +7667,8 @@ window.I18N = {
 "Halfway through the day: a glass of water? 💧":"1日の半分です：水を1杯どう？ 💧",
 "A few more glasses to reach your water goal 💧":"水分目標まであと数杯 💧",
 "Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"水分補給、消費カロリーの記録、週1回の体重測定、週間チェックインを短くお知らせします。",
-"Test sent. It arrives in a few seconds.":"テストを送信しました。数秒で届きます。"
+"Test sent. It arrives in a few seconds.":"テストを送信しました。数秒で届きます。",
+"If you live in another country, you keep the consumer rights that the law of your country gives you.":"ほかの国にお住まいの場合も、お住まいの国の法律による消費者の権利はそのまま守られます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -9196,7 +9201,8 @@ window.I18N = {
 "Halfway through the day: a glass of water? 💧":"Halverwege de dag: een glas water? 💧",
 "A few more glasses to reach your water goal 💧":"Nog een paar glazen tot je waterdoel 💧",
 "Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Korte herinneringen om water te drinken, verbrande calorieën in te vullen, één keer per week te wegen en je weekcheck-in te zien.",
-"Test sent. It arrives in a few seconds.":"Test verstuurd. Hij komt over een paar seconden aan."
+"Test sent. It arrives in a few seconds.":"Test verstuurd. Hij komt over een paar seconden aan.",
+"If you live in another country, you keep the consumer rights that the law of your country gives you.":"Woon je in een ander land, dan behoud je de consumentenrechten die de wet van jouw land je geeft."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -10729,7 +10735,8 @@ window.I18N = {
 "Halfway through the day: a glass of water? 💧":"Połowa dnia: szklanka wody? 💧",
 "A few more glasses to reach your water goal 💧":"Jeszcze kilka szklanek do celu wody 💧",
 "Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Krótkie przypomnienia o piciu wody, wpisaniu spalonych kalorii, ważeniu raz w tygodniu i tygodniowym podsumowaniu.",
-"Test sent. It arrives in a few seconds.":"Test wysłany. Dotrze za kilka sekund."
+"Test sent. It arrives in a few seconds.":"Test wysłany. Dotrze za kilka sekund.",
+"If you live in another country, you keep the consumer rights that the law of your country gives you.":"Jeśli mieszkasz w innym kraju, zachowujesz prawa konsumenta, które daje ci prawo twojego kraju."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -12262,7 +12269,8 @@ window.I18N = {
 "Halfway through the day: a glass of water? 💧":"Meio do dia: um copo de água? 💧",
 "A few more glasses to reach your water goal 💧":"Mais uns copos para o seu objetivo de água 💧",
 "Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Lembretes curtos para beber água, registar calorias queimadas, pesar-se uma vez por semana e ver o resumo semanal.",
-"Test sent. It arrives in a few seconds.":"Teste enviado. Chega dentro de segundos."
+"Test sent. It arrives in a few seconds.":"Teste enviado. Chega dentro de segundos.",
+"If you live in another country, you keep the consumer rights that the law of your country gives you.":"Se vive noutro país, mantém os direitos de consumidor que a lei do seu país lhe dá."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -13795,7 +13803,8 @@ window.I18N = {
 "Halfway through the day: a glass of water? 💧":"Полдня позади: стакан воды? 💧",
 "A few more glasses to reach your water goal 💧":"Ещё несколько стаканов до цели по воде 💧",
 "Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Короткие напоминания: пить воду, записать сожжённые калории, взвешиваться раз в неделю и смотреть недельный итог.",
-"Test sent. It arrives in a few seconds.":"Тест отправлен. Он придёт через несколько секунд."
+"Test sent. It arrives in a few seconds.":"Тест отправлен. Он придёт через несколько секунд.",
+"If you live in another country, you keep the consumer rights that the law of your country gives you.":"Если вы живёте в другой стране, за вами сохраняются права потребителя по законам вашей страны."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -15328,7 +15337,8 @@ window.I18N = {
 "Halfway through the day: a glass of water? 💧":"Günün yarısı: bir bardak su? 💧",
 "A few more glasses to reach your water goal 💧":"Su hedefine birkaç bardak kaldı 💧",
 "Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Su içmek, yakılan kaloriyi girmek, haftada bir tartılmak ve haftalık özetini görmek için kısa hatırlatmalar.",
-"Test sent. It arrives in a few seconds.":"Test gönderildi. Birkaç saniye içinde gelir."
+"Test sent. It arrives in a few seconds.":"Test gönderildi. Birkaç saniye içinde gelir.",
+"If you live in another country, you keep the consumer rights that the law of your country gives you.":"Başka bir ülkede yaşıyorsan, kendi ülkenin yasalarının sana verdiği tüketici haklarını korursun."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -16861,6 +16871,7 @@ window.I18N = {
 "Halfway through the day: a glass of water? 💧":"一天过半：来杯水？ 💧",
 "A few more glasses to reach your water goal 💧":"再喝几杯就达到饮水目标 💧",
 "Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"简短提醒：喝水、记录消耗的热量、每周称重一次，以及查看每周总结。",
-"Test sent. It arrives in a few seconds.":"测试已发送，几秒内就会到达。"
+"Test sent. It arrives in a few seconds.":"测试已发送，几秒内就会到达。",
+"If you live in another country, you keep the consumer rights that the law of your country gives you.":"如果你住在其他国家，你仍享有本国法律赋予你的消费者权利。"
 }
 };
