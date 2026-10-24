@@ -1222,7 +1222,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v210';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v211';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -7288,7 +7288,7 @@ function openFaq() {
    with jsPDF (loaded only when needed) and shared or saved. */
 function loadJsPdf() {
   if (window.jspdf) return Promise.resolve();
-  return new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js'; sc.onload = res; sc.onerror = () => rej(new Error(T('No internet connection?'))); document.head.appendChild(sc); });
+  return new Promise((res, rej) => { const sc = document.createElement('script'); sc.src = 'https://cdn.jsdelivr.net/npm/jspdf@4.2.1/dist/jspdf.umd.min.js'; sc.onload = res; sc.onerror = () => rej(new Error(T('No internet connection?'))); document.head.appendChild(sc); });
 }
 async function makeReport() {
   const p = db.profile; if (!p) return;
