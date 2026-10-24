@@ -1689,7 +1689,9 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Einige Zusatz-Tools (Barcode-Leser, Karte, PDF-Bericht) werden beim ersten Gebrauch von jsdelivr.net geladen. Wie jede Website sieht es dabei deine IP-Adresse.",
 "Talk to someone now, free and confidential:":"Sprich jetzt mit jemandem, kostenlos und vertraulich:",
 "You are not alone":"Du bist nicht allein",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Nur wenn du darauf tippst: Dein Standort, auf etwa 100 m gerundet, wird an OpenStreetMap gesendet, um Geschäfte zu finden, und die Kartenbilder werden von OpenStreetMap geladen. Die KI bekommt die Namen der Geschäfte, deine Einkaufsliste, dein Budget und deine Ernährungsweise, nie deinen Standort."
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Nur wenn du darauf tippst: Dein Standort, auf etwa 100 m gerundet, wird an OpenStreetMap gesendet, um Geschäfte zu finden, und die Kartenbilder werden von OpenStreetMap geladen. Die KI bekommt die Namen der Geschäfte, deine Einkaufsliste, dein Budget und deine Ernährungsweise, nie deinen Standort.",
+"Food Tracker is for people aged 13 and older.":"Food Tracker ist für Personen ab 13 Jahren.",
+"You need to be at least 16, or 13 with a parent’s permission.":"Du musst mindestens 16 sein, oder 13 mit Erlaubnis eines Elternteils."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3380,7 +3382,9 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Algunas herramientas extra (lector de códigos de barras, mapa, informe PDF) se cargan desde jsdelivr.net la primera vez que las usas. Como cualquier web, ve tu dirección IP.",
 "Talk to someone now, free and confidential:":"Habla ahora con alguien, gratis y de forma confidencial:",
 "You are not alone":"No estás solo/a",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Solo cuando lo tocas: tu ubicación, redondeada a unos 100 m, se envía a OpenStreetMap para buscar tiendas, y las imágenes del mapa se cargan desde OpenStreetMap. La IA recibe los nombres de las tiendas, tu lista de la compra, tu presupuesto y tu dieta, nunca tu ubicación."
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Solo cuando lo tocas: tu ubicación, redondeada a unos 100 m, se envía a OpenStreetMap para buscar tiendas, y las imágenes del mapa se cargan desde OpenStreetMap. La IA recibe los nombres de las tiendas, tu lista de la compra, tu presupuesto y tu dieta, nunca tu ubicación.",
+"Food Tracker is for people aged 13 and older.":"Food Tracker es para personas de 13 años o más.",
+"You need to be at least 16, or 13 with a parent’s permission.":"Debes tener al menos 16 años, o 13 con permiso de tu madre, padre o tutor."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5071,7 +5075,9 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Certains outils supplémentaires (lecteur de code-barres, carte, rapport PDF) sont chargés depuis jsdelivr.net la première fois que tu les utilises. Comme tout site web, il voit ton adresse IP.",
 "Talk to someone now, free and confidential:":"Parle à quelqu'un maintenant, gratuitement et en toute confidentialité :",
 "You are not alone":"Tu n'es pas seul·e",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Seulement quand tu touches le bouton : ta position, arrondie à environ 100 m, est envoyée à OpenStreetMap pour trouver des magasins, et les images de la carte viennent d'OpenStreetMap. L'IA reçoit le nom des magasins, ta liste de courses, ton budget et ton régime, jamais ta position."
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Seulement quand tu touches le bouton : ta position, arrondie à environ 100 m, est envoyée à OpenStreetMap pour trouver des magasins, et les images de la carte viennent d'OpenStreetMap. L'IA reçoit le nom des magasins, ta liste de courses, ton budget et ton régime, jamais ta position.",
+"Food Tracker is for people aged 13 and older.":"Food Tracker est destiné aux personnes de 13 ans et plus.",
+"You need to be at least 16, or 13 with a parent’s permission.":"Tu dois avoir au moins 16 ans, ou 13 ans avec l’autorisation d’un parent."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6762,7 +6768,9 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Alcuni strumenti extra (lettore di codici a barre, mappa, report PDF) vengono caricati da jsdelivr.net la prima volta che li usi. Come ogni sito web, vede il tuo indirizzo IP.",
 "Talk to someone now, free and confidential:":"Parla subito con qualcuno, gratis e in modo riservato:",
 "You are not alone":"Non sei solo/a",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Solo quando lo tocchi: la tua posizione, arrotondata a circa 100 m, viene inviata a OpenStreetMap per trovare i negozi, e le immagini della mappa arrivano da OpenStreetMap. L'IA riceve i nomi dei negozi, la tua lista della spesa, il budget e la dieta, mai la tua posizione."
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Solo quando lo tocchi: la tua posizione, arrotondata a circa 100 m, viene inviata a OpenStreetMap per trovare i negozi, e le immagini della mappa arrivano da OpenStreetMap. L'IA riceve i nomi dei negozi, la tua lista della spesa, il budget e la dieta, mai la tua posizione.",
+"Food Tracker is for people aged 13 and older.":"Food Tracker è per persone dai 13 anni in su.",
+"You need to be at least 16, or 13 with a parent’s permission.":"Devi avere almeno 16 anni, oppure 13 con il permesso di un genitore."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8453,7 +8461,9 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"一部の追加ツール（バーコードリーダー、地図、PDFレポート）は、初めて使うときにjsdelivr.netから読み込まれます。一般的なウェブサイトと同じく、IPアドレスが相手に見えます。",
 "Talk to someone now, free and confidential:":"今すぐ誰かに話してください。無料で秘密は守られます：",
 "You are not alone":"あなたはひとりではありません",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"タップしたときだけ：約100 mに丸めた位置情報がお店を探すためにOpenStreetMapに送られ、地図画像もOpenStreetMapから読み込まれます。AIが受け取るのはお店の名前、買い物リスト、予算、食事スタイルだけで、位置情報は送られません。"
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"タップしたときだけ：約100 mに丸めた位置情報がお店を探すためにOpenStreetMapに送られ、地図画像もOpenStreetMapから読み込まれます。AIが受け取るのはお店の名前、買い物リスト、予算、食事スタイルだけで、位置情報は送られません。",
+"Food Tracker is for people aged 13 and older.":"Food Trackerは13歳以上の方が対象です。",
+"You need to be at least 16, or 13 with a parent’s permission.":"16歳以上、または保護者の許可がある場合は13歳以上である必要があります。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10144,7 +10154,9 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Sommige extra tools (barcodelezer, kaart, pdf-rapport) worden bij het eerste gebruik geladen van jsdelivr.net. Zoals elke website ziet het je IP-adres.",
 "Talk to someone now, free and confidential:":"Praat nu met iemand, gratis en vertrouwelijk:",
 "You are not alone":"Je bent niet alleen",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Alleen als je erop tikt: je locatie, afgerond op ongeveer 100 m, wordt naar OpenStreetMap gestuurd om winkels te vinden, en de kaartafbeeldingen komen van OpenStreetMap. De AI krijgt de namen van de winkels, je boodschappenlijst, budget en dieet, nooit je locatie."
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Alleen als je erop tikt: je locatie, afgerond op ongeveer 100 m, wordt naar OpenStreetMap gestuurd om winkels te vinden, en de kaartafbeeldingen komen van OpenStreetMap. De AI krijgt de namen van de winkels, je boodschappenlijst, budget en dieet, nooit je locatie.",
+"Food Tracker is for people aged 13 and older.":"Food Tracker is voor mensen van 13 jaar en ouder.",
+"You need to be at least 16, or 13 with a parent’s permission.":"Je moet minstens 16 zijn, of 13 met toestemming van een ouder."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -11835,7 +11847,9 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Niektóre dodatkowe narzędzia (czytnik kodów kreskowych, mapa, raport PDF) są ładowane z jsdelivr.net przy pierwszym użyciu. Jak każda strona internetowa widzi on Twój adres IP.",
 "Talk to someone now, free and confidential:":"Porozmawiaj teraz z kimś, bezpłatnie i poufnie:",
 "You are not alone":"Nie jesteś sam/sama",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Tylko po stuknięciu: Twoja lokalizacja, zaokrąglona do ok. 100 m, jest wysyłana do OpenStreetMap, aby znaleźć sklepy, a obrazy mapy są ładowane z OpenStreetMap. AI dostaje nazwy sklepów, Twoją listę zakupów, budżet i dietę, nigdy Twoją lokalizację."
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Tylko po stuknięciu: Twoja lokalizacja, zaokrąglona do ok. 100 m, jest wysyłana do OpenStreetMap, aby znaleźć sklepy, a obrazy mapy są ładowane z OpenStreetMap. AI dostaje nazwy sklepów, Twoją listę zakupów, budżet i dietę, nigdy Twoją lokalizację.",
+"Food Tracker is for people aged 13 and older.":"Food Tracker jest dla osób w wieku 13 lat i starszych.",
+"You need to be at least 16, or 13 with a parent’s permission.":"Musisz mieć co najmniej 16 lat albo 13 lat za zgodą rodzica."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -13526,7 +13540,9 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Algumas ferramentas extras (leitor de código de barras, mapa, relatório em PDF) são carregadas do jsdelivr.net na primeira vez que você as usa. Como qualquer site, ele vê seu endereço IP.",
 "Talk to someone now, free and confidential:":"Fale com alguém agora, de graça e com sigilo:",
 "You are not alone":"Você não está sozinho(a)",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Só quando tocas: a tua localização, arredondada a cerca de 100 m, é enviada para o OpenStreetMap para encontrar lojas, e as imagens do mapa vêm do OpenStreetMap. A IA recebe os nomes das lojas, sua lista de compras, orçamento e dieta, nunca sua localização."
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Só quando tocas: a tua localização, arredondada a cerca de 100 m, é enviada para o OpenStreetMap para encontrar lojas, e as imagens do mapa vêm do OpenStreetMap. A IA recebe os nomes das lojas, sua lista de compras, orçamento e dieta, nunca sua localização.",
+"Food Tracker is for people aged 13 and older.":"O Food Tracker é para pessoas com 13 anos ou mais.",
+"You need to be at least 16, or 13 with a parent’s permission.":"Você precisa ter pelo menos 16 anos, ou 13 com permissão de um responsável."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -15217,7 +15233,9 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Некоторые доп. инструменты (сканер штрихкодов, карта, PDF-отчёт) загружаются с jsdelivr.net при первом использовании. Как и любой сайт, он видит твой IP-адрес.",
 "Talk to someone now, free and confidential:":"Поговори с кем-нибудь прямо сейчас, бесплатно и анонимно:",
 "You are not alone":"Ты не один / не одна",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Только когда ты нажимаешь кнопку: твоя геопозиция, округлённая примерно до 100 м, отправляется в OpenStreetMap для поиска магазинов, а изображения карты загружаются из OpenStreetMap. ИИ получает названия магазинов, твой список покупок, бюджет и тип питания, но никогда не твоё местоположение."
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Только когда ты нажимаешь кнопку: твоя геопозиция, округлённая примерно до 100 м, отправляется в OpenStreetMap для поиска магазинов, а изображения карты загружаются из OpenStreetMap. ИИ получает названия магазинов, твой список покупок, бюджет и тип питания, но никогда не твоё местоположение.",
+"Food Tracker is for people aged 13 and older.":"Food Tracker предназначен для людей от 13 лет.",
+"You need to be at least 16, or 13 with a parent’s permission.":"Тебе должно быть не меньше 16 лет или 13 лет с разрешения родителя."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -16908,7 +16926,9 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Bazı ek araçlar (barkod okuyucu, harita, PDF raporu) ilk kullandığında jsdelivr.net üzerinden yüklenir. Her web sitesi gibi IP adresini görür.",
 "Talk to someone now, free and confidential:":"Şimdi biriyle konuş, ücretsiz ve gizli:",
 "You are not alone":"Yalnız değilsin",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Yalnızca dokunduğunda: yaklaşık 100 m'ye yuvarlanmış konumun, marketleri bulmak için OpenStreetMap'e gönderilir ve harita görüntüleri OpenStreetMap'ten yüklenir. Yapay zekâ mağaza adlarını, alışveriş listeni, bütçeni ve beslenme şeklini alır, konumunu asla almaz."
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Yalnızca dokunduğunda: yaklaşık 100 m'ye yuvarlanmış konumun, marketleri bulmak için OpenStreetMap'e gönderilir ve harita görüntüleri OpenStreetMap'ten yüklenir. Yapay zekâ mağaza adlarını, alışveriş listeni, bütçeni ve beslenme şeklini alır, konumunu asla almaz.",
+"Food Tracker is for people aged 13 and older.":"Food Tracker 13 yaş ve üzeri kişiler içindir.",
+"You need to be at least 16, or 13 with a parent’s permission.":"En az 16 yaşında olmalısın ya da ebeveyn izniyle 13 yaşında."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -18599,7 +18619,9 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"部分额外工具（条形码扫描、地图、PDF 报告）会在你第一次使用时从 jsdelivr.net 加载。和任何网站一样，它能看到你的 IP 地址。",
 "Talk to someone now, free and confidential:":"现在就找人聊聊，免费且保密：",
 "You are not alone":"你并不孤单",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"仅在你点按时：你的位置（约精确到 100 米）会发送给 OpenStreetMap 用于查找商店，地图图片也从 OpenStreetMap 加载。AI 只会收到商店名称、你的购物清单、预算和饮食偏好，绝不会收到你的位置。"
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"仅在你点按时：你的位置（约精确到 100 米）会发送给 OpenStreetMap 用于查找商店，地图图片也从 OpenStreetMap 加载。AI 只会收到商店名称、你的购物清单、预算和饮食偏好，绝不会收到你的位置。",
+"Food Tracker is for people aged 13 and older.":"Food Tracker 适用于 13 岁及以上的人。",
+"You need to be at least 16, or 13 with a parent’s permission.":"你需要年满 16 岁，或在父母允许下年满 13 岁。"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -20009,7 +20031,9 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"일부 추가 도구(바코드 리더, 지도, PDF 보고서)는 처음 사용할 때 jsdelivr.net에서 불러와요. 다른 웹사이트처럼 IP 주소를 볼 수 있어요.",
 "Talk to someone now, free and confidential:":"지금 누군가와 이야기해요. 무료이고 비밀이 보장돼요:",
 "You are not alone":"당신은 혼자가 아니에요",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"탭할 때만: 약 100 m 단위로 반올림한 위치가 가게를 찾기 위해 OpenStreetMap으로 보내지고, 지도 이미지는 OpenStreetMap에서 불러와요. AI는 매장 이름, 장보기 목록, 예산과 식단만 받고, 위치는 절대 받지 않아요."
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"탭할 때만: 약 100 m 단위로 반올림한 위치가 가게를 찾기 위해 OpenStreetMap으로 보내지고, 지도 이미지는 OpenStreetMap에서 불러와요. AI는 매장 이름, 장보기 목록, 예산과 식단만 받고, 위치는 절대 받지 않아요.",
+"Food Tracker is for people aged 13 and older.":"Food Tracker는 13세 이상만 사용할 수 있어요.",
+"You need to be at least 16, or 13 with a parent’s permission.":"16세 이상이거나, 보호자 허락이 있으면 13세 이상이어야 해요."
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -21419,7 +21443,9 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"कुछ अतिरिक्त टूल (बारकोड रीडर, मैप, PDF रिपोर्ट) पहली बार इस्तेमाल करने पर jsdelivr.net से लोड होते हैं। किसी भी वेबसाइट की तरह यह आपका IP पता देखता है।",
 "Talk to someone now, free and confidential:":"अभी किसी से बात करें, मुफ़्त और गोपनीय:",
 "You are not alone":"आप अकेले नहीं हैं",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"सिर्फ़ जब आप टैप करें: आपकी लोकेशन, लगभग 100 m तक गोल की गई, दुकानें ढूँढने के लिए OpenStreetMap को भेजी जाती है, और नक्शे की तस्वीरें OpenStreetMap से लोड होती हैं। AI को दुकानों के नाम, आपकी ख़रीदारी सूची, बजट और डाइट मिलते हैं, आपकी लोकेशन कभी नहीं।"
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"सिर्फ़ जब आप टैप करें: आपकी लोकेशन, लगभग 100 m तक गोल की गई, दुकानें ढूँढने के लिए OpenStreetMap को भेजी जाती है, और नक्शे की तस्वीरें OpenStreetMap से लोड होती हैं। AI को दुकानों के नाम, आपकी ख़रीदारी सूची, बजट और डाइट मिलते हैं, आपकी लोकेशन कभी नहीं।",
+"Food Tracker is for people aged 13 and older.":"Food Tracker 13 साल और उससे ज़्यादा उम्र के लोगों के लिए है।",
+"You need to be at least 16, or 13 with a parent’s permission.":"आपकी उम्र कम से कम 16 साल होनी चाहिए, या माता-पिता की अनुमति से 13 साल।"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -22829,7 +22855,9 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"Beberapa alat tambahan (pemindai barcode, peta, laporan PDF) dimuat dari jsdelivr.net saat pertama kali kamu memakainya. Seperti situs web lain, ia melihat alamat IP-mu.",
 "Talk to someone now, free and confidential:":"Bicaralah dengan seseorang sekarang, gratis dan rahasia:",
 "You are not alone":"Kamu tidak sendirian",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Hanya saat kamu mengetuknya: lokasimu, dibulatkan sekitar 100 m, dikirim ke OpenStreetMap untuk mencari toko, dan gambar peta dimuat dari OpenStreetMap. AI hanya mendapat nama toko, daftar belanjamu, anggaran, dan pola makanmu, tidak pernah lokasimu."
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"Hanya saat kamu mengetuknya: lokasimu, dibulatkan sekitar 100 m, dikirim ke OpenStreetMap untuk mencari toko, dan gambar peta dimuat dari OpenStreetMap. AI hanya mendapat nama toko, daftar belanjamu, anggaran, dan pola makanmu, tidak pernah lokasimu.",
+"Food Tracker is for people aged 13 and older.":"Food Tracker untuk orang berusia 13 tahun ke atas.",
+"You need to be at least 16, or 13 with a parent’s permission.":"Kamu harus berusia minimal 16 tahun, atau 13 tahun dengan izin orang tua."
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -24239,6 +24267,8 @@ window.I18N = {
 "Some extra tools (barcode reader, map, PDF report) are loaded from jsdelivr.net when you first use them. Like any website, it sees your IP address.":"يتم تحميل بعض الأدوات الإضافية (قارئ الباركود والخريطة وتقرير PDF) من jsdelivr.net عند أول استخدام. ومثل أي موقع، يرى عنوان IP الخاص بك.",
 "Talk to someone now, free and confidential:":"تحدّث مع أحد الآن، مجانًا وبسرية:",
 "You are not alone":"لست وحدك",
-"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"فقط عندما تضغط عليه: يُرسل موقعك، مقرّبًا إلى نحو 100 m، إلى OpenStreetMap للعثور على المتاجر، وتُحمَّل صور الخريطة من OpenStreetMap. يحصل الذكاء الاصطناعي على أسماء المتاجر وقائمة مشترياتك وميزانيتك ونظامك الغذائي، ولا يحصل أبدًا على موقعك."
+"Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI gets the shop names, your grocery list, budget and diet, never your location.":"فقط عندما تضغط عليه: يُرسل موقعك، مقرّبًا إلى نحو 100 m، إلى OpenStreetMap للعثور على المتاجر، وتُحمَّل صور الخريطة من OpenStreetMap. يحصل الذكاء الاصطناعي على أسماء المتاجر وقائمة مشترياتك وميزانيتك ونظامك الغذائي، ولا يحصل أبدًا على موقعك.",
+"Food Tracker is for people aged 13 and older.":"Food Tracker مخصص للأشخاص من عمر 13 عامًا فما فوق.",
+"You need to be at least 16, or 13 with a parent’s permission.":"يجب أن يكون عمرك 16 عامًا على الأقل، أو 13 عامًا بإذن أحد الوالدين."
 }
 };
