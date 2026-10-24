@@ -302,6 +302,8 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 .stepper button{width:32px;height:32px;border-radius:50%;font-size:20px;font-weight:600}
 .stepper b{min-width:28px;text-align:center}
 .portion{display:flex;align-items:center;gap:10px;margin:0 0 14px}
+.hb-plan{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;margin:8px 0 0;line-height:1.4}.hb-plan>div{display:contents}.hb-plan b{color:var(--muted);font-size:.85em;padding-top:.12em}
+.hb-plan.small{font-size:14px}
 .treat .sheetx{position:static;width:30px;height:30px;font-size:13px;flex:none}
 .treat.earned b{color:var(--good)}
 .treat .bar{height:8px;border-radius:99px;background:var(--chip);overflow:hidden}.treat .bar i{display:block;height:100%;background:var(--good);border-radius:99px;transition:width .4s}
@@ -1097,7 +1099,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v186';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v187';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3052,6 +3054,10 @@ const HABITS = [
     ifs: [N('I finish a meal')], thens: [N('I drink a big glass of water'), N('I refill my bottle'), N('I log a glass right away')] },
   { id: 'custom', ic: '✏️', name: N('My own habit'), desc: N('Any habit you want to change. You tick it off each evening.'), auto: false, ifs: [], thens: [] }
 ];
+// The "if … then …" plan as two labelled lines: gluing the parts into one sentence is wrong in many languages
+// (German needs "Wenn ich Frühstück mache, nehme ich …"), and people type their own parts too
+const capFirst = s => s ? s.charAt(0).toLocaleUpperCase() + s.slice(1) : s;
+const habitPlanHTML = (h, cls = '') => !(h.if || h.then) ? '' : `<div class="hb-plan ${cls}">${h.if ? `<div><b>${capFirst(T('If'))}</b><span>${esc(capFirst(T(h.if)))}</span></div>` : ''}${h.then ? `<div><b>${capFirst(T('then'))}</b><span>${esc(capFirst(T(h.then)))}</span></div>` : ''}</div>`;
 const habitTpl = h => HABITS.find(x => x.id === (h && h.type)) || HABITS[HABITS.length - 1];
 const habitName = h => h.type === 'custom' ? h.name : T(habitTpl(h).name) + (h.type === 'late' ? ` (${fmtHM(h.cut)})` : '');
 const SUGARY_RX = /(cola\b|coke\b|pepsi|fanta|sprite|soda\b|soft ?drink|lemonade|limonade|energy ?drink|red ?bull|monster energy|ice ?tea|iced tea|eistee|juice|fruchtsaft|orangensaft|apfelsaft|\bsaft\b|\bjus\b|zumo|succo|vruchtensap|\bsok\b|сок|газировк|лимонад|кола|gazoz|meyve suyu|refresco|gaseosa|bibita|frisdrank|napój|汽水|可乐|果汁|コーラ|ジュース|ソーダ)/i;
@@ -3139,7 +3145,7 @@ function habitProgCard() {
   if (h) {
     const st = habitStats(h), next = st.next;
     return `<div class="card" id="habitProgCard"><div class="spread"><b style="font-size:17px">${habitTpl(h).ic} ${esc(habitName(h))}</b><button class="chipbtn" onclick="openHabitPage()">${T('Open')}</button></div>
-      ${h.if || h.then ? `<p class="small" style="margin:8px 0 0;line-height:1.45">${h.if ? `<b>${T('If')}</b> ${esc(T(h.if))}, ` : ''}<b>${T('then')}</b> ${esc(T(h.then || ''))}</p>` : ''}
+      ${habitPlanHTML(h, 'small')}
       <div class="row" style="gap:4px;margin-top:12px">${habitDots(h)}</div>
       <div class="spread small" style="margin-top:10px"><span>🔥 ${T('Streak: {n}', { n: `<b>${st.streak}</b>` })}</span><span class="muted">${next ? T('{n} of {m} days to the next badge', { n: st.ok, m: next }) : '🏅 ' + T('All milestones reached')}</span></div>
       ${next ? `<div class="hbar" style="margin-top:8px"><i style="width:${Math.min(100, st.ok / next * 100)}%;background:var(--good)"></i></div>` : ''}
@@ -3196,7 +3202,7 @@ function openHabitPage() {
   const h = db.habit; if (!h) return openHabitChooser();
   const st = habitStats(h), y = addDays(iso(), -1), yv = habitDay(h, y), t = habitTpl(h);
   sheet(`<h3>${t.ic} ${esc(habitName(h))}</h3>
-    ${h.if || h.then ? `<p style="margin:6px 0 0;line-height:1.45">${h.if ? `<b>${T('If')}</b> ${esc(T(h.if))}, ` : ''}<b>${T('then')}</b> ${esc(T(h.then || ''))}</p>` : ''}
+    ${habitPlanHTML(h)}
     <div class="row" style="gap:4px;margin-top:14px">${habitDots(h)}</div>
     <div class="spread small" style="margin-top:10px"><span>🔥 ${T('Streak: {n}', { n: `<b>${st.streak}</b>` })}</span><span>✓ ${st.ok} · ✕ ${st.slip}</span></div>
     <div class="h2" style="margin:18px 0 8px">${T('Correct a day')}</div>
