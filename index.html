@@ -1097,7 +1097,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v184';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v185';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -5998,6 +5998,12 @@ function bindReminders() {
     catch { toast(T('Could not copy. Select the code and copy it by hand.')); }
   };
   if ($('#rTest')) $('#rTest').onclick = async () => {
+    // First through the server (the same way real reminders come); if that fails, shown by the phone itself
+    try {
+      const sub = JSON.parse(LS.get('ft_push', 'null'));
+      const r = sub && await fetch(SERVER_URL + '/push/test', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ endpoint: sub.endpoint }) });
+      if (r && r.ok) return toast('✓ ' + T('Test sent. It arrives in a few seconds.'));
+    } catch {}
     const reg = await navigator.serviceWorker.ready;
     const R = reminderData(), b = reminderContent(R, 'burn'), w = reminderContent(R, 'weight');
     reg.showNotification(b.title, { body: b.body, icon: 'icon-180.png', tag: 'burn', data: { open: 'burn' } });

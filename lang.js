@@ -1530,7 +1530,8 @@ window.I18N = {
 "Time for a glass of water 💧":"Zeit für ein Glas Wasser 💧",
 "Halfway through the day: a glass of water? 💧":"Halber Tag geschafft: ein Glas Wasser? 💧",
 "A few more glasses to reach your water goal 💧":"Noch ein paar Gläser bis zu deinem Wasserziel 💧",
-"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Kurze Erinnerungen: Wasser trinken, verbrannte Kalorien eintragen, einmal pro Woche wiegen und dein Wochen-Check-in."
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Kurze Erinnerungen: Wasser trinken, verbrannte Kalorien eintragen, einmal pro Woche wiegen und dein Wochen-Check-in.",
+"Test sent. It arrives in a few seconds.":"Test gesendet. Er kommt in ein paar Sekunden an."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3062,7 +3063,8 @@ window.I18N = {
 "Time for a glass of water 💧":"Hora de un vaso de agua 💧",
 "Halfway through the day: a glass of water? 💧":"Mitad del día: ¿un vaso de agua? 💧",
 "A few more glasses to reach your water goal 💧":"Unos vasos más para tu objetivo de agua 💧",
-"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Recordatorios cortos para beber agua, anotar las calorías quemadas, pesarte una vez por semana y ver tu resumen semanal."
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Recordatorios cortos para beber agua, anotar las calorías quemadas, pesarte una vez por semana y ver tu resumen semanal.",
+"Test sent. It arrives in a few seconds.":"Prueba enviada. Llegará en unos segundos."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4594,7 +4596,8 @@ window.I18N = {
 "Time for a glass of water 💧":"C’est l’heure d’un verre d’eau 💧",
 "Halfway through the day: a glass of water? 💧":"Mi-journée : un verre d’eau ? 💧",
 "A few more glasses to reach your water goal 💧":"Encore quelques verres pour ton objectif d’eau 💧",
-"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"De courts rappels pour boire de l’eau, noter les calories brûlées, te peser une fois par semaine et voir ton bilan hebdo."
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"De courts rappels pour boire de l’eau, noter les calories brûlées, te peser une fois par semaine et voir ton bilan hebdo.",
+"Test sent. It arrives in a few seconds.":"Test envoyé. Il arrive dans quelques secondes."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6126,7 +6129,8 @@ window.I18N = {
 "Time for a glass of water 💧":"È ora di un bicchiere d’acqua 💧",
 "Halfway through the day: a glass of water? 💧":"Metà giornata: un bicchiere d’acqua? 💧",
 "A few more glasses to reach your water goal 💧":"Ancora qualche bicchiere per il tuo obiettivo d’acqua 💧",
-"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Brevi promemoria per bere acqua, registrare le calorie bruciate, pesarti una volta a settimana e vedere il check-in settimanale."
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Brevi promemoria per bere acqua, registrare le calorie bruciate, pesarti una volta a settimana e vedere il check-in settimanale.",
+"Test sent. It arrives in a few seconds.":"Test inviato. Arriva tra pochi secondi."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7658,7 +7662,8 @@ window.I18N = {
 "Time for a glass of water 💧":"水を1杯飲む時間です 💧",
 "Halfway through the day: a glass of water? 💧":"1日の半分です：水を1杯どう？ 💧",
 "A few more glasses to reach your water goal 💧":"水分目標まであと数杯 💧",
-"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"水分補給、消費カロリーの記録、週1回の体重測定、週間チェックインを短くお知らせします。"
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"水分補給、消費カロリーの記録、週1回の体重測定、週間チェックインを短くお知らせします。",
+"Test sent. It arrives in a few seconds.":"テストを送信しました。数秒で届きます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -9190,7 +9195,8 @@ window.I18N = {
 "Time for a glass of water 💧":"Tijd voor een glas water 💧",
 "Halfway through the day: a glass of water? 💧":"Halverwege de dag: een glas water? 💧",
 "A few more glasses to reach your water goal 💧":"Nog een paar glazen tot je waterdoel 💧",
-"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Korte herinneringen om water te drinken, verbrande calorieën in te vullen, één keer per week te wegen en je weekcheck-in te zien."
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Korte herinneringen om water te drinken, verbrande calorieën in te vullen, één keer per week te wegen en je weekcheck-in te zien.",
+"Test sent. It arrives in a few seconds.":"Test verstuurd. Hij komt over een paar seconden aan."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -10722,7 +10728,8 @@ window.I18N = {
 "Time for a glass of water 💧":"Czas na szklankę wody 💧",
 "Halfway through the day: a glass of water? 💧":"Połowa dnia: szklanka wody? 💧",
 "A few more glasses to reach your water goal 💧":"Jeszcze kilka szklanek do celu wody 💧",
-"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Krótkie przypomnienia o piciu wody, wpisaniu spalonych kalorii, ważeniu raz w tygodniu i tygodniowym podsumowaniu."
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Krótkie przypomnienia o piciu wody, wpisaniu spalonych kalorii, ważeniu raz w tygodniu i tygodniowym podsumowaniu.",
+"Test sent. It arrives in a few seconds.":"Test wysłany. Dotrze za kilka sekund."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -12254,7 +12261,8 @@ window.I18N = {
 "Time for a glass of water 💧":"Hora de um copo de água 💧",
 "Halfway through the day: a glass of water? 💧":"Meio do dia: um copo de água? 💧",
 "A few more glasses to reach your water goal 💧":"Mais uns copos para o seu objetivo de água 💧",
-"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Lembretes curtos para beber água, registar calorias queimadas, pesar-se uma vez por semana e ver o resumo semanal."
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Lembretes curtos para beber água, registar calorias queimadas, pesar-se uma vez por semana e ver o resumo semanal.",
+"Test sent. It arrives in a few seconds.":"Teste enviado. Chega dentro de segundos."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -13786,7 +13794,8 @@ window.I18N = {
 "Time for a glass of water 💧":"Время для стакана воды 💧",
 "Halfway through the day: a glass of water? 💧":"Полдня позади: стакан воды? 💧",
 "A few more glasses to reach your water goal 💧":"Ещё несколько стаканов до цели по воде 💧",
-"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Короткие напоминания: пить воду, записать сожжённые калории, взвешиваться раз в неделю и смотреть недельный итог."
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Короткие напоминания: пить воду, записать сожжённые калории, взвешиваться раз в неделю и смотреть недельный итог.",
+"Test sent. It arrives in a few seconds.":"Тест отправлен. Он придёт через несколько секунд."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -15318,7 +15327,8 @@ window.I18N = {
 "Time for a glass of water 💧":"Bir bardak su zamanı 💧",
 "Halfway through the day: a glass of water? 💧":"Günün yarısı: bir bardak su? 💧",
 "A few more glasses to reach your water goal 💧":"Su hedefine birkaç bardak kaldı 💧",
-"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Su içmek, yakılan kaloriyi girmek, haftada bir tartılmak ve haftalık özetini görmek için kısa hatırlatmalar."
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"Su içmek, yakılan kaloriyi girmek, haftada bir tartılmak ve haftalık özetini görmek için kısa hatırlatmalar.",
+"Test sent. It arrives in a few seconds.":"Test gönderildi. Birkaç saniye içinde gelir."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -16850,6 +16860,7 @@ window.I18N = {
 "Time for a glass of water 💧":"该喝一杯水了 💧",
 "Halfway through the day: a glass of water? 💧":"一天过半：来杯水？ 💧",
 "A few more glasses to reach your water goal 💧":"再喝几杯就达到饮水目标 💧",
-"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"简短提醒：喝水、记录消耗的热量、每周称重一次，以及查看每周总结。"
+"Short reminders to drink water, log your calories burned, weigh in once a week and see your weekly check-in.":"简短提醒：喝水、记录消耗的热量、每周称重一次，以及查看每周总结。",
+"Test sent. It arrives in a few seconds.":"测试已发送，几秒内就会到达。"
 }
 };
