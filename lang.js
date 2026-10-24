@@ -1694,7 +1694,10 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"Du musst mindestens 16 sein, oder 13 mit Erlaubnis eines Elternteils.",
 "App errors":"App-Fehler",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"Wenn in der App etwas kaputtgeht, werden die Fehlermeldung, der Bildschirm und die App-Version gesendet, damit es behoben werden kann, nie deine Daten. Sie werden nach 14 Tagen gelöscht.",
-"No app errors in the last 14 days.":"Keine App-Fehler in den letzten 14 Tagen."
+"No app errors in the last 14 days.":"Keine App-Fehler in den letzten 14 Tagen.",
+"Map and the best fit for you":"Karte und was am besten zu dir passt",
+"Tap an item when you have it.":"Tippe auf etwas, sobald du es hast.",
+"{n} of {t} items left":"Noch {n} von {t}"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3390,7 +3393,10 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"Debes tener al menos 16 años, o 13 con permiso de tu madre, padre o tutor.",
 "App errors":"Errores de la app",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"Si algo falla en la app, se envían el mensaje de error, la pantalla y la versión de la app para poder arreglarlo, nunca tus datos. Se borran después de 14 días.",
-"No app errors in the last 14 days.":"Sin errores de la app en los últimos 14 días."
+"No app errors in the last 14 days.":"Sin errores de la app en los últimos 14 días.",
+"Map and the best fit for you":"Mapa y la mejor opción para ti",
+"Tap an item when you have it.":"Toca un artículo cuando lo tengas.",
+"{n} of {t} items left":"Faltan {n} de {t}"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5086,7 +5092,10 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"Tu dois avoir au moins 16 ans, ou 13 ans avec l’autorisation d’un parent.",
 "App errors":"Erreurs de l’app",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"Si quelque chose plante dans l’app, le message d’erreur, l’écran et la version de l’app sont envoyés pour pouvoir le corriger, jamais tes données. Ils sont supprimés après 14 jours.",
-"No app errors in the last 14 days.":"Aucune erreur de l’app ces 14 derniers jours."
+"No app errors in the last 14 days.":"Aucune erreur de l’app ces 14 derniers jours.",
+"Map and the best fit for you":"Carte et le meilleur choix pour toi",
+"Tap an item when you have it.":"Touche un article quand tu l’as.",
+"{n} of {t} items left":"Encore {n} sur {t}"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6782,7 +6791,10 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"Devi avere almeno 16 anni, oppure 13 con il permesso di un genitore.",
 "App errors":"Errori dell’app",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"Se qualcosa nell’app si rompe, vengono inviati il messaggio di errore, la schermata e la versione dell’app per poterlo correggere, mai i tuoi dati. Vengono eliminati dopo 14 giorni.",
-"No app errors in the last 14 days.":"Nessun errore dell’app negli ultimi 14 giorni."
+"No app errors in the last 14 days.":"Nessun errore dell’app negli ultimi 14 giorni.",
+"Map and the best fit for you":"Mappa e la scelta migliore per te",
+"Tap an item when you have it.":"Tocca un articolo quando ce l’hai.",
+"{n} of {t} items left":"Ne mancano {n} su {t}"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8478,7 +8490,10 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"16歳以上、または保護者の許可がある場合は13歳以上である必要があります。",
 "App errors":"アプリのエラー",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"アプリで問題が起きたときは、修正のためにエラーメッセージ、画面、アプリのバージョンだけが送られます。あなたのデータは送られません。14日後に削除されます。",
-"No app errors in the last 14 days.":"過去14日間にアプリのエラーはありません。"
+"No app errors in the last 14 days.":"過去14日間にアプリのエラーはありません。",
+"Map and the best fit for you":"地図とあなたに合うお店",
+"Tap an item when you have it.":"手に入れたら項目をタップ。",
+"{n} of {t} items left":"残り {n}/{t}"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10174,7 +10189,10 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"Je moet minstens 16 zijn, of 13 met toestemming van een ouder.",
 "App errors":"App-fouten",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"Als er iets misgaat in de app, worden de foutmelding, het scherm en de appversie verstuurd zodat het opgelost kan worden, nooit je gegevens. Ze worden na 14 dagen verwijderd.",
-"No app errors in the last 14 days.":"Geen app-fouten in de afgelopen 14 dagen."
+"No app errors in the last 14 days.":"Geen app-fouten in de afgelopen 14 dagen.",
+"Map and the best fit for you":"Kaart en wat het best bij je past",
+"Tap an item when you have it.":"Tik op een item als je het hebt.",
+"{n} of {t} items left":"Nog {n} van {t}"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -11870,7 +11888,10 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"Musisz mieć co najmniej 16 lat albo 13 lat za zgodą rodzica.",
 "App errors":"Błędy aplikacji",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"Jeśli coś w aplikacji się zepsuje, wysyłany jest komunikat o błędzie, ekran i wersja aplikacji, żeby można było to naprawić, nigdy Twoje dane. Są usuwane po 14 dniach.",
-"No app errors in the last 14 days.":"Brak błędów aplikacji w ostatnich 14 dniach."
+"No app errors in the last 14 days.":"Brak błędów aplikacji w ostatnich 14 dniach.",
+"Map and the best fit for you":"Mapa i najlepszy wybór dla Ciebie",
+"Tap an item when you have it.":"Dotknij produktu, gdy go masz.",
+"{n} of {t} items left":"Zostało {n} z {t}"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -13566,7 +13587,10 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"Você precisa ter pelo menos 16 anos, ou 13 com permissão de um responsável.",
 "App errors":"Erros do app",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"Se algo quebrar no app, a mensagem de erro, a tela e a versão do app são enviadas para que possa ser corrigido, nunca seus dados. Elas são apagadas após 14 dias.",
-"No app errors in the last 14 days.":"Nenhum erro do app nos últimos 14 dias."
+"No app errors in the last 14 days.":"Nenhum erro do app nos últimos 14 dias.",
+"Map and the best fit for you":"Mapa e a melhor opção para você",
+"Tap an item when you have it.":"Toque num item quando já tiver.",
+"{n} of {t} items left":"Faltam {n} de {t}"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -15262,7 +15286,10 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"Тебе должно быть не меньше 16 лет или 13 лет с разрешения родителя.",
 "App errors":"Ошибки приложения",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"Если в приложении что-то ломается, отправляются текст ошибки, экран и версия приложения, чтобы это исправить, но никогда не твои данные. Они удаляются через 14 дней.",
-"No app errors in the last 14 days.":"Ошибок приложения за последние 14 дней нет."
+"No app errors in the last 14 days.":"Ошибок приложения за последние 14 дней нет.",
+"Map and the best fit for you":"Карта и лучший вариант для тебя",
+"Tap an item when you have it.":"Нажми на товар, когда он у тебя есть.",
+"{n} of {t} items left":"Осталось {n} из {t}"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -16958,7 +16985,10 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"En az 16 yaşında olmalısın ya da ebeveyn izniyle 13 yaşında.",
 "App errors":"Uygulama hataları",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"Uygulamada bir şey bozulursa, düzeltilebilmesi için hata mesajı, ekran ve uygulama sürümü gönderilir, verilerin asla. 14 gün sonra silinir.",
-"No app errors in the last 14 days.":"Son 14 günde uygulama hatası yok."
+"No app errors in the last 14 days.":"Son 14 günde uygulama hatası yok.",
+"Map and the best fit for you":"Harita ve sana en uygun olan",
+"Tap an item when you have it.":"Aldığın bir ürüne dokun.",
+"{n} of {t} items left":"{t} üründen {n} kaldı"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -18654,7 +18684,10 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"你需要年满 16 岁，或在父母允许下年满 13 岁。",
 "App errors":"应用错误",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"如果应用出现问题，会发送错误信息、所在页面和应用版本以便修复，绝不会发送你的数据。14 天后删除。",
-"No app errors in the last 14 days.":"过去 14 天没有应用错误。"
+"No app errors in the last 14 days.":"过去 14 天没有应用错误。",
+"Map and the best fit for you":"地图和最适合你的超市",
+"Tap an item when you have it.":"买到后点一下该项。",
+"{n} of {t} items left":"还剩 {n}/{t} 项"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -20069,7 +20102,10 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"16세 이상이거나, 보호자 허락이 있으면 13세 이상이어야 해요.",
 "App errors":"앱 오류",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"앱에서 문제가 생기면 고칠 수 있도록 오류 메시지, 화면, 앱 버전만 보내요. 내 데이터는 절대 보내지 않아요. 14일 후에 삭제돼요.",
-"No app errors in the last 14 days.":"지난 14일 동안 앱 오류가 없어요."
+"No app errors in the last 14 days.":"지난 14일 동안 앱 오류가 없어요.",
+"Map and the best fit for you":"지도와 나에게 가장 맞는 곳",
+"Tap an item when you have it.":"산 항목을 탭하세요.",
+"{n} of {t} items left":"{t}개 중 {n}개 남음"
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -21484,7 +21520,10 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"आपकी उम्र कम से कम 16 साल होनी चाहिए, या माता-पिता की अनुमति से 13 साल।",
 "App errors":"ऐप की गड़बड़ियाँ",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"अगर ऐप में कुछ ख़राब होता है, तो उसे ठीक करने के लिए गड़बड़ी का संदेश, स्क्रीन और ऐप का वर्ज़न भेजा जाता है, आपका डेटा कभी नहीं। ये 14 दिन बाद डिलीट हो जाते हैं।",
-"No app errors in the last 14 days.":"पिछले 14 दिनों में ऐप में कोई गड़बड़ी नहीं।"
+"No app errors in the last 14 days.":"पिछले 14 दिनों में ऐप में कोई गड़बड़ी नहीं।",
+"Map and the best fit for you":"नक्शा और आपके लिए सबसे अच्छा",
+"Tap an item when you have it.":"चीज़ मिल जाए तो उस पर टैप करें।",
+"{n} of {t} items left":"{t} में से {n} बाकी"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -22899,7 +22938,10 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"Kamu harus berusia minimal 16 tahun, atau 13 tahun dengan izin orang tua.",
 "App errors":"Error aplikasi",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"Kalau ada yang rusak di aplikasi, pesan error, layar, dan versi aplikasi dikirim supaya bisa diperbaiki, tidak pernah datamu. Semuanya dihapus setelah 14 hari.",
-"No app errors in the last 14 days.":"Tidak ada error aplikasi dalam 14 hari terakhir."
+"No app errors in the last 14 days.":"Tidak ada error aplikasi dalam 14 hari terakhir.",
+"Map and the best fit for you":"Peta dan pilihan terbaik untukmu",
+"Tap an item when you have it.":"Ketuk barang saat sudah kamu punya.",
+"{n} of {t} items left":"Tersisa {n} dari {t}"
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -24314,6 +24356,9 @@ window.I18N = {
 "You need to be at least 16, or 13 with a parent’s permission.":"يجب أن يكون عمرك 16 عامًا على الأقل، أو 13 عامًا بإذن أحد الوالدين.",
 "App errors":"أخطاء التطبيق",
 "If something in the app breaks, the error message, the screen and the app version are sent so it can be fixed, never your data. They are deleted after 14 days.":"إذا تعطّل شيء في التطبيق، تُرسل رسالة الخطأ والشاشة وإصدار التطبيق لإصلاحه، ولا تُرسل بياناتك أبدًا. وتُحذف بعد 14 يومًا.",
-"No app errors in the last 14 days.":"لا توجد أخطاء في التطبيق خلال آخر 14 يومًا."
+"No app errors in the last 14 days.":"لا توجد أخطاء في التطبيق خلال آخر 14 يومًا.",
+"Map and the best fit for you":"الخريطة والأنسب لك",
+"Tap an item when you have it.":"اضغط على العنصر عندما يصبح لديك.",
+"{n} of {t} items left":"تبقّى {n} من {t}"
 }
 };

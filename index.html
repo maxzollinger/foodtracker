@@ -193,7 +193,10 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 .e-flame,.e-zap{color:var(--flame)}.e-drop,.e-waves{color:var(--water)}.e-protein{color:var(--protein)}.e-wheat{color:var(--carbs)}.e-avocado{color:var(--fat)}
 .e-heart,.e-sprout,.e-leaf,.e-tree,.e-check,.e-salad{color:var(--good)}.e-alert,.e-nofork{color:var(--bad)}.e-trophy,.e-medal,.e-star,.e-crown,.e-party{color:#e0a526}
 .mp-budget .ico{color:var(--good)}
-.mp-stores{border-radius:22px;width:100%;margin-top:0}.mp-stores>.ico{font-size:22px}
+.mp-stores{border-radius:18px;width:100%;margin-top:0;padding:12px 14px;gap:12px}.mp-stores .ic{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex:none}
+.mp-stores .grow{min-width:0}.mp-stores .grow>span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.mp-list{margin:14px 0 12px;display:flex;flex-direction:column;gap:12px}.mp-list>.card{margin:0}
+.mp-count{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:2px 4px 0}
 .mp-qty i{display:block;font-style:normal;font-size:12px;color:var(--muted);text-align:right}
 .st-map{height:260px;border-radius:18px;overflow:hidden;margin-top:14px;background:var(--chip);z-index:0}
 .st-map.dark .leaflet-tile{filter:invert(1) hue-rotate(180deg) brightness(.9) contrast(.9) saturate(.6)}
@@ -1238,7 +1241,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v213';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v214';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -5468,8 +5471,8 @@ function renderMealPlan() {
       ${amt ? `<div class="hbar" style="margin-top:10px"><i style="width:${Math.min(100, gt / amt * 100)}%;background:${gt > amt ? 'var(--bad)' : 'var(--good)'}"></i></div>
         <div class="small" style="margin-top:6px;font-weight:600;color:${gt > amt ? 'var(--bad)' : 'var(--good)'}">${gt > amt ? T('{n} over your budget', { n: money(gt - amt, cur) }) : T('{n} left of your budget', { n: money(amt - gt, cur) })}</div>` : ''}
       <div class="small muted" style="margin-top:6px">${T('Prices are AI estimates for a normal supermarket.')}</div></div>` : '';
-    const list = `${budget}<button class="card li mp-stores" id="mpStores">${ic('store')}<span class="grow"><b>${T('Supermarkets near you')}</b><br><span class="small muted">${T('Map, distance and which one suits you best')}</span></span><span class="chev">›</span></button>
-      <p class="small muted" style="margin:12px 4px">${left ? T('{n} of {t} items still to buy · tap an item when you have it', { n: left, t: total }) : '✓ ' + T('You have everything for this week!')}</p>
+    const list = `<div class="mp-list">${budget}<button class="card li mp-stores" id="mpStores"><span class="ic">${ic('store')}</span><span class="grow"><b>${T('Supermarkets near you')}</b><span class="small muted">${T('Map and the best fit for you')}</span></span><span class="chev">›</span></button>
+      <div class="mp-count small">${left ? `<b>${T('{n} of {t} items left', { n: left, t: total })}</b>${left === total ? `<span class="muted">${T('Tap an item when you have it.')}</span>` : ''}` : `<b style="color:var(--good)">✓ ${T('You have everything for this week!')}</b>`}</div></div>
       ${plan.groceries.map((g, gi) => `<div class="card mp-cat"><div class="mp-catname">${esc(g.cat)}</div>${g.items.map((it, ii) =>
         `<button class="mp-item ${it.have ? 'have' : ''}" data-gi="${gi}" data-ii="${ii}"><span class="mp-check">${it.have ? '✓' : ''}</span><span class="grow mp-iname">${esc(it.name)}${it.buy ? `<span class="mp-buy">🛒 ${esc(it.buy)}</span>` : ''}</span><span class="mp-qty">${esc(it.qty)}${it.price ? `<i>${money(it.price, cur)}</i>` : ''}</span></button>`).join('')}</div>`).join('')}`;
     const meals = plan.days.map((d, di) => {
@@ -5484,7 +5487,7 @@ function renderMealPlan() {
     }).join('') + (plan.prep.length ? `<div class="card"><b>🥡 ${T('Meal prep tips')}</b><ul class="mp-tips">${plan.prep.map(t => `<li>${esc(t)}</li>`).join('')}</ul></div>` : '');
     body = `<button class="btn" id="mpCoach" style="font-size:15px;padding-left:12px;padding-right:12px">👨‍🍳 ${T('Get cooking & prep help from your coach')}</button>
       <div class="row mp-actions" style="margin-top:10px"><button class="btn outline sm grow" id="mpEdit">✏️ ${T('Change plan')}</button><button class="btn outline sm grow" id="mpSave">⬇️ ${T('Save / share')}</button></div>
-      <div class="seg" style="margin-top:16px"><button data-mt="list" class="${mpTab === 'list' ? 'on' : ''}">🛒 ${T('Grocery list')}</button><button data-mt="meals" class="${mpTab === 'meals' ? 'on' : ''}">🍽 ${T('Meals')}</button></div>
+      <div class="seg" style="margin-top:16px"><button data-mt="list" class="${mpTab === 'list' ? 'on' : ''}">${T('Grocery list')}</button><button data-mt="meals" class="${mpTab === 'meals' ? 'on' : ''}">${T('Meals')}</button></div>
       ${mpTab === 'list' ? list : `<div style="height:12px"></div>${meals}`}`;
   }
   pg.innerHTML = `<div class="mp-head"><button class="mp-back" id="mpBack" aria-label="${T('Close')}">‹</button>
