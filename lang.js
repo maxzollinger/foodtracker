@@ -1733,7 +1733,12 @@ window.I18N = {
 "Progress photo":"Fortschrittsfoto",
 "When was it taken?":"Wann wurde es aufgenommen?",
 "{n} days":"{n} Tage",
-"{n} photos":"{n} Fotos"
+"{n} photos":"{n} Fotos",
+"Body fat {r}":"Körperfett {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"Optional. Wähle alles, was du willst. Deine Ziele passen sich an.",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"Optional. Die Prozentzahl ist dein Körperfett. So wird dein Ziel genauer.",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"Vergangener Tag mehr als 25 % unter deinem Ziel: zu wenig gegessen oder nicht alles erfasst",
+"What should your plan focus on?":"Worauf soll dein Plan achten?"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3468,7 +3473,12 @@ window.I18N = {
 "Progress photo":"Foto de progreso",
 "When was it taken?":"¿Cuándo se tomó?",
 "{n} days":"{n} días",
-"{n} photos":"{n} fotos"
+"{n} photos":"{n} fotos",
+"Body fat {r}":"Grasa corporal {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"Opcional. Elige todo lo que quieras, tus objetivos se ajustan.",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"Opcional. El porcentaje es tu grasa corporal. Hace tu objetivo más preciso.",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"Día pasado más de un 25 % por debajo de tu objetivo: comiste muy poco o no registraste todo",
+"What should your plan focus on?":"¿En qué debe enfocarse tu plan?"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5203,7 +5213,12 @@ window.I18N = {
 "Progress photo":"Photo de progression",
 "When was it taken?":"Quand a-t-elle été prise ?",
 "{n} days":"{n} jours",
-"{n} photos":"{n} photos"
+"{n} photos":"{n} photos",
+"Body fat {r}":"Masse grasse {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"Facultatif. Choisis tout ce que tu veux, tes objectifs s’adaptent.",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"Facultatif. Le pourcentage est ta masse grasse. Ton objectif sera plus précis.",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"Jour passé à plus de 25 % sous ton objectif : trop peu mangé ou pas tout enregistré",
+"What should your plan focus on?":"Sur quoi ton plan doit-il se concentrer ?"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6938,7 +6953,12 @@ window.I18N = {
 "Progress photo":"Foto dei progressi",
 "When was it taken?":"Quando è stata scattata?",
 "{n} days":"{n} giorni",
-"{n} photos":"{n} foto"
+"{n} photos":"{n} foto",
+"Body fat {r}":"Grasso corporeo {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"Facoltativo. Scegli tutto ciò che vuoi, i tuoi obiettivi si adattano.",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"Facoltativo. La percentuale è il tuo grasso corporeo. Rende il tuo obiettivo più preciso.",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"Giorno passato oltre il 25% sotto l’obiettivo: mangiato troppo poco o non registrato tutto",
+"What should your plan focus on?":"Su cosa deve puntare il tuo piano?"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8673,7 +8693,12 @@ window.I18N = {
 "Progress photo":"進捗写真",
 "When was it taken?":"いつ撮影しましたか？",
 "{n} days":"{n}日",
-"{n} photos":"{n}枚"
+"{n} photos":"{n}枚",
+"Body fat {r}":"体脂肪率 {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"任意。好きなだけ選べます。目標が合わせて調整されます。",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"任意。パーセントは体脂肪率です。目標がより正確になります。",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"過去の日で目標より25%以上少ない：食べた量が少なすぎるか、記録漏れ",
+"What should your plan focus on?":"プランで何を重視しますか？"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10408,7 +10433,12 @@ window.I18N = {
 "Progress photo":"Voortgangsfoto",
 "When was it taken?":"Wanneer is hij gemaakt?",
 "{n} days":"{n} dagen",
-"{n} photos":"{n} foto's"
+"{n} photos":"{n} foto's",
+"Body fat {r}":"Vetpercentage {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"Optioneel. Kies alles wat je wilt, je doelen passen zich aan.",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"Optioneel. Het percentage is je vetpercentage. Zo wordt je doel nauwkeuriger.",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"Eerdere dag meer dan 25% onder je doel: te weinig gegeten of niet alles gelogd",
+"What should your plan focus on?":"Waar moet je plan zich op richten?"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -12143,7 +12173,12 @@ window.I18N = {
 "Progress photo":"Zdjęcie postępów",
 "When was it taken?":"Kiedy zostało zrobione?",
 "{n} days":"{n} dni",
-"{n} photos":"Zdjęcia: {n}"
+"{n} photos":"Zdjęcia: {n}",
+"Body fat {r}":"Tkanka tłuszczowa {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"Opcjonalnie. Wybierz wszystko, czego chcesz – cele się dopasują.",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"Opcjonalnie. Procent to Twoja tkanka tłuszczowa. Dzięki temu cel będzie dokładniejszy.",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"Miniony dzień ponad 25% poniżej celu: za mało jedzenia albo nie wszystko zapisane",
+"What should your plan focus on?":"Na czym ma się skupić Twój plan?"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -13878,7 +13913,12 @@ window.I18N = {
 "Progress photo":"Foto de progresso",
 "When was it taken?":"Quando foi tirada?",
 "{n} days":"{n} dias",
-"{n} photos":"{n} fotos"
+"{n} photos":"{n} fotos",
+"Body fat {r}":"Gordura corporal {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"Opcional. Escolha tudo o que quiser, suas metas se ajustam.",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"Opcional. A porcentagem é sua gordura corporal. Deixa sua meta mais precisa.",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"Dia passado mais de 25% abaixo da meta: comeu pouco ou não registrou tudo",
+"What should your plan focus on?":"No que seu plano deve focar?"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -15613,7 +15653,12 @@ window.I18N = {
 "Progress photo":"Фото прогресса",
 "When was it taken?":"Когда оно сделано?",
 "{n} days":"Дней: {n}",
-"{n} photos":"Фото: {n}"
+"{n} photos":"Фото: {n}",
+"Body fat {r}":"Жир {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"Необязательно. Выбери всё, что хочешь, цели подстроятся.",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"Необязательно. Процент — это твой процент жира. Так цель будет точнее.",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"Прошедший день более чем на 25% ниже цели: съедено слишком мало или записано не всё",
+"What should your plan focus on?":"На чём сосредоточить твой план?"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -17348,7 +17393,12 @@ window.I18N = {
 "Progress photo":"İlerleme fotoğrafı",
 "When was it taken?":"Ne zaman çekildi?",
 "{n} days":"{n} gün",
-"{n} photos":"{n} fotoğraf"
+"{n} photos":"{n} fotoğraf",
+"Body fat {r}":"Vücut yağı {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"İsteğe bağlı. İstediğin her şeyi seç, hedeflerin buna göre ayarlanır.",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"İsteğe bağlı. Yüzde, vücut yağ oranındır. Hedefini daha doğru yapar.",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"Hedefinin %25'ten fazla altında kalan geçmiş gün: çok az yenmiş ya da her şey kaydedilmemiş",
+"What should your plan focus on?":"Planın neye odaklansın?"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -19083,7 +19133,12 @@ window.I18N = {
 "Progress photo":"进度照片",
 "When was it taken?":"什么时候拍的？",
 "{n} days":"{n} 天",
-"{n} photos":"{n} 张照片"
+"{n} photos":"{n} 张照片",
+"Body fat {r}":"体脂率 {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"可选。想要的都可以选，你的目标会随之调整。",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"可选。百分比是你的体脂率，能让你的目标更准确。",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"过去某天比目标低 25% 以上：吃得太少，或没有全部记录",
+"What should your plan focus on?":"你的计划要侧重什么？"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -20537,7 +20592,12 @@ window.I18N = {
 "Progress photo":"진행 사진",
 "When was it taken?":"언제 찍었나요?",
 "{n} days":"{n}일",
-"{n} photos":"사진 {n}장"
+"{n} photos":"사진 {n}장",
+"Body fat {r}":"체지방 {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"선택 사항이에요. 원하는 걸 모두 고르면 목표가 맞춰져요.",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"선택 사항이에요. 퍼센트는 체지방률이에요. 목표가 더 정확해져요.",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"지난 날에 목표보다 25% 넘게 적음: 너무 적게 먹었거나 다 기록하지 않음",
+"What should your plan focus on?":"플랜이 무엇에 집중할까요?"
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -21991,7 +22051,12 @@ window.I18N = {
 "Progress photo":"प्रगति फ़ोटो",
 "When was it taken?":"यह कब ली गई थी?",
 "{n} days":"{n} दिन",
-"{n} photos":"{n} फ़ोटो"
+"{n} photos":"{n} फ़ोटो",
+"Body fat {r}":"बॉडी फ़ैट {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"वैकल्पिक। जो चाहें सब चुनें, आपके लक्ष्य उसके हिसाब से बदलेंगे।",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"वैकल्पिक। प्रतिशत आपका बॉडी फ़ैट है। इससे आपका लक्ष्य ज़्यादा सटीक होता है।",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"बीता दिन लक्ष्य से 25% से ज़्यादा कम: बहुत कम खाया या सब दर्ज नहीं किया",
+"What should your plan focus on?":"आपका प्लान किस पर ध्यान दे?"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -23445,7 +23510,12 @@ window.I18N = {
 "Progress photo":"Foto progres",
 "When was it taken?":"Kapan foto ini diambil?",
 "{n} days":"{n} hari",
-"{n} photos":"{n} foto"
+"{n} photos":"{n} foto",
+"Body fat {r}":"Lemak tubuh {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"Opsional. Pilih semua yang kamu mau, targetmu menyesuaikan.",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"Opsional. Persentasenya adalah lemak tubuhmu. Targetmu jadi lebih akurat.",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"Hari lalu lebih dari 25% di bawah target: makan terlalu sedikit atau tidak semua dicatat",
+"What should your plan focus on?":"Rencanamu mau fokus ke apa?"
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -24899,6 +24969,11 @@ window.I18N = {
 "Progress photo":"صورة التقدم",
 "When was it taken?":"متى التُقطت؟",
 "{n} days":"{n} يومًا",
-"{n} photos":"{n} صور"
+"{n} photos":"{n} صور",
+"Body fat {r}":"دهون الجسم {r}",
+"Optional. Pick everything you want, your goals adjust to it.":"اختياري. اختر كل ما تريد، وستتكيف أهدافك.",
+"Optional. The percentage is your body fat. It makes your goal more accurate.":"اختياري. النسبة هي نسبة الدهون في جسمك. تجعل هدفك أدق.",
+"Past day more than 25% under your goal: too little eaten, or not everything logged":"يوم سابق أقل من هدفك بأكثر من 25%: أكلت قليلًا جدًا أو لم تسجّل كل شيء",
+"What should your plan focus on?":"على ماذا تركّز خطتك؟"
 }
 };
