@@ -194,6 +194,38 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 .st-fit.hi{background:var(--good);color:#fff}.st-fit.mid{background:#e0a526;color:#fff}.st-fit.lo{background:var(--bad);color:#fff}
 .st-why{display:block;margin-top:2px;color:var(--text);opacity:.8}
 .st-pin span{display:flex;width:26px;height:26px;border-radius:50%;background:#111;color:#fff;font:800 12px/26px system-ui;justify-content:center;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.gpic{display:inline-flex;align-items:center;justify-content:center;border-radius:30%;overflow:hidden;flex:none;color:#fff;font-weight:800;box-shadow:var(--shadow)}
+.gpic img{width:100%;height:100%;object-fit:cover}
+.gpic-add{background:var(--chip);color:var(--muted);font-size:30px;box-shadow:none;border:2px dashed var(--line)}
+.gcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;margin-bottom:10px}
+.gline{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:2px}
+.grank{font-weight:800;color:var(--muted);font-size:14px}
+.gprev{display:flex;align-items:center;gap:12px;margin-top:14px}
+.gcode{font-size:38px;font-weight:800;letter-spacing:.18em;text-align:center;margin:18px 0;padding:14px;border-radius:18px;background:var(--chip)}
+.gpage{display:flex;flex-direction:column;overflow:hidden}
+.gpage .mp-body{flex:1;overflow-y:auto;width:100%}
+.gtitle{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gtabs{padding-top:4px;padding-bottom:6px;width:100%}.gtabs .seg{margin:0}
+.gtabs .seg button{display:flex;align-items:center;justify-content:center;gap:6px}
+.grow-row{align-items:center;gap:12px}
+.gpos{width:26px;text-align:center;font-weight:800;color:var(--muted);flex:none}
+.gpos.top1,.gpos.top2,.gpos.top3{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px}
+.gpos.top1{background:linear-gradient(135deg,#ffe08a,#d39a14)}.gpos.top2{background:linear-gradient(135deg,#e5e9f0,#98a2b3)}.gpos.top3{background:linear-gradient(135deg,#f5b98a,#b4672e)}
+.gstreak{display:flex;align-items:center;gap:4px;font-weight:800;flex:none}
+.gmsgs{flex:1;overflow-y:auto;padding:6px 14px 10px;max-width:640px;width:100%;margin:0 auto;-webkit-overflow-scrolling:touch}
+.gmsg{display:flex;align-items:flex-end;gap:8px;margin:6px 0}
+.gmsg.mine{justify-content:flex-end}
+.gbub{max-width:76%;background:var(--card);box-shadow:var(--shadow);border-radius:18px 18px 18px 6px;padding:8px 12px 6px;font-size:15px;line-height:1.35;overflow-wrap:anywhere}
+.gmsg.mine .gbub{background:var(--ink);color:var(--on-ink);border-radius:18px 18px 6px 18px}
+.gbub b{display:block;font-size:12px;color:var(--muted);margin-bottom:2px}
+.gtime{display:block;text-align:right;font-size:10.5px;opacity:.55;margin-top:2px}
+.gday{text-align:center;font-size:12px;font-weight:700;color:var(--muted);margin:14px 0 6px}
+.gbar{display:flex;align-items:flex-end;gap:8px;padding:8px 12px calc(10px + env(safe-area-inset-bottom));background:var(--bg);max-width:640px;width:100%;margin:0 auto}
+.gbar textarea{flex:1;resize:none;min-height:42px;max-height:110px;border-radius:21px;padding:10px 14px;font-size:16px;background:var(--card);box-shadow:var(--shadow)}
+.gbar .send{width:42px;height:42px;flex:none;border-radius:50%;background:var(--ink);background-image:var(--btnimg);color:var(--on-ink);font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.chathead .memchip{padding:7px 11px;font-size:14px;gap:5px}.chathead .brand{font-size:22px;white-space:nowrap}
+@media (max-width:360px){.chathead .chip-t{display:none}}
+.chathead .top.tight .chip-t{display:none}
 .acts{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .actcard{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--card);border-radius:14px;padding:10px 10px 10px 12px;box-shadow:var(--shadow);font-size:14px}
 .actcard>.ico{font-size:20px;color:var(--good)}
@@ -1154,7 +1186,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v191';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v192';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2795,8 +2827,284 @@ function applyAccountData(p) {
   sessionStorage.setItem('ft_restored', '1');
   kvWait().then(() => location.reload());
 }
+/* ================= Groups =================
+   Private groups with friends: join with a 6-letter code or link, a ranking (days logged this week, streak) and a chat.
+   Members only see each other's name, small profile picture, streak and days logged this week, never meals or weight.
+   This phone keeps its membership (group id, member id, secret token) in db.groups, so it comes back with the backup. */
+const myGroups = () => (db.groups = db.groups || []);
+const gCache = {};   // gid → latest group info from the server
+async function gApi(path, body) {
+  if (!SERVER_URL) throw new Error(T('No internet connection?'));
+  let r; try { r = await post('/g/' + path, body); } catch { throw new Error(T('No internet connection?')); }
+  const j = await r.json().catch(() => ({}));
+  if (r.status === 403 && j.error === 'not a member') { const err = new Error(T('You are no longer in this group.')); err.gone = true; throw err; }
+  if (!r.ok) throw new Error(j.error === 'not found' ? T('No group with this code.') : j.error === 'full' ? T('This group is full (50 members).') : r.status === 429 ? T('Too many tries. Please wait a few minutes and try again.') : T('Something went wrong. Please try again.'));
+  return j;
+}
+const weekLogged = () => { const t = iso(), mon = addDays(t, -((dt(t).getDay() + 6) % 7)); return [...Array(7)].filter((_, i) => { const d = addDays(mon, i); return d <= t && db.meals.some(m => m.date === d); }).length; };
+async function smallAvatar() {
+  const p = db.profile || {}; if (!p.avatar) return '';
+  if (p.avaSm && p.avaSmOf === p.avatar.length) return p.avaSm;
+  try { p.avaSm = await scaleImage(p.avatar, 96, 0.8); p.avaSmOf = p.avatar.length; save(); } catch { return ''; }
+  return p.avaSm;
+}
+const meCard = async () => ({ name: (db.profile && db.profile.name) || '', avatar: await smallAvatar(), streak: streak(), week: weekLogged() });
+const gAuth = g => ({ gid: g.gid, mid: g.mid, token: g.token });
+function dropGroup(gid) { db.groups = myGroups().filter(x => x.gid !== gid); delete gCache[gid]; save(); }
+// A group's picture: its photo, or a soft colour with its first letter
+const G_COLS = [['#a78bfa', '#6d28d9'], ['#fb923c', '#e11d48'], ['#34d399', '#0f766e'], ['#60a5fa', '#1d4ed8'], ['#facc15', '#ca8a04'], ['#f472b6', '#be185d']];
+function gPic(g, size = 48) {
+  const info = gCache[g.gid || g.id] || g, pic = info.pic || g.pic;
+  if (pic) return `<span class="gpic" style="width:${size}px;height:${size}px"><img src="${pic}" alt=""></span>`;
+  const n = String(info.name || g.name || '?'), c = G_COLS[[...(g.gid || g.id || n)].reduce((a, ch) => a + ch.charCodeAt(0), 0) % G_COLS.length];
+  return `<span class="gpic" style="width:${size}px;height:${size}px;background:linear-gradient(135deg,${c[0]},${c[1]});font-size:${size * 0.42}px">${esc(n.trim().slice(0, 1).toUpperCase())}</span>`;
+}
+function memberAva(m, size = 36) {
+  return m.avatar ? `<span class="avatar" style="width:${size}px;height:${size}px"><img src="${m.avatar}" alt=""></span>`
+    : `<span class="avatar" style="width:${size}px;height:${size}px"><span class="ava-ini" style="font-size:${size * 0.42}px">${esc(String(m.name || '?').slice(0, 1).toUpperCase())}</span></span>`;
+}
+// A name is needed before joining or creating, so friends know who is who
+function needName(then) {
+  if (db.profile && db.profile.name) return then();
+  sheet(`<h3>${T('Your name')}</h3><p class="small muted" style="margin-top:4px">${T('Your group sees your name, profile picture, streak and how many days you logged this week. Never your meals or weight.')}</p>
+    <input id="gnIn" maxlength="30" placeholder="${T('First name or nickname')}" style="margin-top:10px">
+    <button class="btn" id="gnOk" style="margin-top:14px">${T('Continue')}</button>`, s => {
+    const i = s.querySelector('#gnIn'); setTimeout(() => i.focus(), 250);
+    s.querySelector('#gnOk').onclick = () => { const v = i.value.trim(); if (!v) return toast(T('Your name')); db.profile.name = v.slice(0, 30); save(); closeSheet(); then(); };
+  });
+}
+
+function openGroups() {
+  if (!db.profile) return;
+  $('#groupsPage')?.remove();
+  const pg = document.createElement('div'); pg.id = 'groupsPage'; pg.className = 'page';
+  document.body.appendChild(pg);
+  renderGroups();
+  refreshGroupList();
+}
+function closeGroups() { $('#groupsPage')?.remove(); }
+async function refreshGroupList() {
+  const me = await meCard();
+  await Promise.all(myGroups().map(async g => {
+    try { const r = await gApi('sync', { ...gAuth(g), me, lite: true }); if (r.group) { gCache[g.gid] = { ...(gCache[g.gid] || {}), ...r.group }; g.name = r.group.name; } }
+    catch (e) { if (e.gone) dropGroup(g.gid); }
+  }));
+  save(); if ($('#groupsPage')) renderGroups();
+}
+function renderGroups() {
+  const pg = $('#groupsPage'); if (!pg) return;
+  const list = myGroups().map(g => {
+    const c = gCache[g.gid] || {}, ms = c.members || [], rank = ms.findIndex(m => m.mid === g.mid) + 1, last = c.last;
+    const who = last && ms.find(m => m.mid === last.mid);
+    return `<button class="card gcard" data-g="${g.gid}">${gPic(g, 52)}<span class="grow" style="min-width:0"><b>${esc(c.name || g.name || '')}</b>
+      <span class="small muted gline">${last ? `${who ? esc(who.mid === g.mid ? T('You') : who.name) + ': ' : ''}${esc(last.text)}` : T('{n} members', { n: ms.length || 1 })}</span></span>
+      ${rank ? `<span class="grank">#${rank}</span>` : ''}<span class="chev">›</span></button>`;
+  }).join('');
+  pg.innerHTML = `<div class="mp-head"><button class="mp-back" id="gBack" aria-label="${T('Close')}">‹</button><div class="grow"><div class="mp-title">${T('Groups')}</div></div>
+      <button class="chipbtn" id="gJoin">${T('Join')}</button><button class="mp-back" id="gNew" aria-label="${T('Create a group')}">＋</button></div>
+    <div class="wrap mp-body">${list || `<div class="card mp-empty"><div class="mp-emoji">${ic('users')}</div><h3>${T('Stay on track together')}</h3>
+      <p class="muted">${T('Make a private group with friends or family: a ranking, a group chat, and everyone keeps each other going.')}</p>
+      <button class="btn" id="gNew2">${T('Create a group')}</button><button class="btn outline" id="gJoin2" style="margin-top:10px">${T('Join with a code')}</button></div>`}
+      <p class="small muted" style="text-align:center;margin:16px 8px 0">${T('Groups are private: only people with the code can join. Members see your name, picture, streak and days logged this week, never your meals or weight.')}</p></div>`;
+  pg.querySelector('#gBack').onclick = closeGroups;
+  [pg.querySelector('#gNew'), pg.querySelector('#gNew2')].forEach(b => b && (b.onclick = () => needName(openCreateGroup)));
+  [pg.querySelector('#gJoin'), pg.querySelector('#gJoin2')].forEach(b => b && (b.onclick = () => openJoinGroup()));
+  pg.querySelectorAll('[data-g]').forEach(b => b.onclick = () => openGroup(b.dataset.g));
+}
+function pickGroupPic(cb) {
+  const inp = document.createElement('input'); inp.type = 'file'; inp.accept = 'image/*';
+  inp.onchange = async () => { const f = inp.files && inp.files[0]; if (!f) return; try { cb(await squareImage(f, 160)); } catch (e) { toast(e.message); } };
+  inp.click();
+}
+function openCreateGroup(edit) {
+  const g = edit ? gCache[edit.gid] : null; let pic = g ? g.pic || '' : '';
+  sheet(`<h3>${edit ? T('Edit group') : T('Create a group')}</h3>
+    <div style="text-align:center;margin-top:10px"><button id="cgPic" class="gpic-btn">${pic ? `<span class="gpic" style="width:84px;height:84px"><img src="${pic}" alt=""></span>` : `<span class="gpic gpic-add" style="width:84px;height:84px">${ic('camera')}</span>`}</button>
+      <div class="small muted" style="margin-top:6px">${T('Group picture (optional)')}</div></div>
+    <label class="lbl">${T('Name')}</label><input id="cgName" maxlength="40" value="${esc(g ? g.name : '')}" placeholder="${T('e.g. Family fit')}">
+    <label class="lbl">${T('Description (optional)')}</label><input id="cgDesc" maxlength="200" value="${esc(g ? g.desc || '' : '')}" placeholder="${T('e.g. We log every meal and walk 8000 steps')}">
+    <button class="btn" id="cgOk" style="margin-top:18px">${edit ? T('Save') : T('Create group')}</button>`, s => {
+    s.querySelector('#cgPic').onclick = () => pickGroupPic(u => { pic = u; s.querySelector('#cgPic').innerHTML = `<span class="gpic" style="width:84px;height:84px"><img src="${u}" alt=""></span>`; });
+    s.querySelector('#cgOk').onclick = async () => {
+      const name = s.querySelector('#cgName').value.trim(), desc = s.querySelector('#cgDesc').value.trim();
+      if (!name) return toast(T('Give the group a name'));
+      const btn = s.querySelector('#cgOk'); btn.disabled = true;
+      try {
+        if (edit) { await gApi('edit', { ...gAuth(edit), name, desc, pic }); closeSheet(); toast('✓ ' + T('Saved')); return openGroup(edit.gid); }
+        const r = await gApi('create', { name, desc, pic, me: await meCard() });
+        myGroups().push({ gid: r.gid, mid: r.mid, token: r.token, name }); gCache[r.gid] = { id: r.gid, code: r.code, name, desc, pic, owner: r.mid, members: [] }; save();
+        closeSheet(); openGroup(r.gid); setTimeout(() => openInvite(r.gid), 500);
+      } catch (e) { toast(e.message); btn.disabled = false; }
+    };
+  });
+}
+function openJoinGroup(code = '') {
+  sheet(`<h3>${T('Join a group')}</h3><p class="small muted" style="margin-top:4px">${T('Enter the 6-letter code a friend sent you.')}</p>
+    <input id="jgCode" maxlength="6" value="${esc(code)}" placeholder="ABC234" autocapitalize="characters" style="text-align:center;font-size:24px;letter-spacing:.2em;font-weight:800;margin-top:10px">
+    <div id="jgPrev"></div><button class="btn" id="jgOk" style="margin-top:14px">${T('Continue')}</button>`, s => {
+    const inp = s.querySelector('#jgCode'), prev = s.querySelector('#jgPrev'), ok = s.querySelector('#jgOk'); let found = null;
+    const peek = async () => {
+      const c = inp.value.trim().toUpperCase(); if (c.length !== 6) return toast(T('Enter the 6-letter code a friend sent you.'));
+      ok.disabled = true;
+      try {
+        found = await gApi('peek', { code: c });
+        prev.innerHTML = `<div class="card gprev">${gPic({ id: c, name: found.name, pic: found.pic }, 56)}<span class="grow"><b>${esc(found.name)}</b><br><span class="small muted">${T('{n} members', { n: found.members })}${found.desc ? ' · ' + esc(found.desc) : ''}</span></span></div>`;
+        ok.textContent = T('Join group');
+      } catch (e) { toast(e.message); found = null; }
+      ok.disabled = false;
+    };
+    inp.oninput = () => { inp.value = inp.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); found = null; prev.innerHTML = ''; ok.textContent = T('Continue'); };
+    ok.onclick = () => found ? needName(async () => {
+      try {
+        const c = inp.value.trim().toUpperCase();
+        const r = await gApi('join', { code: c, me: await meCard() });
+        if (!myGroups().some(x => x.gid === r.gid)) myGroups().push({ gid: r.gid, mid: r.mid, token: r.token, name: found.name });
+        save(); closeSheet(); toast('✓ ' + T('You joined {name}', { name: found.name })); openGroup(r.gid);
+      } catch (e) { toast(e.message); }
+    }) : peek();
+    if (code.length === 6) peek();
+  });
+}
+function openInvite(gid) {
+  const c = gCache[gid] || {}, link = `${location.origin}${location.pathname}?join=${c.code}`;
+  sheet(`<h3>${T('Invite friends')}</h3><p class="small muted" style="margin-top:4px">${T('Send them the link, or tell them the code. They join in the app under Groups.')}</p>
+    <div class="gcode">${esc(c.code || '')}</div>
+    <button class="btn" id="ivShare">${ic('share')} ${T('Share invite link')}</button>
+    <button class="btn outline" id="ivCopy" style="margin-top:10px">${T('Copy code')}</button>`, s => {
+    const text = T('Join my group "{name}" in Food Tracker. Code: {code}', { name: c.name, code: c.code });
+    s.querySelector('#ivShare').onclick = async () => { try { if (navigator.share) await navigator.share({ title: c.name, text, url: link }); else { await navigator.clipboard.writeText(text + '\n' + link); toast(T('✓ Copied')); } } catch {} };
+    s.querySelector('#ivCopy').onclick = async () => { try { await navigator.clipboard.writeText(c.code); toast(T('✓ Copied')); } catch { toast(T('Could not copy')); } };
+  });
+}
+
+let gOpen = null, gTab = 'rank', gMsgs = [], gPoll = null;
+function openGroup(gid) {
+  const g = myGroups().find(x => x.gid === gid); if (!g) return;
+  closeGroupPage();
+  gOpen = gid; gMsgs = [];
+  const pg = document.createElement('div'); pg.id = 'groupPage'; pg.className = 'page gpage';
+  document.body.appendChild(pg);
+  renderGroup(); syncGroup(true);
+  gPoll = setInterval(() => { if (document.visibilityState === 'visible' && $('#groupPage')) syncGroup(); }, 8000);
+}
+function closeGroupPage() { clearInterval(gPoll); gPoll = null; gOpen = null; $('#groupPage')?.remove(); }
+// With the keyboard open the group screen shrinks to the visible area, so the message field sits right on the keyboard
+function fitGroup() {
+  const pg = $('#groupPage'), vv = window.visualViewport; if (!pg || !vv) return;
+  pg.style.height = vv.height + 'px'; pg.style.transform = vv.offsetTop ? `translateY(${vv.offsetTop}px)` : '';
+  const sc = pg.querySelector('.gmsgs'); if (sc && document.activeElement && document.activeElement.id === 'ggIn') sc.scrollTop = sc.scrollHeight;
+}
+if (window.visualViewport) { visualViewport.addEventListener('resize', fitGroup); visualViewport.addEventListener('scroll', fitGroup); }
+async function syncGroup(full) {
+  const g = myGroups().find(x => x.gid === gOpen); if (!g) return;
+  try {
+    const since = gMsgs.length ? gMsgs[gMsgs.length - 1].id : 0;
+    const r = await gApi('sync', { ...gAuth(g), me: await meCard(), since, lite: !full && !!(gCache[g.gid] && gCache[g.gid].members && gCache[g.gid].members.some(m => 'avatar' in m)) });
+    if (r.group) {
+      const old = gCache[g.gid] || {}, avas = Object.fromEntries((old.members || []).map(m => [m.mid, m.avatar]));
+      r.group.members.forEach(m => { if (!('avatar' in m)) m.avatar = avas[m.mid] || ''; });
+      if (!('pic' in r.group)) r.group.pic = old.pic || '';
+      gCache[g.gid] = r.group; g.name = r.group.name;
+    }
+    const fresh = (r.msgs || []).filter(m => !gMsgs.some(x => x.id === m.id));
+    if (fresh.length || full || r.group) { gMsgs.push(...fresh); renderGroup(fresh.length > 0); }
+  } catch (e) { if (e.gone) { dropGroup(g.gid); closeGroupPage(); toast(e.message); if ($('#groupsPage')) renderGroups(); } }
+}
+function renderGroup(newMsgs) {
+  const pg = $('#groupPage'), g = myGroups().find(x => x.gid === gOpen); if (!pg || !g) return;
+  const c = gCache[g.gid] || { name: g.name, members: [] }, ms = c.members || [], owner = c.owner === g.mid;
+  const scroller = pg.querySelector('.gmsgs'), atBottom = !scroller || scroller.scrollTop + scroller.clientHeight > scroller.scrollHeight - 80;
+  const rankRows = ms.map((m, i) => `<div class="li grow-row"><span class="gpos ${i < 3 ? 'top' + (i + 1) : ''}">${i + 1}</span>${memberAva(m, 40)}
+      <span class="grow"><b>${esc(m.name)}${m.mid === g.mid ? ` <span class="small muted">(${T('You')})</span>` : ''}</b><br><span class="small muted">${T('{n} of 7 days logged this week', { n: m.week })}</span></span>
+      <span class="gstreak">${ic('flame', 'e-flame')} ${m.streak}</span></div>`).join('');
+  const byId = Object.fromEntries(ms.map(m => [m.mid, m]));
+  let lastDay = '';
+  const msgs = gMsgs.map(m => {
+    const mine = m.mid === g.mid, who = byId[m.mid] || { name: T('Former member') }, day = iso(new Date(m.t));
+    const sep = day !== lastDay ? `<div class="gday">${day === iso() ? T('Today') : fmtDate(day, { weekday: 'short', day: 'numeric', month: 'short' })}</div>` : ''; lastDay = day;
+    return `${sep}<div class="gmsg ${mine ? 'mine' : ''}" data-msg="${m.id}">${mine ? '' : memberAva(who, 28)}<div class="gbub">${mine ? '' : `<b>${esc(who.name)}</b>`}${esc(m.text).replace(/\n/g, '<br>')}<span class="gtime">${fmtClock(new Date(m.t))}</span></div></div>`;
+  }).join('');
+  // Nothing changed since the last poll: leave the screen alone. In the chat only the messages are redrawn, so typing is never interrupted.
+  const sig = JSON.stringify([gTab, c.name, c.desc, c.pic && c.pic.length, ms.map(m => [m.mid, m.name, m.week, m.streak, (m.avatar || '').length]), gMsgs.map(m => m.id)]);
+  if (pg.dataset.sig === sig) return;
+  pg.dataset.sig = sig;
+  const box = pg.querySelector('.gmsgs');
+  if (box && gTab === 'chat' && pg.dataset.tab === 'chat') {
+    box.innerHTML = msgs || box.innerHTML; bindMsgs(box, g, owner);
+    if (atBottom || newMsgs) box.scrollTop = box.scrollHeight;
+    return;
+  }
+  pg.dataset.tab = gTab;
+  pg.innerHTML = `<div class="mp-head"><button class="mp-back" id="ggBack" aria-label="${T('Close')}">‹</button>${gPic(g, 40)}
+      <div class="grow" style="min-width:0"><div class="mp-title gtitle">${esc(c.name || g.name)}</div><div class="small muted">${T('{n} members', { n: ms.length || 1 })}</div></div>
+      <button class="mp-back" id="ggInv" aria-label="${T('Invite friends')}">${ic('users')}</button><button class="mp-back" id="ggMenu" aria-label="${T('More')}">⋯</button></div>
+    <div class="wrap gtabs"><div class="seg"><button data-gt="rank" class="${gTab === 'rank' ? 'on' : ''}">${ic('trophy')} ${T('Ranking')}</button><button data-gt="chat" class="${gTab === 'chat' ? 'on' : ''}">${ic('message')} ${T('Chat')}</button></div></div>
+    ${gTab === 'rank' ? `<div class="wrap mp-body">${c.desc ? `<p class="muted" style="margin:4px 4px 12px">${esc(c.desc)}</p>` : ''}
+        <div class="list">${rankRows || `<div class="li muted">${T('Loading…')}</div>`}</div>
+        <p class="small muted" style="margin:12px 4px 0">${T('Ranked by days logged this week (Monday to Sunday), then by streak.')}</p>
+        ${ms.length < 2 ? `<button class="btn" id="ggInv2" style="margin-top:16px">${ic('share')} ${T('Invite friends')}</button>` : ''}</div>`
+      : `<div class="gmsgs">${msgs || `<div class="empty" style="margin-top:20px"><b>${T('No messages yet')}</b><span class="muted">${T('Say hi to your group!')}</span></div>`}</div>
+        <div class="gbar"><textarea id="ggIn" rows="1" maxlength="500" placeholder="${T('Message')}"></textarea><button class="cbtn send" id="ggSend" aria-label="${T('Send')}">↑</button></div>`}`;
+  pg.querySelector('#ggBack').onclick = () => { closeGroupPage(); if ($('#groupsPage')) renderGroups(); };
+  pg.querySelector('#ggInv').onclick = () => openInvite(g.gid);
+  if (pg.querySelector('#ggInv2')) pg.querySelector('#ggInv2').onclick = () => openInvite(g.gid);
+  pg.querySelector('#ggMenu').onclick = () => openGroupMenu(g, owner);
+  pg.querySelectorAll('[data-gt]').forEach(b => b.onclick = () => { gTab = b.dataset.gt; pg.dataset.sig = ''; renderGroup(); if (gTab === 'chat') setTimeout(() => { const s = $('.gmsgs'); if (s) s.scrollTop = s.scrollHeight; }, 30); });
+  const sc = pg.querySelector('.gmsgs');
+  if (sc) {
+    if (atBottom || newMsgs) sc.scrollTop = sc.scrollHeight;
+    const ta = pg.querySelector('#ggIn');
+    ta.oninput = () => { ta.style.height = 'auto'; ta.style.height = Math.min(ta.scrollHeight, 110) + 'px'; };
+    pg.querySelector('#ggSend').onclick = async () => {
+      const text = ta.value.trim(); if (!text) return;
+      ta.value = ''; ta.oninput();
+      try { const r = await gApi('send', { ...gAuth(g), text }); gMsgs.push({ id: r.id, mid: g.mid, t: r.t, text }); renderGroup(true); }
+      catch (e) { toast(e.message); ta.value = text; }
+    };
+    bindMsgs(sc, g, owner);
+  }
+}
+// Tap your own message (or any message as the owner) to delete it
+function bindMsgs(sc, g, owner) {
+  sc.querySelectorAll('[data-msg]').forEach(el => el.onclick = () => {
+    const m = gMsgs.find(x => x.id == el.dataset.msg); if (!m || (m.mid !== g.mid && !owner)) return;
+    if (!confirm(T('Delete this message?'))) return;
+    gApi('delmsg', { ...gAuth(g), id: m.id }).then(() => { gMsgs = gMsgs.filter(x => x !== m); renderGroup(); }).catch(e => toast(e.message));
+  });
+}
+function openGroupMenu(g, owner) {
+  const c = gCache[g.gid] || {}, others = (c.members || []).filter(m => m.mid !== g.mid);
+  sheet(`<h3>${esc(c.name || g.name)}</h3><div class="list" style="margin-top:12px">
+      <button class="li" id="gmInv">${ic('share')}<span class="grow">${T('Invite friends')}</span><span class="val">${esc(c.code || '')}</span></button>
+      ${owner ? `<button class="li" id="gmEdit">${ic('pencil')}<span class="grow">${T('Edit group')}</span></button>` : ''}
+      ${owner && others.length ? `<button class="li" id="gmKick">${ic('users')}<span class="grow">${T('Remove a member')}</span><span class="chev">›</span></button>` : ''}
+      <button class="li" id="gmLeave" style="color:var(--bad)">${ic('nofork')}<span class="grow">${T('Leave group')}</span></button>
+      ${owner ? `<button class="li" id="gmDel" style="color:var(--bad)">${ic('trash')}<span class="grow">${T('Delete group for everyone')}</span></button>` : ''}</div>`, s => {
+    s.querySelector('#gmInv').onclick = () => openInvite(g.gid);
+    if (s.querySelector('#gmEdit')) s.querySelector('#gmEdit').onclick = () => openCreateGroup(g);
+    if (s.querySelector('#gmKick')) s.querySelector('#gmKick').onclick = () => sheet(`<h3>${T('Remove a member')}</h3><div class="list" style="margin-top:12px">${others.map(m => `<button class="li" data-k="${m.mid}">${memberAva(m, 32)}<span class="grow">${esc(m.name)}</span><span class="small" style="color:var(--bad)">${T('Remove')}</span></button>`).join('')}</div>`, s2 => {
+      s2.querySelectorAll('[data-k]').forEach(b => b.onclick = async () => { if (!confirm(T('Remove {name} from the group?', { name: b.textContent.trim() }))) return; try { await gApi('kick', { ...gAuth(g), target: b.dataset.k }); closeSheet(); syncGroup(true); } catch (e) { toast(e.message); } });
+    });
+    s.querySelector('#gmLeave').onclick = async () => {
+      if (!confirm(owner && others.length ? T('Leave this group? The longest member becomes the new owner.') : T('Leave this group?'))) return;
+      try { await gApi('leave', gAuth(g)); } catch (e) { if (!e.gone) return toast(e.message); }
+      dropGroup(g.gid); closeSheet(); closeGroupPage(); if ($('#groupsPage')) renderGroups();
+    };
+    if (s.querySelector('#gmDel')) s.querySelector('#gmDel').onclick = async () => {
+      if (!confirm(T('Delete this group and all its messages for everyone? This cannot be undone.'))) return;
+      try { await gApi('delete', gAuth(g)); } catch (e) { if (!e.gone) return toast(e.message); }
+      dropGroup(g.gid); closeSheet(); closeGroupPage(); if ($('#groupsPage')) renderGroups();
+    };
+  });
+}
+// Invite links: …/?join=ABC234 opens the join sheet (after the setup if they are new)
+const joinParam = (new URLSearchParams(location.search).get('join') || '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 6);
+if (joinParam) { history.replaceState(null, '', location.pathname); LS.set('ft_join', joinParam); }
+setInterval(() => { const c = LS.get('ft_join', ''); if (c && db.profile && !$('#onb') && !$('.backdrop')) { LS.set('ft_join', ''); openGroups(); setTimeout(() => openJoinGroup(c), 400); } }, 2000);
+
 // "Delete all data": everything on this phone and everything about it on the server. Only language and look stay.
 async function wipeEverything() {
+  for (const g of myGroups()) { try { await gApi('leave', gAuth(g)); } catch {} }   // groups: leave them all
   await deleteBackup();   // account backup and meal photos
   const L = linkInfo();
   if (L && L.vid && SERVER_URL) { try { await post('/link/vault/delete', { vid: L.vid, vs: L.vs }); } catch {} }   // tracker sign-in
@@ -4322,6 +4630,7 @@ function openPrivacy() {
     ${sec('⌚', T('Watch & tracker'), T('If you connect Apple Health or a tracker, only your calories burned per day are read. For WHOOP, Oura, Polar and Withings the sign-in key is kept on the Food Tracker server, encrypted with a secret that only your phone has. Numbers from the Apple Health Shortcut wait on the server for up to 30 days until your app picks them up.'))}
     ${sec('🔑', T('Password check'), T('When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.'))}
     ${sec('🏷️', T('Barcodes'), T('When you scan a barcode, only its number is sent to Open Food Facts, a free food database. On some phones the scanner first loads a free reading tool from jsdelivr.net.'))}
+    ${sec('👥', T('Groups'), T('If you join a group, its members see your name, small profile picture, logging streak and how many days you logged this week, plus your messages. Messages stay on the Food Tracker server for 60 days. Your meals and weight are never shared. Leaving a group removes you from it.'))}
     ${sec('📍', T('Supermarkets near you'), T('Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI only gets the shop names, never your location.'))}
     ${sec('📊', T('Usage count'), T('To know how many people use Food Tracker, the app sends a random number, the first and last day it was used and how many AI requests it made. With an account, this is stored together with your account. It never contains your food or photos.'))}
     ${sec('🍪', T('Cookies'), T('Food Tracker uses no cookies and no tracking. It only stores on your phone what it needs to work, like your settings, so no cookie banner is needed.'))}
@@ -6027,6 +6336,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (medals in 3 columns with their number and what they are for, silver until earned; tap one to see more). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Home shows a slim "Habits · Choose a habit" line (can be hidden with ✕; it's always on Progress), and the habit card once they chose one.
 - Coach: the Memory button (top right) opens My memory: what you remember about them (they can add or delete facts), My memory snapshot (a short summary you write about them with one question and 3 quick answers) and Chat history (earlier conversations are kept when they start a new one; they can open, continue or delete them). The suggestion buttons above the text field can be swiped sideways for more questions; the first one follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them. You can also do things for them from the chat (see ACTIONS): log food they tell you they ate, water, weight and activity, start a habit (it then shows on Home), change the water goal or open a page; each shows as a small card under your answer with Undo.
+- Groups (Coach page top "Groups" button, or Settings → Groups): private groups with friends or family. Create one (name, optional description and picture) and share the invite link or 6-letter code; others join with the code. Each group has a Ranking (days logged this week Monday-Sunday, then the logging streak; top 3 get gold/silver/bronze) and a Chat (tap your own message to delete it; the owner can delete any message, edit the group, remove members or delete the group). Members only see each other's name, small profile picture, streak and days logged this week, never meals or weight. Messages are kept 60 days. No public groups.
 - Settings: at the top their profile picture and name (tap the picture to add or change a photo, tap the name to set it); Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, daily life: mostly sitting / on their feet a lot / physical work, training 0 / 1-2 / 3-5 / 6+ per week; daily life and workouts together set the activity level, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (water: up to 3 a day at 11:00, 14:00 and 17:00, only when they are behind their water goal (25 / 50 / 75 % by then), none once it is reached; calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy (what happens with the data, no cookies, their rights); Terms of use (free, estimates not medical advice, 16+, fair use); Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
@@ -6098,7 +6408,7 @@ function renderChat(animLast) {
   let scr = $('#chatScreen');
   if (!scr) {
     scr = document.createElement('div'); scr.id = 'chatScreen';
-    scr.innerHTML = `<div class="wrap chathead"><div class="top"><div class="brand">${T('AI Coach')}</div><button class="memchip" id="cMem" aria-label="${T('Memory')}"></button></div></div>
+    scr.innerHTML = `<div class="wrap chathead"><div class="top"><div class="brand">${T('AI Coach')}</div><div class="row" style="gap:8px"><button class="memchip" id="cGroups" aria-label="${T('Groups')}">${ic('users')}<span class="chip-t">${T('Groups')}</span></button><button class="memchip" id="cMem" aria-label="${T('Memory')}"></button></div></div></div>
       <div class="msgscroll" id="msgScroll"><div class="wrap" id="chatBody"></div></div>`;
     document.body.appendChild(scr);
     chatEl().addEventListener('scroll', updateDown, { passive: true });
@@ -6111,6 +6421,8 @@ function renderChat(animLast) {
     <div class="msgs" id="msgs">${chat.map((m, i) => chatBubble(m, animLast && i === chat.length - 1)).join('')}${chatBusy ? '<div class="msg ai new" id="live"><span class="dots"><span></span><span></span><span></span></span></div>' : ''}</div>`;
   renderAttach();
   $('#cMem').onclick = openMemoryPage;
+  $('#cGroups').onclick = openGroups;
+  { const top = $('.chathead .top'); top.classList.remove('tight'); if (top.scrollWidth > top.clientWidth + 1) top.classList.add('tight'); }   // long titles: Groups shows as an icon only
   fitChat(); chatToBottom(); requestAnimationFrame(() => { chatToBottom(); updateDown(); });
 }
 function buildChatbar(scr) {
@@ -6723,6 +7035,7 @@ function renderSettings() {
       <button class="li" id="sPers"><span class="ic">👤</span><span class="grow">${T('Personal details')}</span><span class="chev">›</span></button>
       <button class="li" id="sTrk"><span class="ic">⌚</span><span class="grow">${T('Watch & tracker')}</span><span class="val">${setupLeft() ? T('Step {n} of {of}', { n: setupLeft().n, of: setupLeft().of }) : linkInfo() ? esc(linkName(linkInfo().p)) : T('Not connected')}</span><span class="chev">›</span></button>
       <button class="li" id="sGoals"><span class="ic">🎯</span><span class="grow">${T('Adjust macronutrients')}<br><span class="small muted">${t.kcal} kcal · ${t.protein}g P · ${t.carbs}g C · ${t.fat}g F</span></span><span class="chev">›</span></button>
+      <button class="li" id="sGroups"><span class="ic">${ic('users')}</span><span class="grow">${T('Groups')}<br><span class="small muted">${myGroups().length ? T('{n} groups', { n: myGroups().length }) : T('Ranking and chat with friends')}</span></span><span class="chev">›</span></button>
       <button class="li" id="sRedo"><span class="ic">🔁</span><span class="grow">${T('Redo setup questions')}</span><span class="chev">›</span></button>
     </div>
     <div class="h2">${T('Preferences')}</div>
@@ -6776,6 +7089,7 @@ function renderSettings() {
   if ($('#sShare')) $('#sShare').onclick = shareApp;
   $('#sPers').onclick = openPersonalSheet;
   if ($('#sAva')) { $('#sAva').onclick = openAvatarSheet; $('#sName').onclick = openNameSheet; }
+  if ($('#sGroups')) $('#sGroups').onclick = openGroups;
   $('#sTrk').onclick = () => setupLeft() ? openSetupPage() : openTrackerSheet();
   if ($('#sGoal')) $('#sGoal').onclick = openMainGoalSheet;
   $('#sGoals').onclick = openGoalsSheet;
@@ -7301,7 +7615,7 @@ function squareImage(file, size = 256) {
 function openAvatarSheet() {
   const p = db.profile; if (!p) return;
   sheet(`<div style="text-align:center"><div class="avatar huge">${avatarHTML()}</div><h3 style="margin:14px 0 4px">${T('Profile picture')}</h3>
-    <p class="small muted" style="margin:0">${T('Saved on this phone and in your backup.')}</p></div>
+    <p class="small muted" style="margin:0">${T('Only you see it, and friends in your groups.')}</p></div>
     <button class="btn" id="avPick" style="margin-top:16px">${T('Choose a photo')}</button>
     ${p.avatar ? `<button class="btn outline" id="avDel" style="margin-top:10px">${T('Remove photo')}</button>` : ''}`, s => {
     s.querySelector('#avPick').onclick = () => {
@@ -7317,7 +7631,7 @@ function openAvatarSheet() {
 }
 function openNameSheet() {
   const p = db.profile; if (!p) return;
-  sheet(`<h3>${T('Your name')}</h3><p class="small muted" style="margin-top:4px">${T('Shown on your profile.')}</p>
+  sheet(`<h3>${T('Your name')}</h3><p class="small muted" style="margin-top:4px">${T('Shown on your profile and in your groups.')}</p>
     <input id="nmIn" maxlength="30" value="${esc(p.name || '')}" placeholder="${T('First name or nickname')}" style="margin-top:10px">
     <button class="btn" id="nmSave" style="margin-top:14px">${T('Save')}</button>`, s => {
     const i = s.querySelector('#nmIn'); setTimeout(() => i.focus(), 250);
