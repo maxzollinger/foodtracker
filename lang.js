@@ -1805,7 +1805,14 @@ window.I18N = {
 "Turn AI off":"KI ausschalten",
 "Describe it instead":"Lieber beschreiben",
 "Take a photo of what you eat next. The AI counts the calories for you.":"Fotografiere, was du als Nächstes isst. Die KI zählt die Kalorien für dich.",
-"You're all set! Log your first meal":"Alles bereit! Erfasse deine erste Mahlzeit"
+"You're all set! Log your first meal":"Alles bereit! Erfasse deine erste Mahlzeit",
+"About my weekly check-in: ":"Zu meinem Wochen-Check-in: ",
+"Calories a day":"Kalorien pro Tag",
+"Goal {n}":"Ziel {n}",
+"Highlights":"Highlights",
+"Tip for next week":"Tipp für nächste Woche",
+"Weight this week":"Gewicht diese Woche",
+"Your coach is looking at your week…":"Dein Coach schaut sich deine Woche an…"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3612,7 +3619,14 @@ window.I18N = {
 "Turn AI off":"Desactivar IA",
 "Describe it instead":"Mejor descríbelo",
 "Take a photo of what you eat next. The AI counts the calories for you.":"Hazle una foto a lo próximo que comas. La IA cuenta las calorías por ti.",
-"You're all set! Log your first meal":"¡Todo listo! Registra tu primera comida"
+"You're all set! Log your first meal":"¡Todo listo! Registra tu primera comida",
+"About my weekly check-in: ":"Sobre mi resumen semanal: ",
+"Calories a day":"Calorías al día",
+"Goal {n}":"Meta {n}",
+"Highlights":"Lo más destacado",
+"Tip for next week":"Consejo para la próxima semana",
+"Weight this week":"Peso esta semana",
+"Your coach is looking at your week…":"Tu coach está revisando tu semana…"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5419,7 +5433,14 @@ window.I18N = {
 "Turn AI off":"Désactiver l’IA",
 "Describe it instead":"Plutôt le décrire",
 "Take a photo of what you eat next. The AI counts the calories for you.":"Prends en photo ce que tu vas manger. L’IA compte les calories pour toi.",
-"You're all set! Log your first meal":"Tout est prêt ! Enregistre ton premier repas"
+"You're all set! Log your first meal":"Tout est prêt ! Enregistre ton premier repas",
+"About my weekly check-in: ":"À propos de mon bilan de la semaine : ",
+"Calories a day":"Calories par jour",
+"Goal {n}":"Objectif {n}",
+"Highlights":"Points forts",
+"Tip for next week":"Conseil pour la semaine prochaine",
+"Weight this week":"Poids cette semaine",
+"Your coach is looking at your week…":"Ton coach regarde ta semaine…"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -7226,7 +7247,14 @@ window.I18N = {
 "Turn AI off":"Disattiva IA",
 "Describe it instead":"Descrivilo invece",
 "Take a photo of what you eat next. The AI counts the calories for you.":"Fotografa quello che mangi adesso. L’IA conta le calorie per te.",
-"You're all set! Log your first meal":"Tutto pronto! Registra il tuo primo pasto"
+"You're all set! Log your first meal":"Tutto pronto! Registra il tuo primo pasto",
+"About my weekly check-in: ":"Sul mio check-in settimanale: ",
+"Calories a day":"Calorie al giorno",
+"Goal {n}":"Obiettivo {n}",
+"Highlights":"In evidenza",
+"Tip for next week":"Consiglio per la prossima settimana",
+"Weight this week":"Peso questa settimana",
+"Your coach is looking at your week…":"Il tuo coach sta guardando la tua settimana…"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -9033,7 +9061,14 @@ window.I18N = {
 "Turn AI off":"AIをオフにする",
 "Describe it instead":"文章で入力する",
 "Take a photo of what you eat next. The AI counts the calories for you.":"次に食べるものを撮影してください。AIがカロリーを数えます。",
-"You're all set! Log your first meal":"準備完了！最初の食事を記録しましょう"
+"You're all set! Log your first meal":"準備完了！最初の食事を記録しましょう",
+"About my weekly check-in: ":"週間チェックインについて：",
+"Calories a day":"1日のカロリー",
+"Goal {n}":"目標 {n}",
+"Highlights":"ハイライト",
+"Tip for next week":"来週のヒント",
+"Weight this week":"今週の体重",
+"Your coach is looking at your week…":"コーチがあなたの1週間を確認しています…"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10840,7 +10875,14 @@ window.I18N = {
 "Turn AI off":"AI uitzetten",
 "Describe it instead":"Liever beschrijven",
 "Take a photo of what you eat next. The AI counts the calories for you.":"Maak een foto van wat je zo gaat eten. De AI telt de calorieën voor je.",
-"You're all set! Log your first meal":"Alles klaar! Log je eerste maaltijd"
+"You're all set! Log your first meal":"Alles klaar! Log je eerste maaltijd",
+"About my weekly check-in: ":"Over mijn weekcheck-in: ",
+"Calories a day":"Calorieën per dag",
+"Goal {n}":"Doel {n}",
+"Highlights":"Hoogtepunten",
+"Tip for next week":"Tip voor volgende week",
+"Weight this week":"Gewicht deze week",
+"Your coach is looking at your week…":"Je coach bekijkt je week…"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -12647,7 +12689,14 @@ window.I18N = {
 "Turn AI off":"Wyłącz AI",
 "Describe it instead":"Opisz zamiast tego",
 "Take a photo of what you eat next. The AI counts the calories for you.":"Zrób zdjęcie tego, co zaraz zjesz. AI policzy za Ciebie kalorie.",
-"You're all set! Log your first meal":"Wszystko gotowe! Zapisz swój pierwszy posiłek"
+"You're all set! Log your first meal":"Wszystko gotowe! Zapisz swój pierwszy posiłek",
+"About my weekly check-in: ":"O moim tygodniowym podsumowaniu: ",
+"Calories a day":"Kalorie dziennie",
+"Goal {n}":"Cel {n}",
+"Highlights":"Najważniejsze",
+"Tip for next week":"Wskazówka na przyszły tydzień",
+"Weight this week":"Waga w tym tygodniu",
+"Your coach is looking at your week…":"Twój coach przegląda Twój tydzień…"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -14454,7 +14503,14 @@ window.I18N = {
 "Turn AI off":"Desligar IA",
 "Describe it instead":"Prefiro descrever",
 "Take a photo of what you eat next. The AI counts the calories for you.":"Tire uma foto do que você vai comer. A IA conta as calorias para você.",
-"You're all set! Log your first meal":"Tudo pronto! Registre sua primeira refeição"
+"You're all set! Log your first meal":"Tudo pronto! Registre sua primeira refeição",
+"About my weekly check-in: ":"Sobre o meu resumo semanal: ",
+"Calories a day":"Calorias por dia",
+"Goal {n}":"Meta {n}",
+"Highlights":"Destaques",
+"Tip for next week":"Dica para a próxima semana",
+"Weight this week":"Peso nesta semana",
+"Your coach is looking at your week…":"Seu coach está olhando sua semana…"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -16261,7 +16317,14 @@ window.I18N = {
 "Turn AI off":"Выключить ИИ",
 "Describe it instead":"Лучше описать",
 "Take a photo of what you eat next. The AI counts the calories for you.":"Сфотографируй то, что будешь есть. ИИ посчитает калории за тебя.",
-"You're all set! Log your first meal":"Всё готово! Запиши свой первый приём пищи"
+"You're all set! Log your first meal":"Всё готово! Запиши свой первый приём пищи",
+"About my weekly check-in: ":"О моём недельном итоге: ",
+"Calories a day":"Калорий в день",
+"Goal {n}":"Цель {n}",
+"Highlights":"Главное",
+"Tip for next week":"Совет на следующую неделю",
+"Weight this week":"Вес за неделю",
+"Your coach is looking at your week…":"Твой коуч смотрит на твою неделю…"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -18068,7 +18131,14 @@ window.I18N = {
 "Turn AI off":"Yapay zekâyı kapat",
 "Describe it instead":"Bunun yerine anlat",
 "Take a photo of what you eat next. The AI counts the calories for you.":"Sıradaki yiyeceğinin fotoğrafını çek. Yapay zekâ kalorileri senin için sayar.",
-"You're all set! Log your first meal":"Her şey hazır! İlk öğününü kaydet"
+"You're all set! Log your first meal":"Her şey hazır! İlk öğününü kaydet",
+"About my weekly check-in: ":"Haftalık değerlendirmem hakkında: ",
+"Calories a day":"Günlük kalori",
+"Goal {n}":"Hedef {n}",
+"Highlights":"Öne çıkanlar",
+"Tip for next week":"Gelecek hafta için ipucu",
+"Weight this week":"Bu haftaki kilo",
+"Your coach is looking at your week…":"Koçun haftana bakıyor…"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -19875,7 +19945,14 @@ window.I18N = {
 "Turn AI off":"关闭 AI",
 "Describe it instead":"改为文字描述",
 "Take a photo of what you eat next. The AI counts the calories for you.":"拍下你接下来要吃的东西，AI 会帮你计算卡路里。",
-"You're all set! Log your first meal":"一切就绪！记录你的第一餐"
+"You're all set! Log your first meal":"一切就绪！记录你的第一餐",
+"About my weekly check-in: ":"关于我的每周总结：",
+"Calories a day":"每日卡路里",
+"Goal {n}":"目标 {n}",
+"Highlights":"亮点",
+"Tip for next week":"下周小建议",
+"Weight this week":"本周体重",
+"Your coach is looking at your week…":"你的教练正在查看你的一周…"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -21401,7 +21478,14 @@ window.I18N = {
 "Turn AI off":"AI 끄기",
 "Describe it instead":"대신 설명하기",
 "Take a photo of what you eat next. The AI counts the calories for you.":"다음에 먹을 음식을 찍어 보세요. AI가 칼로리를 계산해 줘요.",
-"You're all set! Log your first meal":"준비 완료! 첫 식사를 기록해요"
+"You're all set! Log your first meal":"준비 완료! 첫 식사를 기록해요",
+"About my weekly check-in: ":"주간 체크인에 대해: ",
+"Calories a day":"하루 칼로리",
+"Goal {n}":"목표 {n}",
+"Highlights":"하이라이트",
+"Tip for next week":"다음 주 팁",
+"Weight this week":"이번 주 체중",
+"Your coach is looking at your week…":"코치가 이번 주를 살펴보고 있어요…"
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -22927,7 +23011,14 @@ window.I18N = {
 "Turn AI off":"AI बंद करें",
 "Describe it instead":"इसके बजाय लिखकर बताएँ",
 "Take a photo of what you eat next. The AI counts the calories for you.":"अगली बार जो खाएँ उसकी फ़ोटो लें। AI आपके लिए कैलोरी गिनेगा।",
-"You're all set! Log your first meal":"सब तैयार है! अपना पहला खाना दर्ज करें"
+"You're all set! Log your first meal":"सब तैयार है! अपना पहला खाना दर्ज करें",
+"About my weekly check-in: ":"मेरे साप्ताहिक चेक-इन के बारे में: ",
+"Calories a day":"रोज़ की कैलोरी",
+"Goal {n}":"लक्ष्य {n}",
+"Highlights":"खास बातें",
+"Tip for next week":"अगले हफ़्ते के लिए टिप",
+"Weight this week":"इस हफ़्ते का वज़न",
+"Your coach is looking at your week…":"आपका कोच आपका हफ़्ता देख रहा है…"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -24453,7 +24544,14 @@ window.I18N = {
 "Turn AI off":"Matikan AI",
 "Describe it instead":"Jelaskan saja",
 "Take a photo of what you eat next. The AI counts the calories for you.":"Foto makanan yang akan kamu makan. AI menghitung kalorinya untukmu.",
-"You're all set! Log your first meal":"Semua siap! Catat makan pertamamu"
+"You're all set! Log your first meal":"Semua siap! Catat makan pertamamu",
+"About my weekly check-in: ":"Tentang check-in mingguanku: ",
+"Calories a day":"Kalori per hari",
+"Goal {n}":"Target {n}",
+"Highlights":"Sorotan",
+"Tip for next week":"Tips untuk minggu depan",
+"Weight this week":"Berat minggu ini",
+"Your coach is looking at your week…":"Coach-mu sedang melihat minggumu…"
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -25979,6 +26077,13 @@ window.I18N = {
 "Turn AI off":"إيقاف الذكاء الاصطناعي",
 "Describe it instead":"صِفها بدلًا من ذلك",
 "Take a photo of what you eat next. The AI counts the calories for you.":"صوّر ما ستأكله الآن، وسيحسب الذكاء الاصطناعي السعرات لك.",
-"You're all set! Log your first meal":"كل شيء جاهز! سجّل وجبتك الأولى"
+"You're all set! Log your first meal":"كل شيء جاهز! سجّل وجبتك الأولى",
+"About my weekly check-in: ":"بخصوص ملخصي الأسبوعي: ",
+"Calories a day":"السعرات يوميًا",
+"Goal {n}":"الهدف {n}",
+"Highlights":"أبرز النقاط",
+"Tip for next week":"نصيحة للأسبوع القادم",
+"Weight this week":"الوزن هذا الأسبوع",
+"Your coach is looking at your week…":"مدربك يراجع أسبوعك…"
 }
 };

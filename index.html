@@ -974,6 +974,17 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .wr-dots i.ok{border:none;background:#34c759}.wr-dots i.warn{border:none;background:#f5b83d}.wr-dots i.over{border:none;background:#ff3b30}.wr-dots i.under{border:none;background:#3aa0ff}
 .wr-tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:340px;margin-top:6px}.wr-tiles div{background:rgba(255,255,255,.08);border-radius:18px;padding:14px}
 .wr-tiles b{display:block;font-size:30px;font-weight:900}.wr-tiles span{font-size:13px;opacity:.7}
+.ckin .ck-title{font-size:24px;letter-spacing:-.02em;margin:6px 0 14px;line-height:1.15}
+.ck-rings{display:flex;justify-content:space-between;margin:0 0 16px}.ck-rings>div{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--muted)}
+.ck-rings i{width:30px;height:30px;border-radius:50%;border:3px dashed var(--line)}.ck-rings i.ok{border:3px solid var(--good)}.ck-rings i.warn{border:3px solid var(--warn)}.ck-rings i.over{border:3px solid var(--bad)}.ck-rings i.under{border:3px solid var(--water)}
+.ck-tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ck-tile{background:var(--chip);border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:1px;min-width:0}
+.ck-tile b{font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}.ck-tile span{font-size:13px;font-weight:600;color:var(--muted)}.ck-tile small{font-size:12px;color:var(--muted)}
+.ck-h{font-weight:800;margin:18px 2px 8px}.ck-points{display:flex;flex-direction:column;gap:10px}.ck-points>div{display:flex;gap:10px;align-items:flex-start;line-height:1.45}
+.ck-dot{flex:none;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--good) 18%,transparent);color:var(--good);font-size:12px;font-weight:900;margin-top:1px}
+.ck-tip{margin-top:16px;padding:14px 16px;border-radius:18px;background:linear-gradient(135deg,color-mix(in srgb,var(--good) 16%,var(--chip)),color-mix(in srgb,var(--water) 12%,var(--chip)));display:flex;flex-direction:column;gap:4px;line-height:1.45}
+.ckskel{display:block;height:14px;border-radius:8px;margin:6px 0;background:linear-gradient(90deg,var(--chip) 25%,color-mix(in srgb,var(--text) 12%,var(--chip)) 50%,var(--chip) 75%);background-size:200% 100%;animation:ckskel 1.3s linear infinite}
+@keyframes ckskel{to{background-position:-200% 0}}
+.ckchip{padding:7px 11px}.ckchip.new{box-shadow:inset 0 0 0 2px var(--warn)}
 .pp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .pp-tile{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;background:var(--chip);padding:0}
 .pp-tile img,.pp-tile .ph-miss{width:100%;height:100%;object-fit:cover;display:flex;align-items:center;justify-content:center}
@@ -1290,7 +1301,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v232';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v233';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -5280,9 +5291,10 @@ function inPop(icon, title, text, onOpen) {
    On Sunday (from 9:00), or the next time the app is opened in the two days after, the coach writes a
    short summary of the week with the real numbers and one tip. It appears in the coach chat. */
 let checkinBusy = false;
-async function weeklyCheckin() {
+async function weeklyCheckin(fromTap) {
   if (checkinBusy || !db.profile || !hasAI()) return;
   const today = iso(), sun = addDays(today, -((dt(today).getDay() - (pushPrefs().cd ?? 0) + 7) % 7));   // the last check-in day (Sunday unless changed)
+  if ((db.checkins || {})[sun]) { if (fromTap || (tab === 'chat' && !db.checkins[sun].seen)) openCheckinReport(sun); return; }   // already written: show it
   if (LS.get('ft_checkin', '') === sun || daysBetween(sun, today) > 2 || (today === sun && new Date().getHours() < 9)) return;
   const days = [...Array(7)].map((_, i) => addDays(sun, i - 6)), logged = days.filter(d => dayTotals(d).count);
   if (logged.length < 2) return LS.set('ft_checkin', sun);   // too little to say anything useful
@@ -5300,14 +5312,60 @@ ${db.habit ? `Habit "${habitName(db.habit)}": kept on ${days.filter(d => habitDa
 Best day: ${(() => { const sc = d => Math.min(1, dayTotals(d).protein / Math.max(1, dayGoals(d).protein)) - Math.abs(dayTotals(d).kcal - dayGoals(d).kcal) / Math.max(1, dayGoals(d).kcal); const b = [...logged].sort((x, y) => sc(y) - sc(x))[0]; return `${dt(b).toLocaleDateString('en-GB', { weekday: 'long' })} (${r0(dayTotals(b).kcal)} kcal, ${r0(dayTotals(b).protein)} g protein)`; })()}.`;
   const prompt = `${stats}
 
-Write my WEEKLY CHECK-IN for this week. First line: a short title starting with "📊". Then 3 to 5 short bullet points with the real numbers (one of them celebrates my best day): calories and protein vs my goals, consistency, weight trend compared with my goal, and anything that stands out. End with ONE concrete tip for next week, starting with "**Tip:**". Short, honest, warm and motivating. No memory tags.`;
+Write my WEEKLY CHECK-IN for this week as JSON: {"title": "a short, warm headline about my week (max 6 words, no emoji)", "points": ["3 to 4 short highlights with the real numbers, one sentence each: calories and protein vs my goals, consistency, weight trend vs my goal; one of them celebrates my best day"], "tip": "ONE concrete tip for next week, one sentence"}. Honest, warm, motivating. Write it in my language.`;
+  const st = checkinStats(sun);
+  if (tab === 'chat' || fromTap) openCheckinReport(sun, null);   // the numbers show at once, the coach's words fade in
   try {
-    const text = await askAI([{ text: prompt }], { json: false, system: coachSystem() });
-    chat.push({ role: 'assistant', text: stripTags(text), t: Date.now(), checkin: true }); saveChat(); syncDone();
-    if (tab === 'chat') renderChat(true);
-    else inPop('📊', T('Your weekly check-in is here'), T('Your coach looked at your week and has one tip for the next.'), () => go('chat'));
-  } catch { LS.set('ft_checkin', ''); }
+    const r = await askAI([{ text: prompt }], { json: true, system: coachSystem() });
+    const rep = { title: String(r.title || '').replace(/^[^\p{L}\p{N}]+/u, '').slice(0, 80), points: (Array.isArray(r.points) ? r.points : []).map(x => String(x).slice(0, 240)).slice(0, 5), tip: String(r.tip || '').slice(0, 240), t: Date.now(), st };
+    db.checkins = db.checkins || {}; db.checkins[sun] = rep;
+    for (const k of Object.keys(db.checkins).sort().slice(0, -8)) delete db.checkins[k];   // keep the last 8 weeks
+    save(); syncDone();
+    if ($('#ckinPop')) openCheckinReport(sun, rep);
+    else if (tab === 'chat') openCheckinReport(sun, rep);
+    else inPop('📊', T('Your weekly check-in is here'), T('Your coach looked at your week and has one tip for the next.'), () => { go('chat'); setTimeout(() => openCheckinReport(sun), 300); });
+    if (tab === 'chat') renderChatHead();
+  } catch (e) { LS.set('ft_checkin', ''); if ($('#ckinPop')) { closeSheet(); toast(aiMsg(e)); } }
   checkinBusy = false;
+}
+// The numbers of the check-in week, worked out by the app itself (exact, not from the AI)
+function checkinStats(sun) {
+  const days = [...Array(7)].map((_, i) => addDays(sun, i - 6)), logged = days.filter(d => dayTotals(d).count);
+  const avg = f => logged.length ? r0(logged.reduce((a, d) => a + f(d), 0) / logged.length) : 0;
+  const wAt = d => { const w = db.weights.filter(x => x.date <= d).sort((a, b) => a.date.localeCompare(b.date)).at(-1); return w ? w.kg : null; };
+  return { from: days[0], to: sun, tiers: days.map(d => ringTier(d)), logged: logged.length, kcal: avg(d => dayTotals(d).kcal), kGoal: avg(d => dayGoals(d).kcal),
+    protein: avg(d => dayTotals(d).protein), pGoal: avg(d => dayGoals(d).protein), w0: wAt(addDays(sun, -7)), w1: wAt(sun) };
+}
+const lastCheckin = () => { const ks = Object.keys(db.checkins || {}).sort(); const k = ks.at(-1); return k && daysBetween(k, iso()) <= 6 ? k : null; };
+// The weekly check-in as a calm pop-up: rings, four numbers, the coach's highlights and one tip
+function openCheckinReport(sun = lastCheckin(), rep) {
+  if (!sun) return;
+  if (rep === undefined) rep = (db.checkins || {})[sun] || null;
+  const st = rep && rep.st ? rep.st : checkinStats(sun), wd = st.w0 != null && st.w1 != null && st.w0 !== st.w1 ? r1(showW(st.w1) - showW(st.w0)) : null;
+  const bold = t => esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/\*/g, '');
+  const tile = (v, l, sub) => `<div class="ck-tile"><b>${v}</b><span>${l}</span>${sub ? `<small>${sub}</small>` : ''}</div>`;
+  sheet(`<div id="ckinPop" class="ckin">
+    <div class="small muted" style="font-weight:700;letter-spacing:.02em">📊 ${T('Weekly check-in')} · ${fmtDate(st.from, { day: 'numeric', month: 'short' })} – ${fmtDate(st.to, { day: 'numeric', month: 'short' })}</div>
+    <h3 class="ck-title">${rep ? esc(rep.title || T('Your week')) : `<i class="ckskel" style="width:70%;height:26px"></i>`}</h3>
+    <div class="ck-rings">${st.tiers.map((t, i) => `<div><i class="${t}"></i><span>${dt(addDays(st.from, i)).toLocaleDateString(LOC, { weekday: 'narrow' })}</span></div>`).join('')}</div>
+    <div class="ck-tiles">${tile(`${st.logged}/7`, T('Days logged'))}${tile(st.kcal || '–', T('Calories a day'), st.kGoal ? T('Goal {n}', { n: st.kGoal }) : '')}
+      ${tile(st.protein ? st.protein + ' g' : '–', T('Protein a day'), st.pGoal ? T('Goal {n}', { n: st.pGoal + ' g' }) : '')}${tile(wd == null ? '–' : signed(wd, wUnit()), T('Weight this week'))}</div>
+    <div class="ck-h">${T('Highlights')}</div>
+    <div class="ck-points">${rep ? rep.points.map(p => `<div><span class="ck-dot">✓</span><span>${bold(p)}</span></div>`).join('') : '<i class="ckskel"></i><i class="ckskel" style="width:86%"></i><i class="ckskel" style="width:64%"></i>'}</div>
+    ${rep && rep.tip ? `<div class="ck-tip"><b>${ic('bulb')} ${T('Tip for next week')}</b><span>${bold(rep.tip)}</span></div>` : !rep ? `<p class="small muted" style="text-align:center;margin:14px 0 0">${T('Your coach is looking at your week…')} <span class="spin" style="vertical-align:-3px"></span></p>` : ''}
+    ${rep ? `<button class="btn" id="ckShare" style="margin-top:18px">${ic('share')} ${T('Share my week')}</button><button class="btn outline" id="ckAsk" style="margin-top:10px">${ic('message')} ${T('Ask the coach')}</button>` : ''}
+    </div>`, sh => {
+    if (rep && !rep.seen) { rep.seen = true; save(); }
+    if (sh.querySelector('#ckShare')) sh.querySelector('#ckShare').onclick = () => { closeSheet(); setTimeout(() => shareWeek(st.from), 250); };
+    if (sh.querySelector('#ckAsk')) sh.querySelector('#ckAsk').onclick = () => { closeSheet(); go('chat'); setTimeout(() => { const ta = $('#cIn'); if (ta) { ta.value = T('About my weekly check-in: '); ta.oninput(); ta.focus(); } }, 300); };
+  });
+}
+// A small button at the top of the Coach page to open this week's check-in again
+function renderChatHead() {
+  const b = $('#cCheck'), k = lastCheckin();
+  if (!b) return;
+  b.style.display = k ? '' : 'none';
+  b.classList.toggle('new', !!(k && db.checkins[k] && !db.checkins[k].seen));
 }
 
 /* ================= Reminder times (per person) ================= */
@@ -7044,6 +7102,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Groups, Se
 - Progress photos (Progress tab): any number, also several a day; after framing they choose the day it was taken. "All photos" shows them by month, ▶ Play shows them as a time-lapse from first to last, "Before & after" compares any two with the measurements.
 - Diet & food needs (Settings → Preferences, also in the meal plan preferences): diet plus food needs that can be combined: gluten-free, celiac (no traces), lactose-free, little dairy, no dairy, no nuts, no eggs, no fish or seafood. The meal plan and you always respect them, and a scanned meal that probably breaks one shows a warning at the top of the meal.
 - Ingredient amounts can be typed in grams, ounces, the kitchen measure (cup, tbsp, piece…) or pieces (unit menu next to the amount); the app remembers the last unit.
+- Weekly check-in: on the check-in day (Sunday 18:00 by default) a notification; tapping it (or opening the app that day) shows a pop-up on the Coach page, not a chat message: the week's 7 rings, days logged, calories and protein per day vs goal, weight change, 3-4 highlights from you and one tip. The 📊 button at the top of the Coach page opens it again all week; "Ask the coach" lets them talk about it.
 - AI consent: before the first AI use the app asks once whether photos, texts and voice may go to Google Gemini / Cloudflare AI; Settings → AI shows it again and can turn AI off.
 - Coach chat: after each answer, the buttons above the text box show 2 short follow-up questions to tap (otherwise the usual questions for the time of day).
 - Safety: if someone talks about suicide, self-harm or dangerous eating-disorder behaviour, the app shows a card under your answer with a helpline for their country, the emergency number and findahelpline.com.
@@ -7134,7 +7193,7 @@ function renderChat(animLast) {
   let scr = $('#chatScreen');
   if (!scr) {
     scr = document.createElement('div'); scr.id = 'chatScreen';
-    scr.innerHTML = `<div class="wrap chathead"><div class="top"><div class="brand">${T('AI Coach')}</div><button class="memchip" id="cMem" aria-label="${T('Memory')}"></button></div></div>
+    scr.innerHTML = `<div class="wrap chathead"><div class="top"><div class="brand">${T('AI Coach')}</div><span class="row" style="gap:8px"><button class="memchip ckchip" id="cCheck" aria-label="${T('Weekly check-in')}" style="display:none">📊</button><button class="memchip" id="cMem" aria-label="${T('Memory')}"></button></span></div></div>
       <div class="msgscroll" id="msgScroll"><div class="wrap" id="chatBody"></div></div>`;
     document.body.appendChild(scr);
     chatEl().addEventListener('scroll', updateDown, { passive: true });
@@ -7147,6 +7206,9 @@ function renderChat(animLast) {
     <div class="msgs" id="msgs">${chat.map((m, i) => chatBubble(m, animLast && i === chat.length - 1)).join('')}${chatBusy ? '<div class="msg ai new" id="live"><span class="dots"><span></span><span></span><span></span></span></div>' : ''}</div>`;
   renderAttach();
   $('#cMem').onclick = openMemoryPage;
+  if ($('#cCheck')) $('#cCheck').onclick = () => openCheckinReport();
+  renderChatHead();
+  { const k = lastCheckin(); if (k && db.checkins[k] && !db.checkins[k].seen && !$('.backdrop')) setTimeout(() => { if (tab === 'chat' && !$('.backdrop')) openCheckinReport(k); }, 500); }
   setChips(); fitChat(); chatToBottom(); requestAnimationFrame(() => { chatToBottom(); updateDown(); });
 }
 // The buttons above the text box: after an answer, the coach's own follow-ups ("Give me a recipe"); otherwise the
@@ -7763,7 +7825,7 @@ function handleOpen(what) {
   if (tab !== 'home') go('home'); else renderHome();
   if (what === 'burn') openBurnSheet();
   if (what === 'weight') openWeightSheet();
-  if (what === 'checkin') { go('chat'); weeklyCheckin(); }
+  if (what === 'checkin') { go('chat'); weeklyCheckin(true); }
   if (what === 'habit') setTimeout(openHabitPage, 300);
   if (/^water/.test(what)) setTimeout(openWaterSheet, 300);
   if (what === 'scan') setTimeout(() => LS.get('ft_scanTips', '') ? openCamera('food') : openScanTips('food'), 300);
