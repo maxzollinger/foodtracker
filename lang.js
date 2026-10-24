@@ -1788,7 +1788,11 @@ window.I18N = {
 "Member":"Mitglied",
 "Report message":"Nachricht melden",
 "Reports go to the app owner, who can remove the message or the member.":"Meldungen gehen an den App-Besitzer, der die Nachricht oder das Mitglied entfernen kann.",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Wenn du einen Barcode scannst, wird nur seine Nummer an Open Food Facts geschickt, eine freie Lebensmittel-Datenbank."
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Wenn du einen Barcode scannst, wird nur seine Nummer an Open Food Facts geschickt, eine freie Lebensmittel-Datenbank.",
+"Copyright":"Urheberrecht",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker mit Design, Texten und Code gehört dem App-Besitzer. Du bekommst ein persönliches, kostenloses Recht, die App zu nutzen. Bitte kopiere, verkaufe oder zerlege die App nicht.",
+"License":"Nutzungsrecht",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Teile nur Bilder und Texte, die dir gehören oder die du verwenden darfst. Verletzt etwas in einer Gruppe dein Urheberrecht, schreib an {email}: Es wird schnell entfernt, und wer das wiederholt tut, wird aus der App entfernt."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3578,7 +3582,11 @@ window.I18N = {
 "Member":"Miembro",
 "Report message":"Denunciar mensaje",
 "Reports go to the app owner, who can remove the message or the member.":"Las denuncias van al dueño de la app, que puede quitar el mensaje o al miembro.",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Al escanear un código de barras, solo se envía su número a Open Food Facts, una base de datos de alimentos libre."
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Al escanear un código de barras, solo se envía su número a Open Food Facts, una base de datos de alimentos libre.",
+"Copyright":"Derechos de autor",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker, con su diseño, textos y código, pertenece al dueño de la app. Recibes un derecho personal y gratuito para usarla. Por favor, no copies, vendas ni desarmes la app.",
+"License":"Licencia",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Comparte solo imágenes y textos tuyos o que puedas usar. Si algo en un grupo infringe tus derechos de autor, escribe a {email}: se quitará rápido, y quien lo repita será eliminado de la app."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5368,7 +5376,11 @@ window.I18N = {
 "Member":"Membre",
 "Report message":"Signaler le message",
 "Reports go to the app owner, who can remove the message or the member.":"Les signalements vont au propriétaire de l’app, qui peut retirer le message ou le membre.",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Quand tu scannes un code-barres, seul son numéro est envoyé à Open Food Facts, une base de données alimentaire libre."
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Quand tu scannes un code-barres, seul son numéro est envoyé à Open Food Facts, une base de données alimentaire libre.",
+"Copyright":"Droits d’auteur",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker, son design, ses textes et son code appartiennent au propriétaire de l’app. Tu reçois un droit personnel et gratuit de l’utiliser. Merci de ne pas copier, vendre ni démonter l’app.",
+"License":"Licence",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Partage seulement des images et textes qui t’appartiennent ou que tu peux utiliser. Si quelque chose dans un groupe viole tes droits d’auteur, écris à {email} : ce sera retiré rapidement, et les récidivistes seront retirés de l’app."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -7158,7 +7170,11 @@ window.I18N = {
 "Member":"Membro",
 "Report message":"Segnala messaggio",
 "Reports go to the app owner, who can remove the message or the member.":"Le segnalazioni vanno al proprietario dell’app, che può rimuovere il messaggio o il membro.",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Quando scansioni un codice a barre, viene inviato solo il suo numero a Open Food Facts, una banca dati alimentare libera."
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Quando scansioni un codice a barre, viene inviato solo il suo numero a Open Food Facts, una banca dati alimentare libera.",
+"Copyright":"Diritto d’autore",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker, con design, testi e codice, appartiene al proprietario dell’app. Ricevi un diritto personale e gratuito di usarla. Per favore non copiare, vendere o smontare l’app.",
+"License":"Licenza",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Condividi solo immagini e testi tuoi o che puoi usare. Se qualcosa in un gruppo viola il tuo diritto d’autore, scrivi a {email}: verrà rimosso in fretta, e chi lo ripete verrà rimosso dall’app."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8948,7 +8964,11 @@ window.I18N = {
 "Member":"メンバー",
 "Report message":"メッセージを報告",
 "Reports go to the app owner, who can remove the message or the member.":"報告はアプリのオーナーに届き、メッセージやメンバーを削除できます。",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"バーコードを読み取ると、その番号だけが無料の食品データベース Open Food Facts に送信されます。"
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"バーコードを読み取ると、その番号だけが無料の食品データベース Open Food Facts に送信されます。",
+"Copyright":"著作権",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Trackerのデザイン、テキスト、コードはアプリのオーナーに帰属します。あなたには個人的に無料でアプリを使う権利が与えられます。アプリのコピー、販売、解析はしないでください。",
+"License":"利用許諾",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"自分のもの、または使ってよい画像とテキストだけを共有してください。グループ内のものがあなたの著作権を侵害している場合は {email} に連絡してください。すぐに削除し、繰り返す人はアプリから削除されます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10738,7 +10758,11 @@ window.I18N = {
 "Member":"Lid",
 "Report message":"Bericht melden",
 "Reports go to the app owner, who can remove the message or the member.":"Meldingen gaan naar de eigenaar van de app, die het bericht of het lid kan verwijderen.",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Als je een barcode scant, wordt alleen het nummer naar Open Food Facts gestuurd, een vrije voedingsdatabase."
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Als je een barcode scant, wordt alleen het nummer naar Open Food Facts gestuurd, een vrije voedingsdatabase.",
+"Copyright":"Auteursrecht",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker, met ontwerp, teksten en code, is van de eigenaar van de app. Je krijgt een persoonlijk, gratis recht om de app te gebruiken. Kopieer, verkoop of ontleed de app alsjeblieft niet.",
+"License":"Licentie",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Deel alleen afbeeldingen en teksten die van jou zijn of die je mag gebruiken. Schendt iets in een groep jouw auteursrecht, schrijf dan naar {email}: het wordt snel verwijderd, en wie het herhaalt wordt uit de app verwijderd."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -12528,7 +12552,11 @@ window.I18N = {
 "Member":"Członek",
 "Report message":"Zgłoś wiadomość",
 "Reports go to the app owner, who can remove the message or the member.":"Zgłoszenia trafiają do właściciela aplikacji, który może usunąć wiadomość lub członka.",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Gdy skanujesz kod kreskowy, do Open Food Facts, wolnej bazy danych żywności, wysyłany jest tylko jego numer."
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Gdy skanujesz kod kreskowy, do Open Food Facts, wolnej bazy danych żywności, wysyłany jest tylko jego numer.",
+"Copyright":"Prawa autorskie",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker wraz z wyglądem, tekstami i kodem należy do właściciela aplikacji. Dostajesz osobiste, bezpłatne prawo do korzystania z niej. Prosimy nie kopiować, nie sprzedawać i nie rozbierać aplikacji.",
+"License":"Licencja",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Udostępniaj tylko obrazy i teksty, które należą do Ciebie lub których możesz używać. Jeśli coś w grupie narusza Twoje prawa autorskie, napisz na {email}: zostanie szybko usunięte, a osoby, które to powtarzają, zostaną usunięte z aplikacji."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -14318,7 +14346,11 @@ window.I18N = {
 "Member":"Membro",
 "Report message":"Denunciar mensagem",
 "Reports go to the app owner, who can remove the message or the member.":"As denúncias vão para o dono do app, que pode remover a mensagem ou o membro.",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Ao ler um código de barras, só o número é enviado ao Open Food Facts, uma base de dados de alimentos livre."
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Ao ler um código de barras, só o número é enviado ao Open Food Facts, uma base de dados de alimentos livre.",
+"Copyright":"Direitos autorais",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"O Food Tracker, com design, textos e código, pertence ao dono do app. Você recebe um direito pessoal e gratuito de usá-lo. Por favor, não copie, venda nem desmonte o app.",
+"License":"Licença",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Compartilhe só imagens e textos que são seus ou que você pode usar. Se algo em um grupo violar seus direitos autorais, escreva para {email}: será removido rápido, e quem repetir será removido do app."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -16108,7 +16140,11 @@ window.I18N = {
 "Member":"Участник",
 "Report message":"Пожаловаться на сообщение",
 "Reports go to the app owner, who can remove the message or the member.":"Жалобы получает владелец приложения — он может удалить сообщение или участника.",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"При сканировании штрихкода в Open Food Facts, свободную базу данных продуктов, отправляется только его номер."
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"При сканировании штрихкода в Open Food Facts, свободную базу данных продуктов, отправляется только его номер.",
+"Copyright":"Авторские права",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker, его дизайн, тексты и код принадлежат владельцу приложения. Ты получаешь личное бесплатное право им пользоваться. Пожалуйста, не копируй, не продавай и не разбирай приложение.",
+"License":"Лицензия",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Делись только своими изображениями и текстами или теми, которые можно использовать. Если что-то в группе нарушает твои авторские права, напиши на {email}: это быстро удалят, а тех, кто повторяет, удалят из приложения."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -17898,7 +17934,11 @@ window.I18N = {
 "Member":"Üye",
 "Report message":"Mesajı bildir",
 "Reports go to the app owner, who can remove the message or the member.":"Bildirimler uygulama sahibine gider; mesajı veya üyeyi kaldırabilir.",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Barkod taradığında yalnızca numarası ücretsiz bir gıda veritabanı olan Open Food Facts’e gönderilir."
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Barkod taradığında yalnızca numarası ücretsiz bir gıda veritabanı olan Open Food Facts’e gönderilir.",
+"Copyright":"Telif hakkı",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker, tasarımı, metinleri ve koduyla uygulama sahibine aittir. Uygulamayı kullanmak için kişisel ve ücretsiz bir hak alırsın. Lütfen uygulamayı kopyalama, satma veya söküp inceleme.",
+"License":"Lisans",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Yalnızca sana ait olan veya kullanma iznin olan görselleri ve metinleri paylaş. Bir gruptaki bir şey telif hakkını ihlal ediyorsa {email} adresine yaz: hızla kaldırılır ve tekrarlayanlar uygulamadan çıkarılır."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -19688,7 +19728,11 @@ window.I18N = {
 "Member":"成员",
 "Report message":"举报消息",
 "Reports go to the app owner, who can remove the message or the member.":"举报会发给应用所有者，他可以删除消息或移除成员。",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"扫描条形码时，只有条码号会发送到免费的食品数据库 Open Food Facts。"
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"扫描条形码时，只有条码号会发送到免费的食品数据库 Open Food Facts。",
+"Copyright":"版权",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker 及其设计、文字和代码归应用所有者所有。你获得个人的免费使用权。请不要复制、出售或拆解本应用。",
+"License":"许可",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"只分享属于你或你有权使用的图片和文字。如果群组中的内容侵犯了你的版权，请写信至 {email}：内容会被尽快删除，屡次违规者会被移出应用。"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -21197,7 +21241,11 @@ window.I18N = {
 "Member":"멤버",
 "Report message":"메시지 신고",
 "Reports go to the app owner, who can remove the message or the member.":"신고는 앱 운영자에게 전달되며, 메시지나 멤버를 삭제할 수 있어요.",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"바코드를 스캔하면 번호만 무료 음식 데이터베이스인 Open Food Facts로 보내요."
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"바코드를 스캔하면 번호만 무료 음식 데이터베이스인 Open Food Facts로 보내요.",
+"Copyright":"저작권",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker의 디자인, 텍스트, 코드는 앱 소유자에게 있어요. 당신은 앱을 무료로 개인적으로 사용할 권리를 받아요. 앱을 복사, 판매하거나 분해하지 말아 주세요.",
+"License":"라이선스",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"본인 소유이거나 사용해도 되는 이미지와 글만 공유하세요. 그룹 안의 무언가가 당신의 저작권을 침해한다면 {email}로 알려 주세요. 빠르게 삭제되며, 반복하는 사람은 앱에서 제외돼요."
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -22706,7 +22754,11 @@ window.I18N = {
 "Member":"सदस्य",
 "Report message":"मैसेज की रिपोर्ट करें",
 "Reports go to the app owner, who can remove the message or the member.":"रिपोर्ट ऐप के मालिक को जाती है, जो मैसेज या सदस्य को हटा सकता है।",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"बारकोड स्कैन करने पर सिर्फ़ उसका नंबर Open Food Facts को भेजा जाता है, जो एक मुफ़्त खाद्य डेटाबेस है।"
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"बारकोड स्कैन करने पर सिर्फ़ उसका नंबर Open Food Facts को भेजा जाता है, जो एक मुफ़्त खाद्य डेटाबेस है।",
+"Copyright":"कॉपीराइट",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker, उसका डिज़ाइन, टेक्स्ट और कोड ऐप के मालिक का है। आपको ऐप इस्तेमाल करने का निजी, मुफ़्त अधिकार मिलता है। कृपया ऐप की नकल न करें, उसे न बेचें और न खोलकर देखें।",
+"License":"लाइसेंस",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"सिर्फ़ वही तस्वीरें और टेक्स्ट शेयर करें जो आपके हैं या जिन्हें आप इस्तेमाल कर सकते हैं। अगर किसी ग्रुप में कुछ आपके कॉपीराइट का उल्लंघन करता है, तो {email} पर लिखें: उसे जल्दी हटाया जाएगा, और बार-बार ऐसा करने वालों को ऐप से हटा दिया जाएगा।"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -24215,7 +24267,11 @@ window.I18N = {
 "Member":"Anggota",
 "Report message":"Laporkan pesan",
 "Reports go to the app owner, who can remove the message or the member.":"Laporan dikirim ke pemilik aplikasi, yang bisa menghapus pesan atau anggota.",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Saat kamu memindai barcode, hanya nomornya yang dikirim ke Open Food Facts, database makanan gratis."
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"Saat kamu memindai barcode, hanya nomornya yang dikirim ke Open Food Facts, database makanan gratis.",
+"Copyright":"Hak cipta",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker beserta desain, teks, dan kodenya milik pemilik aplikasi. Kamu mendapat hak pribadi dan gratis untuk memakainya. Mohon jangan menyalin, menjual, atau membongkar aplikasi ini.",
+"License":"Lisensi",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Bagikan hanya gambar dan teks milikmu atau yang boleh kamu pakai. Jika sesuatu di grup melanggar hak ciptamu, tulis ke {email}: akan segera dihapus, dan yang mengulanginya akan dikeluarkan dari aplikasi."
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -25724,6 +25780,10 @@ window.I18N = {
 "Member":"عضو",
 "Report message":"الإبلاغ عن الرسالة",
 "Reports go to the app owner, who can remove the message or the member.":"تصل البلاغات إلى مالك التطبيق، الذي يمكنه حذف الرسالة أو العضو.",
-"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"عند مسح باركود يُرسل رقمه فقط إلى Open Food Facts، وهي قاعدة بيانات أطعمة مجانية."
+"When you scan a barcode, only its number is sent to Open Food Facts, a free food database.":"عند مسح باركود يُرسل رقمه فقط إلى Open Food Facts، وهي قاعدة بيانات أطعمة مجانية.",
+"Copyright":"حقوق النشر",
+"Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker بتصميمه ونصوصه وكوده ملك لمالك التطبيق. تحصل على حق شخصي ومجاني لاستخدامه. يرجى عدم نسخ التطبيق أو بيعه أو تفكيكه.",
+"License":"الترخيص",
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"شارك فقط الصور والنصوص التي تملكها أو يحق لك استخدامها. إذا كان شيء في مجموعة ينتهك حقوق النشر الخاصة بك، فاكتب إلى {email}: سيُزال بسرعة، ومن يكرر ذلك سيُزال من التطبيق."
 }
 };

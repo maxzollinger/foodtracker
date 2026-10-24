@@ -1286,7 +1286,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v227';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v228';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -4891,6 +4891,8 @@ function openTerms() {
     ${sec('👥', T('Groups'), T('Be kind in groups and only post pictures and texts you are allowed to share. The group owner can remove messages and members. To report something, write to the app owner.'))}
     ${sec('🔄', T('Changes'), T('The app can change, pause or stop at any time. Keep your own copy: Settings → Backup data.'))}
     ${sec('🧾', T('Your content'), T('Your meals, photos and chats stay yours. The app only uses them to work for you.'))}
+    ${sec('🔑', T('License'), T('Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.'))}
+    ${sec('🛡️', T('Copyright'), T('Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.', { email: esc(OWNER.email) }))}
     ${sec('⚖️', T('Liability'), T('The app is provided as it is. As far as the law allows, there is no liability for wrong numbers or lost data.'))}
     ${sec('🏛️', T('Law'), T('The law of {country} applies.', { country: T(OWNER.country) }) + ' ' + T('If you live in another country, you keep the consumer rights that the law of your country gives you.'))}
     <p class="small muted" style="text-align:center;margin:16px 0 0">${ownerLine()}</p>
