@@ -1782,7 +1782,12 @@ window.I18N = {
 "on {n} days":"an {n} Tagen",
 "protein a day on average":"Protein pro Tag im Schnitt",
 "{a} of 7 days logged · {b} within goal":"{a} von 7 Tagen erfasst · {b} im Ziel",
-"{n} days within your goal":"{n} Tage im Ziel"
+"{n} days within your goal":"{n} Tage im Ziel",
+"Delete message":"Nachricht löschen",
+"Group":"Gruppe",
+"Member":"Mitglied",
+"Report message":"Nachricht melden",
+"Reports go to the app owner, who can remove the message or the member.":"Meldungen gehen an den App-Besitzer, der die Nachricht oder das Mitglied entfernen kann."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3566,7 +3571,12 @@ window.I18N = {
 "on {n} days":"en {n} días",
 "protein a day on average":"de proteína al día en promedio",
 "{a} of 7 days logged · {b} within goal":"{a} de 7 días registrados · {b} en el objetivo",
-"{n} days within your goal":"{n} días en tu objetivo"
+"{n} days within your goal":"{n} días en tu objetivo",
+"Delete message":"Eliminar mensaje",
+"Group":"Grupo",
+"Member":"Miembro",
+"Report message":"Denunciar mensaje",
+"Reports go to the app owner, who can remove the message or the member.":"Las denuncias van al dueño de la app, que puede quitar el mensaje o al miembro."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5350,7 +5360,12 @@ window.I18N = {
 "on {n} days":"sur {n} jours",
 "protein a day on average":"de protéines par jour en moyenne",
 "{a} of 7 days logged · {b} within goal":"{a} jours sur 7 enregistrés · {b} dans l’objectif",
-"{n} days within your goal":"{n} jours dans ton objectif"
+"{n} days within your goal":"{n} jours dans ton objectif",
+"Delete message":"Supprimer le message",
+"Group":"Groupe",
+"Member":"Membre",
+"Report message":"Signaler le message",
+"Reports go to the app owner, who can remove the message or the member.":"Les signalements vont au propriétaire de l’app, qui peut retirer le message ou le membre."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -7134,7 +7149,12 @@ window.I18N = {
 "on {n} days":"in {n} giorni",
 "protein a day on average":"di proteine al giorno in media",
 "{a} of 7 days logged · {b} within goal":"{a} giorni su 7 registrati · {b} nell’obiettivo",
-"{n} days within your goal":"{n} giorni nell’obiettivo"
+"{n} days within your goal":"{n} giorni nell’obiettivo",
+"Delete message":"Elimina messaggio",
+"Group":"Gruppo",
+"Member":"Membro",
+"Report message":"Segnala messaggio",
+"Reports go to the app owner, who can remove the message or the member.":"Le segnalazioni vanno al proprietario dell’app, che può rimuovere il messaggio o il membro."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8918,7 +8938,12 @@ window.I18N = {
 "on {n} days":"{n}日間で",
 "protein a day on average":"1日の平均たんぱく質",
 "{a} of 7 days logged · {b} within goal":"7日中{a}日記録 · {b}日が目標内",
-"{n} days within your goal":"{n}日が目標内"
+"{n} days within your goal":"{n}日が目標内",
+"Delete message":"メッセージを削除",
+"Group":"グループ",
+"Member":"メンバー",
+"Report message":"メッセージを報告",
+"Reports go to the app owner, who can remove the message or the member.":"報告はアプリのオーナーに届き、メッセージやメンバーを削除できます。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10702,7 +10727,12 @@ window.I18N = {
 "on {n} days":"op {n} dagen",
 "protein a day on average":"eiwit per dag gemiddeld",
 "{a} of 7 days logged · {b} within goal":"{a} van 7 dagen gelogd · {b} binnen doel",
-"{n} days within your goal":"{n} dagen binnen je doel"
+"{n} days within your goal":"{n} dagen binnen je doel",
+"Delete message":"Bericht verwijderen",
+"Group":"Groep",
+"Member":"Lid",
+"Report message":"Bericht melden",
+"Reports go to the app owner, who can remove the message or the member.":"Meldingen gaan naar de eigenaar van de app, die het bericht of het lid kan verwijderen."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -12486,7 +12516,12 @@ window.I18N = {
 "on {n} days":"w {n} dni",
 "protein a day on average":"białka dziennie średnio",
 "{a} of 7 days logged · {b} within goal":"Zapisane dni: {a} z 7 · w celu: {b}",
-"{n} days within your goal":"Dni w celu: {n}"
+"{n} days within your goal":"Dni w celu: {n}",
+"Delete message":"Usuń wiadomość",
+"Group":"Grupa",
+"Member":"Członek",
+"Report message":"Zgłoś wiadomość",
+"Reports go to the app owner, who can remove the message or the member.":"Zgłoszenia trafiają do właściciela aplikacji, który może usunąć wiadomość lub członka."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -14270,7 +14305,12 @@ window.I18N = {
 "on {n} days":"em {n} dias",
 "protein a day on average":"de proteína por dia em média",
 "{a} of 7 days logged · {b} within goal":"{a} de 7 dias registrados · {b} na meta",
-"{n} days within your goal":"{n} dias na meta"
+"{n} days within your goal":"{n} dias na meta",
+"Delete message":"Apagar mensagem",
+"Group":"Grupo",
+"Member":"Membro",
+"Report message":"Denunciar mensagem",
+"Reports go to the app owner, who can remove the message or the member.":"As denúncias vão para o dono do app, que pode remover a mensagem ou o membro."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -16054,7 +16094,12 @@ window.I18N = {
 "on {n} days":"за {n} дн.",
 "protein a day on average":"белка в день в среднем",
 "{a} of 7 days logged · {b} within goal":"Записано {a} из 7 дней · {b} в цели",
-"{n} days within your goal":"Дней в цели: {n}"
+"{n} days within your goal":"Дней в цели: {n}",
+"Delete message":"Удалить сообщение",
+"Group":"Группа",
+"Member":"Участник",
+"Report message":"Пожаловаться на сообщение",
+"Reports go to the app owner, who can remove the message or the member.":"Жалобы получает владелец приложения — он может удалить сообщение или участника."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -17838,7 +17883,12 @@ window.I18N = {
 "on {n} days":"{n} günde",
 "protein a day on average":"günde ortalama protein",
 "{a} of 7 days logged · {b} within goal":"7 günden {a} gün kaydedildi · {b} hedefte",
-"{n} days within your goal":"{n} gün hedefte"
+"{n} days within your goal":"{n} gün hedefte",
+"Delete message":"Mesajı sil",
+"Group":"Grup",
+"Member":"Üye",
+"Report message":"Mesajı bildir",
+"Reports go to the app owner, who can remove the message or the member.":"Bildirimler uygulama sahibine gider; mesajı veya üyeyi kaldırabilir."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -19622,7 +19672,12 @@ window.I18N = {
 "on {n} days":"共 {n} 天",
 "protein a day on average":"平均每天蛋白质",
 "{a} of 7 days logged · {b} within goal":"7 天中记录了 {a} 天 · {b} 天达标",
-"{n} days within your goal":"{n} 天达标"
+"{n} days within your goal":"{n} 天达标",
+"Delete message":"删除消息",
+"Group":"群组",
+"Member":"成员",
+"Report message":"举报消息",
+"Reports go to the app owner, who can remove the message or the member.":"举报会发给应用所有者，他可以删除消息或移除成员。"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -21125,7 +21180,12 @@ window.I18N = {
 "on {n} days":"{n}일 동안",
 "protein a day on average":"하루 평균 단백질",
 "{a} of 7 days logged · {b} within goal":"7일 중 {a}일 기록 · {b}일 목표 달성",
-"{n} days within your goal":"{n}일 목표 달성"
+"{n} days within your goal":"{n}일 목표 달성",
+"Delete message":"메시지 삭제",
+"Group":"그룹",
+"Member":"멤버",
+"Report message":"메시지 신고",
+"Reports go to the app owner, who can remove the message or the member.":"신고는 앱 운영자에게 전달되며, 메시지나 멤버를 삭제할 수 있어요."
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -22628,7 +22688,12 @@ window.I18N = {
 "on {n} days":"{n} दिनों में",
 "protein a day on average":"रोज़ औसत प्रोटीन",
 "{a} of 7 days logged · {b} within goal":"7 में से {a} दिन दर्ज · {b} लक्ष्य में",
-"{n} days within your goal":"{n} दिन लक्ष्य में"
+"{n} days within your goal":"{n} दिन लक्ष्य में",
+"Delete message":"मैसेज डिलीट करें",
+"Group":"ग्रुप",
+"Member":"सदस्य",
+"Report message":"मैसेज की रिपोर्ट करें",
+"Reports go to the app owner, who can remove the message or the member.":"रिपोर्ट ऐप के मालिक को जाती है, जो मैसेज या सदस्य को हटा सकता है।"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -24131,7 +24196,12 @@ window.I18N = {
 "on {n} days":"dalam {n} hari",
 "protein a day on average":"protein per hari rata-rata",
 "{a} of 7 days logged · {b} within goal":"{a} dari 7 hari dicatat · {b} sesuai target",
-"{n} days within your goal":"{n} hari sesuai target"
+"{n} days within your goal":"{n} hari sesuai target",
+"Delete message":"Hapus pesan",
+"Group":"Grup",
+"Member":"Anggota",
+"Report message":"Laporkan pesan",
+"Reports go to the app owner, who can remove the message or the member.":"Laporan dikirim ke pemilik aplikasi, yang bisa menghapus pesan atau anggota."
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -25634,6 +25704,11 @@ window.I18N = {
 "on {n} days":"في {n} يومًا",
 "protein a day on average":"بروتين يوميًا في المتوسط",
 "{a} of 7 days logged · {b} within goal":"تم تسجيل {a} من 7 أيام · {b} ضمن الهدف",
-"{n} days within your goal":"{n} يومًا ضمن الهدف"
+"{n} days within your goal":"{n} يومًا ضمن الهدف",
+"Delete message":"حذف الرسالة",
+"Group":"المجموعة",
+"Member":"عضو",
+"Report message":"الإبلاغ عن الرسالة",
+"Reports go to the app owner, who can remove the message or the member.":"تصل البلاغات إلى مالك التطبيق، الذي يمكنه حذف الرسالة أو العضو."
 }
 };

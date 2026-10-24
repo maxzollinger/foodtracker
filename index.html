@@ -1286,7 +1286,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v225';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v226';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1515,7 +1515,23 @@ function openUnitsSheet() {
   });
 }
 
-function toast(msg) { const t = $('#toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
+// Technical error text (TypeError, HTTP 500, JSON…) is never shown as it is: people get a short, friendly line instead
+function friendlyMsg(msg) {
+  msg = String(msg ?? '');
+  if (/Failed to fetch|Load failed|NetworkError|network connection/i.test(msg)) return T('No internet connection?');
+  if (/TypeError|ReferenceError|SyntaxError|undefined|null is not|is not a function|Cannot read|Unexpected token|JSON|HTTP \d|\bat [\w.]+ \(|Error:/i.test(msg)) return T('Something went wrong. Please try again.');
+  return msg;
+}
+function toast(msg) { const t = $('#toast'); t.textContent = friendlyMsg(msg); t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
+
+// One tap = one action: a second tap on the same button within half a second is ignored (no double saves or sends)
+let lastTap = { el: null, t: 0 };
+document.addEventListener('click', e => {
+  const b = e.target.closest && e.target.closest('.btn'); if (!b) return;
+  const now = Date.now();
+  if (lastTap.el === b && now - lastTap.t < 500) { e.stopImmediatePropagation(); e.preventDefault(); return; }
+  lastTap = { el: b, t: now };
+}, true);
 
 /* Icons: one consistent line-icon set (24×24, round strokes) used instead of emojis, so the app looks calm and premium */
 const _p = (...d) => d.map(x => x[0] === '<' ? x : `<path d="${x}"/>`).join('');
@@ -3228,12 +3244,23 @@ function renderGroup(newMsgs) {
     bindMsgs(sc, g, owner);
   }
 }
-// Tap your own message (or any message as the owner) to delete it
+// Tap your own message to delete it; tap someone else's to report it (the group owner can also delete it)
 function bindMsgs(sc, g, owner) {
+  const del = m => { if (!confirm(T('Delete this message?'))) return;
+    gApi('delmsg', { ...gAuth(g), id: m.id }).then(() => { gMsgs = gMsgs.filter(x => x !== m); renderGroup(); }).catch(e => toast(e.message)); };
   sc.querySelectorAll('[data-msg]').forEach(el => el.onclick = () => {
-    const m = gMsgs.find(x => x.id == el.dataset.msg); if (!m || (m.mid !== g.mid && !owner)) return;
-    if (!confirm(T('Delete this message?'))) return;
-    gApi('delmsg', { ...gAuth(g), id: m.id }).then(() => { gMsgs = gMsgs.filter(x => x !== m); renderGroup(); }).catch(e => toast(e.message));
+    const m = gMsgs.find(x => x.id == el.dataset.msg); if (!m) return;
+    if (m.mid === g.mid) return del(m);
+    const c = gCache[g.gid] || {}, who = ((c.members || []).find(x => x.mid === m.mid) || {}).name || T('Member');
+    sheet(`<h3>${T('Message')}</h3><p class="muted" style="margin:6px 0 0;white-space:pre-wrap;overflow-wrap:anywhere">${esc(who)}: ${esc(m.text)}</p>
+      <div class="list" style="margin-top:14px">
+        <button class="li" id="gmRep" style="color:var(--bad)">${ic('flag')}<span class="grow">${T('Report message')}</span></button>
+        ${owner ? `<button class="li" id="gmDelM">${ic('trash')}<span class="grow">${T('Delete message')}</span></button>` : ''}</div>
+      <p class="small muted" style="margin:10px 2px 0">${T('Reports go to the app owner, who can remove the message or the member.')}</p>`, sh => {
+      sh.querySelector('#gmRep').onclick = () => { closeSheet();
+        mailOwner('Food Tracker: ' + T('Report message'), `${T('Group')}: ${c.name || g.name || ''} (${c.code || g.gid})\n${who}: ${m.text}\n${new Date(m.t || Date.now()).toISOString()}`); };
+      if (sh.querySelector('#gmDelM')) sh.querySelector('#gmDelM').onclick = () => { closeSheet(); del(m); };
+    });
   });
 }
 function openGroupMenu(g, owner) {
@@ -7098,7 +7125,9 @@ function buildChatbar(scr) {
   </div>`;
   scr.appendChild(bar);
   const ta = bar.querySelector('#cIn');
-  ta.oninput = () => { ta.style.height = '40px'; ta.style.height = Math.min(ta.scrollHeight, 120) + 'px'; updateSendState(); };
+  ta.oninput = () => { ta.style.height = '40px'; ta.style.height = Math.min(ta.scrollHeight, 120) + 'px'; updateSendState(); LS.set('ft_cdraft', ta.value); };
+  ta.value = LS.get('ft_cdraft', '');   // what you typed stays when you leave the chat and come back
+  if (ta.value) setTimeout(() => ta.oninput(), 0);
   // While typing, hide the tab bar so there's more room for the conversation
   let blurT;
   ta.addEventListener('focus', () => {
@@ -7693,9 +7722,9 @@ function handleOpen(what) {
 
 /* ================= Support: FAQ, feedback, PDF report ================= */
 // E-mail to the app owner, with the version and language so a problem is easy to look into
-function mailOwner(subject) {
+function mailOwner(subject, text = '') {
   const dev = (navigator.userAgent.match(/(iPhone OS|Android) [\d_.]+/) || [''])[0];
-  const body = `\n\n--\n${APP_VERSION} · ${LANG} · ${dev}`;
+  const body = `${text ? text + '\n' : ''}\n\n--\n${APP_VERSION} · ${LANG} · ${dev}`;
   location.href = `mailto:${OWNER.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 const FAQ = [
