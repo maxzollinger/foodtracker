@@ -1251,7 +1251,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v219';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v220';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -5967,7 +5967,14 @@ async function mealShareImage(m) {
   else { const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#2b2f3a'); g.addColorStop(1, '#0d0f14'); x.fillStyle = g; x.fillRect(0, 0, W, H); }
   const t = mealTotals(m), s = m.servings || 1;
   const rr = (X, Y, w, h, r) => { x.beginPath(); x.roundRect(X, Y, w, h, r); };
-  const cw = W - 80, ch = 330, cx = 40, cy = H - ch - 40;
+  const cw = W - 80, cx = 40;
+  x.font = `800 40px ${F}`;
+  const words = String(m.name || T('Meal')).split(/\s+/), lines = [];
+  for (const wd of words) { const l = lines.length ? lines[lines.length - 1] + ' ' + wd : wd;
+    if (lines.length && x.measureText(l).width <= cw - 72) lines[lines.length - 1] = l; else lines.push(wd); }
+  if (lines.length > 3) { lines.length = 3; let l = lines[2]; while (x.measureText(l + '…').width > cw - 72 && l.length > 1) l = l.slice(0, -1); lines[2] = l.trim() + '…'; }
+  for (let i = 0; i < lines.length; i++) while (x.measureText(lines[i]).width > cw - 72 && lines[i].length > 4) lines[i] = lines[i].slice(0, -2) + '…';   // one very long word
+  const extra = (lines.length - 1) * 48, ch = 330 + extra, cy = H - ch - 40;
   x.shadowColor = 'rgba(0,0,0,.25)'; x.shadowBlur = 40; x.fillStyle = '#fff'; rr(cx, cy, cw, ch, 44); x.fill(); x.shadowBlur = 0;
   const txt = (str, X, Y, size, w = 400, col = '#111', al = 'left') => { x.font = `${w} ${size}px ${F}`; x.fillStyle = col; x.textAlign = al; x.fillText(String(str), X, Y); };
   x.direction = rtl ? 'rtl' : 'ltr';
@@ -5976,14 +5983,12 @@ async function mealShareImage(m) {
   if (logo) { const lx = rtl ? L - 34 : L; x.save(); rr(lx, cy + 28, 34, 34, 9); x.clip(); x.drawImage(logo, lx, cy + 28, 34, 34); x.restore(); }
   txt('Food Tracker', logo ? (rtl ? L - 44 : L + 44) : L, cy + 54, 26, 700, '#111', rtl ? 'right' : 'left');
   if (s !== 1) txt(fmtPortion(s), R, cy + 52, 26, 600, '#777', rtl ? 'left' : 'right');
-  let name = m.name || T('Meal'); x.font = `800 40px ${F}`;
-  while (x.measureText(name).width > cw - 72 && name.length > 4) name = name.slice(0, -2).trim() + '…';
-  txt(name, cx + cw / 2, cy + 112, 40, 800, '#111', 'center');
+  lines.forEach((l, i) => txt(l, cx + cw / 2, cy + 112 + i * 48, 40, 800, '#111', 'center'));
   const tiles = [[r0(t.kcal), T('Calories'), '#111', Math.min(1, t.kcal / (targets().kcal || 2000))], [r0(t.carbs) + 'g', T('Carbs'), '#ef9f45', t.kcal ? t.carbs * 4 / t.kcal : 0],
     [r0(t.protein) + 'g', T('Protein'), '#e3605b', t.kcal ? t.protein * 4 / t.kcal : 0], [r0(t.fat) + 'g', T('Fats'), '#4b8cf5', t.kcal ? t.fat * 9 / t.kcal : 0]];
   const tw = (cw - 72 - 3 * 18) / 4;
   (rtl ? tiles.slice().reverse() : tiles).forEach(([v, l, col, pct], i) => {
-    const X = cx + 36 + i * (tw + 18), Y = cy + 140;
+    const X = cx + 36 + i * (tw + 18), Y = cy + 140 + extra;
     x.strokeStyle = '#ececec'; x.lineWidth = 3; rr(X, Y, tw, 160, 26); x.stroke();
     const mx = X + tw / 2, my = Y + 52;
     x.lineWidth = 8; x.lineCap = 'round'; x.strokeStyle = '#eee'; x.beginPath(); x.arc(mx, my, 30, 0, Math.PI * 2); x.stroke();
@@ -6003,10 +6008,13 @@ async function openMealShare(m) {
   busyEnd();
   const canShare = navigator.canShare && navigator.canShare({ files: [out.file] });
   sheet(`<h3 style="text-align:center">${T('Share')}</h3>
-    <img src="${out.url}" alt="" style="display:block;max-width:100%;max-height:58vh;margin:12px auto 0;border-radius:20px;box-shadow:var(--shadow)">
-    ${canShare ? `<button class="btn" id="msShare" style="margin-top:16px">${ic('share')} ${T('Share')}</button>` : ''}
-    <button class="btn ${canShare ? 'outline' : ''}" id="msSave" style="margin-top:10px">${T('Save image')}</button>`, sh => {
+    <img src="${out.url}" alt="" style="-webkit-touch-callout:default;display:block;max-width:100%;max-height:58vh;margin:12px auto 0;border-radius:20px;box-shadow:var(--shadow)">
+    ${canShare ? `<button class="btn" id="msShare" style="margin-top:16px">${ic('share')} ${T('Share')}</button>
+      <button class="btn outline" id="msPhotos" style="margin-top:10px">${ic('image')} ${T('Save to Photos')}</button>
+      <p class="small muted" style="text-align:center;margin:8px 0 0">${T('Then tap "Save Image". Or press and hold the picture.')}</p>` : ''}
+    <button class="${canShare ? 'chipbtn' : 'btn'}" id="msSave" style="${canShare ? 'display:block;margin:12px auto 0' : 'margin-top:10px'}">${canShare ? T('Save to Files') : T('Save image')}</button>`, sh => {
     if (sh.querySelector('#msShare')) sh.querySelector('#msShare').onclick = () => navigator.share({ files: [out.file] }).catch(() => {});
+    if (sh.querySelector('#msPhotos')) sh.querySelector('#msPhotos').onclick = () => navigator.share({ files: [out.file] }).catch(() => {});
     sh.querySelector('#msSave').onclick = () => {
       const a = document.createElement('a'); a.href = URL.createObjectURL(out.file); a.download = out.file.name;
       document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000);

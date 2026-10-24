@@ -1710,7 +1710,10 @@ window.I18N = {
 "That is your own address.":"Das ist deine eigene Adresse.",
 "Unblock":"Entsperren",
 "Your address: {ip}":"Deine Adresse: {ip}",
-"until {d}":"bis {d}"
+"until {d}":"bis {d}",
+"Save to Files":"In Dateien sichern",
+"Save to Photos":"In Fotos sichern",
+"Then tap \"Save Image\". Or press and hold the picture.":"Dann tippe auf «Bild sichern». Oder halte das Bild gedrückt."
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3422,7 +3425,10 @@ window.I18N = {
 "That is your own address.":"Esa es tu propia dirección.",
 "Unblock":"Desbloquear",
 "Your address: {ip}":"Tu dirección: {ip}",
-"until {d}":"hasta el {d}"
+"until {d}":"hasta el {d}",
+"Save to Files":"Guardar en Archivos",
+"Save to Photos":"Guardar en Fotos",
+"Then tap \"Save Image\". Or press and hold the picture.":"Luego toca «Guardar imagen». O mantén pulsada la imagen."
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5134,7 +5140,10 @@ window.I18N = {
 "That is your own address.":"C’est ta propre adresse.",
 "Unblock":"Débloquer",
 "Your address: {ip}":"Ton adresse : {ip}",
-"until {d}":"jusqu’au {d}"
+"until {d}":"jusqu’au {d}",
+"Save to Files":"Enregistrer dans Fichiers",
+"Save to Photos":"Enregistrer dans Photos",
+"Then tap \"Save Image\". Or press and hold the picture.":"Puis touche « Enregistrer l’image ». Ou maintiens ton doigt sur l’image."
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6846,7 +6855,10 @@ window.I18N = {
 "That is your own address.":"Questo è il tuo indirizzo.",
 "Unblock":"Sblocca",
 "Your address: {ip}":"Il tuo indirizzo: {ip}",
-"until {d}":"fino al {d}"
+"until {d}":"fino al {d}",
+"Save to Files":"Salva su File",
+"Save to Photos":"Salva in Foto",
+"Then tap \"Save Image\". Or press and hold the picture.":"Poi tocca «Salva immagine». Oppure tieni premuta l’immagine."
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8558,7 +8570,10 @@ window.I18N = {
 "That is your own address.":"それはあなた自身のアドレスです。",
 "Unblock":"ブロック解除",
 "Your address: {ip}":"あなたのアドレス：{ip}",
-"until {d}":"{d}まで"
+"until {d}":"{d}まで",
+"Save to Files":"ファイルに保存",
+"Save to Photos":"写真に保存",
+"Then tap \"Save Image\". Or press and hold the picture.":"次に「画像を保存」をタップ。または画像を長押し。"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10270,7 +10285,10 @@ window.I18N = {
 "That is your own address.":"Dat is je eigen adres.",
 "Unblock":"Deblokkeren",
 "Your address: {ip}":"Jouw adres: {ip}",
-"until {d}":"tot {d}"
+"until {d}":"tot {d}",
+"Save to Files":"Bewaar in Bestanden",
+"Save to Photos":"Bewaar in Foto's",
+"Then tap \"Save Image\". Or press and hold the picture.":"Tik daarna op 'Bewaar afbeelding'. Of houd de afbeelding ingedrukt."
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -11982,7 +12000,10 @@ window.I18N = {
 "That is your own address.":"To Twój własny adres.",
 "Unblock":"Odblokuj",
 "Your address: {ip}":"Twój adres: {ip}",
-"until {d}":"do {d}"
+"until {d}":"do {d}",
+"Save to Files":"Zachowaj w Plikach",
+"Save to Photos":"Zachowaj w Zdjęciach",
+"Then tap \"Save Image\". Or press and hold the picture.":"Potem stuknij „Zachowaj obrazek”. Albo przytrzymaj obrazek."
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -13694,7 +13715,10 @@ window.I18N = {
 "That is your own address.":"Esse é o seu próprio endereço.",
 "Unblock":"Desbloquear",
 "Your address: {ip}":"Seu endereço: {ip}",
-"until {d}":"até {d}"
+"until {d}":"até {d}",
+"Save to Files":"Salvar em Arquivos",
+"Save to Photos":"Salvar em Fotos",
+"Then tap \"Save Image\". Or press and hold the picture.":"Depois toque em “Salvar Imagem”. Ou toque e segure a imagem."
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -15406,7 +15430,10 @@ window.I18N = {
 "That is your own address.":"Это твой собственный адрес.",
 "Unblock":"Разблокировать",
 "Your address: {ip}":"Твой адрес: {ip}",
-"until {d}":"до {d}"
+"until {d}":"до {d}",
+"Save to Files":"Сохранить в Файлы",
+"Save to Photos":"Сохранить в Фото",
+"Then tap \"Save Image\". Or press and hold the picture.":"Затем нажми «Сохранить изображение». Или удерживай картинку."
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -17118,7 +17145,10 @@ window.I18N = {
 "That is your own address.":"Bu senin kendi adresin.",
 "Unblock":"Engeli kaldır",
 "Your address: {ip}":"Adresin: {ip}",
-"until {d}":"{d} tarihine kadar"
+"until {d}":"{d} tarihine kadar",
+"Save to Files":"Dosyalar'a kaydet",
+"Save to Photos":"Fotoğraflar'a kaydet",
+"Then tap \"Save Image\". Or press and hold the picture.":"Sonra “Görüntüyü Kaydet”e dokun. Ya da resme basılı tut."
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -18830,7 +18860,10 @@ window.I18N = {
 "That is your own address.":"这是你自己的地址。",
 "Unblock":"解除封禁",
 "Your address: {ip}":"你的地址：{ip}",
-"until {d}":"至 {d}"
+"until {d}":"至 {d}",
+"Save to Files":"存储到文件",
+"Save to Photos":"存储到照片",
+"Then tap \"Save Image\". Or press and hold the picture.":"然后轻点“存储图像”。或长按图片。"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -20261,7 +20294,10 @@ window.I18N = {
 "That is your own address.":"내 주소예요.",
 "Unblock":"차단 해제",
 "Your address: {ip}":"내 주소: {ip}",
-"until {d}":"{d}까지"
+"until {d}":"{d}까지",
+"Save to Files":"파일에 저장",
+"Save to Photos":"사진에 저장",
+"Then tap \"Save Image\". Or press and hold the picture.":"그다음 ‘이미지 저장’을 탭하세요. 또는 사진을 길게 누르세요."
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -21692,7 +21728,10 @@ window.I18N = {
 "That is your own address.":"यह आपका अपना पता है।",
 "Unblock":"अनब्लॉक करें",
 "Your address: {ip}":"आपका पता: {ip}",
-"until {d}":"{d} तक"
+"until {d}":"{d} तक",
+"Save to Files":"Files में सेव करें",
+"Save to Photos":"Photos में सेव करें",
+"Then tap \"Save Image\". Or press and hold the picture.":"फिर “इमेज सहेजें” पर टैप करें। या तस्वीर को दबाकर रखें।"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -23123,7 +23162,10 @@ window.I18N = {
 "That is your own address.":"Itu alamatmu sendiri.",
 "Unblock":"Buka blokir",
 "Your address: {ip}":"Alamatmu: {ip}",
-"until {d}":"sampai {d}"
+"until {d}":"sampai {d}",
+"Save to Files":"Simpan ke File",
+"Save to Photos":"Simpan ke Foto",
+"Then tap \"Save Image\". Or press and hold the picture.":"Lalu ketuk “Simpan Gambar”. Atau tekan lama gambarnya."
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -24554,6 +24596,9 @@ window.I18N = {
 "That is your own address.":"هذا عنوانك أنت.",
 "Unblock":"إلغاء الحظر",
 "Your address: {ip}":"عنوانك: {ip}",
-"until {d}":"حتى {d}"
+"until {d}":"حتى {d}",
+"Save to Files":"حفظ في الملفات",
+"Save to Photos":"حفظ في الصور",
+"Then tap \"Save Image\". Or press and hold the picture.":"ثم اضغط على «حفظ الصورة». أو اضغط مطولًا على الصورة."
 }
 };
