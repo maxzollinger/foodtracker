@@ -1286,7 +1286,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v228';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v229';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -2469,7 +2469,33 @@ function normMsgs(msgs) {
   while (out.length && out[0].role !== 'user') out.shift();
   return out;
 }
+/* AI consent: before the first AI use, people see where their photos, texts and voice go and agree (asked once; it can be
+   changed in Settings → AI). Every AI request passes through askAI(), so no feature can skip this. */
+const aiOk = () => LS.get('ft_ai_ok', '') === '1';
+let aiAsk = null;
+function aiConsent() {
+  if (aiOk()) return Promise.resolve();
+  return aiAsk || (aiAsk = new Promise((res, rej) => openAIConsent(ok => { aiAsk = null; ok ? res() : rej(new Error('NOAI')); })));
+}
+function openAIConsent(done) {
+  let answered = false;
+  const finish = ok => { if (answered) return; answered = true; if (done) done(ok); };
+  sheet(`<div style="text-align:center"><div style="font-size:44px">✨</div><h3 style="margin:8px 0 4px">${T('Food Tracker uses AI')}</h3></div>
+    <p style="line-height:1.5;margin:10px 0 0">${T('To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.')}</p>
+    <p class="small muted" style="line-height:1.5;margin:10px 0 0">${T('On the free Gemini plan, Google may use what is sent to improve its services. Please don\'t send medical documents.')}</p>
+    <button class="btn" id="aiYes" style="margin-top:18px">${aiOk() ? '✓ ' + T('AI allowed') : T('Allow AI')}</button>
+    <button class="btn outline" id="aiNo" style="margin-top:10px">${aiOk() ? T('Turn AI off') : T('Not now')}</button>
+    <button class="chipbtn" id="aiPriv" style="display:block;margin:12px auto 0">${T('Privacy')}</button>`, sh => {
+    const bd = sh.closest('.backdrop');
+    const mo = new MutationObserver(() => { if (!bd.isConnected) { mo.disconnect(); finish(false); } });   // closed with ✕ or a swipe: not allowed this time
+    mo.observe(document.body, { childList: true });
+    sh.querySelector('#aiYes').onclick = () => { LS.set('ft_ai_ok', '1'); finish(true); closeSheet(); if (tab === 'settings') renderSettings(); };
+    sh.querySelector('#aiNo').onclick = () => { if (aiOk()) { LS.set('ft_ai_ok', '0'); toast(T('AI is off.')); } finish(false); closeSheet(); if (tab === 'settings') renderSettings(); };
+    sh.querySelector('#aiPriv').onclick = () => { finish(false); closeSheet(); setTimeout(openPrivacy, 250); };
+  });
+}
 async function askAI(parts, opt = {}) {
+  await aiConsent();
   const json = opt.json !== false;
   const msgs = normMsgs([...(opt.history || []), { role: 'user', parts }]);
   const g = geminiKey(), c = getClaudeKey();
@@ -2485,7 +2511,7 @@ async function askAI(parts, opt = {}) {
   }
   throw err;
 }
-const aiMsg = e => e.message === 'NOKEY' ? T('Add your free AI key in Settings first.') : e.message;
+const aiMsg = e => e.message === 'NOKEY' ? T('Add your free AI key in Settings first.') : e.message === 'NOAI' ? T('AI is off. Allow it to use this.') : e.message;
 // Reads a server-sent-events stream and calls onEvent with each parsed JSON "data:" payload
 async function readSSE(res, onEvent) {
   const reader = res.body.getReader(), dec = new TextDecoder();
@@ -6996,6 +7022,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Groups, Se
 - Progress photos (Progress tab): any number, also several a day; after framing they choose the day it was taken. "All photos" shows them by month, ▶ Play shows them as a time-lapse from first to last, "Before & after" compares any two with the measurements.
 - Diet & food needs (Settings → Preferences, also in the meal plan preferences): diet plus food needs that can be combined: gluten-free, celiac (no traces), lactose-free, little dairy, no dairy, no nuts, no eggs, no fish or seafood. The meal plan and you always respect them, and a scanned meal that probably breaks one shows a warning at the top of the meal.
 - Ingredient amounts can be typed in grams, ounces, the kitchen measure (cup, tbsp, piece…) or pieces (unit menu next to the amount); the app remembers the last unit.
+- AI consent: before the first AI use the app asks once whether photos, texts and voice may go to Google Gemini / Cloudflare AI; Settings → AI shows it again and can turn AI off.
 - Coach chat: after each answer, the buttons above the text box show 2 short follow-up questions to tap (otherwise the usual questions for the time of day).
 - Safety: if someone talks about suicide, self-harm or dangerous eating-disorder behaviour, the app shows a card under your answer with a helpline for their country, the emergency number and findahelpline.com.
 - Home: the profile picture top right (tap: Settings), the month name above the week strip (tap it for the month view: every day as a small ring, green within the goal or up to 100 kcal over, yellow 100-200 kcal over, red more than 200 over, blue for a past day that ended more than 25 % under the goal (too little eaten or not everything logged; for someone gaining weight this is why they don't gain), dashed when nothing was logged; the ? there and Settings → Support → Ring colors explained show this; tap a day to open it), the week strip (its day circles use the same colours) (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped; in Preferences an optional weekly food budget with currency; the grocery list shows AI price estimates per item and an estimated total against the budget, and "Supermarkets near you": with their OK it uses their location once (not saved) to show the shops within about 3 km on a map (OpenStreetMap), sorted by how well each suits them (1-10, AI estimate from budget, diet and the list), with price level, estimated cost of the list there and a Route button to Google Maps). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). The first time they tap Scan food or Barcode a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. Ingredients of a meal show as tiles with a kitchen measure next to the grams (e.g. "½ medium · 60 g", "2 tbsp · 20 g"; with the kg setting European measures like tbsp, tsp, glass, slice, handful, never cups; with the lb setting US measures like cup, tbsp, tsp, oz); tap a tile to change it with − / + (½ → ¾) or to type exact grams. The meal plan shows each meal's ingredients per person with these measures (tap "Ingredients"), and the grocery list shows next to the total amount what to take from the shelf (e.g. "1 pack of 500 g"). For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. "Earn your treat" (Home, only when today is over the calorie goal; adults only, not in pregnancy or on fast days; can be turned off in Settings → Preferences): a card offers a brisk walk, cycling or jogging with the minutes that make up for the extra calories (calculated from their weight); after picking one it fills up by itself with a watch, or they tap Done. Above 400 kcal over it doesn't suggest sport, just "back on track tomorrow". Food is never blocked. When they ate a treat and are over, you may mention this gently, never as punishment. Tap a logged meal to see, edit, delete, share it (share button at the top: the photo with a small nutrition card, sent with the phone's share menu to Instagram, Snapchat, Messages or saved), save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
@@ -7831,7 +7858,7 @@ function renderSettings() {
     ${remindersCard()}
     ${usersCard()}
     ${isAdmin() && SERVER_URL ? `<button class="card li" id="sShare" style="border-radius:22px"><span class="ic">📤</span><span class="grow"><b>${T('Share Food Tracker')}</b><br><span class="small muted">${T('Send the app to friends and family')}</span></span><span class="chev">›</span></button>` : ''}
-    ${!isAdmin() && SERVER_URL ? `<div class="card"><b>✨ AI</b><p class="small muted" style="margin:4px 0 0">${T('Included. Photos and messages are processed by Google Gemini.')}</p></div>` : ''}
+    <button class="card li" id="sAIok" style="border-radius:22px"><span class="ic">✨</span><span class="grow"><b>AI</b><br><span class="small muted">${aiOk() ? T('Allowed: photos and messages go to Google Gemini.') : T('Not allowed yet. Tap to see what is shared.')}</span></span><span class="chev">›</span></button>
     ${isAdmin() || !SERVER_URL ? `<div class="h2">AI</div>
     <div class="card">
       <b>Google Gemini · ${T('free')}</b>
@@ -7883,6 +7910,7 @@ function renderSettings() {
   $('#sLang').onclick = () => openLangSheet();
   $('#sUnits').onclick = openUnitsSheet;
   $('#sDiet').onclick = () => openMealPrefs('settings');
+  $('#sAIok').onclick = () => openAIConsent();
   $('#sTour').onclick = () => openTour(() => setTimeout(() => askReminders(true), 600));
   if ($('#sTreat')) $('#sTreat').onclick = () => { db.settings.treat = db.settings.treat === false; save(); renderSettings(); };
   document.querySelectorAll('[data-th]').forEach(b => b.onclick = () => { setTheme(b.dataset.th); renderSettings(); });

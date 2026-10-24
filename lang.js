@@ -1792,7 +1792,17 @@ window.I18N = {
 "Copyright":"Urheberrecht",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker mit Design, Texten und Code gehört dem App-Besitzer. Du bekommst ein persönliches, kostenloses Recht, die App zu nutzen. Bitte kopiere, verkaufe oder zerlege die App nicht.",
 "License":"Nutzungsrecht",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Teile nur Bilder und Texte, die dir gehören oder die du verwenden darfst. Verletzt etwas in einer Gruppe dein Urheberrecht, schreib an {email}: Es wird schnell entfernt, und wer das wiederholt tut, wird aus der App entfernt."
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Teile nur Bilder und Texte, die dir gehören oder die du verwenden darfst. Verletzt etwas in einer Gruppe dein Urheberrecht, schreib an {email}: Es wird schnell entfernt, und wer das wiederholt tut, wird aus der App entfernt.",
+"AI allowed":"KI erlaubt",
+"AI is off.":"KI ist aus.",
+"AI is off. Allow it to use this.":"KI ist aus. Erlaube sie, um das zu nutzen.",
+"Allow AI":"KI erlauben",
+"Allowed: photos and messages go to Google Gemini.":"Erlaubt: Fotos und Nachrichten gehen an Google Gemini.",
+"Food Tracker uses AI":"Food Tracker nutzt KI",
+"Not allowed yet. Tap to see what is shared.":"Noch nicht erlaubt. Tippe, um zu sehen, was geteilt wird.",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Beim kostenlosen Gemini-Angebot darf Google das Gesendete nutzen, um seine Dienste zu verbessern. Bitte schick keine medizinischen Dokumente.",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Um deine Essensfotos zu lesen, als Coach zu antworten und Mahlzeiten zu planen, geht das Gesendete (Foto, Text oder Sprache) über den Food-Tracker-Server an Google Gemini oder, wenn Google ausgelastet ist, an Cloudflare AI. Der Server speichert es nicht.",
+"Turn AI off":"KI ausschalten"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3586,7 +3596,17 @@ window.I18N = {
 "Copyright":"Derechos de autor",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker, con su diseño, textos y código, pertenece al dueño de la app. Recibes un derecho personal y gratuito para usarla. Por favor, no copies, vendas ni desarmes la app.",
 "License":"Licencia",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Comparte solo imágenes y textos tuyos o que puedas usar. Si algo en un grupo infringe tus derechos de autor, escribe a {email}: se quitará rápido, y quien lo repita será eliminado de la app."
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Comparte solo imágenes y textos tuyos o que puedas usar. Si algo en un grupo infringe tus derechos de autor, escribe a {email}: se quitará rápido, y quien lo repita será eliminado de la app.",
+"AI allowed":"IA permitida",
+"AI is off.":"La IA está desactivada.",
+"AI is off. Allow it to use this.":"La IA está desactivada. Permítela para usar esto.",
+"Allow AI":"Permitir IA",
+"Allowed: photos and messages go to Google Gemini.":"Permitida: las fotos y los mensajes van a Google Gemini.",
+"Food Tracker uses AI":"Food Tracker usa IA",
+"Not allowed yet. Tap to see what is shared.":"Aún no permitida. Toca para ver qué se comparte.",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Con el plan gratuito de Gemini, Google puede usar lo que se envía para mejorar sus servicios. No envíes documentos médicos.",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Para leer tus fotos de comida, responder como tu coach y planear comidas, lo que envías (foto, texto o voz) pasa por el servidor de Food Tracker a Google Gemini, o a Cloudflare AI cuando Google está ocupado. El servidor no lo guarda.",
+"Turn AI off":"Desactivar IA"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5380,7 +5400,17 @@ window.I18N = {
 "Copyright":"Droits d’auteur",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker, son design, ses textes et son code appartiennent au propriétaire de l’app. Tu reçois un droit personnel et gratuit de l’utiliser. Merci de ne pas copier, vendre ni démonter l’app.",
 "License":"Licence",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Partage seulement des images et textes qui t’appartiennent ou que tu peux utiliser. Si quelque chose dans un groupe viole tes droits d’auteur, écris à {email} : ce sera retiré rapidement, et les récidivistes seront retirés de l’app."
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Partage seulement des images et textes qui t’appartiennent ou que tu peux utiliser. Si quelque chose dans un groupe viole tes droits d’auteur, écris à {email} : ce sera retiré rapidement, et les récidivistes seront retirés de l’app.",
+"AI allowed":"IA autorisée",
+"AI is off.":"L’IA est désactivée.",
+"AI is off. Allow it to use this.":"L’IA est désactivée. Autorise-la pour utiliser ceci.",
+"Allow AI":"Autoriser l’IA",
+"Allowed: photos and messages go to Google Gemini.":"Autorisée : les photos et messages vont à Google Gemini.",
+"Food Tracker uses AI":"Food Tracker utilise l’IA",
+"Not allowed yet. Tap to see what is shared.":"Pas encore autorisée. Touche pour voir ce qui est partagé.",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Avec l’offre gratuite de Gemini, Google peut utiliser ce qui est envoyé pour améliorer ses services. N’envoie pas de documents médicaux.",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Pour lire tes photos de repas, répondre comme coach et planifier tes repas, ce que tu envoies (photo, texte ou voix) passe par le serveur de Food Tracker vers Google Gemini, ou vers Cloudflare AI quand Google est saturé. Le serveur ne le garde pas.",
+"Turn AI off":"Désactiver l’IA"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -7174,7 +7204,17 @@ window.I18N = {
 "Copyright":"Diritto d’autore",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker, con design, testi e codice, appartiene al proprietario dell’app. Ricevi un diritto personale e gratuito di usarla. Per favore non copiare, vendere o smontare l’app.",
 "License":"Licenza",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Condividi solo immagini e testi tuoi o che puoi usare. Se qualcosa in un gruppo viola il tuo diritto d’autore, scrivi a {email}: verrà rimosso in fretta, e chi lo ripete verrà rimosso dall’app."
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Condividi solo immagini e testi tuoi o che puoi usare. Se qualcosa in un gruppo viola il tuo diritto d’autore, scrivi a {email}: verrà rimosso in fretta, e chi lo ripete verrà rimosso dall’app.",
+"AI allowed":"IA consentita",
+"AI is off.":"L’IA è disattivata.",
+"AI is off. Allow it to use this.":"L’IA è disattivata. Consentila per usare questa funzione.",
+"Allow AI":"Consenti IA",
+"Allowed: photos and messages go to Google Gemini.":"Consentita: foto e messaggi vanno a Google Gemini.",
+"Food Tracker uses AI":"Food Tracker usa l’IA",
+"Not allowed yet. Tap to see what is shared.":"Non ancora consentita. Tocca per vedere cosa viene condiviso.",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Con il piano gratuito di Gemini, Google può usare ciò che viene inviato per migliorare i suoi servizi. Non inviare documenti medici.",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Per leggere le foto dei tuoi pasti, rispondere come coach e pianificare i pasti, ciò che invii (foto, testo o voce) passa dal server di Food Tracker a Google Gemini, o a Cloudflare AI quando Google è occupato. Il server non lo conserva.",
+"Turn AI off":"Disattiva IA"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8968,7 +9008,17 @@ window.I18N = {
 "Copyright":"著作権",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Trackerのデザイン、テキスト、コードはアプリのオーナーに帰属します。あなたには個人的に無料でアプリを使う権利が与えられます。アプリのコピー、販売、解析はしないでください。",
 "License":"利用許諾",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"自分のもの、または使ってよい画像とテキストだけを共有してください。グループ内のものがあなたの著作権を侵害している場合は {email} に連絡してください。すぐに削除し、繰り返す人はアプリから削除されます。"
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"自分のもの、または使ってよい画像とテキストだけを共有してください。グループ内のものがあなたの著作権を侵害している場合は {email} に連絡してください。すぐに削除し、繰り返す人はアプリから削除されます。",
+"AI allowed":"AIを許可済み",
+"AI is off.":"AIはオフです。",
+"AI is off. Allow it to use this.":"AIはオフです。使うには許可してください。",
+"Allow AI":"AIを許可",
+"Allowed: photos and messages go to Google Gemini.":"許可済み：写真とメッセージは Google Gemini に送られます。",
+"Food Tracker uses AI":"Food Tracker はAIを使います",
+"Not allowed yet. Tap to see what is shared.":"まだ許可されていません。タップして共有内容を確認。",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Gemini の無料プランでは、送信内容が Google のサービス改善に使われる場合があります。医療書類は送らないでください。",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"食事の写真を読み取り、コーチとして答え、食事を計画するために、送信した内容（写真・テキスト・音声）は Food Tracker のサーバーを通って Google Gemini に、Google が混雑しているときは Cloudflare AI に送られます。サーバーには保存されません。",
+"Turn AI off":"AIをオフにする"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10762,7 +10812,17 @@ window.I18N = {
 "Copyright":"Auteursrecht",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker, met ontwerp, teksten en code, is van de eigenaar van de app. Je krijgt een persoonlijk, gratis recht om de app te gebruiken. Kopieer, verkoop of ontleed de app alsjeblieft niet.",
 "License":"Licentie",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Deel alleen afbeeldingen en teksten die van jou zijn of die je mag gebruiken. Schendt iets in een groep jouw auteursrecht, schrijf dan naar {email}: het wordt snel verwijderd, en wie het herhaalt wordt uit de app verwijderd."
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Deel alleen afbeeldingen en teksten die van jou zijn of die je mag gebruiken. Schendt iets in een groep jouw auteursrecht, schrijf dan naar {email}: het wordt snel verwijderd, en wie het herhaalt wordt uit de app verwijderd.",
+"AI allowed":"AI toegestaan",
+"AI is off.":"AI staat uit.",
+"AI is off. Allow it to use this.":"AI staat uit. Sta het toe om dit te gebruiken.",
+"Allow AI":"AI toestaan",
+"Allowed: photos and messages go to Google Gemini.":"Toegestaan: foto’s en berichten gaan naar Google Gemini.",
+"Food Tracker uses AI":"Food Tracker gebruikt AI",
+"Not allowed yet. Tap to see what is shared.":"Nog niet toegestaan. Tik om te zien wat er gedeeld wordt.",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Bij het gratis Gemini-abonnement mag Google wat er wordt verstuurd gebruiken om zijn diensten te verbeteren. Stuur geen medische documenten.",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Om je maaltijdfoto’s te lezen, als coach te antwoorden en maaltijden te plannen, gaat wat je stuurt (foto, tekst of spraak) via de Food Tracker-server naar Google Gemini, of naar Cloudflare AI als Google druk is. De server bewaart het niet.",
+"Turn AI off":"AI uitzetten"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -12556,7 +12616,17 @@ window.I18N = {
 "Copyright":"Prawa autorskie",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker wraz z wyglądem, tekstami i kodem należy do właściciela aplikacji. Dostajesz osobiste, bezpłatne prawo do korzystania z niej. Prosimy nie kopiować, nie sprzedawać i nie rozbierać aplikacji.",
 "License":"Licencja",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Udostępniaj tylko obrazy i teksty, które należą do Ciebie lub których możesz używać. Jeśli coś w grupie narusza Twoje prawa autorskie, napisz na {email}: zostanie szybko usunięte, a osoby, które to powtarzają, zostaną usunięte z aplikacji."
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Udostępniaj tylko obrazy i teksty, które należą do Ciebie lub których możesz używać. Jeśli coś w grupie narusza Twoje prawa autorskie, napisz na {email}: zostanie szybko usunięte, a osoby, które to powtarzają, zostaną usunięte z aplikacji.",
+"AI allowed":"AI dozwolona",
+"AI is off.":"AI jest wyłączona.",
+"AI is off. Allow it to use this.":"AI jest wyłączona. Zezwól, aby z tego korzystać.",
+"Allow AI":"Zezwól na AI",
+"Allowed: photos and messages go to Google Gemini.":"Dozwolona: zdjęcia i wiadomości trafiają do Google Gemini.",
+"Food Tracker uses AI":"Food Tracker korzysta z AI",
+"Not allowed yet. Tap to see what is shared.":"Jeszcze nie dozwolona. Dotknij, aby zobaczyć, co jest udostępniane.",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"W darmowym planie Gemini Google może wykorzystywać przesłane treści do ulepszania swoich usług. Nie wysyłaj dokumentów medycznych.",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Aby odczytywać zdjęcia posiłków, odpowiadać jako trener i planować posiłki, to, co wysyłasz (zdjęcie, tekst lub głos), trafia przez serwer Food Tracker do Google Gemini, a gdy Google jest zajęty – do Cloudflare AI. Serwer tego nie przechowuje.",
+"Turn AI off":"Wyłącz AI"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -14350,7 +14420,17 @@ window.I18N = {
 "Copyright":"Direitos autorais",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"O Food Tracker, com design, textos e código, pertence ao dono do app. Você recebe um direito pessoal e gratuito de usá-lo. Por favor, não copie, venda nem desmonte o app.",
 "License":"Licença",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Compartilhe só imagens e textos que são seus ou que você pode usar. Se algo em um grupo violar seus direitos autorais, escreva para {email}: será removido rápido, e quem repetir será removido do app."
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Compartilhe só imagens e textos que são seus ou que você pode usar. Se algo em um grupo violar seus direitos autorais, escreva para {email}: será removido rápido, e quem repetir será removido do app.",
+"AI allowed":"IA permitida",
+"AI is off.":"A IA está desligada.",
+"AI is off. Allow it to use this.":"A IA está desligada. Permita para usar isto.",
+"Allow AI":"Permitir IA",
+"Allowed: photos and messages go to Google Gemini.":"Permitida: fotos e mensagens vão para o Google Gemini.",
+"Food Tracker uses AI":"O Food Tracker usa IA",
+"Not allowed yet. Tap to see what is shared.":"Ainda não permitida. Toque para ver o que é compartilhado.",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"No plano gratuito do Gemini, o Google pode usar o que é enviado para melhorar seus serviços. Não envie documentos médicos.",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Para ler suas fotos de comida, responder como seu coach e planejar refeições, o que você envia (foto, texto ou voz) passa pelo servidor do Food Tracker até o Google Gemini, ou até o Cloudflare AI quando o Google está ocupado. O servidor não guarda nada.",
+"Turn AI off":"Desligar IA"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -16144,7 +16224,17 @@ window.I18N = {
 "Copyright":"Авторские права",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker, его дизайн, тексты и код принадлежат владельцу приложения. Ты получаешь личное бесплатное право им пользоваться. Пожалуйста, не копируй, не продавай и не разбирай приложение.",
 "License":"Лицензия",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Делись только своими изображениями и текстами или теми, которые можно использовать. Если что-то в группе нарушает твои авторские права, напиши на {email}: это быстро удалят, а тех, кто повторяет, удалят из приложения."
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Делись только своими изображениями и текстами или теми, которые можно использовать. Если что-то в группе нарушает твои авторские права, напиши на {email}: это быстро удалят, а тех, кто повторяет, удалят из приложения.",
+"AI allowed":"ИИ разрешён",
+"AI is off.":"ИИ выключен.",
+"AI is off. Allow it to use this.":"ИИ выключен. Разреши его, чтобы пользоваться этим.",
+"Allow AI":"Разрешить ИИ",
+"Allowed: photos and messages go to Google Gemini.":"Разрешено: фото и сообщения отправляются в Google Gemini.",
+"Food Tracker uses AI":"Food Tracker использует ИИ",
+"Not allowed yet. Tap to see what is shared.":"Ещё не разрешено. Нажми, чтобы увидеть, что передаётся.",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"В бесплатном тарифе Gemini Google может использовать отправленное для улучшения своих сервисов. Не отправляй медицинские документы.",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Чтобы читать фото еды, отвечать как коуч и планировать питание, то, что ты отправляешь (фото, текст или голос), идёт через сервер Food Tracker в Google Gemini, а если Google занят — в Cloudflare AI. Сервер это не хранит.",
+"Turn AI off":"Выключить ИИ"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -17938,7 +18028,17 @@ window.I18N = {
 "Copyright":"Telif hakkı",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker, tasarımı, metinleri ve koduyla uygulama sahibine aittir. Uygulamayı kullanmak için kişisel ve ücretsiz bir hak alırsın. Lütfen uygulamayı kopyalama, satma veya söküp inceleme.",
 "License":"Lisans",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Yalnızca sana ait olan veya kullanma iznin olan görselleri ve metinleri paylaş. Bir gruptaki bir şey telif hakkını ihlal ediyorsa {email} adresine yaz: hızla kaldırılır ve tekrarlayanlar uygulamadan çıkarılır."
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Yalnızca sana ait olan veya kullanma iznin olan görselleri ve metinleri paylaş. Bir gruptaki bir şey telif hakkını ihlal ediyorsa {email} adresine yaz: hızla kaldırılır ve tekrarlayanlar uygulamadan çıkarılır.",
+"AI allowed":"Yapay zekâya izin verildi",
+"AI is off.":"Yapay zekâ kapalı.",
+"AI is off. Allow it to use this.":"Yapay zekâ kapalı. Bunu kullanmak için izin ver.",
+"Allow AI":"Yapay zekâya izin ver",
+"Allowed: photos and messages go to Google Gemini.":"İzin verildi: fotoğraflar ve mesajlar Google Gemini’ye gider.",
+"Food Tracker uses AI":"Food Tracker yapay zekâ kullanır",
+"Not allowed yet. Tap to see what is shared.":"Henüz izin verilmedi. Neyin paylaşıldığını görmek için dokun.",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Ücretsiz Gemini planında Google, gönderilenleri hizmetlerini geliştirmek için kullanabilir. Lütfen tıbbi belge gönderme.",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Yemek fotoğraflarını okumak, koç olarak yanıt vermek ve öğün planlamak için gönderdiklerin (fotoğraf, metin veya ses) Food Tracker sunucusu üzerinden Google Gemini’ye, Google yoğunsa Cloudflare AI’a gider. Sunucu bunu saklamaz.",
+"Turn AI off":"Yapay zekâyı kapat"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -19732,7 +19832,17 @@ window.I18N = {
 "Copyright":"版权",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker 及其设计、文字和代码归应用所有者所有。你获得个人的免费使用权。请不要复制、出售或拆解本应用。",
 "License":"许可",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"只分享属于你或你有权使用的图片和文字。如果群组中的内容侵犯了你的版权，请写信至 {email}：内容会被尽快删除，屡次违规者会被移出应用。"
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"只分享属于你或你有权使用的图片和文字。如果群组中的内容侵犯了你的版权，请写信至 {email}：内容会被尽快删除，屡次违规者会被移出应用。",
+"AI allowed":"已允许 AI",
+"AI is off.":"AI 已关闭。",
+"AI is off. Allow it to use this.":"AI 已关闭。允许后才能使用此功能。",
+"Allow AI":"允许 AI",
+"Allowed: photos and messages go to Google Gemini.":"已允许：照片和消息会发送给 Google Gemini。",
+"Food Tracker uses AI":"Food Tracker 使用 AI",
+"Not allowed yet. Tap to see what is shared.":"尚未允许。轻点查看会分享哪些内容。",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"在 Gemini 免费方案下，Google 可能会使用发送的内容来改进服务。请不要发送医疗文件。",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"为了识别你的食物照片、以教练身份回答并规划餐食，你发送的内容（照片、文字或语音）会经由 Food Tracker 服务器发送给 Google Gemini，Google 繁忙时则发送给 Cloudflare AI。服务器不会保存。",
+"Turn AI off":"关闭 AI"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -21245,7 +21355,17 @@ window.I18N = {
 "Copyright":"저작권",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker의 디자인, 텍스트, 코드는 앱 소유자에게 있어요. 당신은 앱을 무료로 개인적으로 사용할 권리를 받아요. 앱을 복사, 판매하거나 분해하지 말아 주세요.",
 "License":"라이선스",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"본인 소유이거나 사용해도 되는 이미지와 글만 공유하세요. 그룹 안의 무언가가 당신의 저작권을 침해한다면 {email}로 알려 주세요. 빠르게 삭제되며, 반복하는 사람은 앱에서 제외돼요."
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"본인 소유이거나 사용해도 되는 이미지와 글만 공유하세요. 그룹 안의 무언가가 당신의 저작권을 침해한다면 {email}로 알려 주세요. 빠르게 삭제되며, 반복하는 사람은 앱에서 제외돼요.",
+"AI allowed":"AI 허용됨",
+"AI is off.":"AI가 꺼져 있어요.",
+"AI is off. Allow it to use this.":"AI가 꺼져 있어요. 사용하려면 허용해 주세요.",
+"Allow AI":"AI 허용",
+"Allowed: photos and messages go to Google Gemini.":"허용됨: 사진과 메시지는 Google Gemini로 보내져요.",
+"Food Tracker uses AI":"Food Tracker는 AI를 사용해요",
+"Not allowed yet. Tap to see what is shared.":"아직 허용하지 않았어요. 탭해서 무엇이 공유되는지 확인하세요.",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Gemini 무료 플랜에서는 Google이 보낸 내용을 서비스 개선에 사용할 수 있어요. 의료 서류는 보내지 마세요.",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"음식 사진을 읽고, 코치로 답하고, 식단을 짜기 위해 보내는 내용(사진, 글, 음성)은 Food Tracker 서버를 거쳐 Google Gemini로, Google이 바쁠 때는 Cloudflare AI로 보내져요. 서버는 이를 저장하지 않아요.",
+"Turn AI off":"AI 끄기"
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -22758,7 +22878,17 @@ window.I18N = {
 "Copyright":"कॉपीराइट",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker, उसका डिज़ाइन, टेक्स्ट और कोड ऐप के मालिक का है। आपको ऐप इस्तेमाल करने का निजी, मुफ़्त अधिकार मिलता है। कृपया ऐप की नकल न करें, उसे न बेचें और न खोलकर देखें।",
 "License":"लाइसेंस",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"सिर्फ़ वही तस्वीरें और टेक्स्ट शेयर करें जो आपके हैं या जिन्हें आप इस्तेमाल कर सकते हैं। अगर किसी ग्रुप में कुछ आपके कॉपीराइट का उल्लंघन करता है, तो {email} पर लिखें: उसे जल्दी हटाया जाएगा, और बार-बार ऐसा करने वालों को ऐप से हटा दिया जाएगा।"
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"सिर्फ़ वही तस्वीरें और टेक्स्ट शेयर करें जो आपके हैं या जिन्हें आप इस्तेमाल कर सकते हैं। अगर किसी ग्रुप में कुछ आपके कॉपीराइट का उल्लंघन करता है, तो {email} पर लिखें: उसे जल्दी हटाया जाएगा, और बार-बार ऐसा करने वालों को ऐप से हटा दिया जाएगा।",
+"AI allowed":"AI की अनुमति है",
+"AI is off.":"AI बंद है।",
+"AI is off. Allow it to use this.":"AI बंद है। इसे इस्तेमाल करने के लिए अनुमति दें।",
+"Allow AI":"AI की अनुमति दें",
+"Allowed: photos and messages go to Google Gemini.":"अनुमति है: फ़ोटो और मैसेज Google Gemini को जाते हैं।",
+"Food Tracker uses AI":"Food Tracker AI का इस्तेमाल करता है",
+"Not allowed yet. Tap to see what is shared.":"अभी अनुमति नहीं दी। क्या शेयर होता है, देखने के लिए टैप करें।",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Gemini के मुफ़्त प्लान में Google भेजी गई चीज़ों का इस्तेमाल अपनी सेवाएँ बेहतर करने में कर सकता है। कृपया मेडिकल दस्तावेज़ न भेजें।",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"आपकी खाने की फ़ोटो पढ़ने, कोच की तरह जवाब देने और मील प्लान बनाने के लिए, आप जो भेजते हैं (फ़ोटो, टेक्स्ट या आवाज़) वह Food Tracker सर्वर से होकर Google Gemini को जाता है, और Google व्यस्त हो तो Cloudflare AI को। सर्वर इसे नहीं रखता।",
+"Turn AI off":"AI बंद करें"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -24271,7 +24401,17 @@ window.I18N = {
 "Copyright":"Hak cipta",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker beserta desain, teks, dan kodenya milik pemilik aplikasi. Kamu mendapat hak pribadi dan gratis untuk memakainya. Mohon jangan menyalin, menjual, atau membongkar aplikasi ini.",
 "License":"Lisensi",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Bagikan hanya gambar dan teks milikmu atau yang boleh kamu pakai. Jika sesuatu di grup melanggar hak ciptamu, tulis ke {email}: akan segera dihapus, dan yang mengulanginya akan dikeluarkan dari aplikasi."
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"Bagikan hanya gambar dan teks milikmu atau yang boleh kamu pakai. Jika sesuatu di grup melanggar hak ciptamu, tulis ke {email}: akan segera dihapus, dan yang mengulanginya akan dikeluarkan dari aplikasi.",
+"AI allowed":"AI diizinkan",
+"AI is off.":"AI mati.",
+"AI is off. Allow it to use this.":"AI mati. Izinkan untuk memakai ini.",
+"Allow AI":"Izinkan AI",
+"Allowed: photos and messages go to Google Gemini.":"Diizinkan: foto dan pesan dikirim ke Google Gemini.",
+"Food Tracker uses AI":"Food Tracker memakai AI",
+"Not allowed yet. Tap to see what is shared.":"Belum diizinkan. Ketuk untuk melihat apa yang dibagikan.",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"Pada paket gratis Gemini, Google boleh memakai yang dikirim untuk meningkatkan layanannya. Jangan kirim dokumen medis.",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"Untuk membaca foto makananmu, menjawab sebagai coach, dan merencanakan makanan, yang kamu kirim (foto, teks, atau suara) lewat server Food Tracker ke Google Gemini, atau ke Cloudflare AI saat Google sibuk. Server tidak menyimpannya.",
+"Turn AI off":"Matikan AI"
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -25784,6 +25924,16 @@ window.I18N = {
 "Copyright":"حقوق النشر",
 "Food Tracker and its design, texts and code belong to the app owner. You get a personal, free right to use the app. Please do not copy, sell or take apart the app.":"Food Tracker بتصميمه ونصوصه وكوده ملك لمالك التطبيق. تحصل على حق شخصي ومجاني لاستخدامه. يرجى عدم نسخ التطبيق أو بيعه أو تفكيكه.",
 "License":"الترخيص",
-"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"شارك فقط الصور والنصوص التي تملكها أو يحق لك استخدامها. إذا كان شيء في مجموعة ينتهك حقوق النشر الخاصة بك، فاكتب إلى {email}: سيُزال بسرعة، ومن يكرر ذلك سيُزال من التطبيق."
+"Only share pictures and texts that you own or may use. If something in a group breaks your copyright, write to {email}: it will be removed quickly, and repeat offenders are removed from the app.":"شارك فقط الصور والنصوص التي تملكها أو يحق لك استخدامها. إذا كان شيء في مجموعة ينتهك حقوق النشر الخاصة بك، فاكتب إلى {email}: سيُزال بسرعة، ومن يكرر ذلك سيُزال من التطبيق.",
+"AI allowed":"الذكاء الاصطناعي مسموح",
+"AI is off.":"الذكاء الاصطناعي متوقف.",
+"AI is off. Allow it to use this.":"الذكاء الاصطناعي متوقف. اسمح به لاستخدام هذا.",
+"Allow AI":"السماح بالذكاء الاصطناعي",
+"Allowed: photos and messages go to Google Gemini.":"مسموح: تُرسل الصور والرسائل إلى Google Gemini.",
+"Food Tracker uses AI":"يستخدم Food Tracker الذكاء الاصطناعي",
+"Not allowed yet. Tap to see what is shared.":"غير مسموح بعد. اضغط لترى ما الذي تتم مشاركته.",
+"On the free Gemini plan, Google may use what is sent to improve its services. Please don't send medical documents.":"في خطة Gemini المجانية قد تستخدم Google ما يُرسل لتحسين خدماتها. لا ترسل مستندات طبية.",
+"To read your food photos, answer as your coach and plan meals, what you send (photo, text or voice) goes through the Food Tracker server to Google Gemini, or to Cloudflare AI when Google is busy. The server does not keep it.":"لقراءة صور طعامك والرد كمدربك وتخطيط الوجبات، يمر ما ترسله (صورة أو نص أو صوت) عبر خادم Food Tracker إلى Google Gemini، أو إلى Cloudflare AI عندما تكون Google مشغولة. الخادم لا يحتفظ به.",
+"Turn AI off":"إيقاف الذكاء الاصطناعي"
 }
 };
