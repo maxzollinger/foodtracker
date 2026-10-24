@@ -1723,7 +1723,17 @@ window.I18N = {
 "No dairy":"Keine Milchprodukte",
 "No eggs":"Keine Eier",
 "No fish or seafood":"Kein Fisch, keine Meeresfrüchte",
-"No nuts":"Keine Nüsse"
+"No nuts":"Keine Nüsse",
+"All photos":"Alle Fotos",
+"Day {n} of your journey":"Tag {n} deines Wegs",
+"Delete photo":"Foto löschen",
+"Delete this photo?":"Dieses Foto löschen?",
+"No photos yet.":"Noch keine Fotos.",
+"Play":"Abspielen",
+"Progress photo":"Fortschrittsfoto",
+"When was it taken?":"Wann wurde es aufgenommen?",
+"{n} days":"{n} Tage",
+"{n} photos":"{n} Fotos"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3448,7 +3458,17 @@ window.I18N = {
 "No dairy":"Sin lácteos",
 "No eggs":"Sin huevo",
 "No fish or seafood":"Sin pescado ni mariscos",
-"No nuts":"Sin frutos secos"
+"No nuts":"Sin frutos secos",
+"All photos":"Todas las fotos",
+"Day {n} of your journey":"Día {n} de tu camino",
+"Delete photo":"Eliminar foto",
+"Delete this photo?":"¿Eliminar esta foto?",
+"No photos yet.":"Aún no hay fotos.",
+"Play":"Reproducir",
+"Progress photo":"Foto de progreso",
+"When was it taken?":"¿Cuándo se tomó?",
+"{n} days":"{n} días",
+"{n} photos":"{n} fotos"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -5173,7 +5193,17 @@ window.I18N = {
 "No dairy":"Sans produits laitiers",
 "No eggs":"Sans œufs",
 "No fish or seafood":"Sans poisson ni fruits de mer",
-"No nuts":"Sans fruits à coque"
+"No nuts":"Sans fruits à coque",
+"All photos":"Toutes les photos",
+"Day {n} of your journey":"Jour {n} de ton parcours",
+"Delete photo":"Supprimer la photo",
+"Delete this photo?":"Supprimer cette photo ?",
+"No photos yet.":"Pas encore de photos.",
+"Play":"Lire",
+"Progress photo":"Photo de progression",
+"When was it taken?":"Quand a-t-elle été prise ?",
+"{n} days":"{n} jours",
+"{n} photos":"{n} photos"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6898,7 +6928,17 @@ window.I18N = {
 "No dairy":"Senza latticini",
 "No eggs":"Senza uova",
 "No fish or seafood":"Niente pesce né frutti di mare",
-"No nuts":"Senza frutta a guscio"
+"No nuts":"Senza frutta a guscio",
+"All photos":"Tutte le foto",
+"Day {n} of your journey":"Giorno {n} del tuo percorso",
+"Delete photo":"Elimina foto",
+"Delete this photo?":"Eliminare questa foto?",
+"No photos yet.":"Ancora nessuna foto.",
+"Play":"Riproduci",
+"Progress photo":"Foto dei progressi",
+"When was it taken?":"Quando è stata scattata?",
+"{n} days":"{n} giorni",
+"{n} photos":"{n} foto"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -8623,7 +8663,17 @@ window.I18N = {
 "No dairy":"乳製品なし",
 "No eggs":"卵なし",
 "No fish or seafood":"魚・魚介類なし",
-"No nuts":"ナッツなし"
+"No nuts":"ナッツなし",
+"All photos":"すべての写真",
+"Day {n} of your journey":"あなたの道のり {n}日目",
+"Delete photo":"写真を削除",
+"Delete this photo?":"この写真を削除しますか？",
+"No photos yet.":"まだ写真はありません。",
+"Play":"再生",
+"Progress photo":"進捗写真",
+"When was it taken?":"いつ撮影しましたか？",
+"{n} days":"{n}日",
+"{n} photos":"{n}枚"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -10348,7 +10398,17 @@ window.I18N = {
 "No dairy":"Geen zuivel",
 "No eggs":"Geen eieren",
 "No fish or seafood":"Geen vis of zeevruchten",
-"No nuts":"Geen noten"
+"No nuts":"Geen noten",
+"All photos":"Alle foto's",
+"Day {n} of your journey":"Dag {n} van je traject",
+"Delete photo":"Foto verwijderen",
+"Delete this photo?":"Deze foto verwijderen?",
+"No photos yet.":"Nog geen foto's.",
+"Play":"Afspelen",
+"Progress photo":"Voortgangsfoto",
+"When was it taken?":"Wanneer is hij gemaakt?",
+"{n} days":"{n} dagen",
+"{n} photos":"{n} foto's"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -12073,7 +12133,17 @@ window.I18N = {
 "No dairy":"Bez nabiału",
 "No eggs":"Bez jajek",
 "No fish or seafood":"Bez ryb i owoców morza",
-"No nuts":"Bez orzechów"
+"No nuts":"Bez orzechów",
+"All photos":"Wszystkie zdjęcia",
+"Day {n} of your journey":"Dzień {n} Twojej drogi",
+"Delete photo":"Usuń zdjęcie",
+"Delete this photo?":"Usunąć to zdjęcie?",
+"No photos yet.":"Jeszcze nie ma zdjęć.",
+"Play":"Odtwórz",
+"Progress photo":"Zdjęcie postępów",
+"When was it taken?":"Kiedy zostało zrobione?",
+"{n} days":"{n} dni",
+"{n} photos":"Zdjęcia: {n}"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -13798,7 +13868,17 @@ window.I18N = {
 "No dairy":"Sem laticínios",
 "No eggs":"Sem ovos",
 "No fish or seafood":"Sem peixe nem frutos do mar",
-"No nuts":"Sem nozes"
+"No nuts":"Sem nozes",
+"All photos":"Todas as fotos",
+"Day {n} of your journey":"Dia {n} da sua jornada",
+"Delete photo":"Apagar foto",
+"Delete this photo?":"Apagar esta foto?",
+"No photos yet.":"Ainda não há fotos.",
+"Play":"Reproduzir",
+"Progress photo":"Foto de progresso",
+"When was it taken?":"Quando foi tirada?",
+"{n} days":"{n} dias",
+"{n} photos":"{n} fotos"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -15523,7 +15603,17 @@ window.I18N = {
 "No dairy":"Без молочного",
 "No eggs":"Без яиц",
 "No fish or seafood":"Без рыбы и морепродуктов",
-"No nuts":"Без орехов"
+"No nuts":"Без орехов",
+"All photos":"Все фото",
+"Day {n} of your journey":"День {n} твоего пути",
+"Delete photo":"Удалить фото",
+"Delete this photo?":"Удалить это фото?",
+"No photos yet.":"Пока нет фото.",
+"Play":"Воспроизвести",
+"Progress photo":"Фото прогресса",
+"When was it taken?":"Когда оно сделано?",
+"{n} days":"Дней: {n}",
+"{n} photos":"Фото: {n}"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -17248,7 +17338,17 @@ window.I18N = {
 "No dairy":"Süt ürünü yok",
 "No eggs":"Yumurta yok",
 "No fish or seafood":"Balık ve deniz ürünü yok",
-"No nuts":"Kuruyemiş yok"
+"No nuts":"Kuruyemiş yok",
+"All photos":"Tüm fotoğraflar",
+"Day {n} of your journey":"Yolculuğunun {n}. günü",
+"Delete photo":"Fotoğrafı sil",
+"Delete this photo?":"Bu fotoğraf silinsin mi?",
+"No photos yet.":"Henüz fotoğraf yok.",
+"Play":"Oynat",
+"Progress photo":"İlerleme fotoğrafı",
+"When was it taken?":"Ne zaman çekildi?",
+"{n} days":"{n} gün",
+"{n} photos":"{n} fotoğraf"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -18973,7 +19073,17 @@ window.I18N = {
 "No dairy":"不吃乳制品",
 "No eggs":"不吃蛋",
 "No fish or seafood":"不吃鱼和海鲜",
-"No nuts":"不吃坚果"
+"No nuts":"不吃坚果",
+"All photos":"全部照片",
+"Day {n} of your journey":"你的旅程第 {n} 天",
+"Delete photo":"删除照片",
+"Delete this photo?":"删除这张照片？",
+"No photos yet.":"还没有照片。",
+"Play":"播放",
+"Progress photo":"进度照片",
+"When was it taken?":"什么时候拍的？",
+"{n} days":"{n} 天",
+"{n} photos":"{n} 张照片"
 },
 "ko":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"추가 활동으로 +{n} kcal를 더했어요. 평소 운동 약 {i} kcal는 이미 목표에 포함되어 있어요.",
@@ -20417,7 +20527,17 @@ window.I18N = {
 "No dairy":"유제품 없음",
 "No eggs":"달걀 없음",
 "No fish or seafood":"생선·해산물 없음",
-"No nuts":"견과류 없음"
+"No nuts":"견과류 없음",
+"All photos":"모든 사진",
+"Day {n} of your journey":"여정 {n}일째",
+"Delete photo":"사진 삭제",
+"Delete this photo?":"이 사진을 삭제할까요?",
+"No photos yet.":"아직 사진이 없어요.",
+"Play":"재생",
+"Progress photo":"진행 사진",
+"When was it taken?":"언제 찍었나요?",
+"{n} days":"{n}일",
+"{n} photos":"사진 {n}장"
 },
 "hi":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"अतिरिक्त गतिविधि के लिए +{n} kcal जोड़ी गईं। आपकी सामान्य ~{i} kcal की ट्रेनिंग पहले से आपके लक्ष्य में है।",
@@ -21861,7 +21981,17 @@ window.I18N = {
 "No dairy":"डेयरी नहीं",
 "No eggs":"अंडा नहीं",
 "No fish or seafood":"मछली या सीफ़ूड नहीं",
-"No nuts":"नट्स नहीं"
+"No nuts":"नट्स नहीं",
+"All photos":"सभी फ़ोटो",
+"Day {n} of your journey":"आपके सफ़र का दिन {n}",
+"Delete photo":"फ़ोटो डिलीट करें",
+"Delete this photo?":"यह फ़ोटो डिलीट करें?",
+"No photos yet.":"अभी कोई फ़ोटो नहीं।",
+"Play":"चलाएँ",
+"Progress photo":"प्रगति फ़ोटो",
+"When was it taken?":"यह कब ली गई थी?",
+"{n} days":"{n} दिन",
+"{n} photos":"{n} फ़ोटो"
 },
 "id":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"+{n} kcal ditambahkan untuk aktivitas ekstra. Latihan rutinmu ~{i} kcal sudah termasuk dalam targetmu.",
@@ -23305,7 +23435,17 @@ window.I18N = {
 "No dairy":"Tanpa susu",
 "No eggs":"Tanpa telur",
 "No fish or seafood":"Tanpa ikan & seafood",
-"No nuts":"Tanpa kacang"
+"No nuts":"Tanpa kacang",
+"All photos":"Semua foto",
+"Day {n} of your journey":"Hari ke-{n} perjalananmu",
+"Delete photo":"Hapus foto",
+"Delete this photo?":"Hapus foto ini?",
+"No photos yet.":"Belum ada foto.",
+"Play":"Putar",
+"Progress photo":"Foto progres",
+"When was it taken?":"Kapan foto ini diambil?",
+"{n} days":"{n} hari",
+"{n} photos":"{n} foto"
 },
 "ar":{
 "+{n} kcal added for extra activity. Your normal ~{i} kcal of training is already in your goal.":"أُضيفت +{n} kcal لنشاط إضافي. تمرينك المعتاد ~{i} kcal محسوب أصلًا في هدفك.",
@@ -24749,6 +24889,16 @@ window.I18N = {
 "No dairy":"بدون ألبان",
 "No eggs":"بدون بيض",
 "No fish or seafood":"بدون سمك أو مأكولات بحرية",
-"No nuts":"بدون مكسرات"
+"No nuts":"بدون مكسرات",
+"All photos":"كل الصور",
+"Day {n} of your journey":"اليوم {n} من رحلتك",
+"Delete photo":"حذف الصورة",
+"Delete this photo?":"حذف هذه الصورة؟",
+"No photos yet.":"لا توجد صور بعد.",
+"Play":"تشغيل",
+"Progress photo":"صورة التقدم",
+"When was it taken?":"متى التُقطت؟",
+"{n} days":"{n} يومًا",
+"{n} photos":"{n} صور"
 }
 };

@@ -947,6 +947,18 @@ input:not([type=range]):not(.tinput):focus,select:focus,textarea:focus{box-shado
 .bd-pick{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;width:150px;height:200px;margin:4px auto 0;border-radius:18px;background:var(--chip);overflow:hidden;font-weight:600;color:var(--muted);font-size:14px}
 .bd-pick img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .bd-pick-x{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);padding:4px 10px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font-size:12px;font-weight:700;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.pp-btns .btn{white-space:nowrap;padding-inline:10px;min-width:0}
+.pp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pp-tile{position:relative;aspect-ratio:3/4;border-radius:14px;overflow:hidden;background:var(--chip);padding:0}
+.pp-tile img,.pp-tile .ph-miss{width:100%;height:100%;object-fit:cover;display:flex;align-items:center;justify-content:center}
+.pp-tile>span{position:absolute;left:6px;bottom:6px;padding:2px 7px;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:700}
+.pp-play{position:fixed;inset:0;z-index:2000;background:#000;color:#fff;display:flex;flex-direction:column;animation:fade .25s ease}
+.pp-x{position:absolute;right:16px;top:calc(env(safe-area-inset-top) + 12px);z-index:2;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.15);color:#fff;font-size:18px}
+.pp-stage{position:relative;flex:1;margin:calc(env(safe-area-inset-top) + 64px) 16px 0}
+.pp-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .45s ease}
+.pp-stage img.on{opacity:1}
+.pp-cap{text-align:center;padding:16px 16px 8px}.pp-cap b{display:block;font-size:20px}.pp-cap span{font-size:14px;opacity:.7}
+.pp-bar{height:4px;margin:6px 24px calc(env(safe-area-inset-bottom) + 24px);border-radius:2px;background:rgba(255,255,255,.2)}.pp-bar i{display:block;height:100%;width:0;border-radius:2px;background:#ff9f1c;transition:width .4s ease}
 .bd-cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .bd-cmpimg{position:relative;aspect-ratio:3/4;border-radius:18px;overflow:hidden;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:30px}
 .bd-cmpimg img{width:100%;height:100%;object-fit:cover;display:block}
@@ -1251,7 +1263,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v221';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v222';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -3303,7 +3315,7 @@ async function photoSync(force, onStatus = () => {}) {
     const server = Object.fromEntries((await r.json()).map(x => [x.m, x])), byMonth = {};
     let seen = {}; try { seen = JSON.parse(LS.get('ft_ph_seen', '{}')) || {}; } catch {}
     for (const m of db.meals) if (m.photo && /^\d{4}-\d{2}/.test(m.date || '')) (byMonth[m.date.slice(0, 7)] ||= []).push(m.id);
-    for (const e of db.body || []) if (e.photo && /^\d{4}-\d{2}/.test(e.date || '')) (byMonth[e.date.slice(0, 7)] ||= []).push(e.photo);   // progress photos
+    for (const e of db.body || []) if (photosOf(e).length && /^\d{4}-\d{2}/.test(e.date || '')) (byMonth[e.date.slice(0, 7)] ||= []).push(...photosOf(e));   // progress photos
     const key = await aesKey(a.key);
     for (const mo of [...new Set([...Object.keys(byMonth), ...Object.keys(server)])].sort().reverse()) {
       const mine = new Set(byMonth[mo] || []), local = {};
@@ -3339,7 +3351,7 @@ async function photoSync(force, onStatus = () => {}) {
       up += Math.max(0, ids.length - (s ? +s.n || 0 : 0)); seen[mo] = { h, ids };
     }
     LS.set('ft_ph_seen', JSON.stringify(seen)); LS.set('ft_ph_sync', String(Date.now())); LS.set('ft_ph_day', iso());
-    if (got) { if (!$('.backdrop') && !$('#moved')) render(); toast('✓ ' + T((db.body || []).some(e => e.photo) ? '{n} photos are back' : '{n} meal photos are back', { n: got })); }
+    if (got) { if (!$('.backdrop') && !$('#moved')) render(); toast('✓ ' + T((db.body || []).some(e => photosOf(e).length) ? '{n} photos are back' : '{n} meal photos are back', { n: got })); }
     return { up, got, total };
   } catch { return null; } finally { phBusy = false; }
 }
@@ -6195,6 +6207,9 @@ function expectedText(p, cur) {
    encrypted backup; they are never sent to the AI. When people build muscle, these show progress the scale can't. */
 const BODY = [['waist', N('Waist'), N('At belly-button height, relaxed'), -1], ['hips', N('Hips'), N('At the widest point'), -1], ['arm', N('Arms'), N('Flexed, at the thickest point'), 1]];
 const bodyList = () => (db.body = db.body || []).slice().sort((a, b) => a.date.localeCompare(b.date));
+// Progress photos: any number, also several on one day. A body entry keeps its first photo in "photo" and more in "photos".
+const photosOf = e => [e.photo, ...(e.photos || [])].filter(Boolean);
+const photoList = () => bodyList().flatMap(e => photosOf(e).map(id => ({ date: e.date, id, e })));
 const cmShow = v => r1(isIn() ? v / CM_IN : v);
 const cmUnit = () => isIn() ? 'in' : 'cm';
 const cmRead = v => { const n = num(v); return n > 0 ? Math.round((isIn() ? n * CM_IN : n) * 10) / 10 : null; };
@@ -6227,35 +6242,108 @@ const PHOTO_ART = `<svg class="pp-art" viewBox="0 0 120 90" aria-hidden="true"><
   <path d="M72 70c2-12 8-18 14-18s12 6 14 18" fill="none" stroke="var(--text)" stroke-width="2" stroke-linecap="round"/><circle cx="31" cy="36" r="6" fill="var(--line)" transform="rotate(-8 31 45)"/></svg>`;
 function photoCard() {
   if (!db.profile) return '';
-  const photos = bodyList().filter(e => e.photo);
+  const photos = photoList();
   return `<div class="card" id="photoCard"><div class="spread"><b style="font-size:17px">${T('Progress photos')}</b>${photos.length ? `<button class="chipbtn" id="ppAdd">＋ ${T('Upload photo')}</button>` : ''}</div>
-    ${photos.length ? `<div class="bd-photos">${photos.slice(-12).reverse().map(e => `<button class="bd-ph" data-bph="${e.date}"><img data-photo="${e.photo}" data-ph="📷" alt=""><span>${fmtDate(e.date, { day: 'numeric', month: 'short' })}</span></button>`).join('')}</div>
-      ${photos.length >= 2 ? `<button class="btn sm outline" id="bdCmp" style="width:100%;margin-top:12px">↔️ ${T('Compare before & after')}</button>` : ''}`
+    ${photos.length ? `<div class="bd-photos">${photos.slice(-12).reverse().map(p => `<button class="bd-ph" data-pph="${p.id}"><img data-photo="${p.id}" data-ph="📷" alt=""><span>${fmtDate(p.date, { day: 'numeric', month: 'short' })}</span></button>`).join('')}</div>
+      <div class="row pp-btns" style="gap:8px;margin-top:12px"><button class="btn sm outline grow" id="ppAll">${T('All photos')} · ${photos.length}</button>
+      ${photos.length >= 2 ? `<button class="btn sm outline grow" id="bdCmp">${T('Before & after')}</button>` : ''}</div>`
     : `<div class="pp-empty">${PHOTO_ART}<p class="small muted">${T('See how your body changes, not just the scale.')}</p><button class="btn sm outline" id="ppAdd">＋ ${T('Upload photo')}</button></div>`}
     <p class="small muted" style="margin:10px 0 0">🔒 ${T('Photos stay private: only on your phone and in your encrypted backup.')}</p></div>`;
 }
-// Pick a photo and save it as today's progress photo (keeps today's measurements)
+// Pick a photo, frame it, choose the day it was taken (older photos land in the right place), save. Any number of photos.
 function addProgressPhoto() {
   pickImage(async f => {
-    try {
-      const data = await cropImage(f, { w: 1050, h: 1400 }), date = iso(); if (!data) return;
-      const e = (db.body = db.body || []).find(x => x.date === date);
-      if (e && e.photo && !confirm(T('Replace today\'s photo?'))) return;
+    try { const data = await cropImage(f, { w: 1050, h: 1400 }); if (data) openPhotoDate(data); } catch (err) { toast(err.message); }
+  });
+}
+function openPhotoDate(data) {
+  sheet(`<h3>${T('Progress photo')}</h3>
+    <img src="${data}" alt="" style="display:block;width:132px;aspect-ratio:3/4;object-fit:cover;border-radius:16px;margin:12px auto 0">
+    <label class="lbl">${T('When was it taken?')}</label><input type="date" id="ppDate" value="${iso()}" max="${iso()}">
+    <button class="btn" id="ppSave" style="margin-top:16px">${T('Save')}</button>`, sh => {
+    sh.querySelector('#ppSave').onclick = async () => {
+      const v = sh.querySelector('#ppDate').value, date = /^\d{4}-\d{2}-\d{2}$/.test(v) && v <= iso() ? v : iso();
       const id = 'pp-' + date + '-' + Math.random().toString(36).slice(2, 7);
       await idb.set(id, data); photoCache[id] = data;
-      if (e && e.photo) { idb.del(e.photo); delete photoCache[e.photo]; }
-      if (e) e.photo = id; else db.body.push({ date, photo: id });
-      save(); toast('✓ ' + T('Saved')); if (tab === 'progress') renderProgress();
-      if (acct()) setTimeout(() => photoSync(true), 1500);
-    } catch (err) { toast(err.message); }
+      const e = (db.body = db.body || []).find(x => x.date === date);
+      if (!e) db.body.push({ date, photo: id }); else if (!e.photo) e.photo = id; else (e.photos = e.photos || []).push(id);
+      save(); closeSheet(); toast('✓ ' + T('Saved'));
+      if ($('#ppTimePg')) openPhotoTimeline(); if (tab === 'progress') renderProgress();
+      if (acct()) setTimeout(() => photoSync(true), 1500);   // the photo goes into the encrypted backup
+    };
   });
+}
+function removePhoto(id) {
+  const e = (db.body || []).find(x => photosOf(x).includes(id)); if (!e) return;
+  if (e.photo === id) { e.photo = (e.photos || []).shift(); if (!e.photo) delete e.photo; } else e.photos = (e.photos || []).filter(x => x !== id);
+  if (e.photos && !e.photos.length) delete e.photos;
+  if (!photosOf(e).length && !BODY.some(([k]) => e[k] > 0)) db.body = db.body.filter(x => x !== e);
+  idb.del(id); delete photoCache[id]; save();
+}
+// One photo, big, with its day and a delete button
+function openPhotoView(id) {
+  const p = photoList().find(x => x.id === id); if (!p) return;
+  const first = photoList()[0], days = first ? daysBetween(first.date, p.date) : 0;
+  sheet(`<div class="bd-cmpimg" style="max-width:300px;margin:6px auto 0"><img data-photo="${id}" data-ph="📷" alt=""></div>
+    <p style="text-align:center;margin:12px 0 0"><b>${fmtDate(p.date, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</b>${days > 0 ? `<br><span class="small muted">${T('Day {n} of your journey', { n: days + 1 })}</span>` : ''}</p>
+    <button class="btn outline" id="pvDel" style="margin-top:16px;color:var(--bad)">${T('Delete photo')}</button>`, sh => {
+    hydratePhotos(sh);
+    sh.querySelector('#pvDel').onclick = () => { if (!confirm(T('Delete this photo?'))) return; removePhoto(id); closeSheet(); if ($('#ppTimePg')) openPhotoTimeline(); if (tab === 'progress') renderProgress(); };
+  });
+}
+// All progress photos: a grid by month, play them as a time-lapse, compare any two
+function openPhotoTimeline() {
+  const L = photoList();
+  let pg = $('#ppTimePg');
+  if (!pg) { pg = document.createElement('div'); pg.className = 'page'; pg.id = 'ppTimePg'; pg.style.zIndex = 39; document.body.appendChild(pg); }
+  const months = {}; for (const p of L.slice().reverse()) (months[p.date.slice(0, 7)] ||= []).push(p);
+  const first = L[0], last = L.at(-1), span = first && last ? daysBetween(first.date, last.date) : 0;
+  pg.innerHTML = `<div class="mp-head"><button class="mp-back" id="ptBack" aria-label="${T('Back')}">‹</button><div class="grow"><div class="mp-title">${T('Progress photos')}</div>
+      <div class="small muted" style="font-weight:600">${T('{n} photos', { n: L.length })}${span ? ' · ' + T('{n} days', { n: span }) : ''}</div></div>
+      ${L.length >= 2 ? `<button class="chipbtn" id="ptPlay">▶ ${T('Play')}</button>` : ''}</div>
+    <div class="wrap mp-body">
+      <div class="row" style="gap:8px"><button class="btn sm grow" id="ptAdd">＋ ${T('Upload photo')}</button>${L.length >= 2 ? `<button class="btn sm outline grow" id="ptCmp">↔️ ${T('Before & after')}</button>` : ''}</div>
+      ${Object.entries(months).map(([mo, ps]) => `<div class="h2">${dt(mo + '-01').toLocaleDateString(LOC, { month: 'long', year: 'numeric' })}</div>
+        <div class="pp-grid">${ps.map(p => `<button class="pp-tile" data-pv="${p.id}"><img data-photo="${p.id}" data-ph="📷" alt=""><span>${fmtDate(p.date, { day: 'numeric', month: 'short' })}</span></button>`).join('')}</div>`).join('')
+        || `<p class="muted" style="text-align:center;margin-top:30px">${T('No photos yet.')}</p>`}
+      <p class="small muted" style="text-align:center;margin-top:18px">🔒 ${T('Photos stay private: only on your phone and in your encrypted backup.')}</p></div>`;
+  pg.querySelector('#ptBack').onclick = () => { pg.remove(); if (tab === 'progress') renderProgress(); };
+  pg.querySelector('#ptAdd').onclick = addProgressPhoto;
+  if (pg.querySelector('#ptCmp')) pg.querySelector('#ptCmp').onclick = openBodyCompare;
+  if (pg.querySelector('#ptPlay')) pg.querySelector('#ptPlay').onclick = openPhotoPlay;
+  pg.querySelectorAll('[data-pv]').forEach(b => b.onclick = () => openPhotoView(b.dataset.pv));
+  hydratePhotos(pg);
+}
+// Time-lapse: every photo from the first to the last, one after another, with its date
+async function openPhotoPlay() {
+  const L = photoList(); if (L.length < 2) return;
+  const srcs = []; for (const p of L) srcs.push(photoCache[p.id] || (photoCache[p.id] = await idb.get(p.id)));
+  const ov = document.createElement('div'); ov.className = 'pp-play';
+  ov.innerHTML = `<button class="pp-x" aria-label="${T('Close')}">✕</button><div class="pp-stage"><img alt=""><img alt=""></div>
+    <div class="pp-cap"><b></b><span></span></div><div class="pp-bar"><i></i></div>`;
+  document.body.appendChild(ov);
+  const imgs = ov.querySelectorAll('.pp-stage img'), cap = ov.querySelector('.pp-cap b'), sub = ov.querySelector('.pp-cap span'), bar = ov.querySelector('.pp-bar i');
+  let i = 0, front = 0, timer = null, paused = false;
+  const show = () => {
+    const p = L[i], next = imgs[1 - front];
+    next.src = srcs[i] || ''; next.classList.add('on'); imgs[front].classList.remove('on'); front = 1 - front;
+    cap.textContent = fmtDate(p.date, { day: 'numeric', month: 'long', year: 'numeric' });
+    sub.textContent = T('Day {n} of your journey', { n: daysBetween(L[0].date, p.date) + 1 });
+    bar.style.width = ((i + 1) / L.length * 100) + '%';
+  };
+  const step = () => { if (paused) return; if (i < L.length - 1) { i++; show(); timer = setTimeout(step, i === L.length - 1 ? 2600 : 1100); } };
+  const close = () => { clearTimeout(timer); ov.remove(); };
+  ov.querySelector('.pp-x').onclick = close;
+  ov.querySelector('.pp-stage').onclick = () => { if (i >= L.length - 1) { i = 0; show(); paused = false; timer = setTimeout(step, 1100); return; } paused = !paused; if (!paused) step(); };
+  show(); timer = setTimeout(step, 1300);
 }
 function bindBodyCard() {
   if ($('#bdAdd')) $('#bdAdd').onclick = () => openBodySheet();
   if ($('#bdCmp')) $('#bdCmp').onclick = () => openBodyCompare();
   if ($('#bdHist')) $('#bdHist').onclick = openBodyHistory;
   if ($('#ppAdd')) $('#ppAdd').onclick = addProgressPhoto;
-  document.querySelectorAll('[data-bph]').forEach(b => b.onclick = () => openBodySheet(b.dataset.bph));
+  if ($('#ppAll')) $('#ppAll').onclick = openPhotoTimeline;
+  document.querySelectorAll('[data-pph]').forEach(b => b.onclick = () => openPhotoView(b.dataset.pph));
 }
 function openBodySheet(date = iso()) {
   const e = (db.body = db.body || []).find(x => x.date === date) || { date }, prev = bodyList().filter(x => x.date < date && BODY.some(([k]) => x[k] > 0)).at(-1) || {};
@@ -6281,19 +6369,20 @@ function openBodySheet(date = iso()) {
       sh.querySelectorAll('[data-bd]').forEach(i => { const v = i.value.trim() ? cmRead(i.value) : null; if (i.value.trim() && !(v >= 10 && v <= 250)) bad = true; vals[i.dataset.bd] = v; });
       if (bad) return toast(T('Please check the numbers.'));
       const hasPhoto = newPhoto || (e.photo && !dropPhoto);
-      if (!BODY.some(([k]) => vals[k]) && !hasPhoto) return toast(T('Enter a measurement or add a photo.'));
+      if (!BODY.some(([k]) => vals[k]) && !hasPhoto && !(e.photos || []).length) return toast(T('Enter a measurement or add a photo.'));
       const out = { date };
       for (const [k] of BODY) if (vals[k]) out[k] = vals[k];
       if (newPhoto) { out.photo = e.photo && !dropPhoto ? e.photo : 'pp-' + date + '-' + Math.random().toString(36).slice(2, 7); await idb.set(out.photo, newPhoto); photoCache[out.photo] = newPhoto; }
       else if (e.photo && !dropPhoto) out.photo = e.photo;
       if (e.photo && e.photo !== out.photo) { idb.del(e.photo); delete photoCache[e.photo]; }
+      if (e.photos && e.photos.length) { if (out.photo) out.photos = e.photos; else { out.photo = e.photos[0]; if (e.photos.length > 1) out.photos = e.photos.slice(1); } }
       db.body = db.body.filter(x => x.date !== date); db.body.push(out); save();
       closeSheet(); toast('✓ ' + T('Saved')); if (tab === 'progress') renderProgress();
       if (newPhoto && acct()) setTimeout(() => photoSync(true), 1500);   // the photo goes into the encrypted backup
     };
     if (sh.querySelector('#bdDel')) sh.querySelector('#bdDel').onclick = () => {
       if (!confirm(T('Delete this entry?'))) return;
-      if (e.photo) { idb.del(e.photo); delete photoCache[e.photo]; }
+      for (const id of photosOf(e)) { idb.del(id); delete photoCache[id]; }
       db.body = db.body.filter(x => x.date !== date); save(); closeSheet(); if (tab === 'progress') renderProgress();
     };
   });
@@ -6302,25 +6391,25 @@ function openBodyHistory() {
   const L = bodyList().reverse();
   sheet(`<h3>📏 ${T('History')}</h3><div class="list" style="box-shadow:none;background:var(--chip);margin-top:12px">${L.map(e => `<button class="li" data-bh="${e.date}">
       <span class="grow"><b>${fmtDate(e.date, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })}</b><br><span class="small muted">${BODY.filter(([k]) => e[k]).map(([k, l]) => `${T(l)} ${cmShow(e[k])}`).join(' · ') || '–'}</span></span>
-      ${e.photo ? '<span>📷</span>' : ''}<span class="chev">›</span></button>`).join('')}</div>`, sh => {
+      ${photosOf(e).length ? `<span>📷${photosOf(e).length > 1 ? ' ' + photosOf(e).length : ''}</span>` : ''}<span class="chev">›</span></button>`).join('')}</div>`, sh => {
     sh.querySelectorAll('[data-bh]').forEach(b => b.onclick = () => openBodySheet(b.dataset.bh));
   });
 }
 function openBodyCompare() {
-  const P = bodyList().filter(e => e.photo); if (P.length < 2) return;
+  const P = photoList(); if (P.length < 2) return;
   let i = 0, j = P.length - 1;
   const pg = document.createElement('div'); pg.className = 'page'; pg.id = 'bdCmpPg'; pg.style.zIndex = 40;
   document.body.appendChild(pg);
   const draw = () => {
     const A = P[i], B = P[j], days = Math.abs(daysBetween(A.date, B.date)), u = cmUnit();
-    const rows = BODY.filter(([k]) => A[k] && B[k]).map(([k, l, , good]) => { const d = r1(cmShow(B[k]) - cmShow(A[k]));
-      return `<div class="spread bd-row"><span>${T(l)}</span><span>${cmShow(A[k])} → <b>${cmShow(B[k])}</b> ${u} <b style="color:${Math.abs(d) < 0.1 ? 'var(--muted)' : d * good > 0 ? 'var(--good)' : 'var(--carbs)'}">${signed(d)}</b></span></div>`; });
+    const rows = BODY.filter(([k]) => A.e[k] && B.e[k]).map(([k, l, , good]) => { const d = r1(cmShow(B.e[k]) - cmShow(A.e[k]));
+      return `<div class="spread bd-row"><span>${T(l)}</span><span>${cmShow(A.e[k])} → <b>${cmShow(B.e[k])}</b> ${u} <b style="color:${Math.abs(d) < 0.1 ? 'var(--muted)' : d * good > 0 ? 'var(--good)' : 'var(--carbs)'}">${signed(d)}</b></span></div>`; });
     const wa = weightOn(A.date), wb = weightOn(B.date);
     if (wa && wb) rows.push(`<div class="spread bd-row"><span>${T('Weight')}</span><span>${showW(wa)} → <b>${showW(wb)}</b> ${wUnit()} <b class="muted">${signed(r1(showW(wb) - showW(wa)))}</b></span></div>`);
-    const recomp = wa && wb && Math.abs(wb - wa) < 1.5 && A.waist && B.waist && B.waist - A.waist <= -1;
+    const recomp = wa && wb && Math.abs(wb - wa) < 1.5 && A.e.waist && B.e.waist && B.e.waist - A.e.waist <= -1;
     pg.innerHTML = `<div class="mp-head"><button class="mp-back" id="bcBack" aria-label="${T('Back')}">‹</button><div class="mp-title">${T('Before & after')}</div></div>
       <div class="wrap mp-body"><div class="bd-cmp">${[[A, i, 'bcA', T('Before')], [B, j, 'bcB', T('After')]].map(([E, n, id, lab]) => `<div style="min-width:0">
-        <div class="bd-cmpimg"><img data-photo="${E.photo}" data-ph="📷" alt=""><span class="bd-tag">${lab}</span></div>
+        <div class="bd-cmpimg"><img data-photo="${E.id}" data-ph="📷" alt=""><span class="bd-tag">${lab}</span></div>
         <select id="${id}" class="rsel" style="width:100%;margin-top:8px;background:var(--chip)">${P.map((x, k) => `<option value="${k}" ${k === n ? 'selected' : ''}>${fmtDate(x.date, { day: 'numeric', month: 'short', year: 'numeric' })}</option>`).join('')}</select></div>`).join('')}</div>
         <div class="card" style="margin-top:14px"><b>${days ? T('{n} days apart', { n: days }) : T('Same day')}</b>${rows.join('') || `<p class="small muted" style="margin:8px 0 0">${T('Add measurements on both days to see the numbers here too.')}</p>`}
           ${recomp ? `<div class="tip">💪 ${T('Your weight barely changed, but your waist got smaller: you are losing fat and building muscle.')}</div>` : ''}</div>
@@ -6665,6 +6754,7 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Groups, Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
+- Progress photos (Progress tab): any number, also several a day; after framing they choose the day it was taken. "All photos" shows them by month, ▶ Play shows them as a time-lapse from first to last, "Before & after" compares any two with the measurements.
 - Diet & food needs (Settings → Preferences, also in the meal plan preferences): diet plus food needs that can be combined: gluten-free, celiac (no traces), lactose-free, little dairy, no dairy, no nuts, no eggs, no fish or seafood. The meal plan and you always respect them, and a scanned meal that probably breaks one shows a warning at the top of the meal.
 - Ingredient amounts can be typed in grams, ounces, the kitchen measure (cup, tbsp, piece…) or pieces (unit menu next to the amount); the app remembers the last unit.
 - Coach chat: after each answer, the buttons above the text box show 2 short follow-up questions to tap (otherwise the usual questions for the time of day).
