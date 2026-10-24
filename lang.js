@@ -1547,7 +1547,18 @@ window.I18N = {
 "Within goal":"Im Ziel",
 "Your name":"Dein Name",
 "{n} days logged":"{n} Tage erfasst",
-"{n} within goal":"{n} im Ziel"
+"{n} within goal":"{n} im Ziel",
+"Activity added":"Aktivität hinzugefügt",
+"Added to your food log":"Zum Ernährungstagebuch hinzugefügt",
+"Habit started":"Gewohnheit gestartet",
+"Replace":"Ersetzen",
+"Replace your current habit?":"Deine aktuelle Gewohnheit ersetzen?",
+"Undo":"Rückgängig",
+"Undone":"Rückgängig gemacht",
+"Water added":"Wasser hinzugefügt",
+"Water goal":"Wasserziel",
+"Water goal changed":"Wasserziel geändert",
+"Weight saved":"Gewicht gespeichert"
 },
 "es":{
 "Could not save. Is your phone storage full?":"No se pudo guardar. ¿Está lleno el almacenamiento de tu teléfono?",
@@ -3096,7 +3107,18 @@ window.I18N = {
 "Within goal":"Dentro del objetivo",
 "Your name":"Tu nombre",
 "{n} days logged":"{n} días registrados",
-"{n} within goal":"{n} dentro del objetivo"
+"{n} within goal":"{n} dentro del objetivo",
+"Activity added":"Actividad añadida",
+"Added to your food log":"Añadido a tu registro de comidas",
+"Habit started":"Hábito iniciado",
+"Replace":"Reemplazar",
+"Replace your current habit?":"¿Reemplazar tu hábito actual?",
+"Undo":"Deshacer",
+"Undone":"Deshecho",
+"Water added":"Agua añadida",
+"Water goal":"Objetivo de agua",
+"Water goal changed":"Objetivo de agua cambiado",
+"Weight saved":"Peso guardado"
 },
 "fr":{
 "Could not save. Is your phone storage full?":"Échec de l'enregistrement. Le stockage de ton téléphone est-il plein ?",
@@ -4645,7 +4667,18 @@ window.I18N = {
 "Within goal":"Dans l'objectif",
 "Your name":"Ton prénom",
 "{n} days logged":"{n} jours notés",
-"{n} within goal":"{n} dans l'objectif"
+"{n} within goal":"{n} dans l'objectif",
+"Activity added":"Activité ajoutée",
+"Added to your food log":"Ajouté à ton journal alimentaire",
+"Habit started":"Habitude lancée",
+"Replace":"Remplacer",
+"Replace your current habit?":"Remplacer ton habitude actuelle ?",
+"Undo":"Annuler",
+"Undone":"Annulé",
+"Water added":"Eau ajoutée",
+"Water goal":"Objectif d'eau",
+"Water goal changed":"Objectif d'eau modifié",
+"Weight saved":"Poids enregistré"
 },
 "it":{
 "Could not save. Is your phone storage full?":"Salvataggio non riuscito. La memoria del telefono è piena?",
@@ -6194,7 +6227,18 @@ window.I18N = {
 "Within goal":"Nell'obiettivo",
 "Your name":"Il tuo nome",
 "{n} days logged":"{n} giorni registrati",
-"{n} within goal":"{n} nell'obiettivo"
+"{n} within goal":"{n} nell'obiettivo",
+"Activity added":"Attività aggiunta",
+"Added to your food log":"Aggiunto al tuo diario alimentare",
+"Habit started":"Abitudine iniziata",
+"Replace":"Sostituisci",
+"Replace your current habit?":"Sostituire la tua abitudine attuale?",
+"Undo":"Annulla",
+"Undone":"Annullato",
+"Water added":"Acqua aggiunta",
+"Water goal":"Obiettivo acqua",
+"Water goal changed":"Obiettivo acqua cambiato",
+"Weight saved":"Peso salvato"
 },
 "ja":{
 "Could not save. Is your phone storage full?":"保存できませんでした。端末のストレージがいっぱいではありませんか？",
@@ -7743,7 +7787,18 @@ window.I18N = {
 "Within goal":"目標内",
 "Your name":"名前",
 "{n} days logged":"{n} 日記録",
-"{n} within goal":"目標内 {n} 日"
+"{n} within goal":"目標内 {n} 日",
+"Activity added":"アクティビティを追加しました",
+"Added to your food log":"食事記録に追加しました",
+"Habit started":"習慣を始めました",
+"Replace":"置き換える",
+"Replace your current habit?":"今の習慣を置き換えますか？",
+"Undo":"元に戻す",
+"Undone":"元に戻しました",
+"Water added":"水を追加しました",
+"Water goal":"水分目標",
+"Water goal changed":"水分目標を変更しました",
+"Weight saved":"体重を保存しました"
 },
 "nl":{
 "Could not save. Is your phone storage full?":"Opslaan mislukt. Is de opslag van je telefoon vol?",
@@ -9292,7 +9347,18 @@ window.I18N = {
 "Within goal":"Binnen je doel",
 "Your name":"Je naam",
 "{n} days logged":"{n} dagen ingevoerd",
-"{n} within goal":"{n} binnen je doel"
+"{n} within goal":"{n} binnen je doel",
+"Activity added":"Activiteit toegevoegd",
+"Added to your food log":"Toegevoegd aan je eetdagboek",
+"Habit started":"Gewoonte gestart",
+"Replace":"Vervangen",
+"Replace your current habit?":"Je huidige gewoonte vervangen?",
+"Undo":"Ongedaan maken",
+"Undone":"Ongedaan gemaakt",
+"Water added":"Water toegevoegd",
+"Water goal":"Waterdoel",
+"Water goal changed":"Waterdoel gewijzigd",
+"Weight saved":"Gewicht opgeslagen"
 },
 "pl":{
 "Could not save. Is your phone storage full?":"Nie udało się zapisać. Czy pamięć telefonu jest pełna?",
@@ -10841,7 +10907,18 @@ window.I18N = {
 "Within goal":"W ramach celu",
 "Your name":"Twoje imię",
 "{n} days logged":"Dni z wpisami: {n}",
-"{n} within goal":"W ramach celu: {n}"
+"{n} within goal":"W ramach celu: {n}",
+"Activity added":"Dodano aktywność",
+"Added to your food log":"Dodano do dziennika posiłków",
+"Habit started":"Nawyk rozpoczęty",
+"Replace":"Zastąp",
+"Replace your current habit?":"Zastąpić Twój obecny nawyk?",
+"Undo":"Cofnij",
+"Undone":"Cofnięto",
+"Water added":"Dodano wodę",
+"Water goal":"Cel wody",
+"Water goal changed":"Zmieniono cel wody",
+"Weight saved":"Zapisano wagę"
 },
 "pt":{
 "Could not save. Is your phone storage full?":"Não foi possível guardar. O armazenamento do telemóvel está cheio?",
@@ -12390,7 +12467,18 @@ window.I18N = {
 "Within goal":"Dentro do objetivo",
 "Your name":"O teu nome",
 "{n} days logged":"{n} dias registados",
-"{n} within goal":"{n} dentro do objetivo"
+"{n} within goal":"{n} dentro do objetivo",
+"Activity added":"Atividade adicionada",
+"Added to your food log":"Adicionado ao teu registo alimentar",
+"Habit started":"Hábito iniciado",
+"Replace":"Substituir",
+"Replace your current habit?":"Substituir o teu hábito atual?",
+"Undo":"Anular",
+"Undone":"Anulado",
+"Water added":"Água adicionada",
+"Water goal":"Objetivo de água",
+"Water goal changed":"Objetivo de água alterado",
+"Weight saved":"Peso guardado"
 },
 "ru":{
 "Could not save. Is your phone storage full?":"Не удалось сохранить. Память телефона заполнена?",
@@ -13939,7 +14027,18 @@ window.I18N = {
 "Within goal":"В пределах цели",
 "Your name":"Твоё имя",
 "{n} days logged":"Дней с записями: {n}",
-"{n} within goal":"В пределах цели: {n}"
+"{n} within goal":"В пределах цели: {n}",
+"Activity added":"Активность добавлена",
+"Added to your food log":"Добавлено в дневник питания",
+"Habit started":"Привычка начата",
+"Replace":"Заменить",
+"Replace your current habit?":"Заменить твою текущую привычку?",
+"Undo":"Отменить",
+"Undone":"Отменено",
+"Water added":"Вода добавлена",
+"Water goal":"Цель по воде",
+"Water goal changed":"Цель по воде изменена",
+"Weight saved":"Вес сохранён"
 },
 "tr":{
 "Could not save. Is your phone storage full?":"Kaydedilemedi. Telefonunun depolama alanı dolu mu?",
@@ -15488,7 +15587,18 @@ window.I18N = {
 "Within goal":"Hedef içinde",
 "Your name":"Adın",
 "{n} days logged":"{n} gün kaydedildi",
-"{n} within goal":"{n} gün hedef içinde"
+"{n} within goal":"{n} gün hedef içinde",
+"Activity added":"Aktivite eklendi",
+"Added to your food log":"Yemek günlüğüne eklendi",
+"Habit started":"Alışkanlık başladı",
+"Replace":"Değiştir",
+"Replace your current habit?":"Mevcut alışkanlığın değiştirilsin mi?",
+"Undo":"Geri al",
+"Undone":"Geri alındı",
+"Water added":"Su eklendi",
+"Water goal":"Su hedefi",
+"Water goal changed":"Su hedefi değişti",
+"Weight saved":"Kilo kaydedildi"
 },
 "zh":{
 "Could not save. Is your phone storage full?":"保存失败。手机存储空间满了吗？",
@@ -17037,6 +17147,17 @@ window.I18N = {
 "Within goal":"目标以内",
 "Your name":"你的名字",
 "{n} days logged":"已记录 {n} 天",
-"{n} within goal":"{n} 天在目标以内"
+"{n} within goal":"{n} 天在目标以内",
+"Activity added":"已添加活动",
+"Added to your food log":"已添加到饮食记录",
+"Habit started":"习惯已开始",
+"Replace":"替换",
+"Replace your current habit?":"要替换你当前的习惯吗？",
+"Undo":"撤销",
+"Undone":"已撤销",
+"Water added":"已添加饮水",
+"Water goal":"饮水目标",
+"Water goal changed":"饮水目标已更改",
+"Weight saved":"体重已保存"
 }
 };

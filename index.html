@@ -180,6 +180,12 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 .day .dn.logged{border:2px solid var(--text)}
 .day .dn.over{border:2px solid var(--bad)}
 .ico{width:1em;height:1em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.14em;flex:none}
+.acts{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.actcard{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--card);border-radius:14px;padding:10px 10px 10px 12px;box-shadow:var(--shadow);font-size:14px}
+.actcard>.ico{font-size:20px;color:var(--good)}
+.actcard .grow{display:flex;flex-direction:column;min-width:0}
+.actcard .grow .small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.actcard.off{opacity:.55}.actcard.off>.ico{color:var(--muted)}
 .avatar{border-radius:50%;overflow:hidden;background:var(--chip);display:flex;align-items:center;justify-content:center;flex:none;position:relative;color:var(--muted)}
 .avatar img{width:100%;height:100%;object-fit:cover}
 .avatar .ava-none{width:62%;height:62%;opacity:.55}
@@ -1134,7 +1140,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v188';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v189';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -5616,8 +5622,104 @@ function applyMemoryTags(text) {
   if (changed) save();
   return changed;
 }
-// Hide memory tags, including a half-written one at the end while the answer is still streaming in
-const stripTags = t => t.replace(/<(memory|forget)>[\s\S]*?(<\/\1>|$)/gi, '').replace(/<\/?[a-z]{0,6}$/i, '').trim();
+/* --- Coach actions: the coach can do things for the user with <action>{json}</action> at the end of a reply
+   (log food, water, weight or activity, start a habit, change the water goal, open a page). Each one shows
+   as a small card under the answer with Undo, so nothing happens behind the user's back. */
+const actDate = d => { if (!d || d === 'today') return iso(); if (d === 'yesterday') return addDays(iso(), -1);
+  return /^\d{4}-\d{2}-\d{2}$/.test(d) && d <= iso() && d >= addDays(iso(), -30) ? d : iso(); };
+const OPEN_TARGETS = { goals: () => openMainGoalSheet(), meal_plan: () => openMealPlan(), habit: () => openHabitPage(), habits: () => openHabitChooser(),
+  month: () => openMonth(iso().slice(0, 7)), tracker: () => openTracker(), notifications: () => go('settings'), profile: () => openAvatarSheet(),
+  badges: () => go('progress'), weight: () => go('progress') };
+function applyActionTags(text) {
+  const acts = [];
+  for (const [, raw] of text.matchAll(/<action>([\s\S]*?)<\/action>/gi)) {
+    let a; try { a = JSON.parse(raw.trim()); } catch { continue; }
+    try { const r = doAction(a); if (r) acts.push({ uid: uid(), ...r }); } catch (e) { console.warn('coach action', e); }
+  }
+  if (acts.length && tab === 'home') renderHome();
+  return acts;
+}
+function doAction(a) {
+  const date = actDate(a.date);
+  if (a.type === 'log_food') {
+    const t = String(a.text || '').trim().slice(0, 300); if (!t) return null;
+    const id = uid(), time = /^\d{1,2}:\d{2}$/.test(a.time || '') ? a.time.padStart(5, '0') : nowTime();
+    const p = { id, date, time, preview: null, parts: [{ text: foodPrompt() + `\nThere is no photo. The user describes the meal: ${t}` }], pct: 2, status: 'analyzing' };
+    pending.unshift(p); savePendingQ(); runAnalysis(p);
+    return { k: 'food', id, date, label: t };
+  }
+  if (a.type === 'log_water') {
+    const ml = clamp(r0(num(a.ml)), 50, 3000); addWater(ml, date);
+    return { k: 'water', ml, date, label: '+' + fmtL(ml) };
+  }
+  if (a.type === 'log_weight') {
+    const kg = r1(num(a.kg)); if (kg < 25 || kg > 350) return null;
+    const prev = db.weights.find(w => w.date === date);
+    db.weights = db.weights.filter(w => w.date !== date); db.weights.push({ date, kg }); save();
+    return { k: 'weight', kg, date, prev: prev ? prev.kg : null, label: `${showW(kg)} ${wUnit()}` };
+  }
+  if (a.type === 'log_burn') {
+    const kcal = clamp(r0(num(a.kcal)), 1, 4000), id = uid(), name = String(a.name || T('Exercise')).trim().slice(0, 40);
+    db.exercises.push({ id, date, time: nowTime(), name, kcal, minutes: clamp(r0(num(a.minutes)), 0, 600) }); save();
+    return { k: 'burn', id, date, label: `${name} · ${kcal} kcal` };
+  }
+  if (a.type === 'set_water_goal') {
+    const ml = clamp(Math.round(num(a.ml) / 50) * 50, 1000, 6000), prev = db.settings.waterGoal;
+    db.settings.waterGoal = ml; save();
+    return { k: 'watergoal', ml, prev, label: T('Water goal') + ': ' + fmtL(ml) };
+  }
+  if (a.type === 'set_habit') {
+    const kind = HABITS.some(h => h.id === a.kind) ? a.kind : 'custom';
+    const name = kind === 'custom' ? String(a.name || '').trim().slice(0, 60) : '';
+    if (kind === 'custom' && !name) return null;
+    const remind = Number.isInteger(+a.remind) && +a.remind >= 6 && +a.remind <= 23 ? +a.remind : -1;
+    const h = { type: kind, name, start: iso(), log: {}, if: String(a.if || '').trim().slice(0, 80), then: String(a.then || '').trim().slice(0, 80), remind,
+      cut: kind === 'late' ? (/^\d{2}:\d{2}$/.test(a.cut || '') ? a.cut : '21:00') : undefined };
+    const label = (kind === 'custom' ? name : T(habitTpl(h).name));
+    if (db.habit) return { k: 'habit', ask: true, h, label };   // one habit at a time: the user decides on the card
+    db.habit = h; save(); setHabitReminder(remind);
+    return { k: 'habit', h, prev: null, label };
+  }
+  if (a.type === 'open' && OPEN_TARGETS[a.what]) return { k: 'open', what: a.what, label: '' };
+  return null;
+}
+function findAct(u) { for (const m of chat) for (const x of m.acts || []) if (x.uid === u) return x; return null; }
+function undoAct(u) {
+  const x = findAct(u); if (!x || x.undone) return;
+  if (x.k === 'food') { db.meals = db.meals.filter(m => m.id !== x.id); const p = pending.find(p => p.id === x.id); if (p) { clearInterval(p.timer); pending = pending.filter(q => q !== p); savePendingQ(); } }
+  if (x.k === 'water') addWater(-x.ml, x.date);
+  if (x.k === 'weight') { db.weights = db.weights.filter(w => w.date !== x.date); if (x.prev != null) db.weights.push({ date: x.date, kg: x.prev }); }
+  if (x.k === 'burn') db.exercises = db.exercises.filter(e => e.id !== x.id);
+  if (x.k === 'watergoal') { if (x.prev) db.settings.waterGoal = x.prev; else delete db.settings.waterGoal; }
+  if (x.k === 'habit') { db.habit = x.prev || null; setHabitReminder(db.habit ? db.habit.remind : -1); }
+  x.undone = true; save(); saveChat(); toast(T('Undone')); refreshActs();
+}
+function confirmHabitAct(u) {
+  const x = findAct(u); if (!x || !x.ask) return;
+  x.prev = db.habit; db.habit = x.h; x.ask = false; save(); setHabitReminder(x.h.remind); saveChat();
+  toast(T('Habit started. Small steps, every day.')); refreshActs();
+}
+function refreshActs() { if (tab === 'chat') renderChat(); if (tab === 'home') renderHome(); }
+const ACT_IC = { food: 'utensils', water: 'drop', weight: 'scale', burn: 'activity', watergoal: 'drop', habit: 'target', open: 'share' };
+const ACT_TITLE = { food: N('Added to your food log'), water: N('Water added'), weight: N('Weight saved'), burn: N('Activity added'), watergoal: N('Water goal changed'), habit: N('Habit started') };
+const OPEN_TITLE = { goals: N('Your goals'), meal_plan: N('Meal plan'), habit: N('Your habit'), habits: N('Choose a habit'), month: N('Month view'), tracker: N('Watch & tracker'),
+  notifications: N('Notifications'), profile: N('Profile picture'), badges: N('Badges'), weight: N('Progress') };
+function actCards(m) {
+  return (m.acts || []).map(x => {
+    if (x.k === 'open') return `<button class="actcard" data-actopen="${x.what}">${ic('share')}<span class="grow"><b>${T(OPEN_TITLE[x.what] || 'Open')}</b></span><span class="chev">›</span></button>`;
+    const title = x.k === 'habit' && x.ask ? T('Replace your current habit?') : T(ACT_TITLE[x.k]);
+    const btn = x.undone ? `<span class="small muted">${T('Undone')}</span>`
+      : x.k === 'habit' && x.ask ? `<button class="chipbtn" data-actok="${x.uid}">${T('Replace')}</button>`
+      : `<button class="chipbtn" data-actundo="${x.uid}">${T('Undo')}</button>`;
+    return `<div class="actcard ${x.undone ? 'off' : ''}">${ic(ACT_IC[x.k])}<span class="grow"><b>${title}</b><span class="small muted">${esc(x.label)}</span></span>${btn}</div>`;
+  }).join('');
+}
+document.addEventListener('click', e => {
+  const u = e.target.closest('[data-actundo]'), ok = e.target.closest('[data-actok]'), op = e.target.closest('[data-actopen]');
+  if (u) undoAct(u.dataset.actundo); if (ok) confirmHabitAct(ok.dataset.actok); if (op && OPEN_TARGETS[op.dataset.actopen]) OPEN_TARGETS[op.dataset.actopen]();
+});
+// Hide memory and action tags, including a half-written one at the end while the answer is still streaming in
+const stripTags = t => t.replace(/<(memory|forget|action)>[\s\S]*?(<\/\1>|$)/gi, '').replace(/<\/?[a-z]{0,6}$/i, '').trim();
 
 // Short version of the Home screen numbers, attached to every message the user sends
 function liveNumbers() {
@@ -5746,7 +5848,7 @@ const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. 
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros; if the Shortcut sends the same number on several days, 0 every evening or over 4000 kcal a day, Home shows a warning: in Find Health Samples only one date filter may stay, Start Date · is today) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (medals in 3 columns with their number and what they are for, silver until earned; tap one to see more). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Home shows a slim "Habits · Choose a habit" line (can be hidden with ✕; it's always on Progress), and the habit card once they chose one.
-- Coach: the Memory button (top right) opens My memory: what you remember about them (they can add or delete facts), My memory snapshot (a short summary you write about them with one question and 3 quick answers) and Chat history (earlier conversations are kept when they start a new one; they can open, continue or delete them). The suggestion buttons above the text field can be swiped sideways for more questions; the first one follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them.
+- Coach: the Memory button (top right) opens My memory: what you remember about them (they can add or delete facts), My memory snapshot (a short summary you write about them with one question and 3 quick answers) and Chat history (earlier conversations are kept when they start a new one; they can open, continue or delete them). The suggestion buttons above the text field can be swiped sideways for more questions; the first one follows the time of day (breakfast, lunch, afternoon snack, dinner, late snack). They can type or speak, and tap + to send photos or files (e.g. a menu or a food label). Once a week (Sunday unless they chose another day in Settings → Notifications) a weekly check-in appears here. You remember lasting facts about them. You can also do things for them from the chat (see ACTIONS): log food they tell you they ate, water, weight and activity, start a habit (it then shows on Home), change the water goal or open a page; each shows as a small card under your answer with Undo.
 - Settings: at the top their profile picture and name (tap the picture to add or change a photo, tap the name to set it); Your goals in three groups: Weight & muscle (first "Your weight?" lose / keep / gain, then: lose weight or lose fat & build muscle; maintain weight, lose fat & build muscle (recomp, keeping the weight) or pregnancy & breastfeeding (women only; extra calories by stage, never a deficit, no fasting); build muscle, lean bulk or dirty bulk; plus goal weight and speed), Lifestyle (optional, any: sport & endurance, eat healthier, high protein, keto max 30 g carbs or low carb max 100 g carbs) and Fasting (optional, one: intermittent fasting 12:12 to 23:1 / OMAD with an eating window, 5:2 with 2 chosen fast days at about 500-600 kcal, alternate-day fasting, or a one-time fast of 16-72 hours with a timer card on Home). Each choice adds its own Home card (fasting timer or fast day, carb limit, healthy eating, protein). Personal details (height, weight, age, daily life: mostly sitting / on their feet a lot / physical work, training 0 / 1-2 / 3-5 / 6+ per week; daily life and workouts together set the activity level, and an optional body type picked from 5 pictures from very lean / muscular to higher body fat, which makes calories and protein more accurate), Adjust macronutrients (own calorie and macro targets), Redo setup questions; Preferences: Language (12 languages), Units (kg/lb, cm/ft, L/fl oz, and the clock: 24-hour 13:00 or 12-hour 1:00 PM), App tour (replays the guided tour); Appearance: Automatic/Light/Dark and Background (Classic or a colour gradient like Midnight, Violet, Plum, Ocean, Forest, Emerald, Slate, Berry, Copper, Amber, Graphite); Notifications (water: up to 3 a day at 11:00, 14:00 and 17:00, only when they are behind their water goal (25 / 50 / 75 % by then), none once it is reached; calories-burned reminder, weekly weigh-in, weekly check-in on the day and time they choose, fasting window; each at their own time, skipped when already done); Account & backup (email + password; data and meal photos are backed up encrypted every day and come back on a new phone (the app owner can see account emails, never the data); "Back up now"); Privacy (what happens with the data, no cookies, their rights); Terms of use (free, estimates not medical advice, 16+, fair use); Delete all data.
 - The app is free, has no ads and updates itself automatically.`;
 function coachSystem() {
@@ -5772,6 +5874,17 @@ MEMORY
 - If a remembered fact is no longer true, add <forget>the old fact</forget> (and a new <memory> if needed).
 - The user doesn't see these tags.
 
+ACTIONS (you can do things in the app for the user)
+Add an action tag at the very END of your reply (after any memory tags) with one JSON object; the user sees a small card with Undo. In your text say briefly what you did (e.g. "Added to today: 1 boiled egg."). Only act when the user clearly says they did something or asks you to; never for plans, questions, hypotheticals or advice.
+- Food or drinks with calories they ate/drank (e.g. "I just ate an egg", "had a latte"): <action>{"type":"log_food","text":"1 boiled egg (about 50 g)","date":"today"}</action>. One action per meal. Write the food in "text" in English with amounts as exact as you know (the app's food AI works out calories and macros from it). Add "time":"HH:MM" only if they said when; "date" is "today", "yesterday" or YYYY-MM-DD (at most 30 days back). If something is already logged (see today's meals in LIVE APP DATA), don't add it twice.
+- Water: <action>{"type":"log_water","ml":500}</action> (a glass is about 250 ml).
+- Weight they just weighed: <action>{"type":"log_weight","kg":72.4}</action> (convert from lb if needed).
+- Activity with calories burned: <action>{"type":"log_burn","name":"Running","kcal":300,"minutes":30}</action>. Only when they tell you the calories or you can estimate them reasonably; if a watch/tracker is connected (see LIVE APP DATA), tell them it is counted automatically instead.
+- Water goal: <action>{"type":"set_water_goal","ml":3000}</action>.
+- A habit they want to build or change (e.g. stretch more, a stretch routine, drink more water, no snacking at night): <action>{"type":"set_habit","name":"Stretch 10 minutes","if":"I finish dinner","then":"I stretch for 10 minutes","remind":20}</action>. Use their language for name/if/then, keep each under 60 characters, make it small and concrete. "remind" is an hour 6-23 or -1 for none. If it matches a ready habit, add "kind": late (no food late in the evening, also "cut":"21:00"), drinks (no sugary drinks), sweets (fewer sweets), weekend (calm weekends), breakfast (protein breakfast), water (drink enough water); otherwise leave "kind" out. The app has ONE habit at a time: if they already have one (see LIVE APP DATA), the card asks them before replacing it, so mention that. The habit then shows on Home.
+- To show a page: <action>{"type":"open","what":"goals"}</action>, "what" is one of goals, meal_plan, habit, habits, month, tracker, notifications, profile, badges, weight.
+- You can't change calorie or macro goals, delete or edit logged entries: explain where they do it in the app (and offer the open action).
+
 THE APP
 ${APP_GUIDE}
 
@@ -5787,7 +5900,7 @@ function chatBubble(m, anim) {
   const a = anim ? ' new' : '';
   return m.role === 'user'
     ? `<div class="msg user${a}">${m.imgs && m.imgs.length > 1 ? `<div class="imgs">${m.imgs.map(u => `<img src="${u}" alt="">`).join('')}</div>` : m.imgs ? `<img src="${m.imgs[0]}" alt="">` : m.img ? `<img src="${m.img}" alt="">` : ''}${(m.files || (m.file ? [m.file] : [])).map(f => `<div class="filetag">📄 ${esc(f)}</div>`).join('')}${esc(m.text).replace(/\n/g, '<br>')}</div>${m.t ? `<div class="msgtime">${m.t < Date.parse(iso() + 'T00:00') ? fmtDate(iso(new Date(m.t)), { day: 'numeric', month: 'short' }) + ' ' : ''}${fmtClock(new Date(m.t))}</div>` : ''}`
-    : `<div class="msg ai${a} ${m.err ? 'err' : ''}">${m.err ? esc(m.text) : md(m.text)}${m.mem ? `<div class="memnote">💡 ${T('Remembered')}</div>` : ''}</div>`;
+    : `<div class="msg ai${a} ${m.err ? 'err' : ''}">${m.err ? esc(m.text) : md(m.text)}${m.mem ? `<div class="memnote">💡 ${T('Remembered')}</div>` : ''}${m.acts ? `<div class="acts">${actCards(m)}</div>` : ''}</div>`;
 }
 const CICON = {
   newchat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"><path d="M4 4h16v12H9l-5 4z"/><path d="M12 7v6M9 10h6"/></svg>',
@@ -6132,8 +6245,8 @@ async function sendChat(text) {
     const parts = [...attach, { text: `${liveNumbers()}\n\n${q}` }];
     const answer = await askAI(parts, { json: false, system: coachSystem(), history, strong: att.length > 0 || usesKept, timeout: att.length || usesKept ? 90000 : undefined, onText: t => { target = t; } });
     target = answer; done = true;
-    const mem = applyMemoryTags(answer);
-    entry = { role: 'assistant', text: stripTags(answer), mem: mem > 0, t: Date.now() };
+    const mem = applyMemoryTags(answer), acts = applyActionTags(answer);
+    entry = { role: 'assistant', text: stripTags(answer), mem: mem > 0, t: Date.now(), ...(acts.length ? { acts } : {}) };
   } catch (e) {
     entry = { role: 'assistant', err: true, text: aiMsg(e), t: Date.now() };
   }
