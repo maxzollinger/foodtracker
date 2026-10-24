@@ -183,6 +183,17 @@ html{touch-action:manipulation}   /* pinch zoom allowed (accessibility), no acci
 /* Icons that stand in for emojis keep a quiet accent colour where the colour means something */
 .e-flame,.e-zap{color:var(--flame)}.e-drop,.e-waves{color:var(--water)}.e-protein{color:var(--protein)}.e-wheat{color:var(--carbs)}.e-avocado{color:var(--fat)}
 .e-heart,.e-sprout,.e-leaf,.e-tree,.e-check,.e-salad{color:var(--good)}.e-alert,.e-nofork{color:var(--bad)}.e-trophy,.e-medal,.e-star,.e-crown,.e-party{color:#e0a526}
+.mp-budget .ico{color:var(--good)}
+.mp-stores{border-radius:22px;width:100%;margin-top:0}.mp-stores>.ico{font-size:22px}
+.mp-qty i{display:block;font-style:normal;font-size:12px;color:var(--muted);text-align:right}
+.st-map{height:260px;border-radius:18px;overflow:hidden;margin-top:14px;background:var(--chip);z-index:0}
+.st-map.dark .leaflet-tile{filter:invert(1) hue-rotate(180deg) brightness(.9) contrast(.9) saturate(.6)}
+.st-wait{display:flex;align-items:center;gap:8px;justify-content:center;padding:18px 0;color:var(--muted)}
+.st-list{margin-top:12px}.st-shop{align-items:flex-start;cursor:pointer}.st-shop .chipbtn{flex:none;text-decoration:none}
+.st-fit{flex:none;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;background:var(--chip);font-size:14px}
+.st-fit.hi{background:var(--good);color:#fff}.st-fit.mid{background:#e0a526;color:#fff}.st-fit.lo{background:var(--bad);color:#fff}
+.st-why{display:block;margin-top:2px;color:var(--text);opacity:.8}
+.st-pin span{display:flex;width:26px;height:26px;border-radius:50%;background:#111;color:#fff;font:800 12px/26px system-ui;justify-content:center;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.35)}
 .acts{display:flex;flex-direction:column;gap:8px;margin-top:10px}
 .actcard{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--card);border-radius:14px;padding:10px 10px 10px 12px;box-shadow:var(--shadow);font-size:14px}
 .actcard>.ico{font-size:20px;color:var(--good)}
@@ -1143,7 +1154,7 @@ const geminiKey = () => getKey() || (SERVER_URL ? SHARED : '');
 // bottom of Settings 7 times switches admin mode on or off.
 if (LS.get('ft_admin', '') === '' ) LS.set('ft_admin', LS.get('ft_key', '') || LS.get('ft_claude_key', '') || LS.get('ft_push', '') ? '1' : '0');
 const isAdmin = () => LS.get('ft_admin', '0') === '1';
-const APP_VERSION = 'foodtracker-v190';   // same as CACHE in sw.js
+const APP_VERSION = 'foodtracker-v191';   // same as CACHE in sw.js
 
 // Food photos live in IndexedDB (more space than localStorage)
 const idb = (() => {
@@ -1473,7 +1484,7 @@ const EMO = {
   '🦥': 'chair', '🏗': 'helmet', '🍬': 'candy', '🍫': 'candy', '🍪': 'candy', '🧂': 'salt', '☀': 'sun', '👑': 'crown', '🍱': 'grid', '🌊': 'waves',
   '💎': 'gem', '🌳': 'tree', '🥤': 'cup', '☕': 'coffee', '🧭': 'compass', '🔑': 'key', '🎁': 'gift', '🚴': 'bike', '📖': 'book', '⏰': 'clock', '🕒': 'clock',
   '✏️': 'pencil', '🙂': 'heart', '😊': 'heart', '👍': 'check', '🏠': 'store', '🛍': 'cart', '🏪': 'store', '💰': 'wallet', '💶': 'wallet', '💵': 'wallet', '📍': 'pin',
-  '🗺': 'pin', '🫶': 'heart', '🥇': 'medal', '🥈': 'medal', '🥉': 'medal', '🍞': 'wheat', '🥛': 'cup', '🧃': 'cup', '🥚': 'egg', '🐟': 'protein', '🍚': 'grid', '⬇': 'download', '⬆': 'upload', '☑': 'check'
+  '🗺': 'pin', '🫶': 'heart', '🥇': 'medal', '🥈': 'medal', '🥉': 'medal', '🍞': 'wheat', '🥛': 'cup', '🧃': 'cup', '🥚': 'egg', '🐟': 'protein', '🍚': 'grid', '⬇': 'download', '⬆': 'upload', '☑': 'check', '👨‍🍳': 'chef', '🧑‍🍳': 'chef', '👩‍🍳': 'chef'
 };
 const EMO_RE = new RegExp('(' + Object.keys(EMO).sort((a, b) => b.length - a.length).map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')\\uFE0F?', 'gu');
 const EMO_SKIP = new Set(['SCRIPT', 'STYLE', 'TEXTAREA', 'INPUT', 'OPTION', 'SELECT', 'TITLE', 'CANVAS', 'svg', 'text']);
@@ -2065,7 +2076,7 @@ function sheet(html, mount) {
   let y0 = null, dy = 0;
   sh.addEventListener('touchstart', e => {
     const onHead = e.target.closest('.sheethead');
-    y0 = (onHead || sh.scrollTop <= 0) && !e.target.closest('input,textarea,select') ? e.touches[0].clientY : null; dy = 0;
+    y0 = (onHead || sh.scrollTop <= 0) && !e.target.closest('input,textarea,select,.st-map') ? e.touches[0].clientY : null; dy = 0;
   }, { passive: true });
   sh.addEventListener('touchmove', e => {
     if (y0 === null) return;
@@ -4311,6 +4322,7 @@ function openPrivacy() {
     ${sec('⌚', T('Watch & tracker'), T('If you connect Apple Health or a tracker, only your calories burned per day are read. For WHOOP, Oura, Polar and Withings the sign-in key is kept on the Food Tracker server, encrypted with a secret that only your phone has. Numbers from the Apple Health Shortcut wait on the server for up to 30 days until your app picks them up.'))}
     ${sec('🔑', T('Password check'), T('When you create an account, the app checks if your password appeared in a known data leak (Have I Been Pwned). Only the first 5 characters of a scrambled version are sent; your password never leaves your phone.'))}
     ${sec('🏷️', T('Barcodes'), T('When you scan a barcode, only its number is sent to Open Food Facts, a free food database. On some phones the scanner first loads a free reading tool from jsdelivr.net.'))}
+    ${sec('📍', T('Supermarkets near you'), T('Only when you tap it: your location, rounded to about 100 m, is sent to OpenStreetMap to find shops, and the map pictures load from OpenStreetMap. The AI only gets the shop names, never your location.'))}
     ${sec('📊', T('Usage count'), T('To know how many people use Food Tracker, the app sends a random number, the first and last day it was used and how many AI requests it made. With an account, this is stored together with your account. It never contains your food or photos.'))}
     ${sec('🍪', T('Cookies'), T('Food Tracker uses no cookies and no tracking. It only stores on your phone what it needs to work, like your settings, so no cookie banner is needed.'))}
     ${sec('🌍', T('Where data is stored'), T('The app and the server run on Cloudflare, AI answers come from Google. Their computers can be outside Switzerland and the EU.'))}
@@ -4853,13 +4865,26 @@ const engDay = (start, i) => dt(addDays(start, i)).toLocaleDateString('en-GB', {
 const weekLabel = ws => `${fmtDate(ws)} – ${fmtDate(addDays(ws, 6))}`;
 const MP_DIET = [['all', N('I eat everything')], ['vegetarian', N('Vegetarian')], ['vegan', N('Vegan')], ['pescatarian', N('Pescatarian (fish, no meat)')], ['nopork', N('No pork')], ['halal', N('Halal')]];
 const MP_COOK = [['quick', N('Quick (under 20 min)')], ['normal', N('Normal')], ['prep', N('Meal prep (cook 2–3× a week)')]];
+// Money: the currency follows the phone's region (CHF in Switzerland, EUR in the euro countries…), can be changed in the meal plan preferences
+const CUR_REGION = { CH: 'CHF', LI: 'CHF', US: 'USD', GB: 'GBP', JP: 'JPY', PL: 'PLN', TR: 'TRY', RU: 'RUB', CN: 'CNY', BR: 'BRL', CA: 'CAD', AU: 'AUD', SE: 'SEK', NO: 'NOK',
+  DK: 'DKK', CZ: 'CZK', HU: 'HUF', IN: 'INR', MX: 'MXN', KR: 'KRW', ID: 'IDR', SA: 'SAR', AE: 'AED', EG: 'EGP', ZA: 'ZAR', UA: 'UAH' };
+const CURS = ['CHF', 'EUR', 'USD', 'GBP', 'PLN', 'TRY', 'RUB', 'JPY', 'CNY', 'CAD', 'AUD', 'SEK', 'NOK', 'DKK', 'CZK', 'BRL', 'INR', 'KRW', 'IDR', 'SAR', 'AED', 'MXN', 'UAH'];
+function guessCur() {
+  const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '');
+  if (/Zurich|Vaduz/.test(tz)) return 'CHF';
+  const reg = ((navigator.languages || [navigator.language || '']).map(l => l.split('-')[1]).find(Boolean) || '').toUpperCase();
+  return CUR_REGION[reg] || ({ de: 'EUR', fr: 'EUR', it: 'EUR', es: 'EUR', nl: 'EUR', pt: 'EUR', pl: 'PLN', tr: 'TRY', ru: 'RUB', ja: 'JPY', zh: 'CNY' }[LANG] || 'USD');
+}
+const planCur = () => mealPrefs().cur || guessCur();
+const money = (v, cur = planCur()) => { try { return new Intl.NumberFormat(LOC, { style: 'currency', currency: cur, maximumFractionDigits: v >= 100 || ['JPY', 'KRW', 'IDR'].includes(cur) ? 0 : 2 }).format(v); } catch { return `${r0(v)} ${cur}`; } };
+const groceryTotal = plan => r1(plan.groceries.reduce((a, g) => a + g.items.reduce((b, i) => b + num(i.price), 0), 0));
 const MP_BUDGET = [['low', N('Low budget')], ['normal', N('Normal')], ['high', N('No limit')]];
 const MP_MEALS = [['2', N('2 meals')], ['3', N('3 meals')], ['3+1', N('3 meals + 1 snack')], ['3+2', N('3 meals + 2 snacks')]];
 let mpBusy = null, mpTab = 'list', mpTried = 0;   // mpBusy: null, 'all' (whole plan) or 'day-meal' (one swap)
 
 function prefsText(pr) {
   const lab = (list, v) => (list.find(x => x[0] === v) || list[0])[1];
-  return `diet: ${lab(MP_DIET, pr.diet)}; allergies / does not eat: ${pr.avoid || 'nothing special'}; loves: ${pr.likes || 'no special wishes'}; cooking time: ${lab(MP_COOK, pr.cook)}; budget: ${lab(MP_BUDGET, pr.budget)}; meals per day: ${lab(MP_MEALS, pr.meals)}; cooking for ${pr.people} person(s)`;
+  return `diet: ${lab(MP_DIET, pr.diet)}; allergies / does not eat: ${pr.avoid || 'nothing special'}; loves: ${pr.likes || 'no special wishes'}; cooking time: ${lab(MP_COOK, pr.cook)}; budget: ${lab(MP_BUDGET, pr.budget)}${pr.amt ? `, at most about ${pr.amt} ${planCur()} per week for the whole grocery list` : ''}; meals per day: ${lab(MP_MEALS, pr.meals)}; cooking for ${pr.people} person(s)`;
 }
 function planGoalText() {
   const p = db.profile, t = targets(), ft = fastType(p);
@@ -4879,7 +4904,8 @@ const cleanMeal = m => ({ type: String(m.type || ''), name: String(m.name || '')
   ...(m.sugar != null ? { sugar: r1(num(m.sugar)) } : {}), ...(m.fiber != null ? { fiber: r1(num(m.fiber)) } : {}), ...(m.sodium != null ? { sodium: r0(num(m.sodium)) } : {}),
   ...(Array.isArray(m.ing) && m.ing.length ? { ing: m.ing.filter(x => x && x.n).slice(0, 14).map(x => ({ n: String(x.n), q: String(x.q || ''), g: r0(num(x.g)) })) } : {}) });
 const cleanGroceries = gs => gs.map(g => ({ cat: String(g.cat || ''), items: (g.items || []).filter(i => i && i.name)
-  .map(i => ({ name: String(i.name), qty: String(i.qty || ''), ...(i.buy && String(i.buy).trim() !== String(i.qty || '').trim() ? { buy: String(i.buy) } : {}), have: false })) })).filter(g => g.items.length);
+  .map(i => ({ name: String(i.name), qty: String(i.qty || ''), ...(i.buy && String(i.buy).trim() !== String(i.qty || '').trim() ? { buy: String(i.buy) } : {}),
+    ...(num(i.price) > 0 ? { price: Math.round(num(i.price) * 100) / 100 } : {}), have: false })) })).filter(g => g.items.length);
 function trimPlans() { const ks = Object.keys(mealPlans()).sort(); ks.slice(0, Math.max(0, ks.length - 8)).forEach(k => delete db.mealPlans[k]); }
 
 async function generatePlan(change, background) {
@@ -4904,16 +4930,17 @@ ${recent.length ? `- Do NOT repeat these meals from the previous weeks: ${[...ne
 ${change && old ? `- The user wants to CHANGE the current plan: "${change}". Keep what doesn't need to change.\nCurrent plan:\n${planBrief(old)}` : change ? `- Extra wish from the user: "${change}".` : ''}
 - Every meal lists its ingredients for ONE person in "ing": "n" = name, "q" = kitchen measure (${measureRule()} Amounts like 1, ½, ⅔, 2), "g" = grams (or ml).
 - The grocery list covers ALL meals for ${pr.people} person(s) for the whole week, merged (each ingredient once with the total amount in "qty": ${isLb() ? 'lb, oz, fl oz or pieces' : 'g, kg, ml, l or pieces'}), grouped into supermarket sections in a sensible shopping order. "buy" = what to take from the shelf in normal store packs in the user's country (e.g. "1 pack of 500 g", "2 cartons of 1 l", "1 bunch", "1 box of 6"); leave "buy" empty if it is the same as qty. Leave out water; basic spices and oil go once into a pantry section.
+- "price" = a realistic shelf price in ${planCur()} for the "buy" amount (or qty) at a normal supermarket in the user's country; "total" = the sum of all prices.${pr.amt ? ` The WHOLE list must cost at most about ${pr.amt} ${planCur()}: choose cheaper staples, store brands and seasonal produce where needed.` : ''}
 - "prep": 3 to 6 short, practical meal-prep tips for exactly this plan (what to cook ahead, on which day, how to store it).
 - Write all names, descriptions, section names and tips in ${langInfo().ai}. Nutrition numbers are per person, per serving (sugar and fiber in grams, sodium in milligrams).${isLb() ? ' Grocery quantities in US units (lb, oz, fl oz, pieces).' : ''}
 
 Return JSON only:
-{"days":[{"meals":[{"type":"Breakfast","name":"","desc":"one short sentence: main ingredients and how it is made","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0,"sugar":0,"fiber":0,"sodium":0,"ing":[{"n":"","q":"","g":0}]}]}],"groceries":[{"cat":"","items":[{"name":"","qty":"","buy":""}]}],"prep":[""]}`;
+{"days":[{"meals":[{"type":"Breakfast","name":"","desc":"one short sentence: main ingredients and how it is made","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0,"sugar":0,"fiber":0,"sodium":0,"ing":[{"n":"","q":"","g":0}]}]}],"groceries":[{"cat":"","items":[{"name":"","qty":"","buy":"","price":0}]}],"total":0,"prep":[""]}`;
   try {
     const r = await askAI([{ text: prompt }], { timeout: 120000 });
     if (!r || !Array.isArray(r.days) || r.days.length < 7 || !Array.isArray(r.groceries)) throw new Error(T('The AI answer was incomplete. Please try again.'));
     mealPlans()[ws] = { created: Date.now(), start: ws, days: r.days.slice(0, 7).map(d => ({ meals: (d.meals || []).map(cleanMeal) })),
-      groceries: cleanGroceries(r.groceries), prep: (r.prep || []).map(String).filter(Boolean).slice(0, 8) };
+      groceries: cleanGroceries(r.groceries), cur: planCur(), prep: (r.prep || []).map(String).filter(Boolean).slice(0, 8) };
     trimPlans(); save(); mpTab = 'list'; LS.set('ft_mp_week', ws);
     if (background) planPopup(true); else toast('✓ ' + T('Your meal plan is ready'));
   } catch (e) { if (!background) toast(aiMsg(e)); }
@@ -4935,7 +4962,7 @@ Preferences: ${prefsText(mealPrefs())}
 
 Replace ONLY this meal: ${engDay(plan.start, di)}, ${m.type} "${m.name}" (${m.kcal} kcal, ${m.protein} g protein). Give a different, tasty meal of the same type with about the same calories and protein that is not already in the plan. Then return the complete updated grocery list (remove what is no longer needed, add what the new meal needs, keep the same sections). Write in ${langInfo().ai}.
 The meal lists its ingredients for ONE person in "ing" ("q" = kitchen measure: ${measureRule()}); grocery items keep "qty" and "buy" (store packs) like before.
-Return JSON only: {"meal":{"type":"","name":"","desc":"","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0,"sugar":0,"fiber":0,"sodium":0,"ing":[{"n":"","q":"","g":0}]},"groceries":[{"cat":"","items":[{"name":"","qty":"","buy":""}]}]}`;
+Return JSON only: {"meal":{"type":"","name":"","desc":"","min":15,"g":350,"kcal":0,"protein":0,"carbs":0,"fat":0,"sugar":0,"fiber":0,"sodium":0,"ing":[{"n":"","q":"","g":0}]},"groceries":[{"cat":"","items":[{"name":"","qty":"","buy":"","price":0}]}]}`;
   try {
     const r = await askAI([{ text: prompt }], { timeout: 90000 });
     if (!r || !r.meal || !r.meal.name) throw new Error(T('The AI answer was incomplete. Please try again.'));
@@ -4989,9 +5016,15 @@ function renderMealPlan() {
       <button class="btn" id="mpCreate">✨ ${T("Create this week's plan")}</button></div>`;
   else {
     const total = plan.groceries.reduce((a, g) => a + g.items.length, 0), left = plan.groceries.reduce((a, g) => a + g.items.filter(i => !i.have).length, 0);
-    const list = `<p class="small muted" style="margin:12px 4px">${left ? T('{n} of {t} items still to buy · tap an item when you have it', { n: left, t: total }) : '✓ ' + T('You have everything for this week!')}</p>
+    const gt = groceryTotal(plan), cur = plan.cur || planCur(), amt = mealPrefs().amt;
+    const budget = gt ? `<div class="card mp-budget"><div class="spread"><b>${ic('wallet')} ${T('Estimated total')}</b><b>${money(gt, cur)}</b></div>
+      ${amt ? `<div class="hbar" style="margin-top:10px"><i style="width:${Math.min(100, gt / amt * 100)}%;background:${gt > amt ? 'var(--bad)' : 'var(--good)'}"></i></div>
+        <div class="small" style="margin-top:6px;font-weight:600;color:${gt > amt ? 'var(--bad)' : 'var(--good)'}">${gt > amt ? T('{n} over your budget', { n: money(gt - amt, cur) }) : T('{n} left of your budget', { n: money(amt - gt, cur) })}</div>` : ''}
+      <div class="small muted" style="margin-top:6px">${T('Prices are AI estimates for a normal supermarket.')}</div></div>` : '';
+    const list = `${budget}<button class="card li mp-stores" id="mpStores">${ic('store')}<span class="grow"><b>${T('Supermarkets near you')}</b><br><span class="small muted">${T('Map, distance and which one suits you best')}</span></span><span class="chev">›</span></button>
+      <p class="small muted" style="margin:12px 4px">${left ? T('{n} of {t} items still to buy · tap an item when you have it', { n: left, t: total }) : '✓ ' + T('You have everything for this week!')}</p>
       ${plan.groceries.map((g, gi) => `<div class="card mp-cat"><div class="mp-catname">${esc(g.cat)}</div>${g.items.map((it, ii) =>
-        `<button class="mp-item ${it.have ? 'have' : ''}" data-gi="${gi}" data-ii="${ii}"><span class="mp-check">${it.have ? '✓' : ''}</span><span class="grow mp-iname">${esc(it.name)}${it.buy ? `<span class="mp-buy">🛒 ${esc(it.buy)}</span>` : ''}</span><span class="mp-qty">${esc(it.qty)}</span></button>`).join('')}</div>`).join('')}`;
+        `<button class="mp-item ${it.have ? 'have' : ''}" data-gi="${gi}" data-ii="${ii}"><span class="mp-check">${it.have ? '✓' : ''}</span><span class="grow mp-iname">${esc(it.name)}${it.buy ? `<span class="mp-buy">🛒 ${esc(it.buy)}</span>` : ''}</span><span class="mp-qty">${esc(it.qty)}${it.price ? `<i>${money(it.price, cur)}</i>` : ''}</span></button>`).join('')}</div>`).join('')}`;
     const meals = plan.days.map((d, di) => {
       const date = addDays(ws, di), isToday = date === iso();
       const tk = d.meals.reduce((a, m) => a + m.kcal, 0), tp = d.meals.reduce((a, m) => a + m.protein, 0);
@@ -5019,6 +5052,7 @@ function renderMealPlan() {
   if (pg.querySelector('#mpCoach')) pg.querySelector('#mpCoach').onclick = askCoachAboutPlan;
   if (pg.querySelector('#mpEdit')) pg.querySelector('#mpEdit').onclick = openPlanChange;
   if (pg.querySelector('#mpSave')) pg.querySelector('#mpSave').onclick = exportPlan;
+  if (pg.querySelector('#mpStores')) pg.querySelector('#mpStores').onclick = openStores;
   pg.querySelectorAll('[data-mt]').forEach(b => b.onclick = () => { mpTab = b.dataset.mt; renderMealPlan(); });
   pg.querySelectorAll('[data-gi]').forEach(b => b.onclick = () => {
     const it = plan.groceries[b.dataset.gi].items[b.dataset.ii]; it.have = !it.have; save(); renderMealPlan();
@@ -5027,6 +5061,101 @@ function renderMealPlan() {
   pg.querySelectorAll('[data-ate]').forEach(b => b.onclick = () => { const [di, mi] = b.dataset.ate.split('-').map(Number); logPlanMeal(di, mi); });
 }
 
+/* Supermarkets near you: shops from OpenStreetMap (free, no account) around the user's location on a small map,
+   then the AI rates how well each one suits this user (budget, diet, this week's list) and estimates what the list costs there. */
+let storeCache = null;
+function loadLeaflet() {
+  if (window.L) return Promise.resolve();
+  return new Promise((res, rej) => {
+    const css = document.createElement('link'); css.rel = 'stylesheet'; css.href = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css'; document.head.appendChild(css);
+    const js = document.createElement('script'); js.src = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js'; js.onload = res; js.onerror = () => rej(new Error(T('No internet connection?'))); document.head.appendChild(js);
+  });
+}
+const kmBetween = (a, b, c, d) => { const R = 6371, x = (c - a) * Math.PI / 180, y = (d - b) * Math.PI / 180, h = Math.sin(x / 2) ** 2 + Math.cos(a * Math.PI / 180) * Math.cos(c * Math.PI / 180) * Math.sin(y / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); };
+const fmtKm = km => km < 1 ? `${Math.round(km * 1000 / 10) * 10} m` : `${(Math.round(km * 10) / 10).toLocaleString(LOC)} km`;
+function openStores() {
+  sheet(`<h3>${ic('store')} ${T('Supermarkets near you')}</h3>
+    <p class="muted" style="margin-top:4px">${T('See the shops around you on a map, how far they are, and which one suits you and your budget best.')}</p>
+    <div id="stBody"><button class="btn" id="stGo" style="margin-top:14px">${ic('pin')} ${T('Use my location')}</button>
+    <p class="small muted" style="text-align:center;margin:10px 0 0">${T('Your location is only used for this search and is not saved.')}</p></div>`, s => {
+    s.querySelector('#stGo').onclick = () => findStores(s);
+    if (storeCache && Date.now() - storeCache.t < 30 * 60e3) showStores(s, storeCache);
+  });
+}
+function findStores(s) {
+  const body = s.querySelector('#stBody');
+  body.innerHTML = `<div class="st-wait"><span class="spin"></span> ${T('Finding shops near you…')}</div>`;
+  if (!navigator.geolocation) { body.innerHTML = `<p class="muted">${T('Location is not available on this phone.')}</p>`; return; }
+  navigator.geolocation.getCurrentPosition(async pos => {
+    const lat = Math.round(pos.coords.latitude * 1000) / 1000, lon = Math.round(pos.coords.longitude * 1000) / 1000;   // ~100 m is enough
+    try {
+      const q = `[out:json][timeout:20];(nwr["shop"~"^(supermarket|discount|greengrocer|organic)$"](around:3000,${lat},${lon}););out center 60;`;
+      // OpenStreetMap shops: Overpass first (exact radius), OpenStreetMap search (Nominatim) when Overpass is busy
+      let els = null;
+      try {
+        const r = await fetch('https://overpass-api.de/api/interpreter', { method: 'POST', body: 'data=' + encodeURIComponent(q), headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, signal: AbortSignal.timeout ? AbortSignal.timeout(9000) : undefined });
+        if (r.ok) els = (await r.json()).elements || [];
+      } catch {}
+      if (!els) {
+        const d = 0.03, vb = [lon - d * 1.5, lat + d, lon + d * 1.5, lat - d].join(',');
+        const all = [];
+        for (const w of ['supermarket', 'discount store']) {
+          try { const r = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(w)}&format=jsonv2&limit=40&viewbox=${vb}&bounded=1`, { signal: AbortSignal.timeout ? AbortSignal.timeout(10000) : undefined }); if (r.ok) all.push(...await r.json()); } catch {}
+        }
+        if (!all.length && !navigator.onLine) throw new Error(T('No internet connection?'));
+        els = all.filter(x => x.category === 'shop').map(x => ({ lat: +x.lat, lon: +x.lon, tags: { name: x.name, shop: x.type } }));
+        if (!all.length) throw new Error(T('The shop search is busy right now. Try again in a minute.'));
+      }
+      const seen = new Set(), shops = els.map(e => ({ name: (e.tags && (e.tags.name || e.tags.brand)) || '', brand: e.tags && e.tags.brand || '', lat: e.lat ?? e.center?.lat, lon: e.lon ?? e.center?.lon, hours: e.tags && e.tags.opening_hours || '', kind: e.tags && e.tags.shop }))
+        .filter(x => x.name && x.lat).map(x => ({ ...x, km: kmBetween(lat, lon, x.lat, x.lon) })).sort((a, b) => a.km - b.km)
+        .filter(x => { const k = x.name.toLowerCase() + Math.round(x.km * 5); if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, 15);
+      storeCache = { t: Date.now(), lat, lon, shops, rated: null };
+      showStores(s, storeCache);
+      if (shops.length) rateStores(s, storeCache);
+    } catch (e) { body.innerHTML = `<p class="muted" style="margin-top:12px">${esc(e.message)}</p><button class="btn outline" id="stGo2">${T('Try again')}</button>`; body.querySelector('#stGo2').onclick = () => findStores(s); }
+  }, () => { body.innerHTML = `<p class="muted" style="margin-top:12px">${T('Location access was not allowed. Allow it in iPhone Settings → Privacy → Location Services → Safari Websites, then try again.')}</p>`; },
+  { enableHighAccuracy: false, timeout: 15000, maximumAge: 600000 });
+}
+async function rateStores(s, c) {
+  const plan = curPlan(), pr = mealPrefs(), names = [...new Set(c.shops.map(x => x.brand || x.name))].slice(0, 12);
+  const list = plan ? plan.groceries.flatMap(g => g.items.map(i => `${i.name} ${i.buy || i.qty}`)).slice(0, 60).join(', ') : '';
+  const prompt = `Rate these supermarkets for this user. Country/locale: ${LOC}, currency ${planCur()}.
+Shops nearby: ${names.join('; ')}
+User: ${prefsText(pr)}${pr.amt ? `; weekly budget ${pr.amt} ${planCur()}` : ''}; goal: ${db.profile ? planOf(db.profile).id : 'n/a'}.
+${list ? `This week's grocery list: ${list}` : 'No grocery list yet: judge a typical healthy weekly shop for one person.'}
+For each shop name give: "fit" 1-10 = how well it suits THIS user (price level vs budget, choice for their diet, fresh produce, protein options); "price" = "$", "$$" or "$$$" price level; "total" = realistic estimated cost of the whole list there in ${planCur()} (number, 0 if unknown); "why" = one short reason in ${langInfo().ai} (max 12 words). Use what you know about these chains in this country; unknown small shops get a cautious guess.
+Return JSON only: {"shops":[{"name":"","fit":7,"price":"$$","total":0,"why":""}]}`;
+  try {
+    const r = await askAI([{ text: prompt }], { timeout: 45000 });
+    c.rated = Object.fromEntries((r.shops || []).map(x => [String(x.name).toLowerCase(), { fit: clamp(r0(num(x.fit)), 1, 10), price: String(x.price || '').slice(0, 3), total: num(x.total), why: String(x.why || '').slice(0, 120) }]));
+  } catch { c.rated = {}; }
+  if (s.isConnected) showStores(s, c);
+}
+const PRICE_LVL = { '$': N('Low prices'), '$$': N('Medium prices'), '$$$': N('Higher prices') };
+async function showStores(s, c) {
+  const body = s.querySelector('#stBody'); if (!body) return;
+  if (!c.shops.length) { body.innerHTML = `<p class="muted" style="margin-top:12px">${T('No supermarkets found within 3 km.')}</p>`; return; }
+  const rate = x => c.rated && (c.rated[(x.brand || x.name).toLowerCase()] || c.rated[x.name.toLowerCase()]);
+  const shops = [...c.shops].sort((a, b) => ((rate(b) || {}).fit || 0) - ((rate(a) || {}).fit || 0) || a.km - b.km);
+  body.innerHTML = `<div id="stMap" class="st-map ${isDark() ? 'dark' : ''}"></div>
+    ${!c.rated ? `<div class="st-wait small"><span class="spin"></span> ${T('Rating the shops for you…')}</div>` : ''}
+    <div class="list st-list">${shops.map((x, i) => { const r = rate(x); return `<div class="li st-shop" data-si="${c.shops.indexOf(x)}">
+      <span class="st-fit ${r ? (r.fit >= 8 ? 'hi' : r.fit >= 5 ? 'mid' : 'lo') : ''}">${r ? r.fit : i + 1}</span>
+      <span class="grow"><b>${esc(x.name)}</b><br><span class="small muted">${fmtKm(x.km)}${r && PRICE_LVL[r.price] ? ' · ' + T(PRICE_LVL[r.price]) : ''}${r && r.total ? ' · ' + T('List about {n}', { n: money(r.total) }) : ''}</span>
+        ${r && r.why ? `<span class="small st-why">${esc(r.why)}</span>` : ''}</span>
+      <a class="chipbtn" href="https://www.google.com/maps/dir/?api=1&destination=${x.lat},${x.lon}" target="_blank" rel="noopener">${T('Route')}</a></div>`; }).join('')}</div>
+    ${c.rated ? `<p class="small muted" style="margin:10px 2px 0">${T('The number is how well the shop suits you (1–10), estimated by AI. Prices are estimates.')}</p>` : ''}
+    <p class="small muted" style="margin:6px 2px 0">© OpenStreetMap contributors</p>`;
+  try {
+    await loadLeaflet(); if (!s.isConnected) return;
+    const map = L.map(body.querySelector('#stMap'), { zoomControl: false, attributionControl: false }).setView([c.lat, c.lon], 14);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+    L.circleMarker([c.lat, c.lon], { radius: 7, color: '#fff', weight: 3, fillColor: '#2f80ed', fillOpacity: 1 }).addTo(map);
+    const pins = shops.map((x, i) => { const r = rate(x); return L.marker([x.lat, x.lon], { icon: L.divIcon({ className: 'st-pin', html: `<span>${r ? r.fit : i + 1}</span>`, iconSize: [26, 26] }) }).addTo(map).bindPopup(esc(x.name)); });
+    map.fitBounds(L.featureGroup(pins).getBounds().pad(0.15), { maxZoom: 15 });
+    body.querySelectorAll('[data-si]').forEach(el => el.onclick = e => { if (e.target.closest('a')) return; const x = c.shops[el.dataset.si]; map.setView([x.lat, x.lon], 16); body.querySelector('#stMap').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+  } catch { const m = body.querySelector('#stMap'); if (m) m.remove(); }
+}
 function openMealPrefs(thenGenerate) {
   const pr = clone(mealPrefs());
   const pick = (id, list, v) => `<select id="${id}">${list.map(([k, l]) => `<option value="${k}" ${k === v ? 'selected' : ''}>${T(l)}</option>`).join('')}</select>`;
@@ -5039,12 +5168,16 @@ function openMealPrefs(thenGenerate) {
       <div style="width:96px"><label class="lbl">${T('People')}</label><select id="mpPeople">${[1, 2, 3, 4, 5, 6].map(n => `<option ${n == pr.people ? 'selected' : ''}>${n}</option>`).join('')}</select></div></div>
     <div class="row"><div class="grow"><label class="lbl">${T('Cooking time')}</label>${pick('mpCook', MP_COOK, pr.cook)}</div>
       <div class="grow"><label class="lbl">${T('Budget')}</label>${pick('mpBudget', MP_BUDGET, pr.budget)}</div></div>
+    <label class="lbl">${T('Weekly food budget (optional)')}</label>
+    <div class="row"><input id="mpAmt" class="grow" inputmode="decimal" value="${pr.amt || ''}" placeholder="${T('e.g. {n}', { n: 120 })}">
+      <select id="mpCur" style="width:104px">${[...new Set([planCur(), ...CURS])].map(c => `<option ${c === planCur() ? 'selected' : ''}>${c}</option>`).join('')}</select></div>
     <label class="lbl">${T('Every Saturday')}</label><select id="mpAutoSel"><option value="1" ${pr.auto !== false ? 'selected' : ''}>🔄 ${T('Make a new plan automatically')}</option><option value="0" ${pr.auto === false ? 'selected' : ''}>📌 ${T('Keep my current plan')}</option></select>
     <button class="btn" id="mpPSave" style="margin-top:20px">${thenGenerate ? '✨ ' + T('Create my plan') : T('Save')}</button>
     ${!thenGenerate && curPlan() ? `<p class="small muted" style="text-align:center;margin:10px 0 0">${T('Saved preferences are used for your next plans. To change this week now, tap "Change plan".')}</p>` : ''}`, sh => {
     sh.querySelector('#mpPSave').onclick = () => {
       db.mealPrefs = { set: true, diet: sh.querySelector('#mpDiet').value, avoid: sh.querySelector('#mpAvoid').value.trim(), likes: sh.querySelector('#mpLikes').value.trim(),
         meals: sh.querySelector('#mpMeals').value, people: +sh.querySelector('#mpPeople').value || 1, cook: sh.querySelector('#mpCook').value, budget: sh.querySelector('#mpBudget').value,
+        amt: Math.max(0, r0(num(sh.querySelector('#mpAmt').value))) || 0, cur: sh.querySelector('#mpCur').value,
         auto: sh.querySelector('#mpAutoSel').value === '1' };
       save(); closeSheet();
       if (thenGenerate || !curPlan()) generatePlan(); else { toast(T('✓ Saved')); renderMealPlan(); }
@@ -5889,7 +6022,7 @@ const planCoach = p => [PLAN_COACH[planOf(p).id] + (planOf(p).id === 'preg' ? ` 
 // What the coach knows about the app itself. Update this whenever a feature is added, moved or removed.
 const APP_GUIDE = `- Tabs at the bottom: Home, Progress, Coach (you), Settings. The big round + button (Home only) logs food: take a photo, scan a barcode, describe the food in words, or pick a favorite / "I ate this" from the meal plan.
 - Pull to refresh: pulling a page (Home, Progress, Settings) down at the top updates everything right away: tracker calories, a new app version, pending photos.
-- Home: the profile picture top right (tap: Settings), the month name above the week strip (tap it for the month view: every day as a small ring, white within the goal, red over it, dashed when nothing was logged; tap a day to open it), the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). The first time they tap Scan food or Barcode a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. Ingredients of a meal show as tiles with a kitchen measure next to the grams (e.g. "½ medium · 60 g", "2 tbsp · 20 g"; with the kg setting European measures like tbsp, tsp, glass, slice, handful, never cups; with the lb setting US measures like cup, tbsp, tsp, oz); tap a tile to change it with − / + (½ → ¾) or to type exact grams. The meal plan shows each meal's ingredients per person with these measures (tap "Ingredients"), and the grocery list shows next to the total amount what to take from the shelf (e.g. "1 pack of 500 g"). For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. "Earn your treat" (Home, only when today is over the calorie goal; adults only, not in pregnancy or on fast days; can be turned off in Settings → Preferences): a card offers a brisk walk, cycling or jogging with the minutes that make up for the extra calories (calculated from their weight); after picking one it fills up by itself with a watch, or they tap Done. Above 400 kcal over it doesn't suggest sport, just "back on track tomorrow". Food is never blocked. When they ate a treat and are over, you may mention this gently, never as punishment. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
+- Home: the profile picture top right (tap: Settings), the month name above the week strip (tap it for the month view: every day as a small ring, white within the goal, red over it, dashed when nothing was logged; tap a day to open it), the week strip (tap a day to see or fill in past days, the arrow goes to earlier weeks), the goal chip (goal, progress and if they're on track; tap to change the goal), the calories card (tap to switch between left and eaten), protein/carbs/fat left, the health score (1-10, bigger meals count more; under it a small line with today's fiber, sugar and sodium against their personal goal / limits: fiber 14 g per 1000 kcal, sugar max 10 % of calories, sodium max 2 g, 2.3 g if they train 6+ times a week; each meal page shows the same line for that meal; typed-in foods get these three filled in by the AI in the background), water (+ adds a glass, tap the tile for more) and calories burned (+ to add), the fasting card for intermittent fasting, and "Meal plan & groceries" (a weekly plan with one shopping list, a new one every Saturday; meals can be swapped; in Preferences an optional weekly food budget with currency; the grocery list shows AI price estimates per item and an estimated total against the budget, and "Supermarkets near you": with their OK it uses their location once (not saved) to show the shops within about 3 km on a map (OpenStreetMap), sorted by how well each suits them (1-10, AI estimate from budget, diet and the list), with price level, estimated cost of the list there and a Route button to Google Maps). Scan food and Barcode open the app's own full-screen camera: scan frame, mode buttons Scan food / Barcode (reads by itself; ⌨️ to type the number) / Food label (photo of a nutrition label, the AI uses the printed numbers) / Gallery, a big shutter button, and a flash button only on phones that allow it (not on iPhone web apps). The first time they tap Scan food or Barcode a short "Get the best result" sheet shows 4 photo tips (whole meal from slightly above, a fork or hand for size, spread out pieces so they can be counted, labels to the camera); "Photo tips" in the Add menu shows it again. Ingredients of a meal show as tiles with a kitchen measure next to the grams (e.g. "½ medium · 60 g", "2 tbsp · 20 g"; with the kg setting European measures like tbsp, tsp, glass, slice, handful, never cups; with the lb setting US measures like cup, tbsp, tsp, oz); tap a tile to change it with − / + (½ → ¾) or to type exact grams. The meal plan shows each meal's ingredients per person with these measures (tap "Ingredients"), and the grocery list shows next to the total amount what to take from the shelf (e.g. "1 pack of 500 g"). For food in pieces (berries, fruit, eggs, nuts, slices, nuggets, sushi…) the AI counts the pieces and works out the weight from them; the ingredient shows e.g. "144 g · 12 pcs" with − / + to change the number of pieces, and typing the weighed grams always wins. "Earn your treat" (Home, only when today is over the calorie goal; adults only, not in pregnancy or on fast days; can be turned off in Settings → Preferences): a card offers a brisk walk, cycling or jogging with the minutes that make up for the extra calories (calculated from their weight); after picking one it fills up by itself with a watch, or they tap Done. Above 400 kcal over it doesn't suggest sport, just "back on track tomorrow". Food is never blocked. When they ate a treat and are over, you may mention this gently, never as punishment. Tap a logged meal to see, edit, delete, save it as a favorite, or set the portion eaten (¼, ½, ¾, 1×, 1½×, 2×, or finer with − / +) without changing the ingredients. Photos taken without internet wait on the phone and are analysed automatically once it is online.
 - Calories burned: by default they enter the whole day's active calories from their watch (all movement incl. workouts), not single workouts; this can be changed to workouts only. Settings → Watch & tracker fills them in automatically: Apple Health (via a small iPhone Shortcut + daily automation; covers Apple Watch and watches/rings that sync to Apple Health such as Garmin, Oura, WHOOP, Polar, Withings, Amazfit, Huawei, Suunto, Coros; if the Shortcut sends the same number on several days, 0 every evening or over 4000 kcal a day, Home shows a warning: in Find Health Samples only one date filter may stay, Start Date · is today) or a direct connection to WHOOP, Oura, Polar or Withings. The list shows the common brands (Apple Watch, Garmin, Fitbit, Samsung Galaxy Watch, WHOOP, Oura, Pixel Watch, Amazfit, Huawei, Xiaomi, Polar, Withings, Suunto, COROS, Strava) and connects each the best way; Fitbit, Pixel Watch and Samsung can't be connected (no sharing), so they enter by hand. Trackers like WHOOP count the TOTAL burn incl. the body at rest; the Home tile then shows that total (same as the tracker app) with the active part below it ("Burned · 48 active"). Only the active part is added to the goal, because rest is already in the daily goal; so a big difference between the tracker's total and the active part (especially in the morning) is normal. WITH A TRACKER CONNECTED the daily calorie goal follows real activity instead of the training level from the setup: body at rest x1.1 plus 75% of the day's active calories; today the hours still to come are estimated from the 7-day average and corrected as the real numbers arrive (shown in the Calories burned window). Without a tracker the setup training level is used.
 - Progress: current weight and "Log weight" (once a week in the morning), the logging streak (1 rest day a week is fine), goal progress with the weight trend and chart, the weekly calories chart, and badges (medals in 3 columns with their number and what they are for, silver until earned; tap one to see more). Body card on Progress: waist, hips and arms (+ Add, every 1-2 weeks, with how-to-measure hints), change since the first measurement with small trend lines, private progress photos (only on the phone and in the encrypted backup, never sent to AI), "Compare before & after" side by side with the numbers and weight, and History. For muscle building / recomp this shows progress when the weight barely moves.
 - Habits (Progress, optional): pick one habit to change (no food late in the evening, no sugary drinks, fewer sweets, calm weekends, protein breakfast, enough water, or their own). The app suggests one from the log (suggestions can be hidden), helps with an if-then plan, checks it automatically from the log (own habits: tick ✓/✕ on Home), counts a fair streak (one slip is fine, two in a row reset), has an optional reminder and badges at 7, 21 and 66 days. Home shows a slim "Habits · Choose a habit" line (can be hidden with ✕; it's always on Progress), and the habit card once they chose one.
